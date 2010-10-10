@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<CONFIG>
+  <Package Version="3">
+    <Name Value="lazmansoft"/>
+    <CompilerOptions>
+      <Version Value="8"/>
+      <SearchPaths>
+        <IncludeFiles Value="composants/;forms/"/>
+        <OtherUnitFiles Value="composants/;fonctions/;classes/;forms/"/>
+        <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
+      </SearchPaths>
+      <Parsing>
+        <SyntaxOptions>
+          <SyntaxMode Value="Delphi"/>
+          <CStyleOperator Value="False"/>
+          <AllowLabel Value="False"/>
+        </SyntaxOptions>
+      </Parsing>
+      <Other>
+        <CompilerPath Value="$(CompPath)"/>
+      </Other>
+    </CompilerOptions>
+    <Version Minor="9"/>
+    <Files Count="12">
+      <Item1>
+        <Filename Value="forms/U_Acces.lfm"/>
+        <Type Value="LFM"/>
+      </Item1>
+      <Item2>
+        <Filename Value="forms/U_Acces.lrs"/>
+        <Type Value="LRS"/>
+      </Item2>
+      <Item3>
+        <Filename Value="forms/U_Acces.pas"/>
+        <UnitName Value="U_Acces"/>
+      </Item3>
+      <Item4>
+        <Filename Value="forms/U_Donnees.pas"/>
+        <UnitName Value="U_Donnees"/>
+      </Item4>
+      <Item5>
+        <Filename Value="forms/U_Administration.pas"/>
+        <UnitName Value="U_Administration"/>
+      </Item5>
+      <Item6>
+        <Filename Value="fonctions/fonctions_Objets_Dynamiques.pas"/>
+        <UnitName Value="fonctions_Objets_Dynamiques"/>
+      </Item6>
+      <Item7>
+        <Filename Value="forms/U_FenetrePrincipale.pas"/>
+        <UnitName Value="U_FenetrePrincipale"/>
+      </Item7>
+      <Item8>
+        <Filename Value="forms/U_MotPasse.lfm"/>
+        <Type Value="LFM"/>
+      </Item8>
+      <Item9>
+        <Filename Value="forms/U_MotPasse.lrs"/>
+        <Type Value="LRS"/>
+      </Item9>
+      <Item10>
+        <Filename Value="forms/U_MotPasse.pas"/>
+        <UnitName Value="U_MotPasse"/>
+      </Item10>
+      <Item11>
+        <Filename Value="forms/U_Splash.pas"/>
+        <UnitName Value="U_Splash"/>
+      </Item11>
+      <Item12>
+        <Filename Value="fonctions/fonctions_Objets_Data.pas"/>
+        <UnitName Value="fonctions_Objets_Data"/>
+      </Item12>
+    </Files>
+    <i18n>
+      <EnableI18N Value="True"/>
+      <OutDir Value="fonctions"/>
+    </i18n>
+    <Type Value="RunAndDesignTime"/>
+    <RequiredPkgs Count="12">
+      <Item1>
+        <PackageName Value="SDFLaz"/>
+      </Item1>
+      <Item2>
+        <PackageName Value="lazexttools"/>
+      </Item2>
+      <Item3>
+        <PackageName Value="lazmanframes"/>
+      </Item3>
+      <Item4>
+        <PackageName Value="lazextcomponents"/>
+      </Item4>
+      <Item5>
+        <PackageName Value="zcomponent"/>
+      </Item5>
+      <Item6>
+        <PackageName Value="JvXPBarLaz"/>
+      </Item6>
+      <Item7>
+        <PackageName Value="lazfonctions"/>
+      </Item7>
+      <Item8>
+        <PackageName Value="zcore"/>
+      </Item8>
+      <Item9>
+        <PackageName Value="virtualtreeslcl"/>
+      </Item9>
+      <Item10>
+        <PackageName Value="rxnew"/>
+      </Item10>
+      <Item11>
+        <PackageName Value="FCL"/>
+      </Item11>
+      <Item12>
+        <PackageName Value="LCL"/>
+      </Item12>
+    </RequiredPkgs>
+    <PublishOptions>
+      <Version Value="2"/>
+    </PublishOptions>
+  </Package>
+</CONFIG>

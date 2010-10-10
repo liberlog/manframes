@@ -1,0 +1,94 @@
+package ManFramesD7;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DESCRIPTION 'Composants ManFrames : FrameWork amélioré'}
+{$IMPLICITBUILD ON}
+{$DEFINE DBEXPRESS}
+{$DEFINE ADO}
+{$DEFINE DBEXPRESS}
+
+requires
+  rtl,
+  vcl,
+  dbrtl,
+  vclactnband,
+  vclx,
+  bdertl,
+  vcldb,
+  adortl,
+  VirtualTreesD7,
+  VclSmp,
+  dclstd,
+  designide,
+  designdgm,
+  vcldesigner,
+  dcldb,
+  JvStdCtrlsD7R,
+  vcljpg,
+  JclVcl,
+  Jcl,
+  JvCoreD7R,
+  JvSystemD7R,
+  JvDBD7R,
+  JvCtrlsD7R,
+  JvDlgsD7R,
+  JvPageCompsD7R,
+  dclado,
+  JvXPCtrlsD7R,
+  FonctionsD7,
+  dbexpress,
+  ExtComponentsD7,
+  rxbde,
+  rxdb,
+  GJLSoftwareD7,
+  xmlrtl,
+  JvCustomD7R,
+  JvXPCtrlsD7D,
+  JvCoreD7D,
+  rxctl,
+  JvCmpD7R,
+  ZComponentDesign,
+  JvHMID7R,
+  dsnap,
+  inet,
+  JvGlobusD7R,
+  ExtToolbarTools;
+
+contains
+  fonctions_aide in 'fonctions\fonctions_aide.pas',
+  U_RegisterFrameWork in 'composants\U_RegisterFrameWork.pas',
+  U_RegisterIni in 'composants\U_RegisterIni.pas',
+  ESBaseApp in 'composants\ESBaseApp.pas',
+  ESBaseData in 'composants\ESBaseData.pas',
+  ESBaseForm in 'composants\ESBaseForm.pas',
+  U_RegVersion in 'composants\U_RegVersion.pas',
+  U_GroupView in 'composants\U_GroupView.pas',
+  u_customframework in 'composants\u_customframework.pas',
+  u_formdico in 'composants\u_formdico.pas',
+  U_RegisterGroupView in 'composants\U_RegisterGroupView.pas',
+  u_searchcomponents in 'composants\u_searchcomponents.pas',
+  fonctions_tableauframework in 'fonctions\fonctions_tableauframework.pas',
+  unite_variables in 'fonctions\unite_variables.pas';
+
+end.

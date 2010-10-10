@@ -1,0 +1,85 @@
+object F_MotPasse: TF_MotPasse
+  Left = 531
+  Height = 220
+  Top = 324
+  Width = 298
+  ActiveControl = pa_1
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsSingle
+  Caption = 'Validation du mot de passe'
+  ClientHeight = 220
+  ClientWidth = 298
+  Font.Color = clBlack
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  OnShow = FormShow
+  Position = poScreenCenter
+  LCLVersion = '0.9.28.2'
+  object pa_1: TPanel
+    Left = 8
+    Height = 161
+    Top = 8
+    Width = 281
+    BevelOuter = bvLowered
+    ClientHeight = 161
+    ClientWidth = 281
+    TabOrder = 0
+    object lb_mdp: TLabel
+      Left = 20
+      Height = 23
+      Top = 93
+      Width = 86
+      Alignment = taRightJustify
+      Caption = 'Mot de passe'
+      Font.Color = clBlack
+      Font.Height = -13
+      Font.Name = 'MS Sans Serif'
+      ParentColor = False
+      ParentFont = False
+    end
+    object lb_valide: TLabel
+      Left = 20
+      Height = 16
+      Top = 46
+      Width = 257
+      AutoSize = False
+      Caption = 'Valider le mot de passe saisi'
+      Font.Color = clBlack
+      Font.Height = -13
+      Font.Name = 'MS Sans Serif'
+      ParentColor = False
+      ParentFont = False
+    end
+    object tx_mdp: TEdit
+      Left = 120
+      Height = 28
+      Top = 91
+      Width = 153
+      EchoMode = emPassword
+      MaxLength = 50
+      OnKeyDown = FormKeyDown
+      PasswordChar = 'X'
+      TabOrder = 0
+    end
+  end
+  object btn_ok: TJvXPButton
+    Left = 40
+    Height = 25
+    Top = 182
+    Width = 83
+    UseDockManager = False
+    Caption = 'Ok'
+    TabOrder = 1
+    OnClick = btn_okClick
+  end
+  object btn_cancel: TJvXPButton
+    Left = 176
+    Height = 25
+    Top = 182
+    Width = 83
+    UseDockManager = False
+    Caption = 'Abandon'
+    TabOrder = 2
+    OnClick = btn_cancelClick
+  end
+end

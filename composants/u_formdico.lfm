@@ -1,0 +1,8 @@
+object F_FormFrameWork: TF_FormFrameWork
+  Left = 170
+  Height = 240
+  Top = 330
+  Width = 320
+  Caption = 'F_FormFrameWork'
+  LCLVersion = '0.9.28.2'
+end
