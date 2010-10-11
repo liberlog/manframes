@@ -3,7 +3,7 @@ object F_Administration: TF_Administration
   Height = 564
   Top = 188
   Width = 784
-  ActiveControl = pc_Onglets
+  ActiveControl = Panel21
   Caption = 'Administration'
   ClientHeight = 564
   ClientWidth = 784
@@ -25,9 +25,9 @@ object F_Administration: TF_Administration
       Height = 537
       Top = 1
       Width = 782
-      ActivePage = ts_Sommaire
+      ActivePage = ts_Utilisateurs
       Align = alClient
-      TabIndex = 0
+      TabIndex = 2
       TabOrder = 0
       OnPageChanged = pc_OngletsChange
       object ts_Sommaire: TTabSheet
@@ -132,6 +132,7 @@ object F_Administration: TF_Administration
               Hint = 'Quitter'
               Top = 0
               Width = 40
+              Caption = '&Fermer Tous'
               Enabled = False
               TabOrder = 0
               Align = alCustom
@@ -1542,7 +1543,7 @@ object F_Administration: TF_Administration
               Width = 297
               DataField = 'CONN_Clep'
               ReadOnly = True
-              Color = clMoneyGreen
+              Color = clInfoBk
               Font.Height = -13
               Font.Name = 'MS Sans Serif'
               ParentFont = False
@@ -1595,7 +1596,7 @@ object F_Administration: TF_Administration
           ParentShowHint = False
           ShowHint = True
           TabOrder = 0
-          object RbPanel8: TPanel
+          object PanelUtilisateur: TPanel
             Left = 3
             Height = 158
             Hint = 'Modifier les utilisateurs'

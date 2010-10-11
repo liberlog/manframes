@@ -13,7 +13,7 @@ msgstr "Only the administrator function can be accessed"
 #: unite_variables.gs_administration_seulement
 msgctxt "unite_variables.gs_administration_seulement"
 msgid "Seule la fonction d'Administration est accessible..."
-msgstr ""
+msgstr "Only the administrator function can be accessed"
 
 #: unite_variables.gs_aide
 msgid "aide"
@@ -31,7 +31,8 @@ msgstr "Set another label or cancel."
 msgid ""
 "Vous ne pouvez pas changer le code et l'utilisateur de cette connexion :\n"
 " C'est une connexion obligatoire.\n"
-msgstr "You cannot change the code and the connected user:\n"
+msgstr ""
+"You cannot change the code and the connected user:\n"
 "This is a required connection.:\n"
 
 #: unite_variables.gs_change_pas_sommaire
@@ -154,7 +155,8 @@ msgstr ""
 msgid ""
 "Impossible de supprimer cet enregistrement. \n"
 "Il est utilis#233 dans une autre fonction.\n"
-msgstr "Cannot delete this record.\n"
+msgstr ""
+"Cannot delete this record.\n"
 "It is used by another function.\n"
 
 #: unite_variables.gs_erreur_nombre_grand

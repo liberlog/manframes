@@ -158,6 +158,7 @@ type
     procedure p_CloseMDI(as_NomMDI: String);
     procedure p_LibStb;
     procedure p_OnClickFonction(Sender: TObject);
+    procedure p_OnClickMenuLang(Sender:TObject);
     procedure p_SetLengthSB(ao_SP: TStatusPanel);
     function  fb_Fermeture : Boolean ;
     procedure F_FormMainIniActivate(Sender: TObject);
@@ -554,6 +555,13 @@ end;
 procedure TF_FenetrePrincipale.p_OnClickFonction(Sender: TObject);
 begin
   p_ExecuteFonction(Sender);
+end;
+
+procedure TF_FenetrePrincipale.p_OnClickMenuLang(Sender: TObject);
+  var iIndex: Integer;
+begin
+    iIndex := ( Sender as TMenuItem ).Tag;
+    ChangeLanguage( iIndex );
 end;
 
 {$IFNDEF FPC}

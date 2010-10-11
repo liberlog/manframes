@@ -31,9 +31,7 @@ msgstr "Saisir un autre libell#233 ou annuler."
 msgid ""
 "Vous ne pouvez pas changer le code et l'utilisateur de cette connexion :\n"
 " C'est une connexion obligatoire.\n"
-msgstr  ""
-"Vous ne pouvez pas changer le code et l'utilisateur de cette connexion :\n"
-" C'est une connexion obligatoire.\n"
+msgstr ""
 
 #: unite_variables.gs_change_pas_sommaire
 msgid ""
@@ -202,10 +200,7 @@ msgid ""
 "Il faut affecter un Query vide #224 DatasourceQuery et DatasourceQuerySearch.\n"
 "\n"
 "Ou alors la propri#233t#233 Datasource doit etre un Query.\n"
-msgstr  ""
-"Il faut affecter un Query vide #224 DatasourceQuery et DatasourceQuerySearch.\n"
-"\n"
-"Ou alors la propri#233t#233 Datasource doit etre un Query.\n"
+msgstr ""
 
 #: unite_variables.gs_form_selection_ado_dataset
 msgid "Le composant @ARG en tant que composant ADO et la fiche @ARG doivent s#233lectionner une table."

@@ -150,7 +150,7 @@ type
     RbSplitter3: TSplitter;
     RbPanel3: TPanel;
     RbSplitter7: TSplitter;
-    RbPanel8: TPanel;
+    PanelUtilisateur: TPanel;
     dbe_Nom: TFWDBEdit;
     Label1: TFWLabel;
     Label2: TFWLabel;
@@ -851,12 +851,10 @@ begin
         adoq_UtilisateurSommaire.Open ;
         adoq_Privileges.Open ;
         adoq_Utilisateurs.Open;
-        adoq_UtilisateurSommaire.Open;
       End
     else if pc_Onglets.ActivePage = ts_connexion then
      Begin
        adoq_connexion.Open ;
-       adoq_Utilisateurs.Open;
      end
     else
       begin
@@ -2074,7 +2072,7 @@ begin
       Grid := gd_utilisateurs ;
       Navigator := nv_navigue ;
       NavEdit := nav_Utilisateur ;
-      Panels.add.Panel := RbPanel8 ;
+      Panels.add.Panel := PanelUtilisateur ;
       OnScroll := adoq_UtilisateursAfterScroll ;
     end ;
   with Columns.Add do
@@ -2184,7 +2182,7 @@ begin
   ed_lib   .DataSource := ds_connexion;
   ed_nomapp.DataSource := ds_entr;
   ed_nomlog.DataSource := ds_entr;
-  dbe_Nom  .DataSource := ds_UtilisateurSommaire;
+  dbe_Nom  .DataSource := ds_Utilisateurs;
   nav_Utilisateur.DataSource := ds_Utilisateurs;
   cbx_Sommaire .LookupSource := ds_UtilisateurSommaire;
   cbx_Sommaire .DataSource   := ds_Utilisateurs;
