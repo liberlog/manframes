@@ -1497,6 +1497,9 @@ object F_Administration: TF_Administration
               Font.Color = clBlack
               Font.Height = -13
               Font.Name = 'MS Sans Serif'
+              Lines.Strings = (
+                'ed_chaine'
+              )
               ParentFont = False
               TabOrder = 2
             end
@@ -1540,7 +1543,7 @@ object F_Administration: TF_Administration
               Width = 297
               DataField = 'CONN_Clep'
               ReadOnly = True
-              Color = clInfoBk
+              Color = clMoneyGreen
               Font.Height = -13
               Font.Name = 'MS Sans Serif'
               ParentFont = False

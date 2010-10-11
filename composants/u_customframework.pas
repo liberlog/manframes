@@ -79,14 +79,16 @@ uses
                                       FileUnit : 'U_CustomFrameWork' ;
                                       Owner : 'Matthieu Giroux' ;
                                       Comment : 'Fiche personnalisée avec méthodes génériques et gestion de données.' ;
-                                      BugsStory : '1.0.0.0 : Création de la propriété Columns.' + #13#10
+                                      BugsStory : '1.0.0.2 : Parent Panel bug, begining with 1.' + #13#10
+                                                + '1.0.0.1 : Multiple Panels integration.' + #13#10
+                                                + '1.0.0.0 : Création de la propriété Columns.' + #13#10
                                                 + '0.9.0.0 : La recherche fonctionne.' + #13#10
                                                 + '0.2.0.0 : Décentralisation vers des composants et unités de fonctions.' + #13#10
                                                 + '0.1.2.0 : Tout dans gFWColumns.' + #13#10
                                                 + '0.1.1.1 : Gestion mieux centralisée sur Datasource, Datasource2,etc.' + #13#10
                                                 + '0.1.0.1 : Version non testée' + #13#10 ;
                                        UnitType : 3 ;
-                                       Major : 1 ; Minor : 0 ; Release : 0; Build : 0 );
+                                       Major : 1 ; Minor : 0 ; Release : 0; Build : 2 );
 
 {$ENDIF}
 

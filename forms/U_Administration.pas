@@ -70,7 +70,9 @@ const
   gver_F_Administration : T_Version = ( Component : 'Fenêtre de gestion de droits (ADO et ZEOS)' ; FileUnit : 'U_Administration' ;
       			           Owner : 'Matthieu Giroux' ;
       			           Comment : 'Gère les sommaires, les connexions, les utilisateurs.' ;
-      			           BugsStory   : 'Version 2.0.0.0 : Version générique de la fiche : on copie un query.' + #13#10 +
+      			           BugsStory   : 'Version 2.0.0.2 : Special form properties bug.' + #13#10 +
+      			                	 'Version 2.0.0.1 : Integrating LAZARUS with no special form properties.' + #13#10 +
+      			                	 'Version 2.0.0.0 : Version générique de la fiche : on copie un query.' + #13#10 +
       			                	 'Version 1.1.0.4 : Code validation mot de passe refait.' + #13#10 +
  			                	 'Version 1.1.0.3 : Bug fb_ChargeIcoBmp (pas besoin d''image à afficher quand on utilise un DBimage).' + #13#10 +
      			                	 'Version 1.1.0.2 : Suppression du rafraîchissement utilisateur car dans dico.' + #13#10 +
@@ -78,7 +80,7 @@ const
      			                	 'Version 1.1.0.0 : Passage en Jedi 3.' + #13#10 +
      			                	 'Version 1.0.0.0 : Mot de passe en varbinary.'  ;
       			           UnitType : 2 ;
-      			           Major : 2 ; Minor : 0 ; Release : 0 ; Build : 0 );
+      			           Major : 2 ; Minor : 0 ; Release : 0 ; Build : 2 );
 {$ENDIF}
 
 
