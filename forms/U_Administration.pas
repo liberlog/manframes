@@ -2143,7 +2143,7 @@ begin
     Begin
       Table := 'ENTREPRISE' ;
       ControlFocus := ed_nomapp ;
-      NavEdit := nv_connexion ;
+      NavEdit := nv_Entreprise ;
       Panels.add.Panel := p_Entreprise ;
     end ;
   with Columns.Add do

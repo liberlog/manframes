@@ -3,7 +3,7 @@ object F_Administration: TF_Administration
   Height = 564
   Top = 188
   Width = 784
-  ActiveControl = Panel21
+  ActiveControl = Panel33
   Caption = 'Administration'
   ClientHeight = 564
   ClientWidth = 784
@@ -25,9 +25,9 @@ object F_Administration: TF_Administration
       Height = 537
       Top = 1
       Width = 782
-      ActivePage = ts_Utilisateurs
+      ActivePage = ts_Sommaire
       Align = alClient
-      TabIndex = 2
+      TabIndex = 0
       TabOrder = 0
       OnPageChanged = pc_OngletsChange
       object ts_Sommaire: TTabSheet
@@ -1497,9 +1497,6 @@ object F_Administration: TF_Administration
               Font.Color = clBlack
               Font.Height = -13
               Font.Name = 'MS Sans Serif'
-              Lines.Strings = (
-                'ed_chaine'
-              )
               ParentFont = False
               TabOrder = 2
             end

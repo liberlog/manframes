@@ -827,7 +827,7 @@ begin
   while assigned ( lcon_Parent ) do
     Begin
       for li_i := 1 to aFWColumns.count-1 do
-       for li_j := 1 to aFWColumns [li_i].FPanels.count-1 do
+       for li_j := 0 to aFWColumns [li_i].FPanels.count-1 do
         if lcon_Parent = aFWColumns [ li_i ].Panels [li_j].FPanel Then
           Begin
             Result := li_i ;
