@@ -1150,7 +1150,7 @@ Begin
                            gIma_ImagesMenus        ,
                            gi_FinCompteurImages    ,
                            gb_UtiliseSMenu         );
-  Result := fb_CreeXPButtons ( '', '', gF_FormParent, gF_FormParent, gWin_ParentContainer, gMen_Menuvolet, gadoq_QueryFonctions, gBmp_DefaultPicture  , True, gIma_ImagesXPBars   ) and Result;
+  Result := fb_CreeXPButtons ( gs_SommaireEnCours, '', gF_FormParent, gF_FormParent, gWin_ParentContainer, gMen_Menuvolet, gadoq_QueryFonctions, gBmp_DefaultPicture  , True, gIma_ImagesXPBars   ) and Result;
 End ;
 // Création des composants MenuItem en fonction :
 // aMenuParent             : Le menu parent

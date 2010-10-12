@@ -20,7 +20,7 @@
         <CompilerPath Value="$(CompPath)"/>
       </Other>
     </CompilerOptions>
-    <Version Minor="9" Build="1"/>
+    <Version Minor="9" Build="2"/>
     <Files Count="12">
       <Item1>
         <Filename Value="forms/U_Acces.lfm"/>
