@@ -215,13 +215,7 @@ ALTER TABLE public.utilisateurs OWNER TO postgres;
 -- Data for Name: privileges; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO "privileges" (priv_clep, priv_niveau) VALUES (100, 'Autre');
 INSERT INTO "privileges" (priv_clep, priv_niveau) VALUES (200, 'Invité');
-INSERT INTO "privileges" (priv_clep, priv_niveau) VALUES (300, 'Franchise');
-INSERT INTO "privileges" (priv_clep, priv_niveau) VALUES (350, 'Représentant');
-INSERT INTO "privileges" (priv_clep, priv_niveau) VALUES (400, 'Assistant');
-INSERT INTO "privileges" (priv_clep, priv_niveau) VALUES (450, 'Contrôle de gestion');
-INSERT INTO "privileges" (priv_clep, priv_niveau) VALUES (500, 'Direction');
 INSERT INTO "privileges" (priv_clep, priv_niveau) VALUES (600, 'Administrateur');
 
 --
@@ -231,7 +225,7 @@ INSERT INTO "privileges" (priv_clep, priv_niveau) VALUES (600, 'Administrateur')
 --
 
 INSERT INTO utilisateurs (util_clep, util__somm, util__priv, util_mdp) VALUES ('ADMINISTRATEUR', 'Administrateur', 600, NULL);
-INSERT INTO utilisateurs (util_clep, util__somm, util__priv, util_mdp) VALUES ('SIEGE', 'MMO Siège', 500, NULL);
+INSERT INTO utilisateurs (util_clep, util__somm, util__priv, util_mdp) VALUES ('SIEGE', 'Siège', 500, NULL);
 
 
 --
@@ -240,8 +234,8 @@ INSERT INTO utilisateurs (util_clep, util__somm, util__priv, util_mdp) VALUES ('
 -- Data for Name: acces; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO acces (acce__util, acce__conn) VALUES ('ADMINISTRATEUR', 'MMO');
-INSERT INTO acces (acce__util, acce__conn) VALUES ('SIEGE', 'MMO');
+INSERT INTO acces (acce__util, acce__conn) VALUES ('ADMINISTRATEUR', 'Entreprise');
+INSERT INTO acces (acce__util, acce__conn) VALUES ('SIEGE', 'Entreprise');
 
 
 --
@@ -250,7 +244,7 @@ INSERT INTO acces (acce__util, acce__conn) VALUES ('SIEGE', 'MMO');
 -- Data for Name: connexion; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO connexion (conn_clep, conn_libelle, conn_chaine) VALUES ('MMO', 'MMO', 'Chaîne de connexion à construire');
+INSERT INTO connexion (conn_clep, conn_libelle, conn_chaine) VALUES ('Entreprise', 'Entreprise', 'Chaîne de connexion à construire');
 
 --
 -- TOC entry 2686 (class 0 OID 24758)
@@ -258,7 +252,7 @@ INSERT INTO connexion (conn_clep, conn_libelle, conn_chaine) VALUES ('MMO', 'MMO
 -- Data for Name: entreprise; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO entreprise (entr_nomapp, entr_nomlog, entr_version, entr_icone, entr_about, entr_acces, entr_quitter, entr_aide, entr_repr) VALUES ('FDV', 'MMO-Forces De Vente', 'Version 0.0.0.0', NULL, NULL, NULL, NULL, NULL, false);
+INSERT INTO entreprise (entr_nomapp, entr_nomlog, entr_version, entr_icone, entr_about, entr_acces, entr_quitter, entr_aide, entr_repr) VALUES ('FDV', 'Entreprise-Forces De Vente', 'Version 0.0.0.0', NULL, NULL, NULL, NULL, NULL, false);
 
 
 --
@@ -267,37 +261,6 @@ INSERT INTO entreprise (entr_nomapp, entr_nomlog, entr_version, entr_icone, entr
 -- Data for Name: fonctions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO fonctions (fonc_clep, fonc_libelle, fonc_type, fonc_mode, fonc_nom, fonc_bmp) VALUES ('M-1', 'Gestion des clients', 'FICHE', 'ENFANT', 'F_Client', NULL);
-INSERT INTO fonctions (fonc_clep, fonc_libelle, fonc_type, fonc_mode, fonc_nom, fonc_bmp) VALUES ('M-10', 'Taux de T.V.A.', 'FICHE', 'ENFANT', 'F_TVA', NULL);
-INSERT INTO fonctions (fonc_clep, fonc_libelle, fonc_type, fonc_mode, fonc_nom, fonc_bmp) VALUES ('M-11', 'Types de devis', 'FICHE', 'ENFANT', 'F_Typedevis', NULL);
-INSERT INTO fonctions (fonc_clep, fonc_libelle, fonc_type, fonc_mode, fonc_nom, fonc_bmp) VALUES ('M-12', 'Motifs de clôture de devis', 'FICHE', 'ENFANT', 'F_Motifclot', NULL);
-INSERT INTO fonctions (fonc_clep, fonc_libelle, fonc_type, fonc_mode, fonc_nom, fonc_bmp) VALUES ('M-13', 'Saisie des devis', 'FICHE', 'ENFANT', 'F_Devis', NULL);
-INSERT INTO fonctions (fonc_clep, fonc_libelle, fonc_type, fonc_mode, fonc_nom, fonc_bmp) VALUES ('M-14', 'Représentants', 'FICHE', 'ENFANT', 'F_Repr', NULL);
-INSERT INTO fonctions (fonc_clep, fonc_libelle, fonc_type, fonc_mode, fonc_nom, fonc_bmp) VALUES ('M-15', 'Modalités commerciales', 'FICHE', 'ENFANT', 'F_Modalite', NULL);
-INSERT INTO fonctions (fonc_clep, fonc_libelle, fonc_type, fonc_mode, fonc_nom, fonc_bmp) VALUES ('M-16', 'Articles', 'FICHE', 'ENFANT', 'F_SeleArticle', NULL);
-INSERT INTO fonctions (fonc_clep, fonc_libelle, fonc_type, fonc_mode, fonc_nom, fonc_bmp) VALUES ('M-17', 'Gammes d''articles', 'FICHE', 'ENFANT', 'F_Gamme', NULL);
-INSERT INTO fonctions (fonc_clep, fonc_libelle, fonc_type, fonc_mode, fonc_nom, fonc_bmp) VALUES ('M-18', 'Types d''articles', 'FICHE', 'ENFANT', 'F_TypeProduit', NULL);
-INSERT INTO fonctions (fonc_clep, fonc_libelle, fonc_type, fonc_mode, fonc_nom, fonc_bmp) VALUES ('M-19', 'Caractéristiques d''article', 'FICHE', 'ENFANT', 'F_Caracteristique', NULL);
-INSERT INTO fonctions (fonc_clep, fonc_libelle, fonc_type, fonc_mode, fonc_nom, fonc_bmp) VALUES ('M-2', 'Familles de clients', 'FICHE', 'ENFANT', 'F_Famille', NULL);
-INSERT INTO fonctions (fonc_clep, fonc_libelle, fonc_type, fonc_mode, fonc_nom, fonc_bmp) VALUES ('M-21', 'Civilités', 'FICHE', 'ENFANT', 'F_Civilite', NULL);
-INSERT INTO fonctions (fonc_clep, fonc_libelle, fonc_type, fonc_mode, fonc_nom, fonc_bmp) VALUES ('M-22', 'Structure des articles composés', 'FICHE', 'ENFANT', 'F_Structure', NULL);
-INSERT INTO fonctions (fonc_clep, fonc_libelle, fonc_type, fonc_mode, fonc_nom, fonc_bmp) VALUES ('M-23', 'Comportement des compositions d''article', 'FICHE', 'ENFANT', 'F_Comportement', NULL);
-INSERT INTO fonctions (fonc_clep, fonc_libelle, fonc_type, fonc_mode, fonc_nom, fonc_bmp) VALUES ('M-24', 'Composer un article', 'FICHE', 'ENFANT', 'F_ComposeArticle', NULL);
-INSERT INTO fonctions (fonc_clep, fonc_libelle, fonc_type, fonc_mode, fonc_nom, fonc_bmp) VALUES ('M-25', 'Pays', 'FICHE', 'ENFANT', 'F_Pays', NULL);
-INSERT INTO fonctions (fonc_clep, fonc_libelle, fonc_type, fonc_mode, fonc_nom, fonc_bmp) VALUES ('M-26', 'Commande', 'FICHE', 'ENFANT', 'F_Commande', NULL);
-INSERT INTO fonctions (fonc_clep, fonc_libelle, fonc_type, fonc_mode, fonc_nom, fonc_bmp) VALUES ('M-27', 'Type de finition', 'FICHE', 'ENFANT', 'F_TypeFinition', NULL);
-INSERT INTO fonctions (fonc_clep, fonc_libelle, fonc_type, fonc_mode, fonc_nom, fonc_bmp) VALUES ('M-29', 'Communication Vitré', 'FICHE', 'DESSUS', 'F_comm', NULL);
-INSERT INTO fonctions (fonc_clep, fonc_libelle, fonc_type, fonc_mode, fonc_nom, fonc_bmp) VALUES ('M-3', 'Finitions', 'FICHE', 'ENFANT', 'F_Finition', NULL);
-INSERT INTO fonctions (fonc_clep, fonc_libelle, fonc_type, fonc_mode, fonc_nom, fonc_bmp) VALUES ('M-30', 'Editions', 'FICHE', 'ENFANT', 'F_SeleEdition', NULL);
-INSERT INTO fonctions (fonc_clep, fonc_libelle, fonc_type, fonc_mode, fonc_nom, fonc_bmp) VALUES ('M-31', 'Secteurs des représentants', 'FICHE', 'ENFANT', 'F_RepSecteur', NULL);
-INSERT INTO fonctions (fonc_clep, fonc_libelle, fonc_type, fonc_mode, fonc_nom, fonc_bmp) VALUES ('M-32', 'Interlocuteurs', 'FICHE', 'ENFANT', 'F_Interloc', NULL);
-INSERT INTO fonctions (fonc_clep, fonc_libelle, fonc_type, fonc_mode, fonc_nom, fonc_bmp) VALUES ('M-33', 'Affectations', 'FICHE', 'ENFANT', 'F_Affectation', NULL);
-INSERT INTO fonctions (fonc_clep, fonc_libelle, fonc_type, fonc_mode, fonc_nom, fonc_bmp) VALUES ('M-4', 'Fournisseurs', 'FICHE', 'ENFANT', 'F_Fournisseur', NULL);
-INSERT INTO fonctions (fonc_clep, fonc_libelle, fonc_type, fonc_mode, fonc_nom, fonc_bmp) VALUES ('M-5', 'Jalonnements', 'FICHE', 'ENFANT', 'F_Jalonnement', NULL);
-INSERT INTO fonctions (fonc_clep, fonc_libelle, fonc_type, fonc_mode, fonc_nom, fonc_bmp) VALUES ('M-6', 'Composants', 'FICHE', 'ENFANT', 'F_Composant', NULL);
-INSERT INTO fonctions (fonc_clep, fonc_libelle, fonc_type, fonc_mode, fonc_nom, fonc_bmp) VALUES ('M-7', 'Catégories de devis', 'FICHE', 'ENFANT', 'F_Categ', NULL);
-INSERT INTO fonctions (fonc_clep, fonc_libelle, fonc_type, fonc_mode, fonc_nom, fonc_bmp) VALUES ('M-8', 'Assistantes commerciales', 'FICHE', 'ENFANT', 'F_Assistante', NULL);
-INSERT INTO fonctions (fonc_clep, fonc_libelle, fonc_type, fonc_mode, fonc_nom, fonc_bmp) VALUES ('M-9', 'Code postaux', 'FICHE', 'ENFANT', 'F_CodePostal', NULL);
 INSERT INTO fonctions (fonc_clep, fonc_libelle, fonc_type, fonc_mode, fonc_nom, fonc_bmp) VALUES ('MC-1-1', 'Gestion des profils et utilisateurs', 'ADMINISTRE', 'CREATION', 'TOUT', NULL);
 INSERT INTO fonctions (fonc_clep, fonc_libelle, fonc_type, fonc_mode, fonc_nom, fonc_bmp) VALUES ('MC-1-2', 'Gestion des utilisateurs', 'ADMINISTRE', 'CREATION', 'UTILISATEURS', NULL);
 INSERT INTO fonctions (fonc_clep, fonc_libelle, fonc_type, fonc_mode, fonc_nom, fonc_bmp) VALUES ('MC-1-3', 'Suppression des sommaires, des utilisateurs et des fonctions', 'ADMINISTRE', 'SUPPRESSION', 'TOUT', NULL);
@@ -314,7 +277,7 @@ INSERT INTO fonctions (fonc_clep, fonc_libelle, fonc_type, fonc_mode, fonc_nom, 
 --
 
 INSERT INTO sommaire (somm_clep, somm_niveau) VALUES ('Administrateur', false);
-INSERT INTO sommaire (somm_clep, somm_niveau) VALUES ('MMO Siège', false);
+INSERT INTO sommaire (somm_clep, somm_niveau) VALUES ('Siège', false);
 
 --
 -- TOC entry 2691 (class 0 OID 24768)
@@ -335,41 +298,6 @@ INSERT INTO somm_fonctions (sofc__somm, sofc__fonc, sofc_numordre) VALUES ('Admi
 
 
 
---
--- TOC entry 2688 (class 0 OID 24762)
--- Dependencies: 2293
--- Data for Name: menu_fonctions; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-INSERT INTO menu_fonctions (mefc__somm, mefc__menu, mefc__fonc, mefc_numordre) VALUES ('MMO Siège', 'Siège', 'M-1', 1);
-INSERT INTO menu_fonctions (mefc__somm, mefc__menu, mefc__fonc, mefc_numordre) VALUES ('MMO Siège', 'Siège', 'M-10', 10);
-INSERT INTO menu_fonctions (mefc__somm, mefc__menu, mefc__fonc, mefc_numordre) VALUES ('MMO Siège', 'Siège', 'M-11', 11);
-INSERT INTO menu_fonctions (mefc__somm, mefc__menu, mefc__fonc, mefc_numordre) VALUES ('MMO Siège', 'Siège', 'M-12', 12);
-INSERT INTO menu_fonctions (mefc__somm, mefc__menu, mefc__fonc, mefc_numordre) VALUES ('MMO Siège', 'Siège', 'M-13', 13);
-INSERT INTO menu_fonctions (mefc__somm, mefc__menu, mefc__fonc, mefc_numordre) VALUES ('MMO Siège', 'Siège', 'M-14', 14);
-INSERT INTO menu_fonctions (mefc__somm, mefc__menu, mefc__fonc, mefc_numordre) VALUES ('MMO Siège', 'Siège', 'M-15', 15);
-INSERT INTO menu_fonctions (mefc__somm, mefc__menu, mefc__fonc, mefc_numordre) VALUES ('MMO Siège', 'Siège', 'M-16', 16);
-INSERT INTO menu_fonctions (mefc__somm, mefc__menu, mefc__fonc, mefc_numordre) VALUES ('MMO Siège', 'Siège', 'M-17', 17);
-INSERT INTO menu_fonctions (mefc__somm, mefc__menu, mefc__fonc, mefc_numordre) VALUES ('MMO Siège', 'Siège', 'M-18', 18);
-INSERT INTO menu_fonctions (mefc__somm, mefc__menu, mefc__fonc, mefc_numordre) VALUES ('MMO Siège', 'Siège', 'M-19', 19);
-INSERT INTO menu_fonctions (mefc__somm, mefc__menu, mefc__fonc, mefc_numordre) VALUES ('MMO Siège', 'Siège', 'M-2', 2);
-INSERT INTO menu_fonctions (mefc__somm, mefc__menu, mefc__fonc, mefc_numordre) VALUES ('MMO Siège', 'Siège', 'M-21', 21);
-INSERT INTO menu_fonctions (mefc__somm, mefc__menu, mefc__fonc, mefc_numordre) VALUES ('MMO Siège', 'Siège', 'M-22', 22);
-INSERT INTO menu_fonctions (mefc__somm, mefc__menu, mefc__fonc, mefc_numordre) VALUES ('MMO Siège', 'Siège', 'M-23', 23);
-INSERT INTO menu_fonctions (mefc__somm, mefc__menu, mefc__fonc, mefc_numordre) VALUES ('MMO Siège', 'Siège', 'M-24', 24);
-INSERT INTO menu_fonctions (mefc__somm, mefc__menu, mefc__fonc, mefc_numordre) VALUES ('MMO Siège', 'Siège', 'M-25', 25);
-INSERT INTO menu_fonctions (mefc__somm, mefc__menu, mefc__fonc, mefc_numordre) VALUES ('MMO Siège', 'Siège', 'M-26', 26);
-INSERT INTO menu_fonctions (mefc__somm, mefc__menu, mefc__fonc, mefc_numordre) VALUES ('MMO Siège', 'Siège', 'M-27', 27);
-INSERT INTO menu_fonctions (mefc__somm, mefc__menu, mefc__fonc, mefc_numordre) VALUES ('MMO Siège', 'Siège', 'M-29', 29);
-INSERT INTO menu_fonctions (mefc__somm, mefc__menu, mefc__fonc, mefc_numordre) VALUES ('MMO Siège', 'Siège', 'M-3', 3);
-INSERT INTO menu_fonctions (mefc__somm, mefc__menu, mefc__fonc, mefc_numordre) VALUES ('MMO Siège', 'Siège', 'M-30', 30);
-INSERT INTO menu_fonctions (mefc__somm, mefc__menu, mefc__fonc, mefc_numordre) VALUES ('MMO Siège', 'Siège', 'M-31', 31);
-INSERT INTO menu_fonctions (mefc__somm, mefc__menu, mefc__fonc, mefc_numordre) VALUES ('MMO Siège', 'Siège', 'M-4', 4);
-INSERT INTO menu_fonctions (mefc__somm, mefc__menu, mefc__fonc, mefc_numordre) VALUES ('MMO Siège', 'Siège', 'M-5', 5);
-INSERT INTO menu_fonctions (mefc__somm, mefc__menu, mefc__fonc, mefc_numordre) VALUES ('MMO Siège', 'Siège', 'M-6', 6);
-INSERT INTO menu_fonctions (mefc__somm, mefc__menu, mefc__fonc, mefc_numordre) VALUES ('MMO Siège', 'Siège', 'M-7', 7);
-INSERT INTO menu_fonctions (mefc__somm, mefc__menu, mefc__fonc, mefc_numordre) VALUES ('MMO Siège', 'Siège', 'M-8', 8);
-INSERT INTO menu_fonctions (mefc__somm, mefc__menu, mefc__fonc, mefc_numordre) VALUES ('MMO Siège', 'Siège', 'M-9', 9);
 
 
 --
@@ -378,7 +306,7 @@ INSERT INTO menu_fonctions (mefc__somm, mefc__menu, mefc__fonc, mefc_numordre) V
 -- Data for Name: menus; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO menus (menu__somm, menu_clep, menu_numordre, menu_bmp) VALUES ('MMO Siège', 'Siège', 1, NULL);
+INSERT INTO menus (menu__somm, menu_clep, menu_numordre, menu_bmp) VALUES ('Siège', 'Siège', 1, NULL);
 
 
 REVOKE ALL ON SCHEMA public FROM PUBLIC;
