@@ -9,7 +9,7 @@ interface
 uses
     fonctions_tableauframework, unite_variables, u_customframework, 
   u_formdico, u_searchcomponents, U_RegVersion, U_RegisterIni, U_GroupView, 
-  U_RegisterFrameWork, U_RegisterGroupView, LazarusPackageIntf;
+  U_RegisterFrameWork, U_RegisterGroupView, u_propform, LazarusPackageIntf;
 
 implementation
 

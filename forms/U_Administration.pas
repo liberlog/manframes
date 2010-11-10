@@ -2156,7 +2156,7 @@ begin
       OnScroll := adoq_FonctionsAfterScroll ;
     end ;
   DataCloseMessage := True ;
-  DataDicoOff:=True;
+  DataPropsOff:=True;
   {$ENDIF}
 
   Columns [ 0 ].Datasource := ds_Utilisateurs;

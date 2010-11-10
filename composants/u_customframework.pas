@@ -350,6 +350,11 @@ type
 
   TF_CustomFrameWork = class({$IFDEF SFORM}TSuperForm{$ELSE}{$IFDEF TNT}TTntForm{$ELSE}TForm{$ENDIF}{$ENDIF})
   private
+    gb_PasUtiliserProps        : Boolean;
+    gds_Query1           : TDataSource ;
+    gdat_Query1          : TDataset ;
+    ge_DBEmptyEdit: TMessageEvent;
+    ge_DBUsedKey: TMessageEvent;
     gc_FieldDelimiter : Char ;
     gFWColumns : TFWColumns;
     lwin_controlRecherche : TWinControl ;
@@ -453,6 +458,7 @@ type
     procedure p_AffecteEvenementsNavigators ( const acpa_Component : TCustomPanel );
     procedure p_ScruteComposantsFiche ();
     procedure p_setEnregistrement(const aFWColumn: TFWColumn);
+    procedure p_SetLabels(const a_Value: Boolean);
     procedure p_SetSearch ( const a_Value : TDatasource );
     procedure p_SetScrolledPanel ( const Value : TCustomPanel );
     {$IFDEF DELPHI}
@@ -494,6 +500,7 @@ type
     procedure p_CopieOtherDatasources ();
     procedure p_RestoreOtherDatasources ();
     procedure p_DeleteOtherDatasources ();
+    procedure p_SetWorkSource(const a_Value: TDatasource);
     procedure WMSize(var Message: TWMSize); message WM_SIZE;
     procedure p_ChargeIndicateurs ( const acom_Control :  TComponent);
     procedure p_CacheEdit ( const ads_DataSource : TDataSource; const anv_Navigateur : TCustomPanel; const adbg_DataGrid : TCustomDBGrid  ; const adbg_DataGridColumns : TDBGridColumns ; const adne_DataChangeEvent : TDataChangeEvent );
@@ -514,6 +521,11 @@ type
     {$ENDIF}
 
    protected
+    gstl_SQLWork :  TStrings;
+    {$IFDEF DELPHI_9_UP}
+    gwst_SQLWork :  TWideStrings ;
+    {$ENDIF}
+    gds_SourceWork: TDatasource;
     gdat_DatasetPrinc : TDataset ;
     gb_EnableDoShow            ,
     gb_Unload,
@@ -528,9 +540,14 @@ type
     dblcbx_edition : TSearchCombo; // Recherche sur un RxDBLookupCombo par défaut
     lb_KeyDown  : Boolean ;
 //    lwin_ControlRecherche : TWinControl ;
+    function fb_False : Boolean; virtual;
     {$IFDEF RX}
     procedure gd_GridTitleBtnClick(Sender: TObject; ACol: Integer; Field: TField); virtual;
     {$ENDIF}
+    function fi_GetNumArray( const acom_Component : TComponent ;
+                             const li_DataWork : Integer;
+                             var ads_DataSource : TDataSource ;
+                             var ai_Tag : Longint ):Integer; virtual;
     procedure p_InitOpenedDatasets; virtual;
     procedure p_AfterColumnFrameShow( const aFWColumn : TFWColumn ); virtual; abstract;
 
@@ -538,16 +555,21 @@ type
     procedure p_MontreCacheColonne ( const adbgd_DataGrid : TCustomDBGrid; const adbgd_DataGridDataSource : TDatasource; const adbgd_DataGridColumns : TDBGridColumns; const aFWColumn : TFWColumn );virtual;
     procedure p_OnSearch ( const adat_Dataset: TDataset;  const as_OldFilter, as_Field: String; avar_ToSearch: Variant; const ab_Sort: Boolean ; var ab_SearchAnyway : Boolean ); virtual;
     procedure p_AfterSearch( const Dataset: TDataset; const as_Champ : String ); virtual;
-     function fb_ValidePostDeleteWork (  const adat_Dataset: TDataSet;
-                                const aFWColumn : TFWColumn ;
-                                const ab_Efface            : Boolean ): Boolean ; virtual; abstract;
+    function fb_ValidePostDeleteWork (  const adat_Dataset: TDataSet;
+                                const at_DataWork : TFWColumn ;
+                                const ab_Efface            : Boolean ): Boolean ; virtual;
+    function fb_ValidePostDelete(const adat_Dataset: TDataSet;
+                                const as_Table : String;
+                                const astl_Cle : TStringlist ;
+                                const ae_BeforePost : TDataSetNotifyEvent;
+                                const ab_Efface           : Boolean     ): Boolean; virtual;
     function fb_ChargeDonnees : Boolean; virtual;
     function  fb_ReinitCols ( const aFWColumn : TFWColumn ; const ai_table : Integer ) : Boolean; virtual;
     procedure p_LoadSearchingAndQuery ; virtual;
     function fb_ChargementNomCol ( const AFWColumn : TFWColumn ; const ai_NumSource : Integer ) : Boolean; virtual; abstract;
     procedure p_ChargeDatasourcePrinc; virtual;
     procedure p_AffecteEvenementsWorkDatasources ; virtual;
-    procedure p_assignColumnsDatasourceOwner ( const afw_Column : TFWColumn ; const ads_DataSource : TDatasource ; const ai_NumArray : Integer ; const acom_Component : TComponent ); virtual; abstract;
+    procedure p_assignColumnsDatasourceOwner ( const afw_Column : TFWColumn ; const ads_DataSource : TDatasource ; const ai_NumArray : Integer ; const acom_Component : TComponent ); virtual;
     procedure p_InitFrameWork ( const Sender : TComponent ); virtual;
     procedure p_ChargeResources  ( const ar_RecordDatasource : TFWColumn ; const li_DataWork  : Integer); virtual;
     procedure p_InitExecutionFrameWork ( const Sender : TObject ); dynamic;
@@ -693,6 +715,10 @@ type
     procedure LayoutChanged; virtual;
 
   published
+    property DataPropsOff           : Boolean read gb_PasUtiliserProps write gb_PasUtiliserProps default False ;
+    property DatasourceQuery  : TDatasource read gds_SourceWork write p_SetWorkSource;
+    property DataOnEmptyEdit    : TMessageEvent read ge_DBEmptyEdit write ge_DBEmptyEdit ;
+    property DataOnUsedKey      : TMessageEvent read ge_DBUsedKey write ge_DBUsedKey ;
     procedure p_BtnSearch(Sender: TObject); // Recherche
     procedure p_DBEditBeforeEnter(Sender : TObject);
     procedure p_DBEditBeforeExit (Sender : TObject);
@@ -715,6 +741,7 @@ type
     property DataOnLoaded         : TNotifyEvent read ge_FormLoaded write ge_FormLoaded;
     property DataUseQuery         : Boolean read gb_UseQuery write gb_UseQuery default False ;
     property DataAsyncDataset  : Boolean read gb_ds_princAsynchrone write gb_ds_princAsynchrone default False ;
+    property DataSetLabels : Boolean read fb_False write p_SetLabels stored false default false;
     {$IFDEF VERSIONS}
     property Version : String read fs_GetVersion write p_SetVersion ;
     {$ENDIF}
@@ -768,7 +795,7 @@ uses fonctions_string,
      JvDBDateTimePicker, JvDateTimePicker, JvMemoryDataset, JvDBSpinEdit,
      JvToolEdit , JvDbControls,
   {$ENDIF}
-     fonctions_db, fonctions_dbcomponents,
+     fonctions_db, fonctions_dbcomponents, u_extcomponent,
      fonctions_numedit, unite_variables,
      U_ExtColorCombos, ActnList, unite_messages,
      fonctions_proprietes, fonctions_variant ;
@@ -1558,6 +1585,7 @@ end;
 constructor TF_CustomFrameWork.Create(Sender: TComponent);
 begin
 
+  gstl_SQLWork := nil ;
   p_InitFrameWork ( Self );
   {$IFDEF FPC}
   OnCreate := FormCreate;
@@ -1628,6 +1656,10 @@ end;
 
 procedure TF_CustomFrameWork.p_InitFrameWork ( const Sender : TComponent );
 Begin
+  gb_DBMessageOnError   := True ;
+  gb_PasUtiliserProps   := false ;
+  gds_Query1 := nil ;
+  gdat_Query1 := nil ;
   gc_FieldDelimiter := ';';
   gds_Query2 := nil ;
   gdat_Query2 := nil ;
@@ -1721,6 +1753,13 @@ Begin
       gds_Query2.DataSet := gdat_Query2 ;
       DatasourceQuerySearch := gds_Query2 ;
     End ;
+  if  not assigned ( gds_SourceWork ) Then
+    Begin
+      gds_Query1 :=  TDataSource.Create ( Self );
+      gdat_Query1 :=  fdat_CloneDatasetWithoutSQL( gdat_DatasetPrinc, Self );
+      gds_Query1.DataSet := gdat_Query1 ;
+      DatasourceQuery       := gds_Query1 ;
+    End ;
 End;
 procedure TF_CustomFrameWork.p_ChargeEvenementsDatasourcePrinc;
 Begin
@@ -1801,6 +1840,7 @@ Begin
       //Assignation des évènements : il faudra les libérer
      End;
 End ;
+
 procedure TF_CustomFrameWork.p_ChargeResources ( const ar_RecordDatasource : TFWColumn ; const li_DataWork : Integer );
 Begin
   with ar_RecordDatasource do
@@ -2259,6 +2299,11 @@ Begin
 {$ENDIF}
 End ;
 
+function TF_CustomFrameWork.fb_False: Boolean;
+begin
+  Result := False;
+end;
+
 
 
 
@@ -2553,9 +2598,154 @@ end;
 // Renseignement de la table Ã  charger et de ses colonnes correspondantes
 // Gestion des évenements liés aux Label et aux DBEdit et gestion des DBEdit
 function TF_CustomFrameWork.fb_ChargeDonnees : Boolean;
+var
+  li_i,
+  li_j,
+  li_Tag,
+  li_DataWork,
+  li_NumArray : integer;
+  lmet_MethodeDistribueeEnter,
+  lmet_MethodeDistribueeOrder,
+  lmet_MethodeDistribueeExit : TMethod;
+  lds_DataSource : TDatasource ;
+  lcom_Component : TComponent ;
 
 begin
-  Result := False ;
+  if gb_DonneesChargees
+  or not assigned ( gdat_DatasetPrinc )
+   Then
+    Begin
+//     ShowMessage ( 'La Form n''est pas connectée Ã  la table ADO' );
+     Result := False ;
+     Exit ;
+    End ;
+
+
+  gb_DonneesChargees := True ;
+    // Récupérer une méthode et la déployer
+  lmet_MethodeDistribueeEnter.Data := Self;
+  lmet_MethodeDistribueeExit .Data := Self;
+  lmet_MethodeDistribueeOrder.Data := Self;
+  lmet_MethodeDistribueeOrder.Code := MethodAddress('p_OrderEdit');
+  lmet_MethodeDistribueeEnter.Code := MethodAddress('p_DBEditBeforeEnter');
+  lmet_MethodeDistribueeExit .Code := MethodAddress('p_DBEditBeforeExit');
+
+
+  // La seule chose Ã  initialiser est le tag du DBEdit !!!
+  // Utilisation de RTTI pour récupérer les propriétés publiées du composant
+  // Pour cela, ajouter la classe TypInfo dans le uses
+  for li_i := 0 to Self.ComponentCount - 1 do
+   // Test si c'est un tag d'édition
+   Begin
+    lcom_Component := Self.Components[li_i] ;
+//    Showmessage ( Self.Components[li_i].Name + ' ' + IntToStr ( li_i ));
+    If ( lcom_Component is TControl )
+    and not ( lcom_Component is TImage       )
+    and not ( lcom_Component is TPageControl )
+    and not ( lcom_Component is TCustomPanel )
+    and not ( lcom_Component is TTabSheet    ) Then
+     Begin
+      li_DataWork := fi_ParentEstPanel ( Columns, lcom_Component as TControl );
+      with Columns.Items [ li_DataWork ] do
+       Begin
+          lds_DataSource := Datasource;
+          li_Tag := 0 ;
+          li_NumArray := fi_GetNumArray ( lcom_Component, li_DataWork, lds_DataSource, li_Tag );
+          // Le tag du tcontrol doit être supérieur Ã  0
+          if ( li_Tag  < 0 ) then
+            Continue ;
+          if not assigned ( lds_DataSource ) Then
+            Begin
+              li_j := fi_ParentEstPanel( Columns, lcom_Component as TControl);
+              lds_DataSource := Columns [ li_j ].Datasource;
+            End;
+          if ( lcom_Component is TLabel ) then
+            Begin
+               if  fb_IsTagLabel (( lcom_Component as Tlabel ).Tag)
+               and ( FieldsDefs.Count > li_NumArray )
+                then
+                  (lcom_Component as TLabel).Caption := FieldsDefs [ li_NumArray ].CaptionName;
+            End
+          else
+            if  not ( lcom_Component.ClassNameIs('TDBGroupView' ))
+            and fb_IsTagEdit(lcom_Component.Tag)
+             Then
+              begin
+
+                  if Supports (  lcom_Component, IFWComponentEdit ) Then
+                    Begin
+                      p_SetComponentMethodProperty( lcom_Component, 'OnOrder', lmet_MethodeDistribueeOrder );
+                    End ;
+                 if assigned ( lds_DataSource ) Then
+                  Begin
+                    p_SetComponentObjectProperty ( lcom_Component, 'DataSource', lds_DataSource );
+                  End ;
+                  {
+                if  (( gb_DicoUpdateFormField and ( li_Tag >= CST_TAG_NON_DICO )) or gb_AutoInsert )
+                and fb_IsTagEdit(lcom_Component.Tag) Then
+                  Begin
+                    ls_Field := fs_getComponentProperty ( lcom_Component, 'DataField' );
+                    if trim ( ls_Field ) <> '' Then
+                      Begin
+                        lws_Caption := '' ;
+                        if Self.Components [ li_i ] is TControl Then
+                          for li_j := 0 to ComponentCount - 1 do
+                            if  ( Self.Components [ li_j ] is TLabel )
+                            and ((( Self.Components [ li_j ] as TLabel ).Tag = lcom_Component.Tag ) or (( Self.Components [ li_j ] as TLabel ).Tag - CST_TAG_Lbl = lcom_Component.Tag ))
+                            and (( Self.Components [ li_j ] as TLabel ).Parent = ( Self.Components [ li_i ] as TControl ).Parent ) Then
+                              Begin
+                                lws_Caption := ( Self.Components [ li_j ] as TLabel ).Caption;
+                                Break ;
+                              End ;
+                      End ;
+                  End ;    }
+                  if  lcom_Component is TControl Then
+                    Begin
+                      p_SetComponentMethodProperty( lcom_Component, 'FWBeforeEnter', lmet_MethodeDistribueeEnter );
+                      p_SetComponentMethodProperty( lcom_Component, 'FWBeforeExit', lmet_MethodeDistribueeExit );
+                    End ;
+
+                  if  fb_IsCheckCtrlPoss (lcom_Component)
+                   Then p_SetFontColor ( lcom_Component, gCol_Label )
+                   Else
+                     try
+                        if lcom_Component is TWinControl Then
+                          fb_ControlSetReadOnly ( lcom_Component as TWinControl, fb_ControlReadOnly ( lcom_Component as TWinControl ));
+
+                     except
+                      On E: Exception do
+                        Begin
+                          fcla_GereException ( E, gds_SourceWork );
+                        End ;
+
+                     End ;
+               if (li_NumArray >= 0 )
+               and ( li_NumArray < FieldsDefs.Count ) then
+                 with FieldsDefs [ li_NumArray ] do
+                   Begin
+                     (lcom_Component as TControl).Hint     := HintName;
+                     (lcom_Component as TControl).ShowHint := True;
+                      if fb_IsCheckCtrlPoss (lcom_Component)
+                       Then
+                        Begin
+                          if ( gb_DicoGroupementMontreCaption or not ( lcom_Component is TDBRadioGroup )) Then
+                            p_SetComponentProperty ( lcom_Component, 'Caption', CaptionName )
+                          Else
+                            p_SetComponentProperty ( lcom_Component, 'Caption', '' );
+                        End ;
+
+                      p_SetComponentProperty ( lcom_Component, 'HelpContext', tkInteger, Aide);
+                      p_assignColumnsDatasourceOwner ( Columns.Items [ li_DataWork ], lds_DataSource, li_NumArray, lcom_Component );
+
+                    End;
+
+
+
+           end;
+      End;
+    End;
+  End;
+  Result := True ;
 End ;
 
 
@@ -5883,6 +6073,7 @@ Begin
   if assigned ( gFWColumns [ li_i ].GridTitleClick ) then
     gFWColumns [ li_i ].GridTitleClick ( Sender, ACol, Field );
 End;
+
 {$ENDIF}
 
 
@@ -6030,6 +6221,274 @@ begin
         End ;
     End ;
 end;
+
+//  Relatif Ã  la BDD
+// ContrÃ´le de la validation Ã  l'insertion
+// DataSet : LE Dataset édité
+// as_ClePrimaire : La clé primaire
+// as_ChampsClePrimaire : les champs de la clé primaire
+// ae_OldBeforePost     : L'ancien évÃ¨nement
+function TF_CustomFrameWork.fb_ValidePostDelete (  const adat_Dataset: TDataSet;
+                                const as_Table : String;
+                                const astl_Cle : TStringlist ;
+                                const ae_BeforePost : TDataSetNotifyEvent;
+                                const ab_Efface            : Boolean ): Boolean ;
+var li_i ,
+    li_Dataset   ,
+    li_Compteur  : integer;
+    lt_Arg       : Array [ 0..0] of {$IFDEF FPC}ShortString {$ELSE}string{$ENDIF} ;
+    ls_Message   : String ;
+    lfwc_Column  : TFWColumn ;
+
+begin
+  ge_EvenementCleUtilise :=  DataOnUsedKey ;
+  // On va chercher s'il existe déjÃ  une clé primaire identique
+  // et si oui, on informe l'utilisateur qu'il faut la modifier
+  // Plus utile avec la gestion par zones de saisie disablées
+{$IFDEF EADO}
+  if  assigned ( DatasetMain )
+  and ( DatasetMain is TCustomADODataset ) Then
+    gdat_DatasetRefreshOnError := DatasetMain as TCustomADODataset
+  Else
+    gdat_DatasetRefreshOnError := nil ;
+{$ENDIF}
+{  if        assigned ( Datasource3 )
+  and ( adat_Dataset = Datasource3.DataSet )
+  and ( gstl_ChampsCleGridLookup.Count > 0  )
+  and ( gstl_ChampsFieldLookup  .Count > 0  )  Then
+    if not fb_ValidePostDelete ( DatasetMain, ls_Table, ls_ClePrimaire, gstl_ChampsClePrimaire,nil, lvar_Enregistrement1, le_Evenement, True, ab_Efface ) Then
+      Begin
+        Result := False ;
+        if ab_Abort
+         Then  Abort;
+        Exit ;
+      End ;}
+  li_Dataset    := -1 ;
+  for li_i := 0 to Columns.Count - 1 do
+  if assigned ( gt_DataSourcesWork [ li_i ] )
+  and ( adat_Dataset = gt_DataSourcesWork [ li_i ].DataSet ) Then
+    Begin
+      li_Dataset    := li_i ;
+      Break;
+    End ;
+  if li_Dataset = -1 then
+    Exit;
+  lfwc_Column := Columns [ li_Dataset ];
+///////
+  Result := fb_RechercheCle ( adat_Dataset, as_Table, astl_Cle, ab_Efface );
+  if ( adat_Dataset.State in [ dsInsert, dsEdit ]   )
+  and ( assigned ( gstl_SQLWork )
+{$IFDEF DELPHI_9_UP}or assigned ( gwst_SQLWork ) {$ENDIF DELPHI_9_UP}
+        )
+   Then
+    with lfwc_Column do
+      Begin
+        li_Compteur := 0 ;
+        ls_Message  := '' ;
+        for li_i := 0 to FieldsDefs.Count - 1   do
+         with FieldsDefs [ li_i ] do
+          if ColObl
+          and assigned ( adat_Dataset.FindField ( FieldName ))
+          and ( Trim   ( adat_Dataset.FindField ( FieldName ).AsString ) = '')
+             Then
+              begin
+                inc ( li_Compteur );
+                if li_Compteur = 1
+                 Then ls_Message :=                     CaptionName
+                 Else ls_Message := ls_Message + ', ' + CaptionName ;
+              end;
+
+     if li_Compteur > 0
+      Then
+        Begin
+         if assigned ( DataOnEmptyEdit ) Then
+           DataOnEmptyEdit ( Self, adat_Dataset, li_Compteur, ls_Message )
+         Else
+           Begin
+            lt_Arg [0] := ls_Message ;
+            if li_Compteur = 1
+              Then  MessageDlg ( fs_RemplaceMsg ( GS_ZONE_OBLIGATOIRE  , lt_Arg ), mtWarning, [mbOk], 0)
+              Else  MessageDlg ( fs_RemplaceMsg ( GS_ZONES_OBLIGATOIRES, lt_Arg ), mtWarning, [mbOk], 0);
+           End ;
+          Abort;
+         End ;
+      End ;
+   // ancien évÃ¨nement
+  try
+    if Assigned ( ae_BeforePost ) then
+      ae_BeforePost(adat_Dataset);
+  Except
+    on e: Exception do
+      Begin
+        fcla_GereException ( e, adat_Dataset );
+        Abort ;
+      End ;
+  End ;
+  gb_RafraichitForm := True ;
+end;
+
+// function fb_ValidePostDeleteWork
+// Verifying before post and delete
+function TF_CustomFrameWork.fb_ValidePostDeleteWork(const adat_Dataset: TDataSet;
+  const at_DataWork: TFWColumn; const ab_Efface: Boolean): Boolean;
+begin
+  Result:= fb_ValidePostDelete(adat_Dataset, at_DataWork.Table, at_DataWork.KeyList, at_DataWork.BeforePost, ab_Efface);
+end;
+
+// procedure p_SetWorkSource
+// Setting Query for data work
+procedure TF_CustomFrameWork.p_SetWorkSource(const a_Value: TDatasource);
+var
+    lobj_SQL : TObject ;
+begin
+
+{$IFDEF DELPHI}
+  ReferenceInterface ( DataSourceQuery, opRemove ); //Gestion de la destruction
+{$ENDIF}
+  if gds_SourceWork <> a_Value then
+  begin
+    gds_SourceWork := a_Value ; /// affectation
+  end;
+{$IFDEF DELPHI}
+  ReferenceInterface ( DataSourceQuery, opInsert ); //Gestion de la destruction
+{$ENDIF}
+  gstl_SQLWork := nil ;
+{$IFDEF DELPHI_9_UP}
+  gwst_SQLWork := nil ;
+{$ENDIF}
+  if ( gds_SourceWork <> nil )
+  and assigned ( gds_SourceWork.DataSet ) Then
+    Begin
+      lobj_SQL := fobj_getComponentObjectProperty ( gds_SourceWork.DataSet, 'SQL' );
+      if ( lobj_SQL is TStrings ) Then
+        gstl_SQLWork := lobj_SQL as TStrings
+{$IFDEF DELPHI_9_UP}
+            else if ( lobj_SQL is TWideStrings ) Then
+              gwst_SQLWork := lobj_SQL as TWideStrings
+{$ENDIF}
+            ;
+    End ;
+end;
+
+// Sets the property MyLabel
+procedure TF_CustomFrameWork.p_SetLabels(const a_Value: Boolean);
+var li_i, li_j : Integer;
+    lcon_Component : TControl;
+Begin
+  if ( a_value ) then
+    Begin
+      for li_i := 0 to ComponentCount - 1 do
+       if Components [ li_i ] is TControl then
+          Begin
+            lcon_Component := TControl ( Components [ li_i ]);
+            if assigned ( GetPropInfo ( lcon_Component, 'MyLabel' ))
+            and ( fobj_getComponentObjectProperty( lcon_Component, 'MyLabel') = nil )
+             Then
+              Begin
+                for li_j := 0 to ComponentCount - 1 do
+                  Begin
+                    if ( Components [ li_j ]is TLabel )
+                    and (( Components [ li_j ] as TLabel ).Parent = lcon_Component.Parent )
+                    and (   ( Components [ li_j ].tag = lcon_Component.tag )
+                         or ( Components [ li_j ].tag = lcon_Component.tag + 1000 ))
+                      then
+                        Begin
+                          p_SetComponentObjectProperty(lcon_Component,'MyLabel', Components [ li_j ] as TLabel);
+                          if ( Components [ li_j ].CLassNameIs ( 'TFWLabel' ) ) then
+                            Begin
+                              p_SetComponentObjectProperty(Components [ li_j ],'MyEdit', lcon_Component);
+                            End;
+                          Break;
+                        End;
+                  End;
+              End;
+          End;
+
+    End;
+End;
+
+// Get number of colum from tag
+function TF_CustomFrameWork.fi_GetNumArray ( const acom_Component : TComponent ; const li_DataWork : Integer; var ads_DataSource : TDataSource ; var ai_Tag : Longint ):Integer;
+var li_i : Longint ;
+begin
+  ai_Tag      := acom_Component.Tag - 1;
+  if acom_Component is TLabel Then
+    Begin
+      if ai_Tag >= CST_TAG_LBL Then
+        Begin
+          ai_Tag      := ai_Tag - CST_TAG_LBL ;
+        end ;
+    End;
+  Result := ai_Tag;
+  with Columns.Items [ li_DataWork ] do
+    Begin
+      for li_i := 0 to FieldsDefs.Count - 1 do
+        if FieldsDefs [ li_i ].NumTag = ai_Tag + 1 Then
+          Begin
+            Result := li_i ;
+            Break ;
+          End ;
+      ads_DataSource := nil ;
+      if  assigned ( Datasource )
+      and assigned ( Datasource.DataSet )
+       Then Result := Result + FieldsBegin;
+      ads_DataSource := Datasource ;
+    End;
+End;
+
+procedure TF_CustomFrameWork.p_assignColumnsDatasourceOwner ( const afw_Column : TFWColumn ; const ads_DataSource : TDatasource ; const ai_NumArray : Integer ; const acom_Component : TComponent );
+var lds_DataSource : TDatasource;
+Begin
+  if assigned ( ads_DataSource ) Then
+   with afw_Column do
+    Begin
+      if ( ai_NumArray <= FieldsDefs.Count - 1) Then
+       Begin
+        if not gb_PasUtiliserProps
+         then
+          p_SetComponentProperty ( acom_Component, 'DataField', FieldsDefs [ ai_NumArray ].FieldName);
+        if  ( FieldsDefs.Count - 1 >= 0 ) Then
+          p_SetComponentObjectProperty ( acom_Component, 'DataSource', ads_DataSource );
+       End;
+    End ;
+
+  with afw_Column do
+    if assigned ( ads_DataSource )
+    and ( ai_NumArray <= FieldsDefs.Count - 1)
+    and not ( gb_PasUtiliserProps )
+    and ((FieldsDefs [ ai_NumArray ].LookupTable) <> '' )
+    and fb_IsRechListeCtrlPoss ( acom_Component )// est-ce un control de list avec field de liste
+     then
+       with FieldsDefs [ ai_NumArray ] do
+        begin
+        // Ouvrir les propriétés de liste
+          lds_DataSource := fds_GetOrCloneDataSource ( acom_Component, 'ListSource', 'SELECT * FROM '+ LookupTable, Self, gdat_DatasetPrinc );
+          if not assigned ( lds_DataSource ) Then
+            lds_DataSource := fds_GetOrCloneDataSource ( acom_Component, 'LookupSource', 'SELECT * FROM '+ LookupTable, Self, gdat_DatasetPrinc );
+          if ( LookupDisplay <> Null ) Then
+            Begin
+              p_SetComponentProperty ( acom_Component, 'LookupDisplay', LookupDisplay);
+              p_SetComponentProperty ( acom_Component,   'ListField'  , LookupDisplay );
+            End ;
+          if ( LookupKey <> Null ) Then
+            Begin
+              p_SetComponentProperty ( acom_Component, 'LookupField'  , LookupKey );
+              p_SetComponentProperty ( acom_Component,    'KeyField'  , LookupKey );
+            End ;
+
+          if assigned ( lds_DataSource )
+          and assigned (( lds_DataSource as TDataSource ).Dataset ) Then
+            try
+              lds_DataSource.Dataset.Open ;
+            except
+              On E: Exception do
+                Begin
+                  fcla_GereException ( E, lds_DataSource.Dataset );
+                End ;
+            End ;
+        end;
+End;
+
 
 initialization
 {$IFDEF FPC}

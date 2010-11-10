@@ -32,29 +32,29 @@ object F_Administration: TF_Administration
       OnPageChanged = pc_OngletsChange
       object ts_Sommaire: TTabSheet
         Caption = 'Gestion des sommaires'
-        ClientHeight = 502
-        ClientWidth = 776
+        ClientHeight = 506
+        ClientWidth = 778
         object RbSplitter2: TSplitter
           Left = 601
-          Height = 452
+          Height = 456
           Top = 50
           Width = 5
         end
         object RbSplitter3: TSplitter
           Left = 223
-          Height = 452
+          Height = 456
           Top = 50
           Width = 5
         end
         object pa_Volet: TPanel
           Left = 0
-          Height = 452
+          Height = 456
           Top = 50
           Width = 223
           Align = alLeft
           BevelOuter = bvNone
           Caption = 'pa_Volet'
-          ClientHeight = 452
+          ClientHeight = 456
           ClientWidth = 223
           Color = 10930928
           Constraints.MinHeight = 41
@@ -64,7 +64,7 @@ object F_Administration: TF_Administration
           OnResize = pa_VoletResize
           object scb_Volet: TScrollBox
             Left = 0
-            Height = 452
+            Height = 456
             Hint = 'Visionner ici votre volet d''accès'
             Top = 0
             Width = 223
@@ -84,7 +84,7 @@ object F_Administration: TF_Administration
           Height = 50
           Hint = 'Visionner ici votre barre d''accès'
           Top = 0
-          Width = 776
+          Width = 778
           Caption = 'Barre d''accès aux fonctions'
           ParentShowHint = False
           ShowHint = True
@@ -208,13 +208,13 @@ object F_Administration: TF_Administration
         end
         object RbPanel1: TPanel
           Left = 606
-          Height = 452
+          Height = 456
           Top = 50
-          Width = 170
+          Width = 172
           Align = alClient
           BorderWidth = 1
-          ClientHeight = 452
-          ClientWidth = 170
+          ClientHeight = 456
+          ClientWidth = 172
           Constraints.MinHeight = 10
           Constraints.MinWidth = 10
           Font.Color = 13500416
@@ -226,18 +226,18 @@ object F_Administration: TF_Administration
             Left = 2
             Height = 47
             Top = 2
-            Width = 166
+            Width = 168
             Align = alTop
             BevelOuter = bvNone
             ClientHeight = 47
-            ClientWidth = 166
+            ClientWidth = 168
             Constraints.MinWidth = 145
             TabOrder = 0
             object Panel31: TPanel
               Left = 0
               Height = 3
               Top = 17
-              Width = 166
+              Width = 168
               Align = alTop
               BevelOuter = bvNone
               TabOrder = 0
@@ -246,11 +246,11 @@ object F_Administration: TF_Administration
               Left = 0
               Height = 22
               Top = 20
-              Width = 166
+              Width = 168
               Align = alTop
               BevelOuter = bvNone
               ClientHeight = 22
-              ClientWidth = 166
+              ClientWidth = 168
               TabOrder = 1
               OnResize = pa_FonctionsTypeResize
               object com_FonctionsType: TRxDBLookupCombo
@@ -258,7 +258,7 @@ object F_Administration: TF_Administration
                 Height = 21
                 Hint = 'Filtrer ici un type de fonction'
                 Top = 0
-                Width = 146
+                Width = 148
                 Anchors = [akTop, akLeft, akRight]
                 ButtonOnlyWhenFocused = False
                 ButtonWidth = 15
@@ -287,11 +287,11 @@ object F_Administration: TF_Administration
               Left = 0
               Height = 17
               Top = 0
-              Width = 166
+              Width = 168
               Align = alTop
               BevelOuter = bvNone
               ClientHeight = 17
-              ClientWidth = 166
+              ClientWidth = 168
               TabOrder = 2
               object Label4: TFWLabel
                 Left = 1
@@ -313,7 +313,7 @@ object F_Administration: TF_Administration
             Left = 2
             Height = 20
             Top = 49
-            Width = 166
+            Width = 168
             Flat = True
             DeleteQuestion = 'Confirmez-vous l''effacement de l''enregistrement ?'
             Align = alTop
@@ -324,9 +324,9 @@ object F_Administration: TF_Administration
           end
           object dbl_Fonctions: TDBListView
             Left = 2
-            Height = 381
+            Height = 385
             Top = 69
-            Width = 166
+            Width = 168
             Align = alClient
             Columns = <>
             DragMode = dmAutomatic
@@ -341,12 +341,12 @@ object F_Administration: TF_Administration
         end
         object RbPanel3: TPanel
           Left = 228
-          Height = 452
+          Height = 456
           Top = 50
           Width = 373
           Align = alLeft
           BorderWidth = 1
-          ClientHeight = 452
+          ClientHeight = 456
           ClientWidth = 373
           Constraints.MinHeight = 10
           Constraints.MinWidth = 10
@@ -358,7 +358,7 @@ object F_Administration: TF_Administration
             Cursor = crVSplit
             Left = 2
             Height = 5
-            Top = 181
+            Top = 185
             Width = 369
             Align = alBottom
             ResizeAnchor = akBottom
@@ -366,7 +366,7 @@ object F_Administration: TF_Administration
           object pa_2: TPanel
             Left = 2
             Height = 264
-            Top = 186
+            Top = 190
             Width = 369
             Align = alBottom
             BevelOuter = bvNone
@@ -758,12 +758,12 @@ object F_Administration: TF_Administration
           end
           object pa_1: TPanel
             Left = 2
-            Height = 179
+            Height = 183
             Top = 2
             Width = 369
             Align = alClient
             BevelOuter = bvNone
-            ClientHeight = 179
+            ClientHeight = 183
             ClientWidth = 369
             TabOrder = 1
             object RbSplitter8: TSplitter
@@ -813,7 +813,7 @@ object F_Administration: TF_Administration
               object dbe_Edition: TFWDBEdit
                 Tag = 1
                 Left = 9
-                Height = 32
+                Height = 27
                 Hint = 'Edition en cours'
                 Top = 48
                 Width = 272
@@ -876,22 +876,22 @@ object F_Administration: TF_Administration
             end
             object pa_3: TPanel
               Left = 0
-              Height = 95
+              Height = 99
               Top = 84
               Width = 369
               Align = alClient
               BevelOuter = bvNone
-              ClientHeight = 95
+              ClientHeight = 99
               ClientWidth = 369
               TabOrder = 1
               object Panel24: TPanel
                 Left = 0
-                Height = 95
+                Height = 99
                 Top = 0
                 Width = 193
                 Align = alLeft
                 BevelOuter = bvNone
-                ClientHeight = 95
+                ClientHeight = 99
                 ClientWidth = 193
                 TabOrder = 0
                 object nav_Sommaire: TExtDBNavigator
@@ -927,7 +927,7 @@ object F_Administration: TF_Administration
                 end
                 object dbg_Sommaire: TFWDBGrid
                   Left = 0
-                  Height = 75
+                  Height = 79
                   Top = 20
                   Width = 193
                   TitleButtons = False
@@ -968,17 +968,17 @@ object F_Administration: TF_Administration
               end
               object Panel25: TPanel
                 Left = 193
-                Height = 95
+                Height = 99
                 Top = 0
                 Width = 176
                 Align = alClient
                 BevelOuter = bvNone
-                ClientHeight = 95
+                ClientHeight = 99
                 ClientWidth = 176
                 TabOrder = 1
                 object dbg_SommaireFonctions: TFWDBGrid
                   Left = 0
-                  Height = 75
+                  Height = 79
                   Hint = 'Insérer une fonction'
                   Top = 20
                   Width = 176
@@ -1064,22 +1064,22 @@ object F_Administration: TF_Administration
       end
       object ts_connexion: TTabSheet
         Caption = 'Gestion des connexions'
-        ClientHeight = 502
-        ClientWidth = 776
+        ClientHeight = 506
+        ClientWidth = 778
         object RbSplitter9: TSplitter
           Left = 297
-          Height = 502
+          Height = 506
           Top = 0
           Width = 5
         end
         object RbPanel5: TPanel
           Left = 0
-          Height = 502
+          Height = 506
           Top = 0
           Width = 297
           Align = alLeft
           BorderWidth = 1
-          ClientHeight = 502
+          ClientHeight = 506
           ClientWidth = 297
           Font.Color = 13500416
           Font.Height = -11
@@ -1105,7 +1105,7 @@ object F_Administration: TF_Administration
           end
           object gd_connexion: TFWDBGrid
             Left = 2
-            Height = 473
+            Height = 477
             Top = 27
             Width = 293
             TitleButtons = False
@@ -1160,13 +1160,13 @@ object F_Administration: TF_Administration
         end
         object RbPanel6: TPanel
           Left = 302
-          Height = 502
+          Height = 506
           Top = 0
-          Width = 474
+          Width = 476
           Align = alClient
           BorderWidth = 2
-          ClientHeight = 502
-          ClientWidth = 474
+          ClientHeight = 506
+          ClientWidth = 476
           Font.Color = 13500416
           Font.Height = -11
           Font.Name = 'MS Sans Serif'
@@ -1176,21 +1176,21 @@ object F_Administration: TF_Administration
           TabOrder = 0
           object pg_conn_util: TPageControl
             Left = 3
-            Height = 322
+            Height = 326
             Top = 177
-            Width = 468
+            Width = 470
             ActivePage = ts_2
             Align = alClient
             TabIndex = 0
             TabOrder = 1
             object ts_2: TTabSheet
               Caption = 'Utilisateurs'
-              ClientHeight = 287
-              ClientWidth = 462
+              ClientHeight = 295
+              ClientWidth = 466
               ParentFont = False
               object RbSplitter11: TSplitter
                 Left = 304
-                Height = 262
+                Height = 270
                 Top = 25
                 Width = 5
               end
@@ -1198,10 +1198,10 @@ object F_Administration: TF_Administration
                 Left = 0
                 Height = 25
                 Top = 0
-                Width = 462
+                Width = 466
                 Align = alTop
                 ClientHeight = 25
-                ClientWidth = 462
+                ClientWidth = 466
                 TabOrder = 0
                 object Panel7: TPanel
                   Left = 14
@@ -1297,12 +1297,12 @@ object F_Administration: TF_Administration
               end
               object Panel14: TPanel
                 Left = 225
-                Height = 262
+                Height = 270
                 Top = 25
                 Width = 79
                 Align = alLeft
                 BevelOuter = bvNone
-                ClientHeight = 262
+                ClientHeight = 270
                 ClientWidth = 79
                 TabOrder = 1
                 object BT_in_item: TFWInSelect
@@ -1340,15 +1340,15 @@ object F_Administration: TF_Administration
               end
               object lst_UtilisateursOut: TDBGroupView
                 Left = 309
-                Height = 262
+                Height = 270
                 Top = 25
-                Width = 153
+                Width = 157
                 Align = alClient
                 Columns = <                
                   item
                     AutoSize = True
                     Caption = 'Non membres'
-                    Width = 131
+                    Width = 139
                   end>
                 ColumnClick = False
                 DragMode = dmAutomatic
@@ -1385,7 +1385,7 @@ object F_Administration: TF_Administration
               end
               object lst_UtilisateursIn: TDBGroupView
                 Left = 0
-                Height = 262
+                Height = 270
                 Top = 25
                 Width = 225
                 Align = alLeft
@@ -1393,7 +1393,7 @@ object F_Administration: TF_Administration
                   item
                     AutoSize = True
                     Caption = 'Membres'
-                    Width = 203
+                    Width = 207
                   end>
                 ColumnClick = False
                 DragMode = dmAutomatic
@@ -1434,11 +1434,11 @@ object F_Administration: TF_Administration
             Left = 3
             Height = 174
             Top = 3
-            Width = 468
+            Width = 470
             Align = alTop
             BevelOuter = bvNone
             ClientHeight = 174
-            ClientWidth = 468
+            ClientWidth = 470
             TabOrder = 0
             object lb_chaine: TFWLabel
               Tag = 1003
@@ -1556,7 +1556,7 @@ object F_Administration: TF_Administration
               Height = 25
               Hint = 'Enregistrer annuler les modifications'
               Top = 0
-              Width = 468
+              Width = 470
               Flat = True
               DeleteQuestion = 'Confirmez-vous l''effacement de l''enregistrement ?'
               Align = alTop
@@ -1570,25 +1570,25 @@ object F_Administration: TF_Administration
       end
       object ts_Utilisateurs: TTabSheet
         Caption = 'Gestion des Utilisateurs'
-        ClientHeight = 502
-        ClientWidth = 776
+        ClientHeight = 506
+        ClientWidth = 778
         ImageIndex = 1
         object RbSplitter10: TSplitter
           Left = 297
-          Height = 502
+          Height = 506
           Top = 0
           Width = 5
         end
         object RbPanel4: TPanel
           Left = 302
-          Height = 502
+          Height = 506
           Hint = 'Modifier les utilisateurs'
           Top = 0
-          Width = 474
+          Width = 476
           Align = alClient
           BorderWidth = 2
-          ClientHeight = 502
-          ClientWidth = 474
+          ClientHeight = 506
+          ClientWidth = 476
           Font.Color = 13500416
           Font.Height = -11
           Font.Name = 'MS Sans Serif'
@@ -1601,11 +1601,11 @@ object F_Administration: TF_Administration
             Height = 158
             Hint = 'Modifier les utilisateurs'
             Top = 3
-            Width = 468
+            Width = 470
             Align = alTop
             BorderWidth = 2
             ClientHeight = 158
-            ClientWidth = 468
+            ClientWidth = 470
             Font.Color = 13500416
             Font.Height = -11
             Font.Name = 'MS Sans Serif'
@@ -1779,7 +1779,7 @@ object F_Administration: TF_Administration
               Height = 25
               Hint = 'Action d''édition sur les utilisateurs'
               Top = 3
-              Width = 462
+              Width = 464
               Flat = True
               DeleteQuestion = 'Confirmez-vous l''effacement de l''enregistrement ?'
               Align = alTop
@@ -1794,21 +1794,21 @@ object F_Administration: TF_Administration
           end
           object pg_util_conn: TPageControl
             Left = 3
-            Height = 338
+            Height = 342
             Top = 161
-            Width = 468
+            Width = 470
             ActivePage = TabSheet1
             Align = alClient
             TabIndex = 0
             TabOrder = 1
             object TabSheet1: TTabSheet
               Caption = 'Connexions'
-              ClientHeight = 303
-              ClientWidth = 462
+              ClientHeight = 311
+              ClientWidth = 466
               ParentFont = False
               object RbSplitter12: TSplitter
                 Left = 304
-                Height = 278
+                Height = 286
                 Top = 25
                 Width = 5
               end
@@ -1816,10 +1816,10 @@ object F_Administration: TF_Administration
                 Left = 0
                 Height = 25
                 Top = 0
-                Width = 462
+                Width = 466
                 Align = alTop
                 ClientHeight = 25
-                ClientWidth = 462
+                ClientWidth = 466
                 TabOrder = 0
                 object Panel18: TPanel
                   Left = 207
@@ -1915,12 +1915,12 @@ object F_Administration: TF_Administration
               end
               object Panel22: TPanel
                 Left = 225
-                Height = 278
+                Height = 286
                 Top = 25
                 Width = 79
                 Align = alLeft
                 BevelOuter = bvNone
-                ClientHeight = 278
+                ClientHeight = 286
                 ClientWidth = 79
                 TabOrder = 1
                 object bt_in: TFWInSelect
@@ -1958,15 +1958,15 @@ object F_Administration: TF_Administration
               end
               object lst_out: TDBGroupView
                 Left = 309
-                Height = 278
+                Height = 286
                 Top = 25
-                Width = 153
+                Width = 157
                 Align = alClient
                 Columns = <                
                   item
                     AutoSize = True
                     Caption = 'Non membres'
-                    Width = 131
+                    Width = 139
                   end>
                 ColumnClick = False
                 DragMode = dmAutomatic
@@ -2003,7 +2003,7 @@ object F_Administration: TF_Administration
               end
               object lst_In: TDBGroupView
                 Left = 0
-                Height = 278
+                Height = 286
                 Top = 25
                 Width = 225
                 Align = alLeft
@@ -2011,7 +2011,7 @@ object F_Administration: TF_Administration
                   item
                     AutoSize = True
                     Caption = 'Membres'
-                    Width = 203
+                    Width = 207
                   end>
                 ColumnClick = False
                 DragMode = dmAutomatic
@@ -2051,13 +2051,13 @@ object F_Administration: TF_Administration
         end
         object Panel21: TPanel
           Left = 0
-          Height = 502
+          Height = 506
           Hint = 'Modifier les utilisateurs'
           Top = 0
           Width = 297
           Align = alLeft
           BorderWidth = 1
-          ClientHeight = 502
+          ClientHeight = 506
           ClientWidth = 297
           Font.Color = 13500416
           Font.Height = -11
@@ -2084,7 +2084,7 @@ object F_Administration: TF_Administration
           end
           object gd_utilisateurs: TFWDBGrid
             Left = 2
-            Height = 473
+            Height = 477
             Hint = 'Sélectionner un utilisateur'
             Top = 27
             Width = 293

@@ -59,6 +59,8 @@ implementation
 
 uses DB, TypInfo,
   U_FormDico,
+  u_customframework,
+  u_propform,
   U_RegVersion ;
 
 { TNavigatorsProperty }
@@ -159,22 +161,16 @@ begin // Enregistre le nouvel expert de projet
 // Un register libère automatiquement la variable à la suppression
 {$IFDEF FPC}
    RegisterNoIcon([TF_FormDico]);
+   RegisterNoIcon([TF_PropForm]);
 {$ELSE}
    RegisterCustomModule ( TF_FormDico, TCustomModule );
+   RegisterCustomModule ( TF_PropForm, TCustomModule );
 {$ENDIF}
-   RegisterPropertyEditor(TypeInfo(string), TF_FormDico, 'DataKey', {$IFDEF FPC}TFieldProperty{$ELSE}TDataFieldProperty{$ENDIF});
-   RegisterPropertyEditor(TypeInfo(string), TF_FormDico, 'Version', TVersionProperty);
-   RegisterPropertyEditor(TypeInfo(string), TF_FormDico, 'Data2Key', TDataField2Property);
-   RegisterPropertyEditor(TypeInfo(string), TF_FormDico, 'Data2LookupField', TDataField2Property);
+   RegisterPropertyEditor(TypeInfo(string), TF_CustomFrameWork, 'Version', TVersionProperty);
+   RegisterPropertyEditor(TypeInfo(string), TFWColumn, 'Key', {$IFDEF FPC}TFieldProperty{$ELSE}TDataFieldProperty{$ENDIF});
 
-   RegisterPropertyEditor(TypeInfo(string), TF_FormDico, 'DataNavigator', TNavigatorsProperty);
-   RegisterPropertyEditor(TypeInfo(string), TF_FormDico, 'DataNavEdit', TNavigatorsProperty);
-   RegisterPropertyEditor(TypeInfo(string), TF_FormDico, 'Data2Navigator', TNavigatorsProperty);
-   RegisterPropertyEditor(TypeInfo(string), TF_FormDico, 'Data2NavEdit', TNavigatorsProperty);
-   RegisterPropertyEditor(TypeInfo(string), TF_FormDico, 'Data3Navigator', TNavigatorsProperty);
-   RegisterPropertyEditor(TypeInfo(string), TF_FormDico, 'Data3NavEdit', TNavigatorsProperty);
-   RegisterPropertyEditor(TypeInfo(string), TF_FormDico, 'Data4Navigator', TNavigatorsProperty);
-   RegisterPropertyEditor(TypeInfo(string), TF_FormDico, 'Data4NavEdit', TNavigatorsProperty);
+   RegisterPropertyEditor(TypeInfo(string), TFWColumn, 'Navigator', TNavigatorsProperty);
+   RegisterPropertyEditor(TypeInfo(string), TFWColumn, 'NavEdit', TNavigatorsProperty);
 
 end;
 
