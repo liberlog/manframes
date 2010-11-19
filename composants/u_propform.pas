@@ -1,16 +1,10 @@
 unit u_propform;
- // Unité de TF_FormFrameWork
+    ///////////////////////////////////////////////////////////////////////////////////////////
+   // Unité de TF_PropForm
+  // Le module crée des propriétés servant à gérer des données
+ // créé par Matthieu Giroux en novembre 2010
+///////////////////////////////////////////////////////////////////////////////////////////
 
- // Le module crée des propriétés servant Ã  récupérer des informations dans la table dico
- // Il adapte aussi des couleurs Ã  la form enfant
- // IL comporte :
- // Un DataSource, son DataGrid, ses navigateurs, ses zones d'éditions
- // Un deuxième DataSource, son navigateur, ses zones d'éditions
- // Un DataGridLookup et son navigateur
- // créé par Matthieu Giroux en décembre 2006
-
-{///////////////////////////////////////////////////////////////////////////////////////////
-}
 
 {$I ..\extends.inc}
 {$I ..\Compilers.inc}
@@ -546,7 +540,7 @@ function TF_PropForm.fb_InsereCompteur ( const adat_Dataset : TDataset ;
                                               const ach_DebutLettrage, ach_FinLettrage : Char ;
                                               const ali_Debut, ali_LimiteRecherche : Int64 ): Boolean;
 Begin
-  Result := fonctions_dbcomponents.fb_InsereCompteur ( adat_Dataset, astl_Cle, gds_SourceWork, as_ChampCompteur, as_Table, as_PremierLettrage, ach_DebutLettrage, ach_FinLettrage, 0, 0, gb_DBMessageOnError );
+  Result := fonctions_dbcomponents.fb_InsereCompteur ( adat_Dataset, gds_SourceWork.Dataset, astl_Cle, as_ChampCompteur, as_Table, as_PremierLettrage, ach_DebutLettrage, ach_FinLettrage, 0, 0, gb_DBMessageOnError );
 End ;
 
 procedure TF_PropForm.p_ChargeTable ( const aq_dico : TDataSource; const astl_SQL : TStrings; {$IFDEF DELPHI_9_UP} const awst_SQL : TWideStrings ;{$ENDIF} const as_Table : String );

@@ -5018,7 +5018,7 @@ End ;
 /////////////////////////////////////////////////////////////////////////////////
 function TF_CustomFrameWork.fb_InsereCompteur ( const adat_Dataset : TDataset ; const aslt_Cle : TStringList ; const as_ChampCompteur, as_Table : String ; const ali_Debut, ali_LimiteRecherche : int64 ) : Boolean ;
 Begin
-  Result := fonctions_dbcomponents.fb_InsereCompteur ( adat_Dataset, aslt_Cle, gds_recherche, as_ChampCompteur, as_Table, '', ' ', ' ', ali_Debut, ali_LimiteRecherche, gb_DBMessageOnError );
+  Result := fonctions_dbcomponents.fb_InsereCompteur ( adat_Dataset, gds_recherche.Dataset, aslt_Cle, as_ChampCompteur, as_Table, '', ' ', ' ', ali_Debut, ali_LimiteRecherche, gb_DBMessageOnError );
 End ;
 /////////////////////////////////////////////////////////////////////////////////
 // Fonction : fb_InsereCompteur
@@ -5033,7 +5033,7 @@ End ;
 /////////////////////////////////////////////////////////////////////////////////
 function TF_CustomFrameWork.fb_InsereCompteur ( const adat_Dataset : TDataset ; const aslt_Cle : TStringlist ; const as_ChampCompteur, as_Table, as_PremierLettrage : String ; const ach_DebutLettrage, ach_FinLettrage : Char ) : Boolean ;
 Begin
-  Result := fonctions_dbcomponents.fb_InsereCompteur ( adat_Dataset, aslt_Cle, gds_recherche, as_ChampCompteur, as_Table, as_PremierLettrage, ach_DebutLettrage, ach_FinLettrage, 0, 0, gb_DBMessageOnError );
+  Result := fonctions_dbcomponents.fb_InsereCompteur ( adat_Dataset, gds_recherche.Dataset, aslt_Cle, as_ChampCompteur, as_Table, as_PremierLettrage, ach_DebutLettrage, ach_FinLettrage, 0, 0, gb_DBMessageOnError );
 End ;
 function TF_CustomFrameWork.fcla_GereException ( const aexc_exception : Exception  ; const adat_Dataset : TDataset ) : TClass;
 Begin
@@ -6458,6 +6458,8 @@ Begin
     and not ( gb_PasUtiliserProps )
     and ((FieldsDefs [ ai_NumArray ].LookupTable) <> '' )
     and fb_IsRechListeCtrlPoss ( acom_Component )// est-ce un control de list avec field de liste
+    and not assigned ( fobj_getComponentObjectProperty( acom_Component, 'ListSource'))
+    and not assigned ( fobj_getComponentObjectProperty( acom_Component, 'LookupSource'))
      then
        with FieldsDefs [ ai_NumArray ] do
         begin
