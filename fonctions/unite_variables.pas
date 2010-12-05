@@ -162,7 +162,7 @@ resourcestring
                         		+ 'Saisir des valeurs différentes, annuler ou réeffectuer la validation si une valeur n''est pas modifiable.' ;
   GS_ZONE_OBLIGATOIRE = 'La zone @ARG ne peut pas être vide.' + #13 + #13
                         	+ 'Effectuer une saisie ou annuler.';
-  GS_ZONES_OBLIGATOIRES = 'Les zones @ARG ne peuvent pas être vides.' + #13 + #13
+  GS_ZONES_OBLIGATOIRES = 'Les zones suivantes ne peuvent pas être vides : @ARG .' + #13 + #13
                         		+ 'Effectuer une saisie ou annuler.';
   GS_FORM_TABLE_NON_RENSEIGNEE = 'Le composant @ARG et la fiche @ARG doivent sélectionner une table dans le dictionnaire.' ;
   GS_FORM_SELECTION_ADO_DATASET = 'Le composant @ARG en tant que composant ADO et la fiche @ARG doivent sélectionner une table.' ;
