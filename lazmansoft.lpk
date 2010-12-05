@@ -23,7 +23,7 @@
     </CompilerOptions>
     <Description Value="Full management software RAD Framework"/>
     <License Value="LGPL"/>
-    <Version Minor="9" Build="4"/>
+    <Version Minor="9" Build="5"/>
     <Files Count="12">
       <Item1>
         <Filename Value="forms/U_Acces.lfm"/>
@@ -79,12 +79,12 @@
       <OutDir Value="fonctions"/>
     </i18n>
     <Type Value="RunAndDesignTime"/>
-    <RequiredPkgs Count="12">
+    <RequiredPkgs Count="11">
       <Item1>
         <PackageName Value="SDFLaz"/>
       </Item1>
       <Item2>
-        <PackageName Value="lazexttools"/>
+        <PackageName Value="LCL"/>
       </Item2>
       <Item3>
         <PackageName Value="lazmanframes"/>
@@ -113,9 +113,6 @@
       <Item11>
         <PackageName Value="FCL"/>
       </Item11>
-      <Item12>
-        <PackageName Value="LCL"/>
-      </Item12>
     </RequiredPkgs>
     <PublishOptions>
       <Version Value="2"/>
