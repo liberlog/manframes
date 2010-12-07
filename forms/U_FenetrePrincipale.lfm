@@ -8,7 +8,7 @@ inherited F_FenetrePrincipale: TF_FenetrePrincipale
   Align = alClient
   AutoSize = True
   Caption = 'Exemple'
-  ClientHeight = 522
+  ClientHeight = 524
   ClientWidth = 775
   Color = 13565951
   DockSite = True
@@ -185,7 +185,7 @@ inherited F_FenetrePrincipale: TF_FenetrePrincipale
   end
   object br_statusbar: TStatusBar[6]
     Left = 0
-    Height = 19
+    Height = 21
     Top = 503
     Width = 775
     Anchors = [akLeft, akBottom]

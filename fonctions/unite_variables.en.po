@@ -424,7 +424,7 @@ msgstr ""
 
 #: unite_variables.gs_zones_obligatoires
 msgid ""
-"Les zones @ARG ne peuvent pas #234tre vides.\n"
+"Les zones suivantes ne peuvent pas #234tre vides : @ARG .\n"
 "\n"
 "Effectuer une saisie ou annuler.\n"
 msgstr ""
