@@ -4,7 +4,7 @@ inherited F_FenetrePrincipale: TF_FenetrePrincipale
   Top = 250
   Width = 775
   HelpContext = 1400
-  ActiveControl = spl_volet
+  ActiveControl = tbsep_1
   Align = alClient
   AutoSize = True
   Caption = 'Exemple'
@@ -52,134 +52,135 @@ inherited F_FenetrePrincipale: TF_FenetrePrincipale
     Width = 17
     Version = 'Version 3.20, Copyright � 2000-2001 by Peric, E-mail: pericddn@ptt.yu'
     Visible = False
-    TabOrder = 0
+    TabOrder = 1
   end
   object spl_volet: TSplitter[4]
     Left = 197
-    Height = 458
-    Top = 45
+    Height = 453
+    Top = 50
     Width = 5
   end
-  object dock_outils: TDock[5]
+  object tbar_outils: TToolBar[5]
     Left = 0
-    Height = 45
+    Height = 50
+    Hint = 'Cliquer sur un bouton pour accéder à une fonction'
     Top = 0
     Width = 775
-    object tbar_outils: TExtToolbar
-      Left = 0
-      Hint = 'Cliquer sur un bouton pour accéder à une fonction'
-      Top = 0
-      HelpContext = 1430
-      Caption = 'Barre d''acc�s'
-      DockableTo = [dpTop]
-      DockPos = 0
-      FullSize = True
-      ParentShowHint = False
-      ShowHint = True
+    HelpContext = 1430
+    Caption = 'Barre d''accès'
+    Color = cl3DLight
+    ParentColor = False
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 0
+    object tbsep_3: TPanel
+      Left = 590
+      Height = 22
+      Top = 2
+      Width = 1
+      TabOrder = 4
+    end
+    object tbsep_1: TPanel
+      Left = 588
+      Height = 22
+      Top = 2
+      Width = 1
+      TabOrder = 5
+    end
+    object tbsep_2: TPanel
+      Left = 589
+      Height = 22
+      Top = 2
+      Width = 1
+      TabOrder = 6
+    end
+    object pa_4: TPanel
+      Left = 718
+      Height = 48
+      Top = 2
+      Width = 57
+      Align = alRight
+      BevelOuter = bvNone
+      ClientHeight = 48
+      ClientWidth = 57
       TabOrder = 0
-      UseLastDock = False
-      OnClose = tbar_outilsClose
-      OnDockChanged = F_FormMainIniResize
-      object tbsep_3: TExtToolbarSep
-        Left = 713
-        Top = 0
-      end
-      object tbsep_2: TExtToolbarSep
-        Left = 650
-        Top = 0
-      end
-      object tbsep_1: TExtToolbarSep
-        Left = 57
-        Top = 0
-      end
-      object pa_1: TPanel
-        Left = 0
+      object dbt_quitter: TJvXPButton
+        Left = 9
         Height = 41
+        Hint = 'Quitter'
         Top = 0
-        Width = 57
-        BevelOuter = bvNone
-        ClientHeight = 41
-        ClientWidth = 57
+        Width = 41
+        HelpContext = 1430
         TabOrder = 0
-        object dbt_ident: TJvXPButton
-          Left = 9
-          Height = 41
-          Hint = 'S''identifier/déconnecter|Ouvrir la fenêtre d''identification'
-          Top = 0
-          Width = 40
-          HelpContext = 1430
-          TabOrder = 0
-          Layout = blGlyphRight
-          Font.Height = -13
-          Font.Name = 'MS Sans Serif'
-          ParentFont = False
-          ParentShowHint = False
-          ShowHint = True
-          OnClick = dbt_identClick
-        end
+        Font.Height = -13
+        Font.Name = 'MS Sans Serif'
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = True
+        OnClick = dbt_quitterClick
       end
-      object pa_2: TPanel
-        Left = 63
+    end
+    object pa_1: TPanel
+      Left = 1
+      Height = 22
+      Top = 2
+      Width = 57
+      BevelOuter = bvNone
+      ClientHeight = 22
+      ClientWidth = 57
+      TabOrder = 1
+      object dbt_ident: TJvXPButton
+        Left = 9
         Height = 41
+        Hint = 'S''identifier/déconnecter|Ouvrir la fenêtre d''identification'
         Top = 0
-        Width = 530
-        BevelOuter = bvNone
-        TabOrder = 1
+        Width = 40
+        HelpContext = 1430
+        TabOrder = 0
+        Layout = blGlyphRight
+        Font.Height = -13
+        Font.Name = 'MS Sans Serif'
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = True
+        OnClick = dbt_identClick
       end
-      object pa_3: TPanel
-        Left = 593
+    end
+    object pa_2: TPanel
+      Left = 58
+      Height = 22
+      Top = 2
+      Width = 530
+      BevelOuter = bvNone
+      TabOrder = 2
+    end
+    object pa_3: TPanel
+      Left = 661
+      Height = 48
+      Top = 2
+      Width = 57
+      Align = alRight
+      BevelOuter = bvNone
+      ClientHeight = 48
+      ClientWidth = 57
+      TabOrder = 3
+      object dbt_aide: TJvXPButton
+        Left = 9
         Height = 41
+        Hint = 'Ouvrir l''aide|Rubrique d''aide'
         Top = 0
-        Width = 57
-        Align = alRight
-        BevelOuter = bvNone
-        ClientHeight = 41
-        ClientWidth = 57
-        TabOrder = 2
-        object dbt_aide: TJvXPButton
-          Left = 9
-          Height = 41
-          Hint = 'Ouvrir l''aide|Rubrique d''aide'
-          Top = 0
-          Width = 41
-          HelpContext = 1430
-          TabOrder = 0
-          Layout = blGlyphRight
-          Spacing = 0
-          Align = alCustom
-          Font.Height = -13
-          Font.Name = 'MS Sans Serif'
-          ParentFont = False
-          ParentShowHint = False
-          ShowHint = True
-          OnClick = dbt_aideClick
-        end
-      end
-      object pa_4: TPanel
-        Left = 656
-        Height = 41
-        Top = 0
-        Width = 57
-        Align = alRight
-        BevelOuter = bvNone
-        ClientHeight = 41
-        ClientWidth = 57
-        TabOrder = 3
-        object dbt_quitter: TJvXPButton
-          Left = 9
-          Height = 41
-          Hint = 'Quitter'
-          Top = 0
-          Width = 41
-          HelpContext = 1430
-          TabOrder = 0
-          Font.Height = -13
-          Font.Name = 'MS Sans Serif'
-          ParentFont = False
-          ParentShowHint = False
-          ShowHint = True
-          OnClick = dbt_quitterClick
-        end
+        Width = 41
+        HelpContext = 1430
+        TabOrder = 0
+        Layout = blGlyphRight
+        Spacing = 0
+        Align = alCustom
+        Font.Height = -13
+        Font.Name = 'MS Sans Serif'
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = True
+        OnClick = dbt_aideClick
       end
     end
   end
@@ -188,7 +189,6 @@ inherited F_FenetrePrincipale: TF_FenetrePrincipale
     Height = 21
     Top = 503
     Width = 775
-    Anchors = [akLeft, akBottom]
     AutoHint = True
     Panels = <    
       item
@@ -229,54 +229,31 @@ inherited F_FenetrePrincipale: TF_FenetrePrincipale
   end
   object pa_5: TPanel[7]
     Left = 0
-    Height = 458
-    Top = 45
+    Height = 453
+    Top = 50
     Width = 197
     Align = alLeft
     BevelOuter = bvNone
-    ClientHeight = 458
+    ClientHeight = 453
     ClientWidth = 197
-    DockSite = True
+    Color = cl3DLight
+    ParentColor = False
     TabOrder = 2
     OnResize = pa_5Resize
-    object dock_volet: TDock
+    object scb_Volet: TScrollBox
       Left = 0
-      Height = 458
+      Height = 453
+      Hint = 'Cliquez pour accéder aux fonctions'
       Top = 0
-      Width = 201
-      FixAlign = True
-      Position = dpLeft
-      object tbar_volet: TExtToolbar
-        Left = 0
-        Top = 0
-        Caption = 'Volet d''accès'
-        CloseButtonWhenDocked = True
-        DockableTo = [dpLeft]
-        DockPos = 0
-        FloatingMode = fmOnTopOfAllForms
-        FullSize = True
-        TabOrder = 0
-        UseLastDock = False
-        OnClose = tbar_voletClose
-        OnCloseQuery = tbar_voletCloseQuery
-        OnDockChanged = tbar_voletDockChanged
-        object scb_Volet: TScrollBox
-          Left = 0
-          Height = 458
-          Hint = 'Cliquez pour accéder aux fonctions'
-          Top = 0
-          Width = 197
-          HelpContext = 1440
-          Align = alClient
-          BorderStyle = bsNone
-          Constraints.MinHeight = 10
-          Constraints.MinWidth = 10
-          DockSite = True
-          ParentShowHint = False
-          ShowHint = True
-          TabOrder = 0
-        end
-      end
+      Width = 197
+      HelpContext = 1440
+      Align = alClient
+      BorderStyle = bsNone
+      Constraints.MinHeight = 10
+      Constraints.MinWidth = 10
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 0
     end
   end
   object im_Liste: TImageList[8]

@@ -35,12 +35,12 @@ uses
   Windows, OleDB, JvComponent, StoHtmlHelp, JvScrollBox,
   JvExExtCtrls, JvSplitter, JvLED, U_ExtScrollBox,
   StdActns, JvExForms, JvExControls, Messages,
-  JvXPCore, ImgList, ExtTBTlwn,
+  JvXPCore, ImgList, ExtTBTlwn, ExtDock, ExtTBTlbr,
 {$ENDIF}
 {$IFDEF VERSIONS}
   fonctions_version, 
 {$ENDIF}
-  U_Donnees, ExtDock, ExtTBTlbr,
+  U_Donnees,
   Controls, Graphics, Classes, SysUtils, StrUtils,
   ExtCtrls, ActnList, Menus,
   JvXPContainer, ComCtrls, JvXPButtons,
@@ -123,8 +123,6 @@ type
     pa_2: TPanel;
     pa_3: TPanel;
     pa_4: TPanel;
-    tbsep_1: TExtToolbarSep;
-    tbsep_2: TExtToolbarSep;
     {$IFDEF MDI}
     WindowCascade: TWindowCascade;
     WindowTileHorizontal: TWindowTileHorizontal;
@@ -136,17 +134,21 @@ type
     Timer: TTimer;
     SvgFormInfoIni: TOnFormInfoIni;
     im_Liste: TImageList;
+    {$IFNDEF FPC}
     dock_outils: TDock;
     dock_volet: TDock;
-    tbsep_3: TExtToolbarSep;
-    tbar_outils: TExtToolbar;
+    tbar_volet: {$IFDEF FPC}TToolbar{$ELSE}TExtToolbar{$ENDIF};
+    {$ENDIF}
+    tbsep_1: {$IFDEF FPC}TPanel{$ELSE}TExtToolbarSep{$ENDIF};
+    tbsep_2: {$IFDEF FPC}TPanel{$ELSE}TExtToolbarSep{$ENDIF};
+    tbsep_3: {$IFDEF FPC}TPanel{$ELSE}TExtToolbarSep{$ENDIF};
+    tbar_outils: {$IFDEF FPC}TToolbar{$ELSE}TExtToolbar{$ENDIF};
 
     br_statusbar: TStatusBar;
 
     im_led: {$IFDEF FPC}TPCheck{$ELSE}TJvLED{$ENDIF};
     mu_identifier: TMenuItem;
     pa_5: TPanel;
-    tbar_volet: TExtToolbar;
     spl_volet: {$IFDEF FPC}TSplitter{$ELSE}TJvSplitter{$ENDIF};
     im_appli: TImage;
     im_acces: TImage;
@@ -609,10 +611,12 @@ begin
   if gb_FirstAcces then
     begin
       // Initialisation de la toolbar mauvaise si dans le create et si maximised
+{$IFNDEF FPC}
       if gs_ModeConnexion = CST_MACHINE then
         IniLoadToolbarPositions(Self, ExtractFilePath(Application.ExeName) + CST_Avant_Fichier + gs_computer  + '.INI', '')
       else
         IniLoadToolbarPositions(Self, ExtractFilePath(Application.ExeName) + CST_Avant_Fichier + gs_sessionuser  + '.INI', '');
+{$ENDIF}
 
       // Init. du menu barre de fonction checked ou pas
       mu_barreoutils.Checked := tbar_outils.Visible;
@@ -626,13 +630,16 @@ end;
 procedure TF_FenetrePrincipale.F_FormMainIniResize(Sender: TObject);
 begin
   // On retaille la toolbar
+{$IFNDEF FPC}
   if tbar_outils.Docked then
     begin
+{$ENDIF}
       pa_2.Width := Self.Width
                     - gi_NbSeparateurs * (CST_LARGEUR_PANEL + CST_LARGEUR_SEP)
                     - CST_LARGEUR_DOCK;
       pa_2.Show;
       tbsep_2.Show;
+{$IFNDEF FPC}
     end
   else
     begin
@@ -640,6 +647,7 @@ begin
       pa_2.Hide;
       tbsep_2.Hide;
     end;
+{$ENDIF}
 
   pa_2.Refresh;
 
@@ -695,18 +703,6 @@ begin
   br_statusbar.Panels[2].Text := GS_LBL_PCONN;
   p_SetLengthSB(br_statusbar.Panels[2]);
 
-  // Le volet d'exploration est fermé et inaccessible
-  DisableAlign ;
-  try
-    tbar_volet.Hide;
-    mu_voletexplore.Checked := False;
-    mu_voletexplore.Enabled := False;
-    pa_5.Width := 0;
-    spl_volet.Hide;
-
-  finally
-    EnableAlign ;
-  end;
   if Assigned(F_SplashForm) then F_splashForm.Hide;
 
   Screen.Cursor := Self.Cursor;
@@ -814,24 +810,7 @@ begin
   {$ENDIF}
         p_SetLedColor ( True );
 
-        // On affecte les valeur du fichier INI pour les barres des fonctions
-        // et on rend accessible le volet d'exploration
-        if gs_ModeConnexion = CST_MACHINE then
-          IniLoadToolbarPositions(Self, ExtractFilePath(Application.ExeName) + CST_Avant_Fichier + gs_computer  + '.INI', '')
-        else
-          IniLoadToolbarPositions(Self, ExtractFilePath(Application.ExeName) + CST_Avant_Fichier + gs_sessionuser  + '.INI', '');
-
         gb_FirstAcces := False;
-
-        // Init. du menu barre de fonction checked ou pas
-        mu_barreoutils.Checked := tbar_outils.Visible;
-
-        // Le volet d'exploration est fermé et inaccessible en fonctions des fonction objets dynamiques
-        tbar_volet.Visible := mu_voletexplore.Checked ;
-        spl_volet .Visible := mu_voletexplore.Checked ;
-
-        scb_volet.Align := alClient;
-        tbar_voletDockChanged(Self);
 
         // Indications de la barre de status
         br_statusbar.Panels[1].Text  := '     ' + gs_serveurbdd;
@@ -867,6 +846,7 @@ begin
   {$ENDIF}
 End;
 
+
 procedure TF_FenetrePrincipale.p_SetLedColor( const ab_Status : Boolean );
 begin
   try
@@ -890,21 +870,19 @@ end;
 procedure TF_FenetrePrincipale.mu_voletchange(const ab_visible : Boolean);
 begin
   DisableAlign ;
-  try
-    mu_voletexplore.Checked := ab_visible;
-    tbar_volet.Visible := ab_visible;
-    if tbar_volet.Visible then
-      tbar_voletDockChanged(Self)
-    else
-      begin
-        pa_5.Width := 0;
-        spl_volet.Hide;
-      end;
-    spl_volet.Left := pa_5.Width;
-  finally
-    EnableAlign ;
-  end;
+  mu_voletexplore.Checked := ab_visible;
+{$IFNDEF FPC}
+  tbar_volet.Visible := ab_visible;
+  dock_volet.Visible := ab_visible;
+  pa_5      .Visible := ab_visible;
+  spl_volet .Visible := ab_visible;
+  if tbar_volet.Visible then
+    tbar_voletDockChanged(Self);
+{$ENDIF}
+  spl_volet.Left := pa_5.Width;
+  EnableAlign ;
 end;
+
 
 ////////////////////////////////////////////////////////////////////////////////
 //  Gestion de la visibilité des accès aux fonctions
@@ -941,7 +919,7 @@ end;
 procedure TF_FenetrePrincipale.SvgFormInfoIniIniWrite(
   const AInifile: TCustomInifile; var Continue: Boolean);
 begin
-  AInifile.WriteBool ( 'F_FenetrePrincipale', 'tbar_volet.Visible' , tbar_volet.Visible );
+  AInifile.WriteBool ( 'F_FenetrePrincipale', 'tbar_volet.Visible' , {$IFDEF FPC}pa_5{$ELSE}tbar_volet{$ENDIF}.Visible );
   AInifile.WriteBool ( 'F_FenetrePrincipale', 'tbar_outils.Visible', tbar_outils.Visible );
 
 end;
@@ -1003,24 +981,29 @@ end;
 ////////////////////////////////////////////////////////////////////////////////
 procedure TF_FenetrePrincipale.pa_5Resize(Sender: TObject);
 begin
+{$IFNDEF FPC}
   if Assigned(tbar_volet.DockedTo) and tbar_volet.Visible then
     begin
       tbar_volet.Width := (Sender as TControl).Width;
+      dock_volet.Width := (Sender as TControl).Width;
       spl_volet.Left := pa_5.Width;
     end;
+{$ENDIF}
+
 end;
 
 procedure TF_FenetrePrincipale.tbar_voletDockChanged(Sender: TObject);
 begin
-  if Assigned(tbar_volet.DockedTo)
-  and tbar_volet.Visible then
+
+  if {$IFNDEF FPC}Assigned(tbar_volet.DockedTo) and {$ENDIF}
+  {$IFDEF FPC}pa_5{$ELSE}tbar_volet{$ENDIF}.Visible then
     Begin
-      pa_5.Width := tbar_volet.Width ;
+      pa_5.Show;
       spl_volet.Show;
     End
   else
     Begin
-      pa_5.Width := 0;
+      pa_5.Hide;
       spl_volet.Hide;
     End ;
 
@@ -1076,17 +1059,20 @@ end;
 ////////////////////////////////////////////////////////////////////////////////
 procedure TF_FenetrePrincipale.p_ApresSauvegardeParamIni;
 begin
+  {$IFNDEF FPC}
   if gb_AccesAuto then
     if gs_ModeConnexion = CST_MACHINE then
       IniSaveToolbarPositions(Self, ExtractFilePath(Application.ExeName) + CST_Avant_Fichier + gs_computer  + '.INI', '')
     else
       IniSaveToolbarPositions(Self, ExtractFilePath(Application.ExeName) + CST_Avant_Fichier + gs_sessionuser  + '.INI', '');
 
+  {$ENDIF}
   if gb_Reinit then
     if gs_ModeConnexion = CST_MACHINE then
       DeleteFile(ExtractFilePath(Application.ExeName) + CST_Avant_Fichier + gs_computer  + '.INI')
     else
       DeleteFile(ExtractFilePath(Application.ExeName) + CST_Avant_Fichier + gs_sessionuser  + '.INI');
+
 end;
 
 
@@ -1179,749 +1165,6 @@ Begin
   fb_ReinitWindow ( lfor_ActiveForm );
 end;
 
-{$IFDEF CLR}
-procedure TF_FenetrePrincipale.InitializeControls;
-begin
-  // Initalizing all controls...
-  im_led := {$IFDEF FPC}TPCheck{$ELSE}TJvLED{$ENDIF}.Create(Self);
-  spl_volet :={$IFDEF FPC}TSplitter{$ELSE}TJvSplitter{$ENDIF}.Create(Self);
-  im_appli := TImage.Create(Self);
-  im_acces := TImage.Create(Self);
-  im_about := TImage.Create(Self);
-  dock_outils := TDock.Create(Self);
-  dock_volet := TDock.Create(Self);
-  tbar_outils := TExtToolbar.Create(Self);
-  tbsep_3 := TExtToolbarSep.Create(Self);
-  tbsep_1 := TExtToolbarSep.Create(Self);
-  tbsep_2 := TExtToolbarSep.Create(Self);
-  pa_4 := TPanel.Create(Self);
-  dbt_quitter := TFWQuit.Create(Self);
-  pa_1 := TPanel.Create(Self);
-  dbt_ident := TJVXPButton.Create(Self);
-  pa_2 := TPanel.Create(Self);
-  pa_3 := TPanel.Create(Self);
-  dbt_aide := TJVXPButton.Create(Self);
-  br_statusbar := TStatusBar.Create(Self);
-  pa_5 := TPanel.Create(Self);
-  tbar_volet := TExtToolWindow.Create(Self);
-  scb_Volet := {$IFDEF FPC}TScrollBox{$ELSE}TExtScrollBox{$ENDIF}.Create(Self);
-  im_Liste := TImageList.Create(Self);
-  mu_MainMenu := TMainMenu.Create(Self);
-  mu_file := TMenuItem.Create(Self);
-  mu_identifier := TMenuItem.Create(Self);
-  mu_ouvrir := TMenuItem.Create(Self);
-  mu_sep1 := TMenuItem.Create(Self);
-  mu_quitter := TMenuItem.Create(Self);
-  mu_fenetre := TMenuItem.Create(Self);
-  mu_Reinitiliserpresentation := TMenuItem.Create(Self);
-  mu_Sep3 := TMenuItem.Create(Self);
-  mu_reduire := TMenuItem.Create(Self);
-  mu_affichage := TMenuItem.Create(Self);
-  mu_barreoutils := TMenuItem.Create(Self);
-  mu_voletexplore := TMenuItem.Create(Self);
-  mu_aide := TMenuItem.Create(Self);
-  mu_ouvriraide := TMenuItem.Create(Self);
-  mu_sep2 := TMenuItem.Create(Self);
-  {$IFDEF VERSIONS}
-  mu_apropos := TMenuItem.Create(Self);
-  {$ENDIF}
-  ActionList := TActionList.Create(Self);
-  {$IFNDEF FPC}
-  mu_organiser := TMenuItem.Create(Self);
-  mu_cascade := TMenuItem.Create(Self);
-  mu_mosaiqueh := TMenuItem.Create(Self);
-  mu_mosaiquev := TMenuItem.Create(Self);
-  WindowCascade := TWindowCascade.Create(Self);
-  WindowTileHorizontal := TWindowTileHorizontal.Create(Self);
-  WindowTileVertical := TWindowTileVertical.Create(Self);
-  WindowMinimizeAll := TWindowMinimizeAll.Create(Self);
-  WindowArrangeAll := TWindowArrange.Create(Self);
-  {$ENDIF}
-  Timer := TTimer.Create(Self);
-  SvgFormInfoIni := TOnFormInfoIni.Create(Self);
-  im_icones := TImageList.Create(Application);
-
-  tbar_outils.Parent := dock_outils;
-  dock_volet.Parent := pa_5 ;
-
-  pa_1.Parent := tbar_outils ;
-  tbsep_1.Parent := tbar_outils ;
-  pa_2.Parent := tbar_outils ;
-  tbsep_2.Parent := tbar_outils ;
-  pa_3.Parent := tbar_outils ;
-  tbsep_3.Parent := tbar_outils ;
-  pa_4.Parent := tbar_outils ;
-  dock_volet.Parent := pa_5 ;
-
-  with im_led do
-  begin
-    Name := 'im_led';
-    im_led.Parent := self;
-    SetOrdProp(im_led, 'Left', 120);
-    SetOrdProp(im_led, 'Top', 408);
-    AutoSize := True;
-    HelpContext := 1460 ;
-    Color := clRed;
-    Visible := False;
-  end;
-
-  with spl_volet do
-  begin
-    Name := 'spl_volet';
-    spl_volet.Parent := self;
-    SetOrdProp(spl_volet, 'Left', 197);
-    if IsPublishedProp(spl_volet, 'Top') then SetOrdProp(spl_volet, 'Top', 45);
-    if IsPublishedProp(spl_volet, 'Width') then SetOrdProp(spl_volet, 'Width', 5);
-    if IsPublishedProp(spl_volet, 'Height') then SetOrdProp(spl_volet, 'Height', 431);
-  end;
-
-  with im_appli do
-  begin
-    Name := 'im_appli';
-    Parent := Self;
-    Left := 248;
-    Top := 104;
-    Width := 49;
-    Height := 49;
-    AutoSize := True;
-    Visible := False;
-  end;
-
-  with im_acces do
-  begin
-    Name := 'im_acces';
-    Parent := Self;
-    Left := 312;
-    Top := 104;
-    Width := 49;
-    Height := 49;
-    AutoSize := True;
-    Visible := False;
-  end;
-
-  with im_about do
-  begin
-    Name := 'im_about';
-    Parent := Self;
-    Left := 376;
-    Top := 104;
-    Width := 49;
-    Height := 49;
-    AutoSize := True;
-    Visible := False;
-  end;
-
-  with dock_outils do
-  begin
-    Name := 'dock_outils';
-    dock_outils.Parent := self;
-    SetOrdProp(dock_outils, 'Left', 0);
-    SetOrdProp(dock_outils, 'Top', 0);
-    SetOrdProp(dock_outils, 'Width', 765);
-    SetOrdProp(dock_outils, 'Height', 45);
-  end;
-
-  with tbar_outils do
-  begin
-    Name := 'tbar_outils';
-    SetOrdProp(tbar_outils, 'Left', 0);
-    SetOrdProp(tbar_outils, 'Top', 0);
-    Caption := 'Barre d'#39'acc'#232's';
-    DockableTo := [dpTop];
-    Hint := 'Cliquer sur un bouton pour accéder à une fonction' ;
-    ParentShowHint := False ;
-    ShowHint := True ;
-    HelpContext := 1430 ;
-    DockPos := 0;
-    FullSize := True;
-    TabOrder := 0;
-    UseLastDock := False;
-    OnClose := tbar_outilsClose;
-    OnDockChanged := F_FormMainIniResize;
-  {$IFDEF FPC}
-    Align := alTop;
-  {$ENDIF}
-  end;
-
-  with tbsep_3 do
-  begin
-    Name := 'tbsep_3';
-    SetOrdProp(tbsep_3, 'Left', 656);
-    SetOrdProp(tbsep_3, 'Top', 0);
-  end;
-
-  with tbsep_1 do
-  begin
-    Name := 'tbsep_1';
-    SetOrdProp(tbsep_1, 'Left', 57);
-    SetOrdProp(tbsep_1, 'Top', 0);
-  end;
-
-  with tbsep_2 do
-  begin
-    Name := 'tbsep_2';
-    SetOrdProp(tbsep_2, 'Left', 593);
-    SetOrdProp(tbsep_2, 'Top', 0);
-  end;
-
-  with pa_4 do
-  begin
-    Name := 'pa_4';
-    Left := 662;
-    Top := 0;
-    Width := 57;
-    Height := 41;
-    Align := alRight;
-    BevelOuter := bvNone;
-    TabOrder := 0;
-  end;
-
-  with dbt_quitter do
-  begin
-    Parent := Self;
-    Name := 'dbt_quitter';
-    SetOrdProp(dbt_quitter, 'Left', 9);
-    SetOrdProp(dbt_quitter, 'Top', 0);
-    SetOrdProp(dbt_quitter, 'Width', 41);
-    SetOrdProp(dbt_quitter, 'Height', 41);
-    Hint := 'Quitter';
-    Font.Charset := DEFAULT_CHARSET;
-    Font.Color := clWindowText;
-    Font.Height := -13;
-    Font.Name := 'MS Sans Serif';
-    Font.Style := [];
-    ParentFont := False;
-    ParentShowHint := False;
-    ShowHint := True;
-    OnClick := dbt_quitterClick;
-    TabOrder := 0;
-    Parent := Self;
-  end;
-
-  with pa_1 do
-  begin
-    Name := 'pa_1';
-    HelpContext := 1430 ;
-    Left := 0;
-    Top := 0;
-    Width := 57;
-    Height := 41;
-    BevelOuter := bvNone;
-    TabOrder := 1;
-  end;
-
-  with dbt_ident do
-  begin
-    Parent := Self;
-    SetOrdProp(dbt_ident, 'Left', 9);
-    SetOrdProp(dbt_ident, 'Top', 0);
-    SetOrdProp(dbt_ident, 'Width', 40);
-    SetOrdProp(dbt_ident, 'Height', 41);
-    Hint := 'S'#39'identifier/d'#233'connecter|Ouvrir la fen'#234'tre d'#39'identification';
-    Font.Charset := DEFAULT_CHARSET;
-    Font.Color := clWindowText;
-    Font.Height := -13;
-    HelpContext := 1430 ;
-    Font.Name := 'MS Sans Serif';
-    Font.Style := [];
-    ParentFont := False;
-    ParentShowHint := False;
-    ShowHint := True;
-    OnClick := dbt_identClick;
-    TabOrder := 0;
-    Layout := blGlyphRight;
-    Name := 'dbt_ident';
-  end;
-
-  with pa_2 do
-  begin
-    Name := 'pa_2';
-    Left := 63;
-    Top := 0;
-    HelpContext := 1430 ;
-    Width := 530;
-    Height := 41;
-    BevelOuter := bvNone;
-    TabOrder := 2;
-  end;
-
-  with pa_3 do
-  begin
-    Name := 'pa_3';
-    Left := 599;
-    Top := 0;
-    HelpContext := 1430 ;
-    Width := 57;
-    Height := 41;
-    Align := alRight;
-    BevelOuter := bvNone;
-    TabOrder := 3;
-  end;
-
-  with dbt_aide do
-  begin
-    Parent := Self;
-    if IsPublishedProp(dbt_aide, 'Left') then SetOrdProp(dbt_aide, 'Left', 9);
-    if IsPublishedProp(dbt_aide, 'Top') then SetOrdProp(dbt_aide, 'Top', 0);
-    if IsPublishedProp(dbt_aide, 'Width') then SetOrdProp(dbt_aide, 'Width', 41);
-    if IsPublishedProp(dbt_aide, 'Height') then SetOrdProp(dbt_aide, 'Height', 41);
-    Hint := 'Ouvrir l'#39'aide|Rubrique d'#39'aide';
-    Align := alCustom;
-    Font.Charset := DEFAULT_CHARSET;
-    Font.Color := clWindowText;
-    Font.Height := -13;
-    Font.Name := 'MS Sans Serif';
-    Font.Style := [];
-    HelpContext := 1430 ;
-    ParentFont := False;
-    ParentShowHint := False;
-    ShowHint := True;
-    OnClick := dbt_aideClick;
-    TabOrder := 0;
-    Layout := blGlyphRight;
-    Spacing := 0;
-    Name := 'dbt_aide';
-  end;
-
-  with br_statusbar do
-  begin
-    Name := 'br_statusbar';
-    Parent := Self;
-    Left := 0;
-    Top := 476;
-    Width := 765;
-    Height := 19;
-    HelpContext := 1460 ;
-    AutoHint := True;
-    BiDiMode := bdRightToLeft;
-    Panels.Add;
-    Panels[0].Width := 300;
-    Panels.Add;
-    Panels[1].Width := 20;
-    Panels.Add;
-    Panels[2].Alignment := taCenter;
-    Panels[2].Width := 100;
-    Panels.Add;
-    Panels[3].Alignment := taCenter;
-    Panels[3].Width := 70;
-    Panels.Add;
-    Panels[4].Alignment := taCenter;
-    Panels[4].Text := '88:88';
-    Panels[4].Width := 40;
-    Panels.Add;
-    Panels[5].Alignment := taCenter;
-    Panels[5].Text := 'MAJ';
-    Panels[5].Width := 35;
-    Panels.Add;
-    Panels[6].Alignment := taCenter;
-    Panels[6].Text := 'Num';
-    Panels[6].Width := 35;
-    Panels.Add;
-    Panels[7].Alignment := taCenter;
-    Panels[7].Bevel := pbNone;
-    Panels[7].Width := 5;
-    ParentBiDiMode := False;
-    {$IFNDEF FPC}
-    OnDrawPanel := br_statusbarDrawPanel;
-    {$ENDIF}
-  end;
-  
-  with pa_5 do
-  begin
-    Name := 'pa_5';
-    Parent := Self;
-    Left := 0;
-    Top := 45;
-    Width := 197;
-    Height := 431;
-    Align := alLeft;
-    BevelOuter := bvNone;
-    TabOrder := 2;
-    OnResize := pa_5Resize;
-  end;
-
-  with dock_volet do
-  begin
-    Name := 'dock_volet';
-    if IsPublishedProp(dock_volet, 'Left') then SetOrdProp(dock_volet, 'Left', 0);
-    if IsPublishedProp(dock_volet, 'Top') then SetOrdProp(dock_volet, 'Top', 0);
-    if IsPublishedProp(dock_volet, 'Width') then SetOrdProp(dock_volet, 'Width', 197);
-    if IsPublishedProp(dock_volet, 'Height') then SetOrdProp(dock_volet, 'Height', 431);
-    HelpContext := 1440 ;
-    Position := dpLeft;
-  end;
-
-  with tbar_volet do
-  begin
-    Name := 'tbar_volet';
-    Parent := dock_volet ;
-    OnCloseQuery := tbar_voletCloseQuery ;
-    if IsPublishedProp(tbar_volet, 'Left') then SetOrdProp(tbar_volet, 'Left', 0);
-    if IsPublishedProp(tbar_volet, 'Top') then SetOrdProp(tbar_volet, 'Top', 0);
-    Caption := 'Volet d'#39'acc'#232's';
-    HelpContext := 1440 ;
-    CloseButtonWhenDocked := True;
-    ClientAreaHeight := 413;
-    ClientAreaWidth := 193;
-    DockableTo := [dpLeft];
-    DockPos := 0;
-    FloatingMode := fmOnTopOfAllForms;
-    FullSize := True;
-    HideWhenInactive := False;
-    TabOrder := 0;
-    UseLastDock := False;
-    Visible := False;
-    OnClose := tbar_voletClose;
-    OnDockChanged := tbar_voletDockChanged;
-  {$IFDEF FPC}
-    Align := alLeft;
-  {$ENDIF}
-  end;
-
-  with scb_Volet do
-  begin
-    AutoScroll := True ;
-    Name := 'scb_Volet';
-    Parent := tbar_volet;
-    Left := 0;
-    Top := 0;
-    Width := 193;
-    Height := 413;
-    HelpContext := 1440 ;
-    Hint := 'Cliquer pour accéder aux fonctions';
-    HorzScrollBar.Smooth := True;
-    {$IFDEF DELHPI}
-    HorzScrollBar.Style := ssFlat;
-    HorzScrollBar.Tracking := False;
-    VertScrollBar.Style := ssFlat;
-    VertScrollBar.Tracking := False;
-    HotTrack := False;
-    {$ENDIF}
-    VertScrollBar.Smooth := True;
-    Align := alClient;
-    BorderStyle := bsNone;
-    Constraints.MinHeight := 10;
-    Constraints.MinWidth := 10;
-    DockSite := True;
-    Color := clGradientInactiveCaption;
-    ParentColor := False;
-    ParentShowHint := False;
-    ShowHint := True;
-    TabOrder := 0;
-  end;
-
-  with im_Liste do
-  begin
-    Name := 'im_Liste';
-  end;
-
-  with mu_MainMenu do
-  begin
-    Name := 'mu_MainMenu';
-    HelpContext := 1420 ;
-    Images := im_Liste;
-  end;
-
-  with mu_file do
-  begin
-    Name := 'mu_file';
-    HelpContext := 1420 ;
-    mu_MainMenu.Items.Add(mu_file);
-    Caption := '&Application';
-    Hint := 'Fermeture des fen'#234'tres ou de l'#39'application';
-  end;
-
-  with mu_identifier do
-  begin
-    Name := 'mu_identifier';
-    HelpContext := 1420 ;
-    mu_file.Add(mu_identifier);
-    Caption := 'S'#39'&identifier';
-    Hint := 'Ouvrir la fen'#234'tre d'#39'identification';
-    OnClick := dbt_identClick;
-  end;
-
-  with mu_ouvrir do
-  begin
-    Name := 'mu_ouvrir';
-    mu_file.Add(mu_ouvrir);
-    Caption := '&Ouvrir';
-    HelpContext := 1420 ;
-    Hint := 'Ouvrir une fonction';
-    Visible := False;
-  end;
-
-  with mu_sep1 do
-  begin
-    Name := 'mu_sep1';
-    HelpContext := 1420 ;
-    mu_file.Add(mu_sep1);
-    Caption := '-';
-  end;
-
-  with mu_quitter do
-  begin
-    Name := 'mu_quitter';
-    mu_file.Add(mu_quitter);
-    Caption := '&Quitter';
-    HelpContext := 1420 ;
-    Hint := 'Quitter|Quitter l'#39'application';
-    ShortCut := 32883;
-    OnClick := dbt_quitterClick;
-  end;
-
-  with mu_fenetre do
-  begin
-    Name := 'mu_fenetre';
-    mu_MainMenu.Items.Add(mu_fenetre);
-    HelpContext := 1420 ;
-    Caption := 'Fe&n'#234'tre';
-    Hint := 'Commandes relatives aux fen'#234'tres';
-  end;
-
-  with mu_Reinitiliserpresentation do
-  begin
-    Name := 'mu_Reinitiliserpresentation';
-    mu_Reinitiliserpresentation.Caption := 'Réinitialiser la présentation' ;
-    HelpContext := 1420 ;
-    mu_fenetre.Add(mu_Reinitiliserpresentation);
-    OnClick := mu_ReinitiliserpresentationClick;
-  end;
-
-  with mu_Sep3 do
-  begin
-    Name := 'mu_Sep3';
-    mu_Sep3.Caption := '-' ;
-    HelpContext := 1420 ;
-    mu_fenetre.Add(mu_Sep3);
-  end;
-
-  {$IFDEF MDI}
-  with mu_cascade do
-  begin
-    Name := 'mu_cascade';
-    mu_fenetre.Add(mu_cascade);
-    HelpContext := 1420 ;
-    Action := WindowCascade;
-  end;
-
-  with mu_mosaiqueh do
-  begin
-    Name := 'mu_mosaiqueh';
-    mu_fenetre.Add(mu_mosaiqueh);
-    HelpContext := 1420 ;
-    Action := WindowTileHorizontal;
-  end;
-
-  with mu_mosaiquev do
-  begin
-    Name := 'mu_mosaiquev';
-    mu_fenetre.Add(mu_mosaiquev);
-    HelpContext := 1420 ;
-    Action := WindowTileVertical;
-  end;
-
-  with mu_organiser do
-  begin
-    Name := 'mu_organiser';
-    mu_fenetre.Add(mu_organiser);
-    HelpContext := 1420 ;
-    Action := WindowArrangeAll;
-  end;
-
-  with WindowCascade do
-  begin
-    Name := 'WindowCascade';
-    Category := 'Fen'#234'tre';
-    HelpContext := 1420 ;
-    Caption := '&Cascade';
-    Hint := 'Cascade';
-    ImageIndex := 17;
-  end;
-
-  with WindowTileHorizontal do
-  begin
-    Name := 'WindowTileHorizontal';
-    Category := 'Fen'#234'tre';
-    HelpContext := 1420 ;
-    Caption := 'Mosa'#239'que &horizontale';
-    Hint := 'Mosa'#239'que horizontale';
-    ImageIndex := 15;
-  end;
-
-  with WindowTileVertical do
-  begin
-    Name := 'WindowTileVertical';
-    HelpContext := 1420 ;
-    Category := 'Fen'#234'tre';
-    Caption := 'Mosa'#239'que &verticale';
-    Hint := 'Mosa'#239'que verticale';
-    ImageIndex := 16;
-  end;
-
-  with WindowMinimizeAll do
-  begin
-    Name := 'WindowMinimizeAll';
-    HelpContext := 1420 ;
-    Category := 'Fen'#234'tre';
-    Caption := '&Tout r'#233'duire';
-    Hint := 'Tout r'#233'duire';
-  end;
-
-  with WindowArrangeAll do
-  begin
-    Name := 'WindowArrangeAll';
-    HelpContext := 1420 ;
-    Category := 'Fen'#234'tre';
-    Caption := 'Tout r'#233'&organiser';
-    Hint := 'Tout r'#233'organiser';
-  end;
-
- {$ENDIF}
-
-  with mu_reduire do
-  begin
-    Name := 'mu_reduire';
-    mu_fenetre.Add(mu_reduire);
-    HelpContext := 1420 ;
-    {$IFDEF FPC} OnClick := {$ELSE} Action := {$ENDIF}WindowMinimizeAll;
-  end;
-
-  with mu_affichage do
-  begin
-    Name := 'mu_affichage';
-    mu_MainMenu.Items.Add(mu_affichage);
-    HelpContext := 1420 ;
-    Caption := 'Affichage';
-  end;
-
-  with mu_barreoutils do
-  begin
-    Name := 'mu_barreoutils';
-    mu_affichage.Add(mu_barreoutils);
-    Caption := 'Barre d'#39'acc'#232's';
-    HelpContext := 1420 ;
-    OnClick := mu_barreoutilsClick;
-  end;
-
-  with mu_voletexplore do
-  begin
-    Name := 'mu_voletexplore';
-    mu_affichage.Add(mu_voletexplore);
-    Caption := 'Volet d'#39'acc'#232's';
-    HelpContext := 1420 ;
-    OnClick := mu_voletexploreClick;
-  end;
-
-  with mu_aide do
-  begin
-    Name := 'mu_aide';
-    mu_MainMenu.Items.Add(mu_aide);
-    Caption := '&Aide';
-    HelpContext := 1420 ;
-    Hint := 'Rubriques d'#39'aide';
-  end;
-
-  with mu_ouvriraide do
-  begin
-    Name := 'mu_ouvriraide';
-    mu_aide.Add(mu_ouvriraide);
-    Caption := '&Ouvrir l'#39'aide';
-    HelpContext := 1420 ;
-    Hint := 'Rubriques d'#39'aide';
-    OnClick := dbt_aideClick;
-  end;
-
-  with mu_sep2 do
-  begin
-    Name := 'mu_sep2';
-    HelpContext := 1420 ;
-    mu_aide.Add(mu_sep2);
-    Caption := '-';
-  end;
-
-{$IFDEF VERSIONS}
-  with mu_apropos do
-  begin
-    Name := 'mu_apropos';
-    HelpContext := 1420 ;
-    mu_aide.Add(mu_apropos);
-    Caption := '&A propos...';
-    Hint := 'A propos|Afficher des informations sur le programme, le num'#233'ro d' +
-      'e version et le copyright';
-    OnClick := mu_aproposClick;
-  end;
-{$ENDIF}
-  with ActionList do
-  begin
-    Name := 'ActionList';
-    HelpContext := 1420 ;
-    Images := im_Liste;
-  end;
-
-  with Timer do
-  begin
-    Name := 'Timer';
-    Interval := 60000;
-    OnTimer := TimerTimer;
-  end;
-
-  with SvgFormInfoIni do
-  begin
-    Name := 'SvgFormInfoIni';
-    SauvePosObjects := True;
-    SauveEditObjets := [];
-    SauvePosForm := True;
-    if IsPublishedProp(SvgFormInfoIni, 'Left') then SetOrdProp(SvgFormInfoIni, 'Left', 256);
-    if IsPublishedProp(SvgFormInfoIni, 'Top') then SetOrdProp(SvgFormInfoIni, 'Top', 168);
-  end;
-
-  with im_icones do
-  begin
-    Name := 'im_icones';
-  end;
-
-  pa_1.Caption := '' ;
-  pa_2.Caption := '' ;
-  pa_3.Caption := '' ;
-  pa_4.Caption := '' ;
-  pa_5.Caption := '' ;
-  dbt_ident  .Caption := '' ;
-  dbt_ident  .Parent  := pa_1 ;
-  dbt_aide   .Caption := '' ;
-  dbt_aide   .Parent  := pa_3 ;
-  dbt_quitter.Caption := '' ;
-  dbt_quitter.Parent := pa_4;
-
-  // Form's PMEs'
-  Left := 232;
-  Top := 167;
-  Width := 773;
-  Height := 549;
-  Caption := 'Exemple';
-  Color := 13565951;
-  Font.Charset := DEFAULT_CHARSET;
-  Font.Color := clWindowText;
-  Font.Height := -11;
-  Font.Name := 'MS Sans Serif';
-  Font.Style := [];
-  KeyPreview := True;
-  Menu := mu_MainMenu;
-  Position := poDesktopCenter;
-  {$IFNDEF FPC}
-  WindowMenu := mu_fenetre;
-  {$ENDIF}
-  Connection := M_Donnees.Connection;
-  Connector  := M_Donnees.Acces;
-  HelpContext := 1400 ;
-
-  FormStyle := fsMDIForm;
-
-  OnActivate := F_FormMainIniActivate;
-  OnResize := F_FormMainIniResize;
-
-end;
-{$ENDIF}
 
 {$IFDEF TNT}
 procedure TF_FenetrePrincipale.p_OnClickMenuLang(Sender:TObject);

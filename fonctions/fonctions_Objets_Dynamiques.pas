@@ -27,9 +27,9 @@ uses Forms, JvXPBar, JvXPContainer,
 {$IFDEF FPC}
    LCLIntf, LCLType, ComCtrls, gettext, Translations,
 {$ELSE}
-   Windows,
+   Windows, ExtTBTls, ExtDock, ExtTBTlwn, ExtTBTlbr,
 {$ENDIF}
-  ExtTBTls, ExtDock, ExtTBTlwn, ExtTBTlbr,
+
   Controls, Classes, JvXPButtons, ExtCtrls,
   Menus, fonctions_version,
 {$IFDEF DELPHI_9_UP}
@@ -122,8 +122,8 @@ procedure p_AjouteEvenement       ( const aF_FormParent       : TComponent  ;
         			          as_Evenement        : String     );
 function fcom_FindComponent ( const as_Name : String ; const AOwner : TComponent ): TComponent;
 procedure p_InitButtons ( const anav_Navigateur : TDBNavigator );
-procedure  p_EnableSommaire (       const aBar_ToolBarParent      : TExtToolbar  ;
-                        			      const aSep_ToolBarSepareDebut : TExtToolbarSep;
+procedure  p_EnableSommaire (       const aBar_ToolBarParent      : TCustomControl  ;
+                        			      const aSep_ToolBarSepareDebut : TControl;
                         			      const aPan_PanelSepareFin     : TWinControl  );
 function fIco_getIcon ( const aobj_Sender : Tobject ): TIcon;
 
@@ -799,8 +799,8 @@ End ;
 // aSep_ToolBarSepareDebut : Le séparateur de début
 // aSep_ToolBarSepareFin   : Le séparateur de fin
 
-procedure  p_EnableSommaire (       const aBar_ToolBarParent      : TExtToolbar   ;
-                                    const aSep_ToolBarSepareDebut : TExtToolbarSep;
+procedure  p_EnableSommaire (       const aBar_ToolBarParent      : TCustomControl   ;
+                                    const aSep_ToolBarSepareDebut : TControl;
                                     const aPan_PanelSepareFin     : TWinControl  );
 var li_i : integer ;
 Begin
@@ -811,8 +811,8 @@ Begin
     Exit ;
   for li_i := aBar_ToolBarParent.ControlCount - 1 downto 0 do
     if  ( aBar_ToolBarParent.Controls [ li_i ] is TControl )
-    and ( aBar_ToolBarParent.OrderIndex [ ( aBar_ToolBarParent.Controls [ li_i ] as TControl )] > aBar_ToolBarParent.OrderIndex [ aSep_ToolBarSepareDebut ])
-    and ( aBar_ToolBarParent.OrderIndex [ ( aBar_ToolBarParent.Controls [ li_i ] as TControl )] < aBar_ToolBarParent.OrderIndex [ aPan_PanelSepareFin     ])
+    and ( ( aBar_ToolBarParent.Controls [ li_i ] as TControl ).Left >  aSep_ToolBarSepareDebut.Left)
+    and (  ( aBar_ToolBarParent.Controls [ li_i ] as TControl ).Left <  aPan_PanelSepareFin.Left)
      Then
       aBar_ToolBarParent.Controls [ li_i ].Enabled := True ;
 End ;
