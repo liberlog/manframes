@@ -454,8 +454,8 @@ msgstr "Valider les modifications"
 #: unite_variables.gs_zones_obligatoires
 #, fuzzy
 #| msgid ""
-#| "zones @ARG ne peuvent pas #234tre vides.\n"
-#| "ectuer une saisie ou annuler.\n"
+#| "ones @ARG ne peuvent pas #234tre vides.\n"
+#| "ctuer une saisie ou annuler.\n"
 msgid ""
 "Les zones suivantes ne peuvent pas #234tre vides : @ARG .\n"
 "\n"
