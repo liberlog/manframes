@@ -56,7 +56,8 @@ const
        			                 FileUnit : 'U_FenetrePrincipale' ;
        			                 Owner : 'Matthieu Giroux' ;
        			                 Comment : 'Fenêtre principale utilisée pour la gestion automatisée à partir du fichier INI, avec des menus composés à partir des données.' + #13#10 + 'Elle dépend du composant Fenêtre principale qui lui n''est pas lié à l''application.' ;
-      			                 BugsStory : 'Version 3.1.0.0 : Passage en générique' + #13#10
+      			                 BugsStory : 'Version 3.1.0.1 : No ExtToolBar on Lazarus.' + #13#10 +
+                                                     'Version 3.1.0.0 : Passage en générique' + #13#10
                                                    + '3.0.5.3 : Désactivation du timer au destroy.' + #13#10
                                                    + '3.0.5.2 : p_FreeChildForms à la fermeture de l''appli.' + #13#10
                         			   + '3.0.5.1 : Plus de mise à jour de l''ini ici mais dans FormMainIni.' + #13#10
@@ -82,7 +83,7 @@ const
 			                	   + '3.0.0.1 : Bug AutoScroll sur le TScrollBox.' + #13#10
 			                	   + '3.0.0.0 : Gestion de l''INI par application.';
 			                 UnitType : CST_TYPE_UNITE_FICHE ;
-			                 Major : 3 ; Minor : 1 ; Release : 0 ; Build : 0 );
+			                 Major : 3 ; Minor : 1 ; Release : 0 ; Build : 1 );
 {$ENDIF}
 
 type

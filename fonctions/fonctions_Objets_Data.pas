@@ -72,9 +72,10 @@ const // Champs utilisés
   gver_fonctions_Objets_Data : T_Version = ( Component : 'Gestion des objets dynamiques de données' ; FileUnit : 'fonctions_Objets_Dynamiques' ;
               			                 Owner : 'Matthieu Giroux' ;
               			                 Comment : 'Gestion des données des objets dynamiques du composant Fenêtre principale.' + #13#10 + 'Il comprend une création de menus' ;
-              			                 BugsStory :  'Version 1.0.0.0 : Création de l''unité à partir de fonctions_objets_dynamiques.';
+              			                 BugsStory :  'Version 1.0.0.1 : No ExtToolBar on Lazarus.' + #13#10 +
+                                                             'Version 1.0.0.0 : Création de l''unité à partir de fonctions_objets_dynamiques.';
               			                 UnitType : 1 ;
-              			                 Major : 1 ; Minor : 0 ; Release : 0 ; Build : 0 );
+              			                 Major : 1 ; Minor : 0 ; Release : 0 ; Build : 1 );
 {$ENDIF}
 
 type  TFonction            = Record

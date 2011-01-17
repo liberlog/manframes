@@ -84,7 +84,8 @@ const // Evènements gérés
   gver_fonctions_Objets_Dynamiques : T_Version = ( Component : 'Gestion des objets dynamiques' ; FileUnit : 'fonctions_Objets_Dynamiques' ;
               			                 Owner : 'Matthieu Giroux' ;
               			                 Comment : 'Gestion des objets dynamiques du composant Fenêtre principale.' + #13#10 + 'Il comprend une création de menus' ;
-              			                 BugsStory : 'Version 1.3.0.0 : Création fonction_objets_data' + #13#10 +
+              			                 BugsStory : 'Version 1.3.0.1 : No ExtToolBar on Lazarus.' + #13#10 +
+                                                             'Version 1.3.0.0 : Création fonction_objets_data' + #13#10 +
                                 'Version 1.2.0.0 : Passage en générique' + #13#10 +
                                 'Version 1.1.2.0 : raccourcis d''aide répétés.' + #13#10 +
                                 'Version 1.1.1.1 : Ne pas utiliser HandleAllocated mais Handle <> 0.' + #13#10 +
@@ -98,7 +99,7 @@ const // Evènements gérés
 			                	        'Version 1.0.0.1 : Meilleure gestion des images, problèmes de rafraichissement.' + #13#10 +
 			                	        'Version 1.0.0.0 : La création est utilisée par Fenêtre Principale.';
               			                 UnitType : 1 ;
-              			                 Major : 1 ; Minor : 3 ; Release : 0 ; Build : 0 );
+              			                 Major : 1 ; Minor : 3 ; Release : 0 ; Build : 1 );
 
 
 
