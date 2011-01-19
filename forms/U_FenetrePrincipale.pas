@@ -214,8 +214,8 @@ type
     Destructor  Destroy; override;
     procedure   p_PbConnexion; override;
     procedure   p_Connectee; override;
-    procedure   p_WriteDescendantIni(const amif_Init: TMemIniFile); override;
-    procedure   p_ReadDescendantIni (const amif_Init: TMemIniFile); override;
+    procedure   p_WriteDescendantIni(const amif_Init: TIniFile); override;
+    procedure   p_ReadDescendantIni (const amif_Init: TIniFile); override;
     procedure   p_SortieMajNumScroll(const ab_MajEnfoncee, ab_NumEnfoncee,
                  			             ab_ScrollEnfoncee: boolean); override;
     procedure   p_ApresSauvegardeParamIni; override;
@@ -1131,7 +1131,7 @@ end;
 // Description : écriture de l'ini dans U_FenetrePrincipale à partir de U_FormMainIni
 //////////////////////////////////////////////////////////////////////////
 procedure TF_FenetrePrincipale.p_WriteDescendantIni(
-  const amif_Init: TMemIniFile);
+  const amif_Init: TIniFile);
 begin
   amif_Init.WriteString ( INISEC_PAR, GS_INI_NAME_FUSION1, GS_INI_PATH_FUSION1 );
   amif_Init.WriteString ( INISEC_PAR, GS_INI_NAME_FUSION2, GS_INI_PATH_FUSION2 );
@@ -1146,7 +1146,7 @@ end;
 // Description : écriture de l'ini dans U_FenetrePrincipale à partir de U_FormMainIni
 //////////////////////////////////////////////////////////////////////////
 procedure TF_FenetrePrincipale.p_ReadDescendantIni(
-  const amif_Init: TMemIniFile);
+  const amif_Init: TIniFile);
 begin
   gs_FilePath_Fusion1 := amif_Init.ReadString ( INISEC_PAR, GS_INI_NAME_FUSION1, GS_INI_PATH_FUSION1 );
   gs_FilePath_Fusion2 := amif_Init.ReadString ( INISEC_PAR, GS_INI_NAME_FUSION2, GS_INI_PATH_FUSION2 );
