@@ -1193,7 +1193,7 @@
       <Unit155>
         <Filename Value="../../fonctions/fonctions_Objets_Data.pas"/>
         <UnitName Value="fonctions_Objets_Data"/>
-        <CursorPos X="33" Y="1899"/>
+        <CursorPos X="72" Y="1895"/>
         <TopLine Value="1868"/>
         <EditorIndex Value="2"/>
         <UsageCount Value="12"/>
@@ -1345,6 +1345,9 @@
   </ProjectOptions>
   <CompilerOptions>
     <Version Value="8"/>
+    <SearchPaths>
+      <UnitOutputDirectory Value="$(TargetCPU)-$(TargetOS)"/>
+    </SearchPaths>
     <Linking>
       <Options>
         <Win32>
