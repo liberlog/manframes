@@ -3,7 +3,7 @@ object F_Administration: TF_Administration
   Height = 564
   Top = 188
   Width = 784
-  ActiveControl = Panel33
+  ActiveControl = pa_8
   Caption = 'Administration'
   ClientHeight = 564
   ClientWidth = 784
@@ -60,7 +60,7 @@ object F_Administration: TF_Administration
           Constraints.MinHeight = 41
           Constraints.MinWidth = 10
           ParentColor = False
-          TabOrder = 1
+          TabOrder = 0
           OnResize = pa_VoletResize
           object scb_Volet: TScrollBox
             Left = 0
@@ -79,133 +79,6 @@ object F_Administration: TF_Administration
             TabOrder = 0
           end
         end
-        object tb_Sommaire: TToolBar
-          Left = 0
-          Height = 50
-          Hint = 'Visionner ici votre barre d''accès'
-          Top = 0
-          Width = 778
-          Caption = 'Barre d''accès aux fonctions'
-          ParentShowHint = False
-          ShowHint = True
-          TabOrder = 0
-          object ToolbarSep971: TPanel
-            Left = 175
-            Height = 22
-            Top = 2
-            Width = 1
-            TabOrder = 4
-          end
-          object tb_SepDeb: TPanel
-            Left = 116
-            Height = 22
-            Top = 2
-            Width = 1
-            TabOrder = 5
-          end
-          object tb_SepDebut: TPanel
-            Left = 58
-            Height = 22
-            Top = 2
-            Width = 1
-            TabOrder = 6
-          end
-          object ToolbarSep979: TPanel
-            Left = 117
-            Height = 22
-            Top = 2
-            Width = 1
-            TabOrder = 7
-          end
-          object Panel8: TPanel
-            Left = 176
-            Height = 22
-            Top = 2
-            Width = 57
-            BevelOuter = bvNone
-            ClientHeight = 22
-            ClientWidth = 57
-            TabOrder = 0
-            object dxb_Quitter: TFWQuit
-              Left = 9
-              Height = 41
-              Hint = 'Quitter'
-              Top = 0
-              Width = 40
-              Caption = '&Fermer Tous'
-              Enabled = False
-              TabOrder = 0
-              Align = alCustom
-              Font.Height = -13
-              Font.Name = 'MS Sans Serif'
-              ParentFont = False
-              ParentShowHint = False
-              ShowHint = True
-            end
-          end
-          object pan_PanelFin: TPanel
-            Left = 118
-            Height = 22
-            Top = 2
-            Width = 57
-            BevelOuter = bvNone
-            ClientHeight = 22
-            ClientWidth = 57
-            TabOrder = 1
-            object dxb_Aide: TJvXPButton
-              Left = 9
-              Height = 41
-              Hint = 'Aide'
-              Top = 0
-              Width = 40
-              Enabled = False
-              TabOrder = 0
-              Layout = blGlyphRight
-              Spacing = 0
-              Align = alCustom
-              Font.Height = -13
-              Font.Name = 'MS Sans Serif'
-              ParentFont = False
-              ParentShowHint = False
-              ShowHint = True
-            end
-          end
-          object Panel33: TPanel
-            Left = 1
-            Height = 22
-            Top = 2
-            Width = 57
-            BevelOuter = bvNone
-            ClientHeight = 22
-            ClientWidth = 57
-            TabOrder = 2
-            object dxb_Identifier: TJvXPButton
-              Left = 9
-              Height = 41
-              Hint = 'S''identifier'
-              Top = 0
-              Width = 40
-              Enabled = False
-              TabOrder = 0
-              Layout = blGlyphRight
-              Align = alCustom
-              Font.Height = -13
-              Font.Name = 'MS Sans Serif'
-              ParentFont = False
-              ParentShowHint = False
-              ShowHint = True
-            end
-          end
-          object Panel36: TPanel
-            Left = 59
-            Height = 41
-            Top = 2
-            Width = 57
-            AutoSize = True
-            BevelOuter = bvNone
-            TabOrder = 3
-          end
-        end
         object RbPanel1: TPanel
           Left = 606
           Height = 456
@@ -221,7 +94,7 @@ object F_Administration: TF_Administration
           Font.Height = -11
           Font.Name = 'MS Sans Serif'
           ParentFont = False
-          TabOrder = 3
+          TabOrder = 2
           object Panel12: TPanel
             Left = 2
             Height = 47
@@ -353,7 +226,7 @@ object F_Administration: TF_Administration
           Font.Height = -11
           Font.Name = 'MS Sans Serif'
           ParentFont = False
-          TabOrder = 2
+          TabOrder = 1
           object RbSplitter7: TSplitter
             Cursor = crVSplit
             Left = 2
@@ -1061,6 +934,140 @@ object F_Administration: TF_Administration
             end
           end
         end
+        object tbar_outils: TToolBar
+          Left = 0
+          Height = 50
+          Hint = 'Cliquer sur un bouton pour accÃ©der Ã  une fonction'
+          Top = 0
+          Width = 778
+          HelpContext = 1430
+          Caption = 'Barre d''accÃ¨s'
+          Color = cl3DLight
+          ParentColor = False
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 5
+          object pa_5: TPanel
+            Left = 718
+            Height = 48
+            Top = 2
+            Width = 57
+            Align = alRight
+            BevelOuter = bvNone
+            ClientHeight = 48
+            ClientWidth = 57
+            TabOrder = 0
+            object dbt_quitter: TJvXPButton
+              Left = 9
+              Height = 41
+              Hint = 'Quitter'
+              Top = 0
+              Width = 41
+              HelpContext = 1430
+              TabOrder = 0
+              Font.Height = -13
+              Font.Name = 'MS Sans Serif'
+              ParentFont = False
+              ParentShowHint = False
+              ShowHint = True
+            end
+          end
+          object pa_7: TPanel
+            Left = 658
+            Height = 48
+            Top = 2
+            Width = 57
+            Align = alRight
+            BevelOuter = bvNone
+            ClientHeight = 48
+            ClientWidth = 57
+            TabOrder = 1
+            object dbt_aide: TJvXPButton
+              Left = 9
+              Height = 41
+              Hint = 'Ouvrir l''aide|Rubrique d''aide'
+              Top = 0
+              Width = 41
+              HelpContext = 1430
+              TabOrder = 0
+              Layout = blGlyphRight
+              Spacing = 0
+              Align = alCustom
+              Font.Height = -13
+              Font.Name = 'MS Sans Serif'
+              ParentFont = False
+              ParentShowHint = False
+              ShowHint = True
+            end
+          end
+          object tbsep_Debut: TPanel
+            Left = 58
+            Height = 48
+            Top = 2
+            Width = 3
+            Align = alLeft
+            TabOrder = 2
+          end
+          object tbsep_3: TPanel
+            Left = 715
+            Height = 48
+            Top = 2
+            Width = 3
+            Align = alRight
+            TabOrder = 3
+          end
+          object tbsep_4: TPanel
+            Left = 775
+            Height = 48
+            Top = 2
+            Width = 3
+            Align = alRight
+            TabOrder = 4
+          end
+          object pa_8: TPanel
+            Left = 1
+            Height = 48
+            Top = 2
+            Width = 57
+            Align = alLeft
+            BevelOuter = bvNone
+            ClientHeight = 48
+            ClientWidth = 57
+            TabOrder = 5
+            object dbt_ident: TJvXPButton
+              Left = 9
+              Height = 41
+              Hint = 'S''identifier/dÃ©connecter|Ouvrir la fenÃªtre d''identification'
+              Top = 0
+              Width = 40
+              HelpContext = 1430
+              TabOrder = 0
+              Layout = blGlyphRight
+              Font.Height = -13
+              Font.Name = 'MS Sans Serif'
+              ParentFont = False
+              ParentShowHint = False
+              ShowHint = True
+            end
+          end
+          object tbsep_2: TPanel
+            Left = 655
+            Height = 48
+            Top = 2
+            Width = 3
+            Align = alRight
+            TabOrder = 6
+          end
+          object pa_FinDyna: TPanel
+            Left = 61
+            Height = 48
+            Top = 2
+            Width = 594
+            Align = alClient
+            BevelOuter = bvNone
+            TabOrder = 7
+          end
+        end
       end
       object ts_connexion: TTabSheet
         Caption = 'Gestion des connexions'
@@ -1521,7 +1528,7 @@ object F_Administration: TF_Administration
             object ed_lib: TFWDBEdit
               Tag = 2
               Left = 144
-              Height = 32
+              Height = 27
               Hint = 'Libellé de connexion'
               Top = 60
               Width = 297
@@ -1537,13 +1544,13 @@ object F_Administration: TF_Administration
             object ed_code: TFWDBEdit
               Tag = 1
               Left = 144
-              Height = 32
+              Height = 27
               Hint = 'Code de connexion'
               Top = 34
               Width = 297
               DataField = 'CONN_Clep'
               ReadOnly = True
-              Color = clMoneyGreen
+              Color = clLime
               Font.Height = -13
               Font.Name = 'MS Sans Serif'
               ParentFont = False
@@ -2434,8 +2441,8 @@ object F_Administration: TF_Administration
   end
   object im_ListeImages: TImageList
     BkColor = clForeground
-    left = 120
-    top = 392
+    left = 200
+    top = 344
     Bitmap = {
       4C69040000001000000010000000000000FF000000FF000000FF000000FF0000
       00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
@@ -2572,8 +2579,8 @@ object F_Administration: TF_Administration
     DefaultExt = '.bmp'
     Filter = 'Bitmaps et Icônes|*.bmp;*.ico'
     Options = [ofReadOnly, ofHideReadOnly, ofPathMustExist, ofFileMustExist, ofEnableSizing]
-    left = 32
-    top = 344
+    left = 56
+    top = 248
   end
   object iml_Menus: TImageList
     BkColor = clForeground
@@ -2618,6 +2625,7 @@ object F_Administration: TF_Administration
   object OpenDialog: TOpenDialog
     DefaultExt = '.bmp'
     Filter = 'Fichiers Bitmap|*.bmp'
-    left = 32
+    left = 48
+    top = 160
   end
 end

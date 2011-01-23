@@ -92,18 +92,17 @@ type
   TF_Administration = class(TF_FormDico)
     im_ListeImages: TImageList;
     od_ChargerImage: TOpenDialog;
-    Panel8: TPanel;
-    dxb_Quitter: TFWQuit;
-    pan_PanelFin: TPanel;
-    dxb_Aide: TJvXpButton;
-    Panel33: TPanel;
-    dxb_Identifier: TJvXpButton;
-    Panel36: TPanel;
-    tb_Sommaire: {$IFDEF FPC}TToolbar{$ELSE}TExtToolbar{$ENDIF};
+    Panel36    : TPanel;
+    pa_5       : TPanel;
+    pa_7       : TPanel;
+    pa_8       : TPanel;
+    pa_FinDyna : TPanel;
+    dbt_ident : TJvXPButton;
+    dbt_quitter : TJvXPButton;
+    dbt_aide : TJvXPButton;
+    tbar_outils: {$IFDEF FPC}TToolbar{$ELSE}TExtToolbar{$ENDIF};
     ToolbarSep971: {$IFDEF FPC}TPanel{$ELSE}TExtToolbarSep{$ENDIF};
-    tb_SepDeb: {$IFDEF FPC}TPanel{$ELSE}TExtToolbarSep{$ENDIF};
-    tb_SepDebut: {$IFDEF FPC}TPanel{$ELSE}TExtToolbarSep{$ENDIF};
-    ToolbarSep979: {$IFDEF FPC}TPanel{$ELSE}TExtToolbarSep{$ENDIF};
+    tbsep_Debut: {$IFDEF FPC}TPanel{$ELSE}TExtToolbarSep{$ENDIF};
     {$IFNDEF FPC}
     Dock971: TDock;
     {$ENDIF}
@@ -192,7 +191,6 @@ type
     nav_Utilisateur: TExtDBNavigator;
     RbSplitter11: TSplitter;
     RbSplitter12: TSplitter;
-    pa_2: TPanel;
     Panel28: TPanel;
     nav_NavigateurMenu: TExtDBNavigator;
     Panel29: TPanel;
@@ -872,7 +870,7 @@ begin
     begin
       // Docker la toolbar à l'entrée
       {$IFNDEF FPC}
-      tb_Sommaire.DockedTo := Dock971;
+      tbar_outils.DockedTo := Dock971;
       {$ENDIF}
       // Affectation du sommaire du menu et du sous menu en cours
       //dbg_SommaireCellClick(dbg_Sommaire.Columns.Items[0]);
@@ -1050,7 +1048,7 @@ begin
             adoq_SommaireFonctions.Open  ;
             if not adoq_SommaireFonctions.IsEmpty Then
               adoq_SommaireFonctions.FindLast ;
-            fi_CreeSommaire ( Application.MainForm, Self, Columns [ 2 ].MyRecord, adoq_TreeUser, nil, tb_Sommaire, tb_SepDebut, pan_PanelFin, 49, nil, False );
+            fi_CreeSommaire ( Application.MainForm, Self, Columns [ 2 ].MyRecord, adoq_TreeUser, nil, tbar_outils, tbsep_Debut, pa_FinDyna, 49, nil, False );
             p_MAJBoutonsSommaire ;
           Except
           End ;
@@ -1199,7 +1197,7 @@ begin
        End
        Else
         Begin
-          fi_CreeSommaire  ( Application.MainForm, Self, Columns [ 2 ].MyRecord, adoq_TreeUser, nil, tb_Sommaire, tb_SepDebut, pan_PanelFin, 49, nil, False );
+          fi_CreeSommaire  ( Application.MainForm, Self, Columns [ 2 ].MyRecord, adoq_TreeUser, nil, tbar_outils, tbsep_Debut, pa_FinDyna, 49, nil, False );
           p_MAJBoutonsSommaire ;
         End ;
        // Mise à jour de la table liée
@@ -1320,7 +1318,7 @@ begin
           adoq_SommaireFonctions.Close ;
           adoq_MenuFonctions    .Close ;
           adoq_SousMenuFonctions.Close ;
-          p_DetruitSommaire ( tb_Sommaire, tb_SepDebut, pan_PanelFin );
+          p_DetruitSommaire ( tbar_outils, tbsep_Debut, pa_FinDyna );
         End ;
       if aDat_Dataset = adoq_Menus  // Effacement d'un menu et de ses descendants
        Then
@@ -1339,7 +1337,7 @@ begin
       aDat_Dataset.Delete ;
       if ( Columns [ 4 ].MyRecord <> Null ) Then
         fb_CreeXPButtons ( Columns [ 2 ].MyRecord, Columns [ 4 ].MyRecord, Application.MainForm, Self , scb_Volet, nil, adoq_QueryTempo, nil, False, iml_Menus  );
-      fi_CreeSommaire  ( Application.MainForm, Self, Columns [ 2 ].MyRecord, adoq_TreeUser, nil, tb_Sommaire, tb_SepDebut, pan_PanelFin, 49, nil, False );
+      fi_CreeSommaire  ( Application.MainForm, Self, Columns [ 2 ].MyRecord, adoq_TreeUser, nil, tbar_outils, tbsep_Debut, pa_FinDyna, 49, nil, False );
       p_MAJXPBoutons ;
       p_MAJBoutonsSommaire ;
       Result := True ;
@@ -1642,7 +1640,7 @@ begin
 
   gb_DesactiveRecherche := False ;
   bt_apercu.Visible := False;
-  tb_Sommaire.DoubleBuffered := False ;
+  tbar_outils.DoubleBuffered := False ;
 
   OpenDatasets := AdministrationOpenDatasets;
 
@@ -2208,18 +2206,18 @@ Begin
   try
     if adoq_SommaireFonctions.Active
      then
-      for li_i:= 0 to tb_Sommaire.ControlCount - 1 do
-        if (tb_Sommaire.Controls[li_i] is TPanel) then
-          if ((tb_Sommaire.Controls[li_i] as TPanel).ControlCount = 1)
-            and ((tb_Sommaire.Controls[li_i] as TPanel).Controls[0] is TJvXpButton) then
+      for li_i:= 0 to tbar_outils.ControlCount - 1 do
+        if (tbar_outils.Controls[li_i] is TPanel) then
+          if ((tbar_outils.Controls[li_i] as TPanel).ControlCount = 1)
+            and ((tbar_outils.Controls[li_i] as TPanel).Controls[0] is TJvXpButton) then
             begin
             if (    ( Columns [ 4 ].MyRecord <> Null )
-                and (((tb_Sommaire.Controls[li_i] as TPanel).Controls[0] as TJvXpButton).Hint = Columns [ 4 ].MyRecord )
-                and (((tb_Sommaire.Controls[li_i] as TPanel).Controls[0] as TJvXpButton).Tag = 1      ))
-            or (    (((tb_Sommaire.Controls[li_i] as TPanel).Controls[0] as TJvXpButton).Hint = adoq_SommaireFonctions.FieldByName ( CST_FONC_Libelle ).AsString )
-                and (((tb_Sommaire.Controls[li_i] as TPanel).Controls[0] as TJvXpButton).Tag = 2      ))
-             then ((tb_Sommaire.Controls[li_i] as TPanel).Controls[0] as TJvXpButton).Enabled := true
-             else ((tb_Sommaire.Controls[li_i] as TPanel).Controls[0] as TJvXpButton).Enabled := false;
+                and (((tbar_outils.Controls[li_i] as TPanel).Controls[0] as TJvXpButton).Hint = Columns [ 4 ].MyRecord )
+                and (((tbar_outils.Controls[li_i] as TPanel).Controls[0] as TJvXpButton).Tag = 1      ))
+            or (    (((tbar_outils.Controls[li_i] as TPanel).Controls[0] as TJvXpButton).Hint = adoq_SommaireFonctions.FieldByName ( CST_FONC_Libelle ).AsString )
+                and (((tbar_outils.Controls[li_i] as TPanel).Controls[0] as TJvXpButton).Tag = 2      ))
+             then ((tbar_outils.Controls[li_i] as TPanel).Controls[0] as TJvXpButton).Enabled := true
+             else ((tbar_outils.Controls[li_i] as TPanel).Controls[0] as TJvXpButton).Enabled := false;
             end;
   Except
   End ;
@@ -2433,7 +2431,7 @@ begin
         adoq_SommaireFonctions.Close ;
         adoq_SommaireFonctions.Open ;
         adoq_DatasetMAJNumerosOrdre ( adoq_SommaireFonctions, 2 );
-        fi_CreeSommaire ( Application.MainForm, Self, Columns [ 2 ].MyRecord, adoq_TreeUser, nil, tb_Sommaire, tb_SepDebut, pan_PanelFin, 49, nil, False );
+        fi_CreeSommaire ( Application.MainForm, Self, Columns [ 2 ].MyRecord, adoq_TreeUser, nil, tbar_outils, tbsep_Debut, pa_FinDyna, 49, nil, False );
         p_MAJBoutonsSommaire ;
       End ;
 
@@ -3295,7 +3293,7 @@ end;
 procedure TF_Administration.adoq_SommaireAfterInsert(DataSet: TDataSet);
 begin
   DataSet.FieldByName ( CST_SOMM_Niveau    ).Value := True ;
-  fi_CreeSommaire ( Application.MainForm, Self, Columns [ 2 ].MyRecord, adoq_TreeUser, nil, tb_Sommaire, tb_SepDebut, pan_PanelFin, 49, nil, False );
+  fi_CreeSommaire ( Application.MainForm, Self, Columns [ 2 ].MyRecord, adoq_TreeUser, nil, tbar_outils, tbsep_Debut, pa_FinDyna, 49, nil, False );
   p_MAJBoutonsSommaire ;
 
 end;
@@ -3339,11 +3337,11 @@ begin
   adoq_SousMenuFonctions.Open;
   adoq_MenuFonctions.Open;
   p_DetruitXPBar ( scb_volet );
-  p_DetruitSommaire ( tb_Sommaire, tb_SepDebut, pan_PanelFin );
+  p_DetruitSommaire ( tbar_outils, tbsep_Debut, pa_FinDyna );
   if Columns [ 2 ].MyRecord <> Null
    Then
     try
-      fi_CreeSommaire ( Application.MainForm, Self, Columns [ 2 ].MyRecord, adoq_TreeUser, nil, tb_Sommaire, tb_SepDebut, pan_PanelFin, 49, nil, False );
+      fi_CreeSommaire ( Application.MainForm, Self, Columns [ 2 ].MyRecord, adoq_TreeUser, nil, tbar_outils, tbsep_Debut, pa_FinDyna, 49, nil, False );
       if Columns [ 4 ].MyRecord <> Null
        Then
          Begin

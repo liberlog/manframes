@@ -16,7 +16,7 @@ uses
   U_Donnees,
   U_FormMainIni,
   U_CustomFrameWork,
-  lazmansoft, lazextcomponents, lazexttools,
+  lazmansoft, lazextcomponents,
   lazmanframes;
 
 {$IFNDEF FPC}

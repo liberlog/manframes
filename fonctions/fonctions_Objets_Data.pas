@@ -379,9 +379,9 @@ begin
                 if assigned ( F_Administration ) Then
                   with F_Administration Do
                     Begin
-                      dxb_Identifier.Glyph.Assign (( Application.MainForm as TF_FenetrePrincipale ).dbt_ident  .Glyph );
-                      dxb_Aide      .Glyph.Assign (( Application.MainForm as TF_FenetrePrincipale ).dbt_aide   .Glyph );
-                      dxb_Quitter   .Glyph.Assign (( Application.MainForm as TF_FenetrePrincipale ).dbt_quitter.Glyph );
+                      dbt_Ident  .Glyph.Assign (( Application.MainForm as TF_FenetrePrincipale ).dbt_ident  .Glyph );
+                      dbt_Aide   .Glyph.Assign (( Application.MainForm as TF_FenetrePrincipale ).dbt_aide   .Glyph );
+                      dbt_Quitter.Glyph.Assign (( Application.MainForm as TF_FenetrePrincipale ).dbt_quitter.Glyph );
                     End;
               End;
             if assigned ( lico_Icon ) Then
@@ -1659,6 +1659,7 @@ var lbtn_ToolBarButton  : TJvXPButton  ;  // Nouveau bouton
     ls_FonctionMode     ,          // Mode de Fonction en cours
     ls_FonctionNom      : string ; // Nom de la Fonction en cours}
     lico_FonctionBitmap : TBitmap ;  // Icône de la Fonction en cours
+    lSep_OldToolBarSepare : TControl;
 Begin
   Result := 0 ;
 // Tout doit exister
@@ -1822,6 +1823,7 @@ Begin
    Then
     Begin
       aadoq_QueryFonctions.FindFirst ;
+      lSep_OldToolBarSepare := aSep_ToolBarSepareDebut;
       while not ( aadoq_QueryFonctions.Eof ) do
         Begin
              // Incrmétation des fonctions en sortie
@@ -1829,48 +1831,59 @@ Begin
            // Affectation des valeurs
            // création d''un panel d'un bouton d'un séparateur
           lPan_ToolBarPanel   := TPanel       .Create ( aF_FormParent ); // Nouveau panel
-          lbtn_ToolBarButton  := TJvXPButton   .Create ( lPan_ToolBarPanel  );  // Nouveau bouton
+          lbtn_ToolBarButton  := TJvXPButton   .Create ( aF_FormParent  );  // Nouveau bouton
           lSep_ToolBarSepare  := fcom_CloneObject (aSep_ToolBarSepareDebut, aSep_ToolBarSepareDebut.Owner ) as TControl;// Nouveau séparateur
 
+          lPan_ToolBarPanel .Parent := aBar_ToolBarParent ; // Parent Barre  : Toolbar
+          lSep_ToolBarSepare.Parent := aBar_ToolBarParent ; // Parent séparateur : Toolbar
+          lbtn_ToolBarButton.Parent := lPan_ToolBarPanel  ; // Parent bouton : Panel
+
+          {$IFDEF FPC}
+          lPan_ToolBarPanel .Align :=alLeft;
+          lSep_ToolBarSepare.Align :=alLeft;
+          lSep_ToolBarSepare.Width := 3 ;
+          lSep_ToolBarSepare.Caption := '';
+          {$ENDIF}
           //Gestion des raccourcis d'aide
           lPan_ToolBarPanel .HelpType    := aBar_ToolBarParent.HelpType ;
           lPan_ToolBarPanel .HelpKeyword := aBar_ToolBarParent.HelpKeyword ;
-          lPan_ToolBarPanel .HelpContext :=  aBar_ToolBarParent.HelpContext ;
+          lPan_ToolBarPanel .HelpContext := aBar_ToolBarParent.HelpContext ;
           lbtn_ToolBarButton.HelpType    := aBar_ToolBarParent.HelpType ;
           lbtn_ToolBarButton.HelpKeyword := aBar_ToolBarParent.HelpKeyword ;
-          lbtn_ToolBarButton.HelpContext :=  aBar_ToolBarParent.HelpContext ;
-          lSep_ToolBarSepare.HelpContext :=  aBar_ToolBarParent.HelpContext ;
+          lbtn_ToolBarButton.HelpContext := aBar_ToolBarParent.HelpContext ;
+          lSep_ToolBarSepare.HelpContext := aBar_ToolBarParent.HelpContext ;
           lSep_ToolBarSepare.HelpType    := aBar_ToolBarParent.HelpType ;
           lSep_ToolBarSepare.HelpKeyword := aBar_ToolBarParent.HelpKeyword ;
 
           lSep_ToolBarSepare.Name := CST_SEP_NOM_DEBUT   + IntToStr ( li_CompteurFonctions );
           lPan_ToolBarPanel .Name := CST_PANEL_NOM_DEBUT + IntToStr ( li_CompteurFonctions );
-          lPan_ToolBarPanel .Parent := aBar_ToolBarParent ; // Parent Barre  : Toolbar
-          lSep_ToolBarSepare.Parent := aBar_ToolBarParent ; // Parent séparateur : Toolbar
-          lbtn_ToolBarButton.Parent := lPan_ToolBarPanel  ; // Parent bouton : Panel
            // Aligne en haut
           aBar_ToolBarParent.Realign ;
-          lPan_ToolBarPanel.Align      := alLeft ;
           lPan_ToolBarPanel.TabOrder   := aPan_PanelSepareFin.TabOrder - 1 ;
+          {$IFDEF FPC}
+          lPan_ToolBarPanel .Left := lSep_OldToolBarSepare.Left + lSep_OldToolBarSepare.Width + 1;
+          {$ELSE}
           lPan_ToolBarPanel.Left := aPan_PanelSepareFin.Left -1 ;
-          {$IFNDEF FPC}
           if aBar_ToolBarParent is TExtToolBar Then
             ( aBar_ToolBarParent as TExtToolBar ).OrderIndex [ lPan_ToolBarPanel ]  := ( aBar_ToolBarParent as TExtToolBar ).OrderIndex [ aPan_PanelSepareFin ] ;
+          lPan_ToolBarPanel.Height     := aPan_PanelSepareFin.Height ;
           {$ENDIF}
 //          if ( aPan_PanelSepareFin <> gPan_PanelSepareFin ) Then
 //            ShowMessage ( IntToStr ( aBar_ToolBarParent.OrderIndex [ lPan_ToolBarPanel ]) +' '  + IntTOStr ( aBar_ToolBarParent.OrderIndex [ aPan_PanelSepareFin ]));
           lPan_ToolBarPanel.Width      := ai_TailleUnPanel ;
-          lPan_ToolBarPanel.Height     := aPan_PanelSepareFin.Height ;
           lPan_ToolBarPanel.Caption    := '' ;
           lPan_ToolBarPanel.BevelOuter := bvNone ;
             // affectation du compteur de nom
 
     //      lSep_ToolBarSepare.Align    := alClient ;
+          {$IFDEF FPC}
+          lSep_ToolBarSepare.Left := lPan_ToolBarPanel.Left + lPan_ToolBarPanel.Width + 1 ;
+          {$ELSE}
           lSep_ToolBarSepare.Left := aPan_PanelSepareFin.Left - 1 ;
-          {$IFNDEF FPC}
           if aBar_ToolBarParent is TExtToolBar Then
             ( aBar_ToolBarParent as TExtToolBar ).OrderIndex [ lSep_ToolBarSepare ]  := ( aBar_ToolBarParent as TExtToolBar ).OrderIndex [ aPan_PanelSepareFin ] ;
           {$ENDIF}
+          lSep_OldToolBarSepare := lSep_ToolBarSepare;
                        // affectation du libellé du menu
           lbtn_ToolBarButton.Layout   := blGlyphRight ;
           lbtn_ToolBarButton.Caption  := '' ;

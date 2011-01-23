@@ -4,7 +4,7 @@ inherited F_FenetrePrincipale: TF_FenetrePrincipale
   Top = 250
   Width = 775
   HelpContext = 1400
-  ActiveControl = tbsep_1
+  ActiveControl = spl_volet
   Align = alClient
   AutoSize = True
   Caption = 'Exemple'
@@ -73,29 +73,8 @@ inherited F_FenetrePrincipale: TF_FenetrePrincipale
     ParentShowHint = False
     ShowHint = True
     TabOrder = 0
-    object tbsep_3: TPanel
-      Left = 590
-      Height = 22
-      Top = 2
-      Width = 1
-      TabOrder = 4
-    end
-    object tbsep_1: TPanel
-      Left = 588
-      Height = 22
-      Top = 2
-      Width = 1
-      TabOrder = 5
-    end
-    object tbsep_2: TPanel
-      Left = 589
-      Height = 22
-      Top = 2
-      Width = 1
-      TabOrder = 6
-    end
     object pa_4: TPanel
-      Left = 718
+      Left = 715
       Height = 48
       Top = 2
       Width = 57
@@ -120,42 +99,8 @@ inherited F_FenetrePrincipale: TF_FenetrePrincipale
         OnClick = dbt_quitterClick
       end
     end
-    object pa_1: TPanel
-      Left = 1
-      Height = 22
-      Top = 2
-      Width = 57
-      BevelOuter = bvNone
-      ClientHeight = 22
-      ClientWidth = 57
-      TabOrder = 1
-      object dbt_ident: TJvXPButton
-        Left = 9
-        Height = 41
-        Hint = 'S''identifier/déconnecter|Ouvrir la fenêtre d''identification'
-        Top = 0
-        Width = 40
-        HelpContext = 1430
-        TabOrder = 0
-        Layout = blGlyphRight
-        Font.Height = -13
-        Font.Name = 'MS Sans Serif'
-        ParentFont = False
-        ParentShowHint = False
-        ShowHint = True
-        OnClick = dbt_identClick
-      end
-    end
-    object pa_2: TPanel
-      Left = 58
-      Height = 22
-      Top = 2
-      Width = 530
-      BevelOuter = bvNone
-      TabOrder = 2
-    end
     object pa_3: TPanel
-      Left = 661
+      Left = 655
       Height = 48
       Top = 2
       Width = 57
@@ -163,7 +108,7 @@ inherited F_FenetrePrincipale: TF_FenetrePrincipale
       BevelOuter = bvNone
       ClientHeight = 48
       ClientWidth = 57
-      TabOrder = 3
+      TabOrder = 1
       object dbt_aide: TJvXPButton
         Left = 9
         Height = 41
@@ -182,6 +127,74 @@ inherited F_FenetrePrincipale: TF_FenetrePrincipale
         ShowHint = True
         OnClick = dbt_aideClick
       end
+    end
+    object tbsep_1: TPanel
+      Left = 58
+      Height = 48
+      Top = 2
+      Width = 3
+      Align = alLeft
+      TabOrder = 2
+    end
+    object tbsep_3: TPanel
+      Left = 712
+      Height = 48
+      Top = 2
+      Width = 3
+      Align = alRight
+      TabOrder = 3
+    end
+    object tbsep_4: TPanel
+      Left = 772
+      Height = 48
+      Top = 2
+      Width = 3
+      Align = alRight
+      TabOrder = 4
+    end
+    object pa_1: TPanel
+      Left = 1
+      Height = 48
+      Top = 2
+      Width = 57
+      Align = alLeft
+      BevelOuter = bvNone
+      ClientHeight = 48
+      ClientWidth = 57
+      TabOrder = 5
+      object dbt_ident: TJvXPButton
+        Left = 9
+        Height = 41
+        Hint = 'S''identifier/déconnecter|Ouvrir la fenêtre d''identification'
+        Top = 0
+        Width = 40
+        HelpContext = 1430
+        TabOrder = 0
+        Layout = blGlyphRight
+        Font.Height = -13
+        Font.Name = 'MS Sans Serif'
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = True
+        OnClick = dbt_identClick
+      end
+    end
+    object tbsep_2: TPanel
+      Left = 652
+      Height = 48
+      Top = 2
+      Width = 3
+      Align = alRight
+      TabOrder = 6
+    end
+    object pa_2: TPanel
+      Left = 61
+      Height = 48
+      Top = 2
+      Width = 591
+      Align = alClient
+      BevelOuter = bvNone
+      TabOrder = 7
     end
   end
   object br_statusbar: TStatusBar[6]

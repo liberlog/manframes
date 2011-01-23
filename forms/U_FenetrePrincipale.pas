@@ -94,6 +94,7 @@ type
     dbt_aide: TJvXPButton;
     dbt_ident: TJvXPButton;
     dbt_quitter: TJvXPButton;
+    mu_apropos: TMenuItem;
     {$IFDEF VERSIONS}
     mu_apropos: TMenuItem;
     {$ENDIF}
@@ -120,10 +121,11 @@ type
     mu_Reinitiliserpresentation: TMenuItem;
 
     ActionList: TActionList;
-    pa_1: TPanel;
     pa_2: TPanel;
+    pa_1: TPanel;
     pa_3: TPanel;
     pa_4: TPanel;
+    tbsep_4: TPanel;
     {$IFDEF MDI}
     WindowCascade: TWindowCascade;
     WindowTileHorizontal: TWindowTileHorizontal;
@@ -138,8 +140,8 @@ type
     {$IFNDEF FPC}
     dock_outils: TDock;
     dock_volet: TDock;
-    tbar_volet: {$IFDEF FPC}TToolbar{$ELSE}TExtToolbar{$ENDIF};
     {$ENDIF}
+    tbar_volet: {$IFDEF FPC}TToolbar{$ELSE}TExtToolbar{$ENDIF};
     tbsep_1: {$IFDEF FPC}TPanel{$ELSE}TExtToolbarSep{$ENDIF};
     tbsep_2: {$IFDEF FPC}TPanel{$ELSE}TExtToolbarSep{$ENDIF};
     tbsep_3: {$IFDEF FPC}TPanel{$ELSE}TExtToolbarSep{$ENDIF};
@@ -315,9 +317,9 @@ begin
   CreateLanguagesController ( mu_langue );
 {$ENDIF}
 
-  p_FreeConfigFile ;
   gs_DefaultUser := gmif_MainFormIniInit.Readstring ( INISEC_PAR, INISEC_UTI, '' );
 
+  p_FreeConfigFile ;
   SvgFormInfoIni.LaFormCreate ( Self );
   // Lecture des infos des composants du fichier INI
   SvgFormInfoIni.ExecuteLecture(True);
