@@ -1040,6 +1040,8 @@ procedure TF_FenetrePrincipale.p_SortieMajNumScroll(const ab_MajEnfoncee,
                         			                	    ab_NumEnfoncee,
                         			                	    ab_ScrollEnfoncee: boolean);
 begin
+  if gb_FirstAcces Then
+    Exit;
   br_statusbar.Panels.BeginUpdate ;
   if ab_MajEnfoncee then
     br_statusbar.Panels[5].Style := psText
