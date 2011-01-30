@@ -1888,7 +1888,7 @@ Begin
           lbtn_ToolBarButton.Layout   := blGlyphRight ;
           lbtn_ToolBarButton.Caption  := '' ;
           lbtn_ToolBarButton.ShowHint := True ;
-          lbtn_ToolBarButton.Height  := aPan_PanelSepareFin.Height ;
+          lbtn_ToolBarButton.Height  := aPan_PanelSepareFin.Height - 4 ;
           lbtn_ToolBarButton.Width   := lbtn_ToolBarButton.Height ;
           lbtn_ToolBarButton.Left    := ( lPan_ToolBarPanel.Width - lbtn_ToolBarButton.Width  ) div 2 ;
           if  lb_UtiliseSousMenu

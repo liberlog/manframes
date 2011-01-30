@@ -92,6 +92,8 @@ type
   TF_Administration = class(TF_FormDico)
     im_ListeImages: TImageList;
     od_ChargerImage: TOpenDialog;
+    pa_2       : TPanel;
+    pa_Main    : TPanel;
     Panel36    : TPanel;
     pa_5       : TPanel;
     pa_7       : TPanel;
@@ -101,8 +103,10 @@ type
     dbt_quitter : TJvXPButton;
     dbt_aide : TJvXPButton;
     tbar_outils: {$IFDEF FPC}TToolbar{$ELSE}TExtToolbar{$ENDIF};
-    ToolbarSep971: {$IFDEF FPC}TPanel{$ELSE}TExtToolbarSep{$ENDIF};
     tbsep_Debut: {$IFDEF FPC}TPanel{$ELSE}TExtToolbarSep{$ENDIF};
+    tbsep_2    : {$IFDEF FPC}TPanel{$ELSE}TExtToolbarSep{$ENDIF};
+    tbsep_3    : {$IFDEF FPC}TPanel{$ELSE}TExtToolbarSep{$ENDIF};
+    tbsep_4    : {$IFDEF FPC}TPanel{$ELSE}TExtToolbarSep{$ENDIF};
     {$IFNDEF FPC}
     Dock971: TDock;
     {$ENDIF}

@@ -19,7 +19,7 @@ inherited F_FenetrePrincipale: TF_FenetrePrincipale
   Menu = mu_MainMenu
   OnActivate = F_FormMainIniActivate
   OnResize = F_FormMainIniResize
-  Position = poDesktopCenter
+  Position = poScreenCenter
   Visible = True
   object im_appli: TImage[0]
     Left = 248
@@ -170,6 +170,7 @@ inherited F_FenetrePrincipale: TF_FenetrePrincipale
         Width = 40
         HelpContext = 1430
         TabOrder = 0
+        Default = True
         Layout = blGlyphRight
         Font.Height = -13
         Font.Name = 'MS Sans Serif'

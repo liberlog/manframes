@@ -307,7 +307,7 @@ object F_Administration: TF_Administration
                 Width = 193
                 TitleButtons = False
                 AutoSort = False
-                Columns = <                
+                Columns = <
                   item
                     Title.Alignment = taCenter
                     Title.Caption = 'Menu'
@@ -316,7 +316,7 @@ object F_Administration: TF_Administration
                     FieldName = 'MENU_Clep'
                     Filter.DropDownRows = 0
                     Filter.ItemIndex = -1
-                  end                
+                  end
                   item
                     Alignment = taCenter
                     Title.Alignment = taCenter
@@ -362,7 +362,7 @@ object F_Administration: TF_Administration
                 Width = 176
                 TitleButtons = False
                 AutoSort = False
-                Columns = <                
+                Columns = <
                   item
                     Color = clInfoBk
                     Title.Alignment = taCenter
@@ -371,7 +371,7 @@ object F_Administration: TF_Administration
                     FieldName = 'FONC_Libelle'
                     Filter.DropDownRows = 0
                     Filter.ItemIndex = -1
-                  end                
+                  end
                   item
                     Alignment = taCenter
                     Color = clMoneyGreen
@@ -497,7 +497,7 @@ object F_Administration: TF_Administration
                   Width = 193
                   TitleButtons = False
                   AutoSort = False
-                  Columns = <                  
+                  Columns = <
                     item
                       Title.Alignment = taCenter
                       Title.Caption = 'Sous-Menu'
@@ -506,7 +506,7 @@ object F_Administration: TF_Administration
                       FieldName = 'SOUM_Clep'
                       Filter.DropDownRows = 0
                       Filter.ItemIndex = -1
-                    end                  
+                    end
                     item
                       Alignment = taCenter
                       Title.Alignment = taCenter
@@ -588,7 +588,7 @@ object F_Administration: TF_Administration
                   Width = 176
                   TitleButtons = False
                   AutoSort = False
-                  Columns = <                  
+                  Columns = <
                     item
                       Color = clInfoBk
                       Title.Alignment = taCenter
@@ -598,7 +598,7 @@ object F_Administration: TF_Administration
                       FieldName = 'FONC_Libelle'
                       Filter.DropDownRows = 0
                       Filter.ItemIndex = -1
-                    end                  
+                    end
                     item
                       Alignment = taCenter
                       Color = clMoneyGreen
@@ -805,7 +805,7 @@ object F_Administration: TF_Administration
                   Width = 193
                   TitleButtons = False
                   AutoSort = False
-                  Columns = <                  
+                  Columns = <
                     item
                       Title.Alignment = taCenter
                       Title.Caption = 'Sommaire'
@@ -814,7 +814,7 @@ object F_Administration: TF_Administration
                       FieldName = 'SOMM_Clep'
                       Filter.DropDownRows = 0
                       Filter.ItemIndex = -1
-                    end                  
+                    end
                     item
                       Title.Alignment = taCenter
                       Title.Caption = 'Sous-menus'
@@ -857,7 +857,7 @@ object F_Administration: TF_Administration
                   Width = 176
                   TitleButtons = False
                   AutoSort = False
-                  Columns = <                  
+                  Columns = <
                     item
                       Color = clInfoBk
                       Title.Alignment = taCenter
@@ -867,7 +867,7 @@ object F_Administration: TF_Administration
                       FieldName = 'FONC_Libelle'
                       Filter.DropDownRows = 0
                       Filter.ItemIndex = -1
-                    end                  
+                    end
                     item
                       Alignment = taCenter
                       Color = clMoneyGreen
@@ -934,7 +934,7 @@ object F_Administration: TF_Administration
             end
           end
         end
-        object tbar_outils: TToolBar
+          object tbar_outils: TToolBar
           Left = 0
           Height = 50
           Hint = 'Cliquer sur un bouton pour accÃ©der Ã  une fonction'
@@ -1117,7 +1117,7 @@ object F_Administration: TF_Administration
             Width = 293
             TitleButtons = False
             AutoSort = False
-            Columns = <            
+            Columns = <
               item
                 Title.Alignment = taCenter
                 Title.Caption = 'Code'
@@ -1126,7 +1126,7 @@ object F_Administration: TF_Administration
                 FieldName = 'CONN_Clep'
                 Filter.DropDownRows = 0
                 Filter.ItemIndex = -1
-              end            
+              end
               item
                 Title.Alignment = taCenter
                 Title.Caption = 'Libellé'
@@ -1135,7 +1135,7 @@ object F_Administration: TF_Administration
                 FieldName = 'CONN_Libelle'
                 Filter.DropDownRows = 0
                 Filter.ItemIndex = -1
-              end            
+              end
               item
                 Title.Alignment = taCenter
                 Title.Caption = 'Chaîne de connexion'
@@ -1351,7 +1351,7 @@ object F_Administration: TF_Administration
                 Top = 25
                 Width = 157
                 Align = alClient
-                Columns = <                
+                Columns = <
                   item
                     AutoSize = True
                     Caption = 'Non membres'
@@ -1396,7 +1396,7 @@ object F_Administration: TF_Administration
                 Top = 25
                 Width = 225
                 Align = alLeft
-                Columns = <                
+                Columns = <
                   item
                     AutoSize = True
                     Caption = 'Membres'
@@ -1969,7 +1969,7 @@ object F_Administration: TF_Administration
                 Top = 25
                 Width = 157
                 Align = alClient
-                Columns = <                
+                Columns = <
                   item
                     AutoSize = True
                     Caption = 'Non membres'
@@ -2014,7 +2014,7 @@ object F_Administration: TF_Administration
                 Top = 25
                 Width = 225
                 Align = alLeft
-                Columns = <                
+                Columns = <
                   item
                     AutoSize = True
                     Caption = 'Membres'
@@ -2097,7 +2097,7 @@ object F_Administration: TF_Administration
             Width = 293
             TitleButtons = True
             AutoSort = False
-            Columns = <            
+            Columns = <
               item
                 Font.Color = 13500416
                 Font.Height = -11
@@ -2109,7 +2109,7 @@ object F_Administration: TF_Administration
                 FieldName = 'UTIL_Clep'
                 Filter.DropDownRows = 0
                 Filter.ItemIndex = -1
-              end            
+              end
               item
                 Font.Color = 13500416
                 Font.Height = -11
