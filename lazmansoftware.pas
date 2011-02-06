@@ -2,12 +2,13 @@
   Cette source est seulement employée pour compiler et installer le paquet.
  }
 
-unit lazmansoft; 
+unit lazmansoftware; 
 
 interface
 
 uses
-  fonctions_Objets_Dynamiques, LazarusPackageIntf;
+    U_Acces, U_Donnees, U_Administration, U_FenetrePrincipale, U_MotPasse, 
+  U_Splash, fonctions_Objets_Data, LazarusPackageIntf;
 
 implementation
 
@@ -16,5 +17,5 @@ begin
 end; 
 
 initialization
-  RegisterPackage('lazmansoft', @Register); 
+  RegisterPackage('lazmansoftware', @Register); 
 end.

@@ -17,7 +17,7 @@ uses
   U_FormMainIni,
   U_CustomFrameWork,
   lazmansoft, lazextcomponents,
-  lazmanframes;
+  lazmanframes, lazmansoftware;
 
 {$IFNDEF FPC}
 var lico_Icon        : TIcon ;

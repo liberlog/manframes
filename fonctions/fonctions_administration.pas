@@ -26,13 +26,13 @@ Gestion des connexions - Utilisateurs / Connexion
 interface
 
 uses
-  DB, ADODB, ADOInt, Dialogs, JvWinDialogs, ImgList, Controls,
-  DBCtrls, StdCtrls, Grids, DBGrids, RXDBCtrl, U_DBListView,
-  ExRxDBGrid, Mask, ComCtrls, RxLookup, U_GroupView,
+  Dialogs, JvWinDialogs, ImgList, Controls,
+  StdCtrls, Grids, DBGrids,
+  Mask, ComCtrls,
   dxCore2, dxButtons, Forms,
   dxContainer, ExtCtrls, Classes, Messages,
-  fonctions_version, JvDialogs, U_FormDico, JvExComCtrls, JvListView,
-  U_ExtDBNavigator, Graphics, JvExControls, JvXPCore, JvXPButtons;
+  fonctions_version, JvDialogs, JvExComCtrls, JvListView,
+  Graphics, JvExControls, JvXPCore, JvXPButtons;
 
 const
   gver_fonctions_Administration : T_Version = ( Component : 'Fonctions de gestion de droits' ;
@@ -55,9 +55,6 @@ const
 //      const dbl_Fonctions : TDBListView);
 // Mise à jour de l'image en cours sur les Menus
 // Dataset : Table menus
-     procedure adot_admin_MenusAfterScroll(var DatasetClep : String ; var lvar_EnrMenu : Variant;const Dataset,adot_SousMenus,adoq_MenuFonctions,adoq_SousMenuFonctions:TDataset ; const dbg_Dataset : TCustomDBgrid; const dxb_Image : TJvXpButton ; const dbi_ImageTemp: TDBImage ; const ls_Clep :String);
-
-     procedure p_admin_refresh ( const adat_Dataset : TDataset ; const adbg_grid : TCustomControl );
 {
 // Mise à jour de l'image en cours sur les Sous Menus
 // Dataset : Table Sous menus

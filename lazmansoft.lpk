@@ -24,55 +24,11 @@
     <Description Value="Full management software RAD Framework"/>
     <License Value="LGPL"/>
     <Version Minor="9" Build="9"/>
-    <Files Count="12">
+    <Files Count="1">
       <Item1>
-        <Filename Value="forms/U_Acces.lfm"/>
-        <Type Value="LFM"/>
-      </Item1>
-      <Item2>
-        <Filename Value="forms/U_Acces.lrs"/>
-        <Type Value="LRS"/>
-      </Item2>
-      <Item3>
-        <Filename Value="forms/U_Acces.pas"/>
-        <UnitName Value="U_Acces"/>
-      </Item3>
-      <Item4>
-        <Filename Value="forms/U_Donnees.pas"/>
-        <UnitName Value="U_Donnees"/>
-      </Item4>
-      <Item5>
-        <Filename Value="forms/U_Administration.pas"/>
-        <UnitName Value="U_Administration"/>
-      </Item5>
-      <Item6>
         <Filename Value="fonctions/fonctions_Objets_Dynamiques.pas"/>
         <UnitName Value="fonctions_Objets_Dynamiques"/>
-      </Item6>
-      <Item7>
-        <Filename Value="forms/U_FenetrePrincipale.pas"/>
-        <UnitName Value="U_FenetrePrincipale"/>
-      </Item7>
-      <Item8>
-        <Filename Value="forms/U_MotPasse.lfm"/>
-        <Type Value="LFM"/>
-      </Item8>
-      <Item9>
-        <Filename Value="forms/U_MotPasse.lrs"/>
-        <Type Value="LRS"/>
-      </Item9>
-      <Item10>
-        <Filename Value="forms/U_MotPasse.pas"/>
-        <UnitName Value="U_MotPasse"/>
-      </Item10>
-      <Item11>
-        <Filename Value="forms/U_Splash.pas"/>
-        <UnitName Value="U_Splash"/>
-      </Item11>
-      <Item12>
-        <Filename Value="fonctions/fonctions_Objets_Data.pas"/>
-        <UnitName Value="fonctions_Objets_Data"/>
-      </Item12>
+      </Item1>
     </Files>
     <i18n>
       <EnableI18N Value="True"/>
