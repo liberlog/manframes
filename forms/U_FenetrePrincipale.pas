@@ -95,9 +95,6 @@ type
     dbt_ident: TJvXPButton;
     dbt_quitter: TJvXPButton;
     mu_apropos: TMenuItem;
-    {$IFDEF VERSIONS}
-    mu_apropos: TMenuItem;
-    {$ENDIF}
 
 
     mu_MainMenu: TMainMenu;
@@ -125,7 +122,6 @@ type
     pa_1: TPanel;
     pa_3: TPanel;
     pa_4: TPanel;
-    tbsep_4: TPanel;
     {$IFDEF MDI}
     WindowCascade: TWindowCascade;
     WindowTileHorizontal: TWindowTileHorizontal;
@@ -222,10 +218,6 @@ type
                  			             ab_ScrollEnfoncee: boolean); override;
     procedure   p_ApresSauvegardeParamIni; override;
     procedure   p_editionTransfertVariable(as_nom,as_titre,as_chemin:String;ats_edition_nom_params,ats_edition_params,ats_edition_params_values: TStrings);
-  published
-{$IFDEF TNT}
-    procedure p_OnClickMenuLang(Sender:TObject);
-{$ENDIF}
   end;
 
 var
@@ -1170,16 +1162,6 @@ Begin
   fb_ReinitWindow ( lfor_ActiveForm );
 end;
 
-
-{$IFDEF TNT}
-procedure TF_FenetrePrincipale.p_OnClickMenuLang(Sender:TObject);
-  var iIndex: Integer;
-  begin
-    iIndex := ( Sender as TMenuItem ).Tag;
-    ChangeLanguage( iIndex );
-    fb_ReadLanguage ( GetLanguageCode ( LangManager.LanguageID ));
-  end;
-{$ENDIF}
 
 initialization
 {$IFDEF FPC}

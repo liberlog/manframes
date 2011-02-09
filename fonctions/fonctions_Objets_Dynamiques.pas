@@ -158,9 +158,11 @@ procedure p_ModifieXPBar  ( const aF_FormParent       : TCustomForm        ;
                             const abmp_Picture        ,
                                   abmp_DefaultPicture : TBitmap     ;
                             const ab_AjouteEvenement  : Boolean     );
+{$IFNDEF TNT}
 procedure p_RegisterALanguage ( const as_littlelang, as_longlang : String );
 function fi_findLanguage  ( const as_littlelang, as_longlang : String ): Longint; overload;
 function fi_findLanguage  ( const as_littlelang : String ): Longint; overload;
+{$ENDIF}
 function fdxi_AddItemXPBar  ( const aF_FormParent       : TCustomForm        ;
                         			const adx_WinXpBar        : TJvXpBar ;
                         			const as_Fonction         ,
@@ -234,14 +236,18 @@ begin
 //    cbLanguage.ItemIndex := 0;
 end;
 
+{$IFNDEF TNT}
 procedure ChangeUnitLanguage( const as_Unit : String ; const ar_Language : TALanguage );
 Begin
   Translations.TranslateUnitResourceStrings(as_Unit, fs_getSoftDir () + CST_LNG_DIRECTORY + as_Unit +'.%s.po', ar_Language.LongLang, ar_Language.LittleLang);
 
 end;
+{$ENDIF}
 
 procedure ChangeLanguage( iIndex : integer);
+{$IFNDEF TNT}
 var lr_Language : TALanguage ;
+{$ENDIF}
 begin
   if iIndex<0 then iIndex := 0; // When there's no valid selection in cbLanguage we use the default language (Index=0)
   {$IFDEF TNT}
@@ -342,6 +348,7 @@ end;
 
 {$ENDIF}
 
+{$IFDEF FPC}
 function fi_findLanguage  ( const as_littlelang, as_longlang : String ): Longint;
 var li_i : LongInt ;
 Begin
@@ -377,6 +384,7 @@ Begin
         end;
     end;
 end;
+{$ENDIF}
 
 
 // Change les boutons du navigateur bookmark en boutons de déplacements d'enregistrement
