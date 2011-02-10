@@ -156,12 +156,9 @@ type
     mu_langue: TMenuItem;
 
     procedure p_ChargeAide;
-    procedure p_CloseMDI(as_NomMDI: String);
-    procedure p_LibStb;
     procedure p_OnClickFonction(Sender: TObject);
     procedure p_OnClickMenuLang(Sender:TObject);
-    procedure p_SetLengthSB(ao_SP: TStatusPanel);
-    function  fb_Fermeture : Boolean ;
+    procedure p_SetLengthSB(const ao_SP: TStatusPanel);
     procedure F_FormMainIniActivate(Sender: TObject);
     procedure F_FormMainIniResize(Sender: TObject);
     procedure DoClose ( var AAction: TCloseAction ); override;
@@ -198,12 +195,12 @@ type
     procedure InitializeControls;
 {$ENDIF}
     procedure mu_voletchange(const ab_visible: Boolean);
-    procedure p_SetLedColor(const ab_Status: Boolean );
 {$IFNDEF FPC}
     procedure WMHelp (var Message: TWMHelp); message WM_HELP;
 {$ENDIF}
     procedure p_Addicone(const aiml_Imagelist: TImageList;
       const aico_Icon: TIcon);
+    procedure p_SetLedColor(const ab_Status: Boolean);
   public
     procedure p_ConnectToData ();
     { Déclarations publiques }
@@ -221,7 +218,6 @@ type
   end;
 
 var
-  gb_AbortConnexion : Boolean = False;
   F_FenetrePrincipale: TF_FenetrePrincipale;
 
 implementation
@@ -244,6 +240,7 @@ uses
 {$ENDIF}
   unite_variables, unite_messages,
   U_Acces, fonctions_dbcomponents,
+  fonctions_FenetrePrincipale,
   fonctions_proprietes ;
 
 
@@ -318,7 +315,7 @@ begin
 
     // Initialisation de l'aide et des libellés de la barre de status
   p_ChargeAide;
-  p_LibStb;
+  p_LibStb ( br_statusbar );
 
   // Initialisation des variables
   gs_computer      := f_IniFWReadComputerName;
@@ -465,13 +462,6 @@ begin
   im_led.Show;
 end;
 
-procedure TF_FenetrePrincipale.p_Addicone ( const aiml_Imagelist : TImageList ; const aico_Icon : TIcon );
-Begin
-  if not aico_Icon.Empty then
-    aiml_Imagelist.AddIcon(aico_Icon);
-
-End; 
-
 ////////////////////////////////////////////////////////////////////////////////
 //  Destruction de la Led de connexion car mal géré dans l'objet !!!
 ////////////////////////////////////////////////////////////////////////////////
@@ -515,38 +505,7 @@ begin
   {$ENDIF}
 end;
 
-////////////////////////////////////////////////////////////////////////////////
-//  Fermeture de la forme fille demandée (voir si utile)
-////////////////////////////////////////////////////////////////////////////////
-procedure TF_FenetrePrincipale.p_CloseMDI(as_NomMDI: String);
-var li_i: integer;
-begin
-  if fb_stringVide(as_NomMDI) then
-    Begin
-      for li_i := 0 to Application.ComponentCount - 1 do
-        if ( Application.Components [ li_i ] is TCustomForm ) Then
-          ( Application.Components [ li_i ] as TCustomForm ).Close ;
-    End
-  else
-    for li_i := 0 to Application.ComponentCount - 1 do
-      if Application.Components [ li_i ].Name = as_NomMDI then
-        begin
-          ( Application.Components [ li_i ] as TCustomForm ).Close ;
-          Exit;
-        end;
-end;
-
-////////////////////////////////////////////////////////////////////////////////
-//  Pour afficher dans la barre de status les informations souhaitées
-////////////////////////////////////////////////////////////////////////////////
-procedure TF_FenetrePrincipale.p_LibStb;
-begin
-  // Date et heure
-  br_statusbar.Panels[3].Text := DateToStr(Date);
-  br_statusbar.Panels[4].Text := LeftStr(TimeToStr(Time), 5);
-end;
-
-////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 //  Pour gérer les click sur les boutons de fonctions créés dynamiquement
 ////////////////////////////////////////////////////////////////////////////////
 procedure TF_FenetrePrincipale.p_OnClickFonction(Sender: TObject);
@@ -572,30 +531,12 @@ end;
 ////////////////////////////////////////////////////////////////////////////////
 //  Pour retailler les StatusPanel en fonction de leur longueur de texte
 ////////////////////////////////////////////////////////////////////////////////
-procedure TF_FenetrePrincipale.p_SetLengthSB(ao_SP: TStatusPanel);
+procedure TF_FenetrePrincipale.p_SetLengthSB(const ao_SP: TStatusPanel);
 begin
-  if Length(ao_SP.Text) = 0 then
-    ao_SP.Width := 5
-  else
-    ao_SP.Width := Length(ao_SP.Text) * 7 ;
+  p_SetALengthSB(ao_SP);
 
   F_FormMainIniResize(Self);
 end;
-
-function TF_FenetrePrincipale.fb_Fermeture : Boolean ;
-begin
-  Result := False ;
-  if MessageDlg ( GS_FERMER_APPLICATION, mtConfirmation, [ mbYes, mbNo ], 0 ) = mrYes Then
-    Begin
-      Result := True ;
-      // Sauvegarde de la position des fenêtres filles
-      SvgFormInfoIni.AutoUpdate := False ;
-      SvgFormInfoIni.ExecuteEcriture ( False );
-      p_FreeChildForms ;
-      Application.Terminate;
-    End ;
-end;
-
 
 ////////////////////////////////////////////////////////////////////////////////
 //  Méthodes liées à la forme
@@ -624,55 +565,17 @@ end;
 
 procedure TF_FenetrePrincipale.F_FormMainIniResize(Sender: TObject);
 begin
-  // On retaille la toolbar
-{$IFNDEF FPC}
-  if tbar_outils.Docked then
-    begin
-{$ENDIF}
-      pa_2.Width := Self.Width
-                    - gi_NbSeparateurs * (CST_LARGEUR_PANEL + CST_LARGEUR_SEP)
-                    - CST_LARGEUR_DOCK;
-      pa_2.Show;
-      tbsep_2.Show;
-{$IFNDEF FPC}
-    end
-  else
-    begin
-      pa_2.Width := CST_LARGEUR_PANEL;
-      pa_2.Hide;
-      tbsep_2.Hide;
-    end;
-{$ENDIF}
-
-  pa_2.Refresh;
-
-  // Puis la statusbarre
-  br_statusbar.Panels[0].Width := Self.Width - (br_statusbar.Panels[1].Width +
-                        			    br_statusbar.Panels[2].Width +
-                        			    br_statusbar.Panels[3].Width +
-                        			    br_statusbar.Panels[4].Width +
-                        			    br_statusbar.Panels[5].Width +
-                        			    br_statusbar.Panels[6].Width + 30);
-  if Assigned(im_led) then
-    im_led.SetBounds(br_statusbar.Panels[0].Width, 1, 17, 17);
+  F_FormResize ( Self, tbar_outils,pa_2, tbsep_2, br_statusbar, im_led);
 end;
 
 procedure TF_FenetrePrincipale.DoClose ( var AAction: TCloseAction );
 begin
-  if not ( csDesigning in ComponentState ) Then
-    Begin
-      p_IniWriteSectionStr ( INISEC_PAR, INISEC_UTI, gs_DefaultUser );
-      if not assigned ( F_SplashForm ) Then
-        Begin
-          F_SplashForm := TF_SplashForm.Create(Application);
-        End ;
-      F_SplashForm.Show;   // Affichage de la fiche
-   End ;
+   DoCloseFenetrePrincipale ( Self );
    inherited ;
 end;
 
 
-////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
 //  Gestion des boutons de la barre d'outils
 ////////////////////////////////////////////////////////////////////////////////
 procedure TF_FenetrePrincipale.dbt_identClick(Sender: TObject);
@@ -684,7 +587,7 @@ begin
   Screen.Cursor := crSQLWait;
   p_FreeChildForms;
   p_DetruitTout ( True );
-  if not gb_FirstAcces then p_LibereSauveIni; // On libère le fichier INI sauf à la 1ère ouverture
+  if not gb_FirstAcces then p_SauveIni; // On libère le fichier INI sauf à la 1ère ouverture
   gi_NbSeparateurs := 3; // Le nombre initial de séparateur dans la barre d'outils
   F_FormMainIniResize(Self);
   pa_2.Refresh;
@@ -914,8 +817,7 @@ end;
 procedure TF_FenetrePrincipale.SvgFormInfoIniIniWrite(
   const AInifile: TCustomInifile; var Continue: Boolean);
 begin
-  AInifile.WriteBool ( 'F_FenetrePrincipale', 'tbar_volet.Visible' , {$IFDEF FPC}pa_5{$ELSE}tbar_volet{$ENDIF}.Visible );
-  AInifile.WriteBool ( 'F_FenetrePrincipale', 'tbar_outils.Visible', tbar_outils.Visible );
+  SvgFormInfoIniIniWrite(AInifile, Continue );
 
 end;
 
@@ -925,24 +827,13 @@ end;
 ////////////////////////////////////////////////////////////////////////////////
 procedure TF_FenetrePrincipale.TimerTimer(Sender: TObject);
 begin
-  br_statusbar.Panels[3].Text := DateToStr(Date);
-  br_statusbar.Panels[4].Text := LeftStr(TimeToStr(Time), 5);
+  F_FenetrePrincipaleTimer(br_statusbar);
 end;
 
 
 ////////////////////////////////////////////////////////////////////////////////
 //  Gestion de MAJ & Num si inactifs (ie. que l'on utilise le canevas)
 ////////////////////////////////////////////////////////////////////////////////
-procedure TF_FenetrePrincipale.br_statusbarDrawPanel(StatusBar: TStatusBar;
-                        			                	     Panel: TStatusPanel;
-                        			                	     const Rect: TRect);
-var li_CoordX, li_CoordY: integer;
-begin
-  StatusBar.Canvas.Font.Color := CST_TEXT_INACTIF;
-  li_CoordX := ((Rect.Right + Rect.Left) div 2) - (Statusbar.Canvas.TextWidth(Panel.Text) div 2);
-  li_CoordY := ((Rect.Top  + Rect.Bottom) div 2) - (StatusBar.Canvas.TextHeight(Panel.Text) div 2);
-  StatusBar.Canvas.TextRect(Rect, li_CoordX, li_CoordY, Panel.Text);
-end;
 
 procedure TF_FenetrePrincipale.tbar_voletCloseQuery(Sender: TObject;
   var CanClose: Boolean);
@@ -977,12 +868,7 @@ end;
 procedure TF_FenetrePrincipale.pa_5Resize(Sender: TObject);
 begin
 {$IFNDEF FPC}
-  if Assigned(tbar_volet.DockedTo) and tbar_volet.Visible then
-    begin
-      tbar_volet.Width := (Sender as TControl).Width;
-      dock_volet.Width := (Sender as TControl).Width;
-      spl_volet.Left := pa_5.Width;
-    end;
+  p_pa_5Resize( Sender, pa_5, tbar_volet, tbar_outils, dock_volet, spl_volet);
 {$ENDIF}
 
 end;
@@ -990,17 +876,7 @@ end;
 procedure TF_FenetrePrincipale.tbar_voletDockChanged(Sender: TObject);
 begin
 
-  if {$IFNDEF FPC}Assigned(tbar_volet.DockedTo) and {$ENDIF}
-  {$IFDEF FPC}pa_5{$ELSE}tbar_volet{$ENDIF}.Visible then
-    Begin
-      pa_5.Show;
-      spl_volet.Show;
-    End
-  else
-    Begin
-      pa_5.Hide;
-      spl_volet.Hide;
-    End ;
+  p_tbar_voletDockChanged( pa_5, tbar_volet, tbar_outils, spl_volet);
 
 end;
 
@@ -1013,15 +889,13 @@ end;
 ////////////////////////////////////////////////////////////////////////////////
 procedure TF_FenetrePrincipale.p_PbConnexion;
 begin
-  p_SetLedColor ( False );
-  br_statusbar.Panels[2].Text := GS_LBL_PB;
+  p_formPbConnexion ( im_led, br_statusbar);
   p_SetLengthSB(br_statusbar.Panels[2]);
 end;
 
 procedure TF_FenetrePrincipale.p_Connectee;
 begin
-  p_SetLedColor ( True );
-  br_statusbar.Panels[2].Text := gs_User ;
+  p_FormConnectee ( im_led, br_statusbar);
   p_SetLengthSB(br_statusbar.Panels[2]);
 end;
 
@@ -1032,28 +906,18 @@ procedure TF_FenetrePrincipale.p_SortieMajNumScroll(const ab_MajEnfoncee,
                         			                	    ab_NumEnfoncee,
                         			                	    ab_ScrollEnfoncee: boolean);
 begin
-  if gb_FirstAcces Then
-    Exit;
-  br_statusbar.Panels.BeginUpdate ;
-  if ab_MajEnfoncee then
-    br_statusbar.Panels[5].Style := psText
-  else
-    br_statusbar.Panels[5].Style := psOwnerDraw;
-
-  if ab_NumEnfoncee then
-    br_statusbar.Panels[6].Style := psText
-  else
-    br_statusbar.Panels[6].Style := psOwnerDraw;
-
-  br_statusbar.Panels.EndUpdate ;
-
-  br_statusbar.Update;
-  br_statusbar.Invalidate;
+  p_FormSortieMajNumScroll (br_statusbar, ab_MajEnfoncee, ab_NumEnfoncee, ab_scrollEnfoncee );
 end;
 
 ////////////////////////////////////////////////////////////////////////////////
 //  Sauvegarde des positions de la barre d'outils et du volet d'exploration
 ////////////////////////////////////////////////////////////////////////////////
+procedure TF_FenetrePrincipale.p_Addicone(const aiml_Imagelist: TImageList;
+  const aico_Icon: TIcon);
+begin
+
+end;
+
 procedure TF_FenetrePrincipale.p_ApresSauvegardeParamIni;
 begin
   {$IFNDEF FPC}
@@ -1115,11 +979,18 @@ begin
 end;
 
 
+procedure TF_FenetrePrincipale.br_statusbarDrawPanel(StatusBar: TStatusBar;
+  Panel: TStatusPanel; const Rect: TRect);
+begin
+  p_statusbarDrawPanel( StatusBar, Panel, Rect );
+end;
+
+
 function TF_FenetrePrincipale.CloseQuery: Boolean;
 begin
   Result := inherited CloseQuery;
   if not ( csDesigning in ComponentState ) Then
-    Result := fb_Fermeture and Result
+    Result := fb_Fermeture ( Self ) and Result
 end;
 
 //////////////////////////////////////////////////////////////////////////

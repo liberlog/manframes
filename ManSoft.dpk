@@ -79,7 +79,10 @@ requires
   TB97_d10,
   dcldklang10,
   dklang10,
-  TntUnicodeVcl_R90;
+  TntUnicodeVcl_R90,
+  VampyreImagingPackage,
+  TntUnicodeVcl_D90,
+  JvGlobusD10R;
 
 contains
   U_Splash in 'forms\U_Splash.pas',
@@ -89,6 +92,7 @@ contains
   U_MotPasse in 'forms\U_MotPasse.pas' {F_MotPasse},
   fonctions_Objets_Data in 'fonctions\fonctions_Objets_Data.pas',
   fonctions_Objets_Dynamiques in 'fonctions\fonctions_Objets_Dynamiques.pas',
-  U_Administration in 'forms\U_Administration.pas';
+  U_Administration in 'forms\U_Administration.pas',
+  fonctions_FenetrePrincipale in 'fonctions\fonctions_FenetrePrincipale.pas';
 
 end.

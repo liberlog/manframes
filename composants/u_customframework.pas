@@ -125,7 +125,6 @@ type
   private
      e_Scroll         : TDatasetNotifyEvent ;
      FPanels : TFWPanels;
-     FFieldsDefs : TFWFieldColumns;
      FForm : TF_CustomFrameWork;
      gd_Grid : TCustomDBGrid ;
      nav_Saisie    ,
@@ -180,6 +179,7 @@ type
     function  fe_getDataScroll : TDatasetNotifyEvent;
     procedure p_SetDataScroll(const Value: TDatasetNotifyEvent);
   protected
+    FFieldsDefs : TFWFieldColumns;
     property IsStored: Boolean read FStored write FStored default True;
     function fb_ChangeDataSourceWork : Boolean ;
   public

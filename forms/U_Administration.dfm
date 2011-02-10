@@ -12,6 +12,7 @@ object F_Administration: TF_Administration
   Font.Style = []
   OldCreateOrder = False
   OnClose = FormClose
+  DataPropsOff = True
   Columns = <
     item
       Table = 'UTILISATEURS'
@@ -20,7 +21,10 @@ object F_Administration: TF_Administration
       Grid = gd_utilisateurs
       Navigator = nv_navigue
       NavEdit = nav_Utilisateur
-      Panel = RbPanel8
+      Panels = <
+        item
+          Panel = RbPanel8
+        end>
       OnScroll = adoq_UtilisateursAfterScroll
     end
     item
@@ -30,7 +34,10 @@ object F_Administration: TF_Administration
       Grid = gd_connexion
       Navigator = nv_connexion
       NavEdit = nv_conn_saisie
-      Panel = Panel_Connexion
+      Panels = <
+        item
+          Panel = Panel_Connexion
+        end>
     end
     item
       Table = 'SOMMAIRE'
@@ -38,6 +45,7 @@ object F_Administration: TF_Administration
       ControlFocus = dbe_Edition
       Grid = dbg_Sommaire
       Navigator = nav_Sommaire
+      Panels = <>
       OnScroll = adoq_SommaireAfterScroll
     end
     item
@@ -46,6 +54,7 @@ object F_Administration: TF_Administration
       ControlFocus = dbe_Edition
       Grid = dbg_SommaireFonctions
       Navigator = nav_NavigateurSommaireFonctions
+      Panels = <>
       OnScroll = adoq_SommaireFonctionsAfterScroll
     end
     item
@@ -54,6 +63,7 @@ object F_Administration: TF_Administration
       ControlFocus = dbe_Edition
       Grid = dbg_Menu
       Navigator = nav_NavigateurMenu
+      Panels = <>
       OnScroll = adoq_MenusAfterScroll
     end
     item
@@ -62,6 +72,7 @@ object F_Administration: TF_Administration
       ControlFocus = dbe_Edition
       Grid = dbg_MenuFonctions
       Navigator = nav_NavigateurMenuFonctions
+      Panels = <>
       OnScroll = adoq_MenuFonctionsAfterScroll
     end
     item
@@ -70,6 +81,7 @@ object F_Administration: TF_Administration
       ControlFocus = dbe_Edition
       Grid = dbg_SousMenu
       Navigator = nav_NavigateurSousMenu
+      Panels = <>
       OnScroll = adoq_SousMenusAfterScroll
     end
     item
@@ -78,25 +90,29 @@ object F_Administration: TF_Administration
       ControlFocus = dbe_Edition
       Grid = dbg_SousMenuFonctions
       Navigator = nav_NavigateurSousMenuFonctions
+      Panels = <>
       OnScroll = adoq_SousMenuFonctionsAfterScroll
     end
     item
       Table = 'ENTREPRISE'
       ControlFocus = ed_nomapp
       NavEdit = nv_connexion
-      Panel = p_Entreprise
+      Panels = <
+        item
+          Panel = p_Entreprise
+        end>
     end
     item
       Table = 'FONCTIONS'
       Key = 'FONC_Clep'
       ControlFocus = dbl_Fonctions
       Navigator = nav_Fonctions
+      Panels = <>
       OnScroll = adoq_FonctionsAfterScroll
     end>
   DataCloseMessage = True
   DataErrorMessage = False
-  Version = '1.0.0.0'
-  DataDicoOff = True
+  Version = '1.0.0.2'
   PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
@@ -117,10 +133,6 @@ object F_Administration: TF_Administration
       OnChange = pc_OngletsChange
       object ts_Sommaire: TTabSheet
         Caption = 'Gestion des sommaires'
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object RbSplitter2: TSplitter
           Left = 601
           Top = 45
@@ -144,7 +156,7 @@ object F_Administration: TF_Administration
           Color = 10930928
           Constraints.MinHeight = 41
           Constraints.MinWidth = 10
-          TabOrder = 1
+          TabOrder = 0
           OnResize = pa_VoletResize
           object scb_Volet: TScrollBox
             Left = 0
@@ -170,130 +182,6 @@ object F_Administration: TF_Administration
             TabOrder = 0
           end
         end
-        object Dock971: TDock
-          Left = 0
-          Top = 0
-          Width = 782
-          Height = 45
-          Hint = 'Visionner ici votre barre d'#39'acc'#232's'
-          object tb_Sommaire: TExtToolbar
-            Left = 0
-            Top = 0
-            Hint = 'Visionner ici votre barre d'#39'acc'#232's'
-            Caption = 'Barre d'#39'acc'#232's aux fonctions'
-            DefaultDock = Dock971
-            DockPos = 0
-            ParentShowHint = False
-            ShowHint = True
-            TabOrder = 0
-            object ToolbarSep971: TExtToolbarSep
-              Left = 189
-              Top = 0
-            end
-            object tb_SepDeb: TExtToolbarSep
-              Left = 120
-              Top = 0
-            end
-            object tb_SepDebut: TExtToolbarSep
-              Left = 57
-              Top = 0
-            end
-            object ToolbarSep979: TExtToolbarSep
-              Left = 126
-              Top = 0
-            end
-            object Panel8: TPanel
-              Left = 195
-              Top = 0
-              Width = 57
-              Height = 41
-              BevelOuter = bvNone
-              TabOrder = 0
-              object dxb_Quitter: TFWQuit
-                Left = 9
-                Top = 0
-                Width = 40
-                Height = 41
-                Hint = 'Quitter'
-                Enabled = False
-                TabOrder = 0
-                Align = alCustom
-                Font.Charset = DEFAULT_CHARSET
-                Font.Color = clWindowText
-                Font.Height = -13
-                Font.Name = 'MS Sans Serif'
-                Font.Style = []
-                ParentFont = False
-                ParentShowHint = False
-                ShowHint = True
-              end
-            end
-            object pan_PanelFin: TPanel
-              Left = 132
-              Top = 0
-              Width = 57
-              Height = 41
-              BevelOuter = bvNone
-              TabOrder = 1
-              object dxb_Aide: TJvXPButton
-                Left = 9
-                Top = 0
-                Width = 40
-                Height = 41
-                Hint = 'S'#39'identifier'
-                Enabled = False
-                TabOrder = 0
-                Layout = blGlyphRight
-                Spacing = 0
-                Align = alCustom
-                Font.Charset = DEFAULT_CHARSET
-                Font.Color = clWindowText
-                Font.Height = -13
-                Font.Name = 'MS Sans Serif'
-                Font.Style = []
-                ParentFont = False
-                ParentShowHint = False
-                ShowHint = True
-              end
-            end
-            object Panel33: TPanel
-              Left = 0
-              Top = 0
-              Width = 57
-              Height = 41
-              BevelOuter = bvNone
-              TabOrder = 2
-              object dxb_Identifier: TJvXPButton
-                Left = 9
-                Top = 0
-                Width = 40
-                Height = 41
-                Hint = 'S'#39'identifier'
-                Enabled = False
-                TabOrder = 0
-                Layout = blGlyphRight
-                Align = alCustom
-                Font.Charset = DEFAULT_CHARSET
-                Font.Color = clWindowText
-                Font.Height = -13
-                Font.Name = 'MS Sans Serif'
-                Font.Style = []
-                ParentFont = False
-                ParentShowHint = False
-                ShowHint = True
-              end
-            end
-            object Panel36: TPanel
-              Left = 63
-              Top = 0
-              Width = 57
-              Height = 41
-              AutoSize = True
-              BevelOuter = bvNone
-              TabOrder = 3
-            end
-          end
-        end
         object RbPanel1: TPanel
           Left = 606
           Top = 45
@@ -309,7 +197,7 @@ object F_Administration: TF_Administration
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentFont = False
-          TabOrder = 3
+          TabOrder = 2
           object Panel12: TPanel
             Left = 2
             Top = 2
@@ -441,7 +329,7 @@ object F_Administration: TF_Administration
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentFont = False
-          TabOrder = 2
+          TabOrder = 1
           object RbSplitter7: TSplitter
             Left = 2
             Top = 195
@@ -1103,13 +991,132 @@ object F_Administration: TF_Administration
             end
           end
         end
+        object dock_outils: TDock
+          Left = 0
+          Top = 0
+          Width = 782
+          Height = 45
+          object tbar_outils: TExtToolbar
+            Left = 0
+            Top = 0
+            Hint = 'Cliquer sur un bouton pour acc'#195#402#194#169'der '#195#402#194#160' une fonction'
+            HelpContext = 1430
+            Caption = 'Barre d'#39'acc'#195#402#194#168's'
+            DockableTo = [dpTop]
+            DockPos = 0
+            FullSize = True
+            ParentShowHint = False
+            ShowHint = True
+            TabOrder = 0
+            UseLastDock = False
+            object tbsep_3: TExtToolbarSep
+              Left = 656
+              Top = 0
+            end
+            object tbsep_1: TExtToolbarSep
+              Left = 57
+              Top = 0
+            end
+            object tbsep_2: TExtToolbarSep
+              Left = 593
+              Top = 0
+            end
+            object Panel5: TPanel
+              Left = 662
+              Top = 0
+              Width = 57
+              Height = 41
+              Align = alRight
+              BevelOuter = bvNone
+              TabOrder = 0
+              object dbt_quitter: TJvXPButton
+                Left = 9
+                Top = 0
+                Width = 41
+                Height = 41
+                Hint = 'Quitter'
+                HelpContext = 1430
+                TabOrder = 0
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clWindowText
+                Font.Height = -13
+                Font.Name = 'MS Sans Serif'
+                Font.Style = []
+                ParentFont = False
+                ParentShowHint = False
+                ShowHint = True
+              end
+            end
+            object Panel6: TPanel
+              Left = 0
+              Top = 0
+              Width = 57
+              Height = 41
+              BevelOuter = bvNone
+              TabOrder = 1
+              object dbt_ident: TJvXPButton
+                Left = 9
+                Top = 0
+                Width = 40
+                Height = 41
+                Hint = 
+                  'S'#39'identifier/d'#195#402#194#169'connecter|Ouvrir la fen'#195#402#194#170'tre d'#39'identificatio' +
+                  'n'
+                HelpContext = 1430
+                TabOrder = 0
+                Layout = blGlyphRight
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clWindowText
+                Font.Height = -13
+                Font.Name = 'MS Sans Serif'
+                Font.Style = []
+                ParentFont = False
+                ParentShowHint = False
+                ShowHint = True
+              end
+            end
+            object Panel_Fin: TPanel
+              Left = 63
+              Top = 0
+              Width = 530
+              Height = 41
+              BevelOuter = bvNone
+              TabOrder = 2
+            end
+            object Panel9: TPanel
+              Left = 599
+              Top = 0
+              Width = 57
+              Height = 41
+              Align = alRight
+              BevelOuter = bvNone
+              TabOrder = 3
+              object dbt_aide: TJvXPButton
+                Left = 9
+                Top = 0
+                Width = 41
+                Height = 41
+                Hint = 'Ouvrir l'#39'aide|Rubrique d'#39'aide'
+                HelpContext = 1430
+                TabOrder = 0
+                Layout = blGlyphRight
+                Spacing = 0
+                Align = alCustom
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clWindowText
+                Font.Height = -13
+                Font.Name = 'MS Sans Serif'
+                Font.Style = []
+                ParentFont = False
+                ParentShowHint = False
+                ShowHint = True
+              end
+            end
+          end
+        end
       end
       object ts_connexion: TTabSheet
         Caption = 'Gestion des connexions'
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object RbSplitter9: TSplitter
           Left = 297
           Top = 0
@@ -1228,10 +1235,6 @@ object F_Administration: TF_Administration
               Font.Name = 'MS Sans Serif'
               Font.Style = []
               ParentFont = False
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object RbSplitter11: TSplitter
                 Left = 304
                 Top = 25
@@ -1635,10 +1638,6 @@ object F_Administration: TF_Administration
       object ts_Utilisateurs: TTabSheet
         Caption = 'Gestion des Utilisateurs'
         ImageIndex = 1
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object RbSplitter10: TSplitter
           Left = 297
           Top = 0
@@ -1861,10 +1860,6 @@ object F_Administration: TF_Administration
               Font.Name = 'MS Sans Serif'
               Font.Style = []
               ParentFont = False
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object RbSplitter12: TSplitter
                 Left = 304
                 Top = 25
@@ -2209,10 +2204,6 @@ object F_Administration: TF_Administration
       object ts_infos: TTabSheet
         Caption = 'Informations g'#233'n'#233'rales'
         ImageIndex = 3
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object p_Entreprise: TPanel
           Left = 0
           Top = 0
