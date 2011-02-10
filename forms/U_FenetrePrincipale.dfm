@@ -91,7 +91,7 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
         Left = 593
         Top = 0
       end
-      object pa_4: TPanel
+      object pa_4: TTntPanel
         Left = 662
         Top = 0
         Width = 57
@@ -118,7 +118,7 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
           OnClick = dbt_quitterClick
         end
       end
-      object pa_1: TPanel
+      object pa_1: TTntPanel
         Left = 0
         Top = 0
         Width = 57
@@ -147,7 +147,7 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
           OnClick = dbt_identClick
         end
       end
-      object pa_2: TPanel
+      object pa_2: TTntPanel
         Left = 63
         Top = 0
         Width = 530
@@ -155,7 +155,7 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
         BevelOuter = bvNone
         TabOrder = 2
       end
-      object pa_3: TPanel
+      object pa_3: TTntPanel
         Left = 599
         Top = 0
         Width = 57
@@ -232,7 +232,7 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
     ParentBiDiMode = False
     OnDrawPanel = br_statusbarDrawPanel
   end
-  object pa_5: TPanel
+  object pa_5: TTntPanel
     Left = 0
     Top = 45
     Width = 197
@@ -1085,7 +1085,7 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
       FDDF81FFF87FFFFFFFFFFFFFFFFFFFFF00000000000000000000000000000000
       000000000000}
   end
-  object mu_MainMenu: TMainMenu
+  object mu_MainMenu: TTntMainMenu
     Images = im_Liste
     Left = 256
     Top = 266
@@ -1185,34 +1185,34 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
       end
     end
   end
-  object ActionList: TActionList
+  object ActionList: TTntActionList
     Images = im_Liste
     Left = 256
     Top = 317
-    object WindowCascade: TWindowCascade
+    object WindowCascade: TTntWindowCascade
       Category = 'Fen'#234'tre'
       Caption = '&Cascade'
       Hint = 'Cascade'
       ImageIndex = 17
     end
-    object WindowTileHorizontal: TWindowTileHorizontal
+    object WindowTileHorizontal: TTntWindowTileHorizontal
       Category = 'Fen'#234'tre'
       Caption = 'Mosa'#239'que &horizontale'
       Hint = 'Mosa'#239'que horizontale'
       ImageIndex = 15
     end
-    object WindowTileVertical: TWindowTileVertical
+    object WindowTileVertical: TTntWindowTileVertical
       Category = 'Fen'#234'tre'
       Caption = 'Mosa'#239'que &verticale'
       Hint = 'Mosa'#239'que verticale'
       ImageIndex = 16
     end
-    object WindowMinimizeAll: TWindowMinimizeAll
+    object WindowMinimizeAll: TTntWindowMinimizeAll
       Category = 'Fen'#234'tre'
       Caption = '&Tout r'#233'duire'
       Hint = 'Tout r'#233'duire'
     end
-    object WindowArrangeAll: TWindowArrange
+    object WindowArrangeAll: TTntWindowArrange
       Category = 'Fen'#234'tre'
       Caption = 'Tout r'#233'&organiser'
       Hint = 'Tout r'#233'organiser'

@@ -32,6 +32,12 @@ uses Forms, JvXPBar, DB, JvXPContainer,
 {$IFDEF VERSIONS}
   fonctions_version,
 {$ENDIF}
+{$IFDEF TNT}
+  TntDBCtrls, TntStdCtrls, DKLang,
+  TntDialogs, TntGraphics, TntForms,
+  TntMenus, TntExtCtrls, TntStdActns,
+  TntActnList,
+{$ENDIF}
   Controls, Classes, JvXPButtons, ExtCtrls,
   Menus, 
 {$IFDEF DELPHI_9_UP}
@@ -108,7 +114,7 @@ var   gT_TableauFonctions : ARRAY of TFonction ; // tableau gérant les fonctions
       gi_FinCompteurImages    : Integer      ;   // Un seul imagelist des menus donc efface après la dernière image
       gBar_ToolBarParent      : TCustomControl;   // Barre d'accès
       gSep_ToolBarSepareDebut : TControl      ;   // Séparateur de début délimitant les boutons à effacer
-      gPan_PanelSepareFin     : TPanel       ;   // Panel      de fin   délimitant les boutons à effacer
+      gPan_PanelSepareFin     : {$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF}       ;   // Panel      de fin   délimitant les boutons à effacer
       gb_UtiliseSMenu         : Boolean      ;            // Utilise-t-on les sous-menus
       gMen_MenuVolet          ,
       gMen_MenuParent         : TMenuItem    ;
@@ -175,7 +181,7 @@ procedure p_initialisationBoutons ( const aF_FormParent           : TForm       
                                     const aIco_DefaultPicture     : TIcon        ;
                                     const aBar_ToolBarParent      : TCustomControl   ;
                                     const aSep_ToolBarSepareDebut : TControl;
-                                    const aPan_PanelSepareFin     : TPanel       ;
+                                    const aPan_PanelSepareFin     : {$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF}       ;
                                     const ai_TailleUnPanel        : Integer      ;
               			      const aBmp_DefaultPicture     : TBitmap      ;
                                     const aMen_MenuParent         : TMenuItem    ;
@@ -513,7 +519,7 @@ procedure p_initialisationBoutons ( const aF_FormParent           : TForm       
                                     const aIco_DefaultPicture     : TIcon        ;
                                     const aBar_ToolBarParent      : TCustomControl   ;
                                     const aSep_ToolBarSepareDebut : TControl;
-                                    const aPan_PanelSepareFin     : TPanel       ;
+                                    const aPan_PanelSepareFin     : {$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF}       ;
                                     const ai_TailleUnPanel        : Integer      ;
                                     const aBmp_DefaultPicture     : TBitmap      ;
                                     const aMen_MenuParent         : TMenuItem    ;
@@ -1647,7 +1653,7 @@ function  fi_CreeSommaire (         const aF_FormMain             : TCustomForm 
 
 var lbtn_ToolBarButton  : TJvXPButton  ;  // Nouveau bouton
     lSep_ToolBarSepare  : TControl ; // Nouveau séparateur
-    lPan_ToolBarPanel   : TPanel     ; // Nouveau panel
+    lPan_ToolBarPanel   : {$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF}     ; // Nouveau panel
     lb_UtiliseSousMenu    ,
     lb_ExisteFonctionMenu : Boolean ;
 //    li_i                ,
@@ -1830,7 +1836,7 @@ Begin
           inc ( li_CompteurFonctions );
            // Affectation des valeurs
            // création d''un panel d'un bouton d'un séparateur
-          lPan_ToolBarPanel   := TPanel       .Create ( aF_FormParent ); // Nouveau panel
+          lPan_ToolBarPanel   := {$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF}       .Create ( aF_FormParent ); // Nouveau panel
           lbtn_ToolBarButton  := TJvXPButton   .Create ( aF_FormParent  );  // Nouveau bouton
           lSep_ToolBarSepare  := fcom_CloneObject (aSep_ToolBarSepareDebut, aSep_ToolBarSepareDebut.Owner ) as TControl;// Nouveau séparateur
 

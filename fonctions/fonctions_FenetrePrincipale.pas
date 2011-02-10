@@ -30,7 +30,13 @@ uses
   JvXPCore, ImgList, ExtTBTlwn, ExtDock, ExtTBTlbr,
 {$ENDIF}
 {$IFDEF VERSIONS}
-  fonctions_version, 
+  fonctions_version,
+{$ENDIF}
+{$IFDEF TNT}
+  TntDBCtrls, TntStdCtrls, DKLang,
+  TntDialogs, TntGraphics, TntForms,
+  TntMenus, TntExtCtrls, TntStdActns,
+  TntActnList,
 {$ENDIF}
   U_Donnees,
   Controls, Graphics, Classes, SysUtils, StrUtils,
@@ -38,7 +44,7 @@ uses
   JvXPContainer, ComCtrls, JvXPButtons,
   IniFiles, Dialogs, Printers,
   JvXPBar, Forms,  U_FormMainIni, fonctions_init,
-  fonctions_Objets_Dynamiques, fonctions_Objets_Data, fonctions_images,
+  fonctions_Objets_Dynamiques, fonctions_images,
   u_buttons_appli, fonctions_string,
   U_OnFormInfoIni, DBCtrls ;
 
@@ -54,10 +60,10 @@ const
 {$ENDIF}
 
 {$IFNDEF FPC}
-procedure p_pa_5Resize(const Sender: TObject;const pa_5:TPanel;const tbar_volet:TExtToolbar;const tbar_outils: {$IFDEF FPC}TToolbar{$ELSE}TExtToolbar{$ENDIF};const dock_volet: TDock;const spl_volet: {$IFDEF FPC}TSplitter{$ELSE}TJvSplitter{$ENDIF});
+procedure p_pa_5Resize(const Sender: TObject;const pa_5:{$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF};const tbar_volet:TExtToolbar;const tbar_outils: {$IFDEF FPC}TToolbar{$ELSE}TExtToolbar{$ENDIF};const dock_volet: TDock;const spl_volet: {$IFDEF FPC}TSplitter{$ELSE}TJvSplitter{$ENDIF});
 {$ENDIF}
 procedure DoCloseFenetrePrincipale ( const af_Form : TCustomForm ) ;
-procedure F_FormResize(const af_Form : TCustomForm ; const tbar_outils: {$IFDEF FPC}TToolbar{$ELSE}TExtToolbar{$ENDIF};const pa_2 : TPanel; const tbsep_2 : {$IFDEF FPC}TPanel{$ELSE}TExtToolbarSep{$ENDIF}; const br_statusbar : TStatusBar ; const im_led: {$IFDEF FPC}TPCheck{$ELSE}TJvLED{$ENDIF});
+procedure F_FormResize(const af_Form : TCustomForm ; const tbar_outils: {$IFDEF FPC}TToolbar{$ELSE}TExtToolbar{$ENDIF};const pa_2 : {$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF}; const tbsep_2 : {$IFDEF FPC}TPanel{$ELSE}TExtToolbarSep{$ENDIF}; const br_statusbar : TStatusBar ; const im_led: {$IFDEF FPC}TPCheck{$ELSE}TJvLED{$ENDIF});
 function fb_Fermeture ( const af_FormMainini : TF_FormMainIni ) : Boolean ;
 procedure p_SetALengthSB( const ao_SP: TStatusPanel);
 procedure p_LibStb ( const br_statusbar : TStatusBar );
@@ -70,7 +76,7 @@ procedure F_FenetrePrincipaleTimer(const br_statusbar : Tstatusbar);
 procedure p_statusbarDrawPanel(const StatusBar: TStatusBar;
    			                	      const Panel: TStatusPanel;
    			                	      const Rect: TRect);
-procedure p_tbar_voletDockChanged(const pa_5:TPanel;const tbar_volet:TExtToolbar;const tbar_outils: {$IFDEF FPC}TToolbar{$ELSE}TExtToolbar{$ENDIF};const spl_volet: {$IFDEF FPC}TSplitter{$ELSE}TJvSplitter{$ENDIF});
+procedure p_tbar_voletDockChanged(const pa_5:{$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF};const tbar_volet:TExtToolbar;const tbar_outils: {$IFDEF FPC}TToolbar{$ELSE}TExtToolbar{$ENDIF};const spl_volet: {$IFDEF FPC}TSplitter{$ELSE}TJvSplitter{$ENDIF});
 procedure p_FormConnectee(const im_led: {$IFDEF FPC}TPCheck{$ELSE}TJvLED{$ENDIF}; const br_statusbar : Tstatusbar );
 procedure p_FormPbConnexion(const im_led: {$IFDEF FPC}TPCheck{$ELSE}TJvLED{$ENDIF}; const br_statusbar : Tstatusbar );
 procedure p_FormSortieMajNumScroll( const br_statusbar : Tstatusbar ;const ab_MajEnfoncee,
@@ -86,9 +92,6 @@ implementation
 uses
   U_Splash,
   TypInfo,
-{$IFDEF DBEXPRESS}
-  SQLExpr,
-{$ENDIF}
 {$IFNDEF FPC}
   DB,
   fonctions_aide,
@@ -96,11 +99,7 @@ uses
 {$IFDEF ZEOS}
   ZConnection,
 {$ENDIF}
-{$IFDEF VIRTUALTREES}
-  U_About,
-{$ENDIF}
   unite_variables, unite_messages,
-  U_Acces, fonctions_dbcomponents,
   fonctions_proprietes ;
 
 
@@ -187,7 +186,7 @@ begin
 end;
 
 
-procedure F_FormResize(const af_Form : TCustomForm ; const tbar_outils: {$IFDEF FPC}TToolbar{$ELSE}TExtToolbar{$ENDIF};const pa_2 : TPanel; const tbsep_2 : {$IFDEF FPC}TPanel{$ELSE}TExtToolbarSep{$ENDIF}; const br_statusbar : TStatusBar ; const im_led: {$IFDEF FPC}TPCheck{$ELSE}TJvLED{$ENDIF});
+procedure F_FormResize(const af_Form : TCustomForm ; const tbar_outils: {$IFDEF FPC}TToolbar{$ELSE}TExtToolbar{$ENDIF};const pa_2 : {$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF}; const tbsep_2 : {$IFDEF FPC}TPanel{$ELSE}TExtToolbarSep{$ENDIF}; const br_statusbar : TStatusBar ; const im_led: {$IFDEF FPC}TPCheck{$ELSE}TJvLED{$ENDIF});
 begin
   // On retaille la toolbar
 {$IFNDEF FPC}
@@ -297,7 +296,7 @@ end;
 //  Gestion du splitter
 ////////////////////////////////////////////////////////////////////////////////
 {$IFNDEF FPC}
-procedure p_pa_5Resize(const Sender: TObject;const pa_5:TPanel;const tbar_volet:TExtToolbar;const tbar_outils: {$IFDEF FPC}TToolbar{$ELSE}TExtToolbar{$ENDIF};const dock_volet: TDock;const spl_volet: {$IFDEF FPC}TSplitter{$ELSE}TJvSplitter{$ENDIF});
+procedure p_pa_5Resize(const Sender: TObject;const pa_5:{$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF};const tbar_volet:TExtToolbar;const tbar_outils: {$IFDEF FPC}TToolbar{$ELSE}TExtToolbar{$ENDIF};const dock_volet: TDock;const spl_volet: {$IFDEF FPC}TSplitter{$ELSE}TJvSplitter{$ENDIF});
 begin
   if Assigned(tbar_volet.DockedTo) and tbar_volet.Visible then
     begin
@@ -309,7 +308,7 @@ begin
 end;
 {$ENDIF}
 
-procedure p_tbar_voletDockChanged(const pa_5:TPanel;const tbar_volet:TExtToolbar;const tbar_outils: {$IFDEF FPC}TToolbar{$ELSE}TExtToolbar{$ENDIF};const spl_volet: {$IFDEF FPC}TSplitter{$ELSE}TJvSplitter{$ENDIF});
+procedure p_tbar_voletDockChanged(const pa_5:{$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF};const tbar_volet:TExtToolbar;const tbar_outils: {$IFDEF FPC}TToolbar{$ELSE}TExtToolbar{$ENDIF};const spl_volet: {$IFDEF FPC}TSplitter{$ELSE}TJvSplitter{$ENDIF});
 begin
 
   if {$IFNDEF FPC}Assigned(tbar_volet.DockedTo) and {$ENDIF}

@@ -40,6 +40,12 @@ uses
 {$IFDEF VERSIONS}
   fonctions_version, 
 {$ENDIF}
+{$IFDEF TNT}
+  TntDBCtrls, TntStdCtrls, DKLang,
+  TntDialogs, TntGraphics, TntForms,
+  TntMenus, TntExtCtrls, TntStdActns,
+  TntActnList,
+{$ENDIF}
   U_Donnees,
   Controls, Graphics, Classes, SysUtils, StrUtils,
   ExtCtrls, ActnList, Menus,
@@ -97,7 +103,7 @@ type
     mu_apropos: TMenuItem;
 
 
-    mu_MainMenu: TMainMenu;
+    mu_MainMenu: {$IFDEF TNT}TTntMainMenu{$ELSE}TMainMenu{$ENDIF};
     mu_file: TMenuItem;
     mu_ouvrir: TMenuItem;
     mu_sep1: TMenuItem;
@@ -117,17 +123,21 @@ type
     mu_sep2: TMenuItem;
     mu_Reinitiliserpresentation: TMenuItem;
 
-    ActionList: TActionList;
-    pa_2: TPanel;
-    pa_1: TPanel;
-    pa_3: TPanel;
-    pa_4: TPanel;
+    ActionList: {$IFDEF TNT}TTntActionList{$ELSE}TActionList{$ENDIF};
+    pa_1: {$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF};
+    pa_2: {$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF};
+    pa_3: {$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF};
+    pa_4: {$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF};
+    pa_5: {$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF};
     {$IFDEF MDI}
-    WindowCascade: TWindowCascade;
-    WindowTileHorizontal: TWindowTileHorizontal;
-    WindowTileVertical: TWindowTileVertical;
-    WindowMinimizeAll: TWindowMinimizeAll;
-    WindowArrangeAll: TWindowArrange;
+    {$IFDEF MDI}
+    WindowCascade: {$IFDEF TNT}TTntWindowCascade{$ELSE}TWindowCascade{$ENDIF};
+    WindowTileHorizontal: {$IFDEF TNT}TTntWindowTileHorizontal{$ELSE}TWindowTileHorizontal{$ENDIF};
+    WindowTileVertical: {$IFDEF TNT}TTntWindowTileVertical{$ELSE}TWindowTileVertical{$ENDIF};
+    WindowMinimizeAll: {$IFDEF TNT}TTntWindowMinimizeAll{$ELSE}TWindowMinimizeAll{$ENDIF};
+    WindowArrangeAll: {$IFDEF TNT}TTntWindowArrange{$ELSE}TWindowArrange{$ENDIF};
+    {$ENDIF}
+
     {$ENDIF}
 
     Timer: TTimer;
@@ -147,7 +157,6 @@ type
 
     im_led: {$IFDEF FPC}TPCheck{$ELSE}TJvLED{$ENDIF};
     mu_identifier: TMenuItem;
-    pa_5: TPanel;
     spl_volet: {$IFDEF FPC}TSplitter{$ELSE}TJvSplitter{$ENDIF};
     im_appli: TImage;
     im_acces: TImage;
@@ -198,8 +207,6 @@ type
 {$IFNDEF FPC}
     procedure WMHelp (var Message: TWMHelp); message WM_HELP;
 {$ENDIF}
-    procedure p_Addicone(const aiml_Imagelist: TImageList;
-      const aico_Icon: TIcon);
     procedure p_SetLedColor(const ab_Status: Boolean);
   public
     procedure p_ConnectToData ();
@@ -838,6 +845,7 @@ end;
 procedure TF_FenetrePrincipale.tbar_voletCloseQuery(Sender: TObject;
   var CanClose: Boolean);
 begin
+  DisableAlign ;
 
 end;
 
@@ -909,15 +917,6 @@ begin
   p_FormSortieMajNumScroll (br_statusbar, ab_MajEnfoncee, ab_NumEnfoncee, ab_scrollEnfoncee );
 end;
 
-////////////////////////////////////////////////////////////////////////////////
-//  Sauvegarde des positions de la barre d'outils et du volet d'exploration
-////////////////////////////////////////////////////////////////////////////////
-procedure TF_FenetrePrincipale.p_Addicone(const aiml_Imagelist: TImageList;
-  const aico_Icon: TIcon);
-begin
-
-end;
-
 procedure TF_FenetrePrincipale.p_ApresSauvegardeParamIni;
 begin
   {$IFNDEF FPC}
@@ -979,6 +978,10 @@ begin
 end;
 
 
+////////////////////////////////////////////////////////////////////////////////
+// procédure br_statusbarDrawPanel
+//  Gestion de MAJ & Num si inactifs (ie. que l'on utilise le canevas)
+////////////////////////////////////////////////////////////////////////////////
 procedure TF_FenetrePrincipale.br_statusbarDrawPanel(StatusBar: TStatusBar;
   Panel: TStatusPanel; const Rect: TRect);
 begin
