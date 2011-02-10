@@ -76,7 +76,7 @@ procedure F_FenetrePrincipaleTimer(const br_statusbar : Tstatusbar);
 procedure p_statusbarDrawPanel(const StatusBar: TStatusBar;
    			                	      const Panel: TStatusPanel;
    			                	      const Rect: TRect);
-procedure p_tbar_voletDockChanged(const pa_5:{$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF};const tbar_volet:TExtToolbar;const tbar_outils: {$IFDEF FPC}TToolbar{$ELSE}TExtToolbar{$ENDIF};const spl_volet: {$IFDEF FPC}TSplitter{$ELSE}TJvSplitter{$ENDIF});
+procedure p_tbar_voletDockChanged(const pa_5:{$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF};const tbar_volet:{$IFDEF FPC}TToolbar{$ELSE}TExtToolbar{$ENDIF};const tbar_outils: {$IFDEF FPC}TToolbar{$ELSE}{$IFDEF FPC}TToolbar{$ELSE}TExtToolbar{$ENDIF}{$ENDIF};const spl_volet: {$IFDEF FPC}TSplitter{$ELSE}TJvSplitter{$ENDIF});
 procedure p_FormConnectee(const im_led: {$IFDEF FPC}TPCheck{$ELSE}TJvLED{$ENDIF}; const br_statusbar : Tstatusbar );
 procedure p_FormPbConnexion(const im_led: {$IFDEF FPC}TPCheck{$ELSE}TJvLED{$ENDIF}; const br_statusbar : Tstatusbar );
 procedure p_FormSortieMajNumScroll( const br_statusbar : Tstatusbar ;const ab_MajEnfoncee,
@@ -186,7 +186,7 @@ begin
 end;
 
 
-procedure F_FormResize(const af_Form : TCustomForm ; const tbar_outils: {$IFDEF FPC}TToolbar{$ELSE}TExtToolbar{$ENDIF};const pa_2 : {$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF}; const tbsep_2 : {$IFDEF FPC}TPanel{$ELSE}TExtToolbarSep{$ENDIF}; const br_statusbar : TStatusBar ; const im_led: {$IFDEF FPC}TPCheck{$ELSE}TJvLED{$ENDIF});
+procedure F_FormResize(const af_Form : TCustomForm ; const tbar_outils: {$IFDEF FPC}TToolbar{$ELSE}{$IFDEF FPC}TToolbar{$ELSE}TExtToolbar{$ENDIF}{$ENDIF};const pa_2 : {$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF}; const tbsep_2 : {$IFDEF FPC}TPanel{$ELSE}TExtToolbarSep{$ENDIF}; const br_statusbar : TStatusBar ; const im_led: {$IFDEF FPC}TPCheck{$ELSE}TJvLED{$ENDIF});
 begin
   // On retaille la toolbar
 {$IFNDEF FPC}
@@ -253,13 +253,13 @@ end;
 ////////////////////////////////////////////////////////////////////////////////
 //  Gestion de la visibilité des accès aux fonctions
 ////////////////////////////////////////////////////////////////////////////////
-procedure mu_barreoutilsClick(const mu_barreoutils: TMenuItem;const tbar_outils: {$IFDEF FPC}TToolbar{$ELSE}TExtToolbar{$ENDIF});
+procedure mu_barreoutilsClick(const mu_barreoutils: TMenuItem;const tbar_outils: {$IFDEF FPC}TToolbar{$ELSE}{$IFDEF FPC}TToolbar{$ELSE}TExtToolbar{$ENDIF}{$ENDIF});
 begin
   mu_barreoutils.Checked := not mu_barreoutils.Checked;
   tbar_outils.Visible := mu_barreoutils.Checked;
 end;
 
-procedure SvgFormInfoIniIniWrite( const AInifile: TCustomInifile; var Continue: Boolean; const {$IFDEF FPC}pa_5:TPanel{$ELSE}tbar_volet:TExtToolbar{$ENDIF};const tbar_outils: {$IFDEF FPC}TToolbar{$ELSE}TExtToolbar{$ENDIF});
+procedure SvgFormInfoIniIniWrite( const AInifile: TCustomInifile; var Continue: Boolean; const {$IFDEF FPC}pa_5:TPanel{$ELSE}tbar_volet:{$IFDEF FPC}TToolbar{$ELSE}TExtToolbar{$ENDIF}{$ENDIF};const tbar_outils: {$IFDEF FPC}TToolbar{$ELSE}{$IFDEF FPC}TToolbar{$ELSE}TExtToolbar{$ENDIF}{$ENDIF});
 begin
   AInifile.WriteBool ( 'F_FenetrePrincipale', 'tbar_volet.Visible' , {$IFDEF FPC}pa_5{$ELSE}tbar_volet{$ENDIF}.Visible );
   AInifile.WriteBool ( 'F_FenetrePrincipale', 'tbar_outils.Visible', tbar_outils.Visible );
@@ -296,7 +296,7 @@ end;
 //  Gestion du splitter
 ////////////////////////////////////////////////////////////////////////////////
 {$IFNDEF FPC}
-procedure p_pa_5Resize(const Sender: TObject;const pa_5:{$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF};const tbar_volet:TExtToolbar;const tbar_outils: {$IFDEF FPC}TToolbar{$ELSE}TExtToolbar{$ENDIF};const dock_volet: TDock;const spl_volet: {$IFDEF FPC}TSplitter{$ELSE}TJvSplitter{$ENDIF});
+procedure p_pa_5Resize(const Sender: TObject;const pa_5:{$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF};const tbar_volet:{$IFDEF FPC}TToolbar{$ELSE}TExtToolbar{$ENDIF};const tbar_outils: {$IFDEF FPC}TToolbar{$ELSE}{$IFDEF FPC}TToolbar{$ELSE}TExtToolbar{$ENDIF}{$ENDIF};const dock_volet: TDock;const spl_volet: {$IFDEF FPC}TSplitter{$ELSE}TJvSplitter{$ENDIF});
 begin
   if Assigned(tbar_volet.DockedTo) and tbar_volet.Visible then
     begin
@@ -308,7 +308,7 @@ begin
 end;
 {$ENDIF}
 
-procedure p_tbar_voletDockChanged(const pa_5:{$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF};const tbar_volet:TExtToolbar;const tbar_outils: {$IFDEF FPC}TToolbar{$ELSE}TExtToolbar{$ENDIF};const spl_volet: {$IFDEF FPC}TSplitter{$ELSE}TJvSplitter{$ENDIF});
+procedure p_tbar_voletDockChanged(const pa_5:{$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF};const tbar_volet:{$IFDEF FPC}TToolbar{$ELSE}TExtToolbar{$ENDIF};const tbar_outils: {$IFDEF FPC}TToolbar{$ELSE}{$IFDEF FPC}TToolbar{$ELSE}TExtToolbar{$ENDIF}{$ENDIF};const spl_volet: {$IFDEF FPC}TSplitter{$ELSE}TJvSplitter{$ENDIF});
 begin
 
   if {$IFNDEF FPC}Assigned(tbar_volet.DockedTo) and {$ENDIF}

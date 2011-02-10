@@ -23,7 +23,7 @@ object F_Administration: TF_Administration
       NavEdit = nav_Utilisateur
       Panels = <
         item
-          Panel = RbPanel8
+          Panel = PanelUtilisateur
         end>
       OnScroll = adoq_UtilisateursAfterScroll
     end

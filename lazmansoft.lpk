@@ -23,12 +23,16 @@
     </CompilerOptions>
     <Description Value="Full management software RAD Framework"/>
     <License Value="LGPL"/>
-    <Version Minor="9" Build="9"/>
-    <Files Count="1">
+    <Version Minor="9" Release="1"/>
+    <Files Count="2">
       <Item1>
         <Filename Value="fonctions/fonctions_Objets_Dynamiques.pas"/>
         <UnitName Value="fonctions_Objets_Dynamiques"/>
       </Item1>
+      <Item2>
+        <Filename Value="fonctions/fonctions_FenetrePrincipale.pas"/>
+        <UnitName Value="fonctions_FenetrePrincipale"/>
+      </Item2>
     </Files>
     <i18n>
       <EnableI18N Value="True"/>

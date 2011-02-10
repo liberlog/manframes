@@ -101,6 +101,7 @@ type
     tbsep_2    : {$IFDEF FPC}TPanel{$ELSE}TExtToolbarSep{$ENDIF};
     tbsep_3    : {$IFDEF FPC}TPanel{$ELSE}TExtToolbarSep{$ENDIF};
     com_FonctionsType: TRxDBLookupCombo;
+    PanelUtilisateur: TPanel;
     pc_Onglets: TPageControl;
     ts_Sommaire: TTabSheet;
     pa_Volet: TPanel;

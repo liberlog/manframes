@@ -340,13 +340,13 @@ LazarusResources.Add('TF_Administration','FORMDATA',[
   +'abOrder'#2#5#0#6'TPanel'#4'pa_5'#4'Left'#3#206#2#6'Height'#2'0'#3'Top'#2#2#5
   +'Width'#2'9'#5'Align'#7#7'alRight'#10'BevelOuter'#7#6'bvNone'#12'ClientHeigh'
   +'t'#2'0'#11'ClientWidth'#2'9'#8'TabOrder'#2#0#0#11'TJvXPButton'#11'dbt_quitt'
-  +'er'#4'Left'#2#9#6'Height'#2')'#4'Hint'#6#7'Quitter'#3'Top'#2#3#5'Width'#2')'
+  +'er'#4'Left'#2#9#6'Height'#2')'#4'Hint'#6#7'Quitter'#3'Top'#2#0#5'Width'#2')'
   +#11'HelpContext'#3#150#5#8'TabOrder'#2#0#11'Font.Height'#2#243#9'Font.Name'#6
   +#13'MS Sans Serif'#10'ParentFont'#8#14'ParentShowHint'#8#8'ShowHint'#9#0#0#0
   +#6'TPanel'#4'pa_7'#4'Left'#3#146#2#6'Height'#2'0'#3'Top'#2#2#5'Width'#2'9'#5
   +'Align'#7#7'alRight'#10'BevelOuter'#7#6'bvNone'#12'ClientHeight'#2'0'#11'Cli'
   +'entWidth'#2'9'#8'TabOrder'#2#1#0#11'TJvXPButton'#8'dbt_aide'#4'Left'#2#9#6
-  +'Height'#2')'#4'Hint'#6#29'Ouvrir l''aide|Rubrique d''aide'#3'Top'#2#3#5'Wid'
+  +'Height'#2')'#4'Hint'#6#29'Ouvrir l''aide|Rubrique d''aide'#3'Top'#2#0#5'Wid'
   +'th'#2')'#11'HelpContext'#3#150#5#8'TabOrder'#2#0#6'Layout'#7#12'blGlyphRigh'
   +'t'#7'Spacing'#2#0#5'Align'#7#8'alCustom'#11'Font.Height'#2#243#9'Font.Name'
   +#6#13'MS Sans Serif'#10'ParentFont'#8#14'ParentShowHint'#8#8'ShowHint'#9#0#0
@@ -359,7 +359,7 @@ LazarusResources.Add('TF_Administration','FORMDATA',[
   +'elOuter'#7#6'bvNone'#12'ClientHeight'#2'0'#11'ClientWidth'#2'9'#8'TabOrder'
   +#2#5#0#11'TJvXPButton'#9'dbt_ident'#4'Left'#2#9#6'Height'#2')'#4'Hint'#6'AS'
   +'''identifier/d'#195#131#194#169'connecter|Ouvrir la fen'#195#131#194#170'tr'
-  +'e d''identification'#3'Top'#2#3#5'Width'#2'('#11'HelpContext'#3#150#5#8'Tab'
+  +'e d''identification'#3'Top'#2#0#5'Width'#2'('#11'HelpContext'#3#150#5#8'Tab'
   +'Order'#2#0#6'Layout'#7#12'blGlyphRight'#11'Font.Height'#2#243#9'Font.Name'#6
   +#13'MS Sans Serif'#10'ParentFont'#8#14'ParentShowHint'#8#8'ShowHint'#9#0#0#0
   +#6'TPanel'#7'tbsep_2'#4'Left'#3#143#2#6'Height'#2'0'#3'Top'#2#2#5'Width'#2#3
@@ -573,7 +573,7 @@ LazarusResources.Add('TF_Administration','FORMDATA',[
   +'rivil'#195#168'ge'#10'Font.Color'#7#7'clBlack'#11'Font.Height'#2#243#9'Font'
   +'.Name'#6#13'MS Sans Serif'#11'ParentColor'#8#10'ParentFont'#8#10'ColorFocus'
   +#7#8'clMaroon'#0#0#9'TFWDBEdit'#7'dbe_Nom'#3'Tag'#2#5#4'Left'#3#147#0#6'Heig'
-  +'ht'#2' '#4'Hint'#6#28'Nom pr'#195#169'nom de l''utilisateur'#3'Top'#2'*'#5
+  +'ht'#2#27#4'Hint'#6#28'Nom pr'#195#169'nom de l''utilisateur'#3'Top'#2'*'#5
   +'Width'#3')'#1#9'DataField'#6#9'UTIL_Clep'#5'Color'#7#12'clMoneyGreen'#11'Fo'
   +'nt.Height'#2#243#9'Font.Name'#6#13'MS Sans Serif'#10'ParentFont'#8#14'Paren'
   +'tShowHint'#8#8'ShowHint'#9#8'TabOrder'#2#0#6'OnExit'#7#11'dbe_NomExit'#0#0
@@ -588,7 +588,7 @@ LazarusResources.Add('TF_Administration','FORMDATA',[
   +#0#0#0#18'"#'#0#0#0#0#0#18'"#'#0#0#0#0#1'"""0'#0#0#0#1'3330'#0#0#0#0#0#0#0#0
   +#0#0#0#0#0#0#0#0#0#0#0#9'NumGlyphs'#2#1#11'ParentColor'#8#10'ParentFont'#8#14
   +'ParentShowHint'#8#8'ReadOnly'#8#8'ShowHint'#9#8'TabOrder'#2#1#7'TabStop'#9#0
-  +#0#5'TEdit'#12'dbe_MotPasse'#3'Tag'#2#4#4'Left'#3#147#0#6'Height'#2' '#4'Hin'
+  +#0#5'TEdit'#12'dbe_MotPasse'#3'Tag'#2#4#4'Left'#3#147#0#6'Height'#2#27#4'Hin'
   +'t'#6#24'Modifier le mot de passe'#3'Top'#2'x'#5'Width'#3'+'#1#5'Color'#4#240
   +#251#255#0#8'EchoMode'#7#10'emPassword'#11'Font.Height'#2#243#9'Font.Name'#6
   +#13'MS Sans Serif'#9'MaxLength'#2'2'#8'OnChange'#7#18'dbe_MotPasseChange'#7

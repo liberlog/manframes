@@ -1,7 +1,7 @@
 object F_Acces: TF_Acces
-  Left = 320
+  Left = 382
   Height = 240
-  Top = 475
+  Top = 413
   Width = 349
   Caption = 'F_Acces'
   ClientHeight = 240
