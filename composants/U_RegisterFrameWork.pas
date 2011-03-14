@@ -61,7 +61,8 @@ uses DB, TypInfo,
   U_FormDico,
   u_customframework,
   u_propform,
-  U_RegVersion ;
+  U_RegVersion,
+  u_buttons_manage ;
 
 { TNavigatorsProperty }
 
@@ -166,7 +167,9 @@ begin // Enregistre le nouvel expert de projet
    RegisterCustomModule ( TF_FormDico, TCustomModule );
    RegisterCustomModule ( TF_PropForm, TCustomModule );
 {$ENDIF}
+   RegisterComponents('ExtDB', [TManLeoPreview]);
    RegisterPropertyEditor(TypeInfo(string), TF_CustomFrameWork, 'Version', TVersionProperty);
+   RegisterPropertyEditor(TypeInfo(string), TManLeoPreview, 'LeonardiRTF', TFileNamePropertyEditor);
    RegisterPropertyEditor(TypeInfo(string), TFWColumn, 'Key', {$IFDEF FPC}TFieldProperty{$ELSE}TDataFieldProperty{$ENDIF});
 
    RegisterPropertyEditor(TypeInfo(string), TFWColumn, 'Navigator', TNavigatorsProperty);

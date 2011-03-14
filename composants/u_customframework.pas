@@ -613,7 +613,6 @@ type
 
     function fs_GetLabel(const as_OldLabel : WideString ; const acom_Control : TComponent ): WideString; overload;
 
-    procedure p_CreateColumns; virtual;
     {$IFDEF EADO}
     procedure p_AffecteEvenementsDatasetPrincipal(
       const adat_DatasetPrinc: TDataset);
@@ -1591,7 +1590,7 @@ begin
   OnCreate := FormCreate;
   gb_CloseMessage := False;
   {$ENDIF}
-  p_CreateColumns;
+  gFWColumns := CreateColumns;
 
   inherited Create (Sender);
 
@@ -1599,11 +1598,6 @@ begin
   FormCreate ( Self );
   {$ENDIF}
 End;
-
-procedure TF_CustomFrameWork.p_CreateColumns;
-begin
-  gFWColumns := CreateColumns;
-end;
 
 procedure TF_CustomFrameWork.FormCreate(Sender: TObject);
 begin
