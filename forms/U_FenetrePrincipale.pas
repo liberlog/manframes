@@ -17,6 +17,7 @@ unit U_FenetrePrincipale;
 
 {$IFDEF FPC}
 {$mode Delphi}
+{$R *.lfm}
 {$ELSE}
 {$IFNDEF CLR}
 {$R *.dfm}
@@ -30,7 +31,7 @@ uses
   ADODB,
 {$ENDIF}
 {$IFDEF FPC}
-  LCLIntf, LCLType, SQLDB, PCheck, lresources,
+  LCLIntf, LCLType, SQLDB, PCheck,
 {$ELSE}
   Windows, OleDB, JvComponent, StoHtmlHelp, JvScrollBox,
   JvExExtCtrls, JvSplitter, JvLED, U_ExtScrollBox,
@@ -1038,9 +1039,6 @@ end;
 
 
 initialization
-{$IFDEF FPC}
-  {$I U_FenetrePrincipale.lrs}
-{$ENDIF}
 {$IFDEF VERSIONS}
   p_ConcatVersion ( gVer_F_FenetrePrincipale );
 {$ENDIF}

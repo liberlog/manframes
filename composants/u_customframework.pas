@@ -552,6 +552,7 @@ type
     procedure p_AfterColumnFrameShow( const aFWColumn : TFWColumn ); virtual; abstract;
 
     function  CreateColumns: TFWColumns; virtual;
+    procedure p_CreateColumns; virtual;
     procedure p_MontreCacheColonne ( const adbgd_DataGrid : TCustomDBGrid; const adbgd_DataGridDataSource : TDatasource; const adbgd_DataGridColumns : TDBGridColumns; const aFWColumn : TFWColumn );virtual;
     procedure p_OnSearch ( const adat_Dataset: TDataset;  const as_OldFilter, as_Field: String; avar_ToSearch: Variant; const ab_Sort: Boolean ; var ab_SearchAnyway : Boolean ); virtual;
     procedure p_AfterSearch( const Dataset: TDataset; const as_Champ : String ); virtual;
@@ -1590,7 +1591,7 @@ begin
   OnCreate := FormCreate;
   gb_CloseMessage := False;
   {$ENDIF}
-  gFWColumns := CreateColumns;
+  p_CreateColumns;
 
   inherited Create (Sender);
 
@@ -1602,7 +1603,9 @@ End;
 procedure TF_CustomFrameWork.FormCreate(Sender: TObject);
 begin
   // Gain en rapidité : Ensuite EnableAlign
+  {$IFDEF FPC}
   DisableAlign ;
+  {$ENDIF}
 
     // Réaffectation des colonnes au filtrage
 //  lcol_DataGridLookupColumns := nil ;
@@ -3662,7 +3665,9 @@ begin
    Then
     Begin
       inherited ;
+      {$IFDEF FPC}
       EnableAlign ;
+      {$ENDIF}
       Exit ;
     End ;
 
@@ -6074,6 +6079,11 @@ End;
 function TF_CustomFrameWork.CreateColumns: TFWColumns;
 begin
   Result := TFWColumns.Create(Self, TFWColumn);
+end;
+
+procedure TF_CustomFrameWork.p_CreateColumns;
+begin
+  gFWColumns := CreateColumns;
 end;
 
 procedure TF_CustomFrameWork.p_SetColumns ( const Columns : TFWColumns );

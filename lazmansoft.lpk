@@ -24,8 +24,8 @@
     </CompilerOptions>
     <Description Value="Full management software RAD Framework"/>
     <License Value="LGPL"/>
-    <Version Minor="9" Release="1" Build="1"/>
-    <Files Count="2">
+    <Version Minor="9" Release="2" Build="2"/>
+    <Files Count="4">
       <Item1>
         <Filename Value="fonctions/fonctions_Objets_Dynamiques.pas"/>
         <UnitName Value="fonctions_Objets_Dynamiques"/>
@@ -34,6 +34,14 @@
         <Filename Value="fonctions/fonctions_FenetrePrincipale.pas"/>
         <UnitName Value="fonctions_FenetrePrincipale"/>
       </Item2>
+      <Item3>
+        <Filename Value="forms/U_Splash.lfm"/>
+        <Type Value="LFM"/>
+      </Item3>
+      <Item4>
+        <Filename Value="forms/U_Splash.pas"/>
+        <UnitName Value="U_Splash"/>
+      </Item4>
     </Files>
     <i18n>
       <EnableI18N Value="True"/>

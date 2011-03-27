@@ -23,7 +23,7 @@
     <Description Value="Child Form data management and relationships"/>
     <License Value="LGPL"/>
     <Version Minor="9" Release="1" Build="1"/>
-    <Files Count="18">
+    <Files Count="14">
       <Item1>
         <Filename Value="fonctions/fonctions_tableauframework.pas"/>
         <UnitName Value="fonctions_tableauframework"/>
@@ -37,68 +37,52 @@
         <UnitName Value="u_customframework"/>
       </Item3>
       <Item4>
-        <Filename Value="composants/u_formdico.lfm"/>
-        <Type Value="LFM"/>
-      </Item4>
-      <Item5>
-        <Filename Value="composants/u_formdico.lrs"/>
-        <Type Value="LRS"/>
-      </Item5>
-      <Item6>
         <Filename Value="composants/u_formdico.pas"/>
         <UnitName Value="u_formdico"/>
-      </Item6>
-      <Item7>
+      </Item4>
+      <Item5>
         <Filename Value="composants/u_searchcomponents.pas"/>
         <UnitName Value="u_searchcomponents"/>
-      </Item7>
-      <Item8>
+      </Item5>
+      <Item6>
         <Filename Value="composants/U_RegVersion.pas"/>
         <UnitName Value="U_RegVersion"/>
-      </Item8>
-      <Item9>
+      </Item6>
+      <Item7>
         <Filename Value="composants/U_RegisterIni.pas"/>
         <HasRegisterProc Value="True"/>
         <UnitName Value="U_RegisterIni"/>
-      </Item9>
-      <Item10>
+      </Item7>
+      <Item8>
         <Filename Value="composants/U_GroupView.lrs"/>
         <Type Value="LRS"/>
-      </Item10>
-      <Item11>
+      </Item8>
+      <Item9>
         <Filename Value="composants/U_GroupView.pas"/>
         <UnitName Value="U_GroupView"/>
-      </Item11>
-      <Item12>
+      </Item9>
+      <Item10>
         <Filename Value="composants/U_RegisterFrameWork.pas"/>
         <HasRegisterProc Value="True"/>
         <UnitName Value="U_RegisterFrameWork"/>
-      </Item12>
-      <Item13>
+      </Item10>
+      <Item11>
         <Filename Value="composants/U_RegisterGroupView.pas"/>
         <HasRegisterProc Value="True"/>
         <UnitName Value="U_RegisterGroupView"/>
-      </Item13>
-      <Item14>
-        <Filename Value="composants/u_propform.lfm"/>
-        <Type Value="LFM"/>
-      </Item14>
-      <Item15>
-        <Filename Value="composants/u_propform.lrs"/>
-        <Type Value="LRS"/>
-      </Item15>
-      <Item16>
+      </Item11>
+      <Item12>
         <Filename Value="composants/u_propform.pas"/>
         <UnitName Value="u_propform"/>
-      </Item16>
-      <Item17>
+      </Item12>
+      <Item13>
         <Filename Value="forms/u_previewform.pas"/>
         <UnitName Value="u_previewform"/>
-      </Item17>
-      <Item18>
+      </Item13>
+      <Item14>
         <Filename Value="composants/u_buttons_manage.pas"/>
         <UnitName Value="u_buttons_manage"/>
-      </Item18>
+      </Item14>
     </Files>
     <i18n>
       <EnableI18N Value="True"/>

@@ -24,8 +24,8 @@
     </CompilerOptions>
     <Description Value="Full management software RAD Framework"/>
     <License Value="LGPL"/>
-    <Version Minor="9" Build="9"/>
-    <Files Count="11">
+    <Version Minor="9" Release="2" Build="2"/>
+    <Files Count="10">
       <Item1>
         <Filename Value="forms/U_Acces.lfm"/>
         <Type Value="LFM"/>
@@ -63,13 +63,9 @@
         <UnitName Value="U_MotPasse"/>
       </Item9>
       <Item10>
-        <Filename Value="forms/U_Splash.pas"/>
-        <UnitName Value="U_Splash"/>
-      </Item10>
-      <Item11>
         <Filename Value="fonctions/fonctions_Objets_Data.pas"/>
         <UnitName Value="fonctions_Objets_Data"/>
-      </Item11>
+      </Item10>
     </Files>
     <i18n>
       <EnableI18N Value="True"/>
