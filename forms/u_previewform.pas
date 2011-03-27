@@ -18,6 +18,7 @@ type
     pa_InterPrint: TPanel;
     Pa_Buttons: TPanel;
     rvi_Page: TRichView;
+    procedure RichMemo1Change(Sender: TObject);
   private
     { private declarations }
   public
@@ -28,6 +29,13 @@ var
   F_Preview: TF_Preview;
 
 implementation
+
+{ TF_Preview }
+
+procedure TF_Preview.RichMemo1Change(Sender: TObject);
+begin
+
+end;
 
 initialization
   {$I u_previewform.lrs}

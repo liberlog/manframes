@@ -4,10 +4,10 @@
     <Name Value="lazmansoft"/>
     <Author Value="Matthieu GIROUX"/>
     <CompilerOptions>
-      <Version Value="8"/>
+      <Version Value="9"/>
       <SearchPaths>
-        <IncludeFiles Value="composants/;forms/"/>
-        <OtherUnitFiles Value="composants/;fonctions/;classes/;forms/"/>
+        <IncludeFiles Value="composants;forms"/>
+        <OtherUnitFiles Value="composants;fonctions;classes;forms"/>
         <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
       <Parsing>
@@ -15,6 +15,7 @@
           <SyntaxMode Value="Delphi"/>
           <CStyleOperator Value="False"/>
           <AllowLabel Value="False"/>
+          <UseAnsiStrings Value="False"/>
         </SyntaxOptions>
       </Parsing>
       <Other>
@@ -41,31 +42,31 @@
     <Type Value="RunAndDesignTime"/>
     <RequiredPkgs Count="11">
       <Item1>
-        <PackageName Value="SDFLaz"/>
+        <PackageName Value="virtualtreeview_package"/>
       </Item1>
       <Item2>
-        <PackageName Value="LCL"/>
+        <PackageName Value="SDFLaz"/>
       </Item2>
       <Item3>
-        <PackageName Value="lazmanframes"/>
+        <PackageName Value="LCL"/>
       </Item3>
       <Item4>
-        <PackageName Value="lazextcomponents"/>
+        <PackageName Value="lazmanframes"/>
       </Item4>
       <Item5>
-        <PackageName Value="zcomponent"/>
+        <PackageName Value="lazextcomponents"/>
       </Item5>
       <Item6>
-        <PackageName Value="JvXPBarLaz"/>
+        <PackageName Value="zcomponent"/>
       </Item6>
       <Item7>
-        <PackageName Value="lazfonctions"/>
+        <PackageName Value="JvXPBarLaz"/>
       </Item7>
       <Item8>
-        <PackageName Value="zcore"/>
+        <PackageName Value="lazfonctions"/>
       </Item8>
       <Item9>
-        <PackageName Value="virtualtreeslcl"/>
+        <PackageName Value="zcore"/>
       </Item9>
       <Item10>
         <PackageName Value="rxnew"/>

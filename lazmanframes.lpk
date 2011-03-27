@@ -5,12 +5,17 @@
     <Author Value="Matthieu GIROUX"/>
     <AutoUpdate Value="Manually"/>
     <CompilerOptions>
-      <Version Value="8"/>
+      <Version Value="9"/>
       <SearchPaths>
-        <IncludeFiles Value="composants/"/>
-        <OtherUnitFiles Value="composants/;fonctions/;forms/"/>
+        <IncludeFiles Value="composants"/>
+        <OtherUnitFiles Value="composants;fonctions;forms"/>
         <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
+      <Parsing>
+        <SyntaxOptions>
+          <UseAnsiStrings Value="False"/>
+        </SyntaxOptions>
+      </Parsing>
       <Other>
         <CompilerPath Value="$(CompPath)"/>
       </Other>

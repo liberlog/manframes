@@ -12,7 +12,7 @@ uses
 
 
 type
-    TManLeoPreview = class;
+    TManPreview = class;
     TManListColumn = class;
 
     { TManListRelation }
@@ -59,20 +59,21 @@ type
 
     TManListColumns = class(TCollection)
     private
-      FButton : TManLeoPreview;
+      FButton : TManPreview;
       function GetManListColumn( Index: Integer): TManListColumn;
       procedure SetManListColumn(Index: Integer; const AValue: TManListColumn);
     public
       function Add: TManListColumn;
-      constructor Create ( const Button : TManLeoPreview; const ColumnClass: TManListColumnClass); virtual;
-      property Button: TManLeoPreview read FButton;
+      constructor Create ( const Button : TManPreview; const ColumnClass: TManListColumnClass); virtual;
+      property Button: TManPreview read FButton;
       property Items[Index: Integer]: TManListColumn read GetManListColumn write SetManListColumn; default;
     End;
 
-   { TManLeoPreview }
-   TManLeoPreview = class ( TFWPreview )
+   { TManPreview }
+   TManPreview = class ( TFWPreview )
       private
-        Fkey, FDataField,
+        Fkey,
+        FDataField,
         FLeonardiRTF : String;
 
         gstl_DataField, gstl_Key : TStringList;
@@ -86,10 +87,10 @@ type
         procedure p_SetDatasource ( const AValue : TDatasource );
       public
         constructor Create ( AOwner : TComponent ) ; override;
+        function Preview : Boolean;
       published
         property FieldDelimiter : Char read gc_FieldDelimiter write  gc_FieldDelimiter default ';';
         property KeyField : String  read FKey write p_SetKeyField;
-        property DataField : String  read FDataField write p_SetDataField;
         property LeonardiRTF : String read FLeonardiRTF write p_LeonardiRTF;
         property Datasource : TDatasource read FDatasource write p_SetDatasource;
         property ListColumns : TManListColumns read FListColumns write FListColumns;
@@ -99,11 +100,11 @@ type
 
 implementation
 
-uses fonctions_string;
+uses fonctions_string, u_previewform, Forms;
 
-{ TManLeoPreview }
+{ TManPreview }
 
-procedure TManLeoPreview.p_LeonardiRTF(const AValue : String);
+procedure TManPreview.p_LeonardiRTF(const AValue : String);
 begin
   if AValue <> FLeonardiRTF Then
     Begin
@@ -111,7 +112,7 @@ begin
     end;
 end;
 
-procedure TManLeoPreview.p_setDataField(const AValue: String);
+procedure TManPreview.p_setDataField(const AValue: String);
 begin
   if AValue <> FDataField Then
     Begin
@@ -120,7 +121,7 @@ begin
     end;
 end;
 
-procedure TManLeoPreview.p_setKeyField(const AValue: String);
+procedure TManPreview.p_setKeyField(const AValue: String);
 begin
   if AValue <> Fkey Then
     Begin
@@ -129,7 +130,7 @@ begin
     end;
 end;
 
-procedure TManLeoPreview.p_SetDatasource(const AValue: TDatasource);
+procedure TManPreview.p_SetDatasource(const AValue: TDatasource);
 begin
   if AValue <> FDatasource Then
     Begin
@@ -137,13 +138,22 @@ begin
     end;
 end;
 
-constructor TManLeoPreview.Create(AOwner: TComponent);
+constructor TManPreview.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   FListColumns       := TManListColumns.Create(Self, TManListColumn);
   gc_FieldDelimiter  := ';';
   gstl_DataField     := nil;
   gstl_Key           := nil;
+end;
+
+function TManPreview.Preview: Boolean;
+begin
+  Result := False ;
+  if FileExists(FLeonardiRTF) Then
+    Begin
+      F_Preview := TF_Preview.Create(Application);
+    end;
 end;
 
 { TManListColumns }
@@ -166,7 +176,7 @@ begin
   Result := TManListColumn(inherited Add);
 end;
 
-constructor TManListColumns.Create(const Button: TManLeoPreview;
+constructor TManListColumns.Create(const Button: TManPreview;
   const ColumnClass: TManListColumnClass);
 begin
   inherited Create(ColumnClass);

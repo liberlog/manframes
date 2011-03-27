@@ -167,9 +167,9 @@ begin // Enregistre le nouvel expert de projet
    RegisterCustomModule ( TF_FormDico, TCustomModule );
    RegisterCustomModule ( TF_PropForm, TCustomModule );
 {$ENDIF}
-   RegisterComponents('ExtDB', [TManLeoPreview]);
+   RegisterComponents('ExtDB', [TManPreview]);
    RegisterPropertyEditor(TypeInfo(string), TF_CustomFrameWork, 'Version', TVersionProperty);
-   RegisterPropertyEditor(TypeInfo(string), TManLeoPreview, 'LeonardiRTF', TFileNamePropertyEditor);
+   RegisterPropertyEditor(TypeInfo(string), TManPreview, 'LeonardiRTF', TFileNamePropertyEditor);
    RegisterPropertyEditor(TypeInfo(string), TFWColumn, 'Key', {$IFDEF FPC}TFieldProperty{$ELSE}TDataFieldProperty{$ENDIF});
 
    RegisterPropertyEditor(TypeInfo(string), TFWColumn, 'Navigator', TNavigatorsProperty);

@@ -65,4 +65,16 @@ object F_Preview: TF_Preview
     AllowSelection = True
     SingleClick = False
   end
+  object RichMemo1: TRichMemo
+    Left = 166
+    Height = 90
+    Top = 187
+    Width = 150
+    HideSelection = False
+    Lines.Strings = (
+      'RichMemo1'
+    )
+    OnChange = RichMemo1Change
+    TabOrder = 2
+  end
 end
