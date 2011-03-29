@@ -19,9 +19,7 @@ unit U_FenetrePrincipale;
 {$mode Delphi}
 {$R *.lfm}
 {$ELSE}
-{$IFNDEF CLR}
 {$R *.dfm}
-{$ENDIF}
 {$ENDIF}
 
 interface

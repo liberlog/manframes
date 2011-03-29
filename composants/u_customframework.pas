@@ -1589,7 +1589,6 @@ begin
   p_InitFrameWork ( Self );
   {$IFDEF FPC}
   OnCreate := FormCreate;
-  gb_CloseMessage := False;
   {$ENDIF}
   p_CreateColumns;
 
@@ -1653,6 +1652,9 @@ end;
 
 procedure TF_CustomFrameWork.p_InitFrameWork ( const Sender : TComponent );
 Begin
+  {$IFDEF FPC}
+  gb_CloseMessage := False;
+  {$ENDIF}
   gb_DBMessageOnError   := True ;
   gb_PasUtiliserProps   := false ;
   gds_Query1 := nil ;

@@ -4,6 +4,12 @@ unit U_Administration;
 {$I ..\extends.inc}
 
 
+{$IFDEF FPC}
+{$MODE Delphi}
+{$R *.lfm}
+{$ELSE}
+{$R *.dfm}
+{$ENDIF}
 
 {
 Créée par Yves Michard le 12-2003
@@ -549,11 +555,6 @@ type
 
   end;
 
-{$IFDEF FPC}
-{$MODE Delphi}
-{$ELSE}
-{$R *.DFM}
-{$ENDIF}
 
 var
   F_Administration: TF_Administration;
@@ -3906,9 +3907,6 @@ begin
 end;
 
 initialization
-{$IFDEF FPC}
-  {$i U_Administration.lrs}
-{$ENDIF}
 {$IFDEF VERSIONS}
   p_ConcatVersion ( gver_F_Administration );
 {$ENDIF}

@@ -46,10 +46,11 @@ const
         			 FileUnit : 'U_Splash' ;
                                  Owner : 'Matthieu Giroux' ;
         			 Comment : 'Fenêtre apparaissant au chargement.' ;
-        			 BugsStory : '1.0.0.1 : Bug TFSplahForm.create' + #13#10
+        			 BugsStory : '1.0.0.2 : Getting the lfm and dfm back' + #13#10
+        			           + '1.0.0.1 : Bug TFSplahForm.create' + #13#10
         			           + '1.0.0.0 : ...';
         			 UnitType : 2 ;
-        			 Major : 1 ; Minor : 0 ; Release : 0 ; Build : 1 );
+        			 Major : 1 ; Minor : 0 ; Release : 0 ; Build : 2 );
 {$ENDIF}
 
 type
