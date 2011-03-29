@@ -1601,11 +1601,6 @@ End;
 
 procedure TF_CustomFrameWork.FormCreate(Sender: TObject);
 begin
-  // Gain en rapidité : Ensuite EnableAlign
-  {$IFDEF FPC}
-  DisableAlign ;
-  {$ENDIF}
-
     // Réaffectation des colonnes au filtrage
 //  lcol_DataGridLookupColumns := nil ;
 //  lcol_DataGridColumns := nil ;
@@ -1615,6 +1610,9 @@ begin
       // On ne charge pas le FrameWork
       Exit ;
     End ;
+
+  // Gain en rapidité : Ensuite EnableAlign
+  DisableAlign ;
 
   p_InitExecutionFrameWork ( Sender );
 
@@ -1648,6 +1646,8 @@ begin
       on e:Exception do
         fcla_GereException ( e, DatasetMain );
     End ;
+
+  EnableAlign ;
 end;
 
 procedure TF_CustomFrameWork.p_InitFrameWork ( const Sender : TComponent );
@@ -3667,9 +3667,6 @@ begin
    Then
     Begin
       inherited ;
-      {$IFDEF FPC}
-      EnableAlign ;
-      {$ENDIF}
       Exit ;
     End ;
 
@@ -3692,7 +3689,6 @@ begin
   if not gb_EnableDoShow Then
     Begin
       inherited ;
-      EnableAlign ;
       Exit ;
     End ;
 
@@ -3803,7 +3799,6 @@ begin
     p_PlacerFocus(gFWColumns [ CST_FRAMEWORK_DATASOURCE_PRINC ].con_ControlFocus);
   gb_JustCreated := False ;
   inherited;
-  EnableAlign ;
 end;
 
 
