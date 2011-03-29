@@ -14,7 +14,7 @@ interface
 
 uses
 {$IFDEF FPC}
-        LCLIntf, PropEdits,ComponentEditors, dbpropedits,
+  LCLIntf, PropEdits,ComponentEditors, dbpropedits,
 {$ELSE}
   Windows,  DBreg, DesignIntf, DesignEditors,
 {$ENDIF}
@@ -169,7 +169,9 @@ begin // Enregistre le nouvel expert de projet
 {$ENDIF}
    RegisterComponents('ExtDB', [TManPreview]);
    RegisterPropertyEditor(TypeInfo(string), TF_CustomFrameWork, 'Version', TVersionProperty);
-   RegisterPropertyEditor(TypeInfo(string), TManPreview, 'LeonardiRTF', TFileNamePropertyEditor);
+   {$IFDEF FPC}
+   RegisterPropertyEditor(TypeInfo(string), TManPreview, 'LeonardiRTF', {$IFDEF FPC}TFileNamePropertyEditor{$ELSE}{$ENDIF});
+   {$ENDIF}
    RegisterPropertyEditor(TypeInfo(string), TFWColumn, 'Key', {$IFDEF FPC}TFieldProperty{$ELSE}TDataFieldProperty{$ENDIF});
 
    RegisterPropertyEditor(TypeInfo(string), TFWColumn, 'Navigator', TNavigatorsProperty);

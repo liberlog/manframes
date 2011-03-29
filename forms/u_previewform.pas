@@ -1,11 +1,19 @@
 unit u_previewform;
 
-{$mode objfpc}{$H+}
+{$IFDEF FPC}
+{$mode Delphi}{$H+}
+{$R *.lfm}
+{$ELSE}
+{$R *.dfm}
+{$ENDIF}
 
 interface
 
 uses
-  Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
+{$IFDEF FPC}
+ LResources,
+{$ENDIF}
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs,
   ExtCtrls, u_buttons_appli, RichView;
 
 type
@@ -36,9 +44,6 @@ procedure TF_Preview.RichMemo1Change(Sender: TObject);
 begin
 
 end;
-
-initialization
-  {$I u_previewform.lrs}
 
 end.
 

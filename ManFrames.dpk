@@ -87,6 +87,7 @@ contains
   U_RegisterGroupView in 'composants\U_RegisterGroupView.pas',
   u_searchcomponents in 'composants\u_searchcomponents.pas',
   fonctions_tableauframework in 'fonctions\fonctions_tableauframework.pas',
-  unite_variables in 'fonctions\unite_variables.pas';
+  unite_variables in 'fonctions\unite_variables.pas',
+  u_buttons_manage in 'composants\u_buttons_manage.pas';
 
 end.
