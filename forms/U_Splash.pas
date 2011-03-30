@@ -42,10 +42,10 @@ uses
 
 {$IFDEF VERSIONS}
 const
-    gVer_F_SplashForm : T_Version = ( Component : 'Fenêtre Splash' ;
+    gVer_F_SplashForm : T_Version = ( Component : 'FenÃªtre Splash' ;
         			 FileUnit : 'U_Splash' ;
                                  Owner : 'Matthieu Giroux' ;
-        			 Comment : 'Fenêtre apparaissant au chargement.' ;
+        			 Comment : 'FenÃªtre apparaissant au chargement.' ;
         			 BugsStory : '1.0.0.2 : Getting the lfm and dfm back' + #13#10
         			           + '1.0.0.1 : Bug TFSplahForm.create' + #13#10
         			           + '1.0.0.0 : ...';

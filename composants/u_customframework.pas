@@ -6308,8 +6308,8 @@ begin
            Begin
             lt_Arg [0] := ls_Message ;
             if li_Compteur = 1
-              Then  MessageDlg ( fs_RemplaceMsg ( GS_ZONE_OBLIGATOIRE  , lt_Arg ), mtWarning, [mbOk], 0)
-              Else  MessageDlg ( fs_RemplaceMsg ( GS_ZONES_OBLIGATOIRES, lt_Arg ), mtWarning, [mbOk], 0);
+              Then  MessageDlg ( GS_SAISIR_ANNULER, fs_RemplaceMsg ( GS_ZONE_OBLIGATOIRE  , lt_Arg ), mtWarning, [mbOk], 0)
+              Else  MessageDlg ( GS_SAISIR_ANNULER, fs_RemplaceMsg ( GS_ZONES_OBLIGATOIRES, lt_Arg ), mtWarning, [mbOk], 0);
            End ;
           Abort;
          End ;

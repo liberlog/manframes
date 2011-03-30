@@ -1,9 +1,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-//	Nom Unité :  U_Données
-//	Description :	Datamodule divers de données
-//	Crée par Microcelt
-//	Modifié le 05/07/2004
+//	Nom UnitÃ© :  U_DonnÃ©es
+//	Description :	Datamodule divers de donnÃ©es
+//	CrÃ©e par Microcelt
+//	ModifiÃ© le 05/07/2004
 //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -41,9 +41,9 @@ uses
 
 {$IFDEF VERSIONS}
 const
-      gver_M_Donnees : T_Version = ( Component : 'Fenêtre de lien vers les données' ; FileUnit : 'U_Administration' ;
+      gver_M_Donnees : T_Version = ( Component : 'FenÃªtre de lien vers les donnÃ©es' ; FileUnit : 'U_Administration' ;
                         			           Owner : 'Matthieu Giroux' ;
-                        			           Comment : 'Gère les sommaires, les connexions, les utilisateurs.' ;
+                        			           Comment : 'GÃ¨re les sommaires, les connexions, les utilisateurs.' ;
                         			           BugsStory   : 'Version 1.0.0.0 : Version ZEOS et ADO de la fiche : ADO sous DELPHI.'  ;
                         			           UnitType : 2 ;
                         			           Major : 1 ; Minor : 0 ; Release : 0 ; Build : 0 );
@@ -93,14 +93,14 @@ type
     procedure DataModuleCreate(Sender: TObject);
 
 	private
-		{ Déclarations privées }
+		{ DÃ©clarations privÃ©es }
 		gi_RequetesSQLEncours : Integer ;
   protected
     procedure InitializeControls; virtual;
     procedure CreateConnection; virtual;
 	public
     constructor Create ( AOwner : TComponent );override;
-		{ Déclarations publiques }
+		{ DÃ©clarations publiques }
 	end;
 
 var
@@ -121,9 +121,9 @@ uses Forms, Controls, SysUtils,
 
 {$IFNDEF CSV}
 ////////////////////////////////////////////////////////////////////////////////
-// Evènement   : ConnectionAfterConnect
-// Description : Connexion principale établie
-// Paramètre   : Sender : Le Module
+// EvÃ¨nement   : ConnectionAfterConnect
+// Description : Connexion principale Ã©tablie
+// ParamÃ¨tre   : Sender : Le Module
 ////////////////////////////////////////////////////////////////////////////////
 procedure TM_Donnees.ConnectionAfterConnect(Sender: TObject);
 begin
@@ -133,9 +133,9 @@ begin
 end;
 
 ////////////////////////////////////////////////////////////////////////////////
-// Evènement   : ConnectionAfterDisconnect
-// Description : Déconnecté aux données principales
-// Paramètre   : Sender : Le Module
+// EvÃ¨nement   : ConnectionAfterDisconnect
+// Description : DÃ©connectÃ© aux donnÃ©es principales
+// ParamÃ¨tre   : Sender : Le Module
 ////////////////////////////////////////////////////////////////////////////////
 procedure TM_Donnees.ConnectionAfterDisconnect(Sender: TObject);
 begin
@@ -146,45 +146,45 @@ end;
 
 {$IFDEF EADO}
 ////////////////////////////////////////////////////////////////////////////////
-// Evènement   : ConnectionWillExecute
-// Description : Curseur SQL avec compteur de requête pour
-// Paramètres  : Connection : le connecteur
+// EvÃ¨nement   : ConnectionWillExecute
+// Description : Curseur SQL avec compteur de requÃªte pour
+// ParamÃ¨tres  : Connection : le connecteur
 //               Error          : nom de l'erreur
-// Paramètres à modifier  :
-//               EventStatus    : Status de l'évènement ( erreur ou pas )
+// ParamÃ¨tres Ã  modifier  :
+//               EventStatus    : Status de l'Ã©vÃ¨nement ( erreur ou pas )
 //               Command        : commande ADO
-//               Recordset      : Données ADO
+//               Recordset      : DonnÃ©es ADO
 ////////////////////////////////////////////////////////////////////////////////
 procedure TM_Donnees.ConnectionExecuteComplete(
 	Connection: TADOConnection; RecordsAffected: Integer; const Error: Error;
 	var EventStatus: TEventStatus; const Command: _Command;
 	const Recordset: _Recordset);
 begin
-	// Décrémentation
+	// DÃ©crÃ©mentation
 	dec ( gi_RequetesSQLEncours );
 	// Curseur classique
 	Screen.Cursor := crDefault ;
 	if gi_RequetesSQLEncours > 0 Then
-		// Curseur SQL en scintillement si requête asynchrone
+		// Curseur SQL en scintillement si requÃªte asynchrone
 		Screen.Cursor := crSQLWait
 	Else
-		// Une reqête n'a peut-être pas été terminée
+		// Une reqÃªte n'a peut-Ãªtre pas Ã©tÃ© terminÃ©e
 		gi_RequetesSQLEncours := 0 ;
 end;
 
 ////////////////////////////////////////////////////////////////////////////////
-// Evènement   : ConnectionWillExecute
-// Description : Curseur SQL avec compteur de requête pour
-// Paramètres  : Connection : le connecteur
-// Paramètres à modifier  :
+// EvÃ¨nement   : ConnectionWillExecute
+// Description : Curseur SQL avec compteur de requÃªte pour
+// ParamÃ¨tres  : Connection : le connecteur
+// ParamÃ¨tres Ã  modifier  :
 //							 CommandText : Le code SQL
 //               CursorType  : Type de curseur
-//               LockType    : Le mode d'accès en écriture
+//               LockType    : Le mode d'accÃ¨s en Ã©criture
 //               CommandType : Type de commande SQL
-//               ExecuteOptions : Paramètres d'exécution
-//               EventStatus    : Status de l'évènement ( erreur ou pas )
+//               ExecuteOptions : ParamÃ¨tres d'exÃ©cution
+//               EventStatus    : Status de l'Ã©vÃ¨nement ( erreur ou pas )
 //               Command        : commande ADO
-//               Recordset      : Données ADO
+//               Recordset      : DonnÃ©es ADO
 ////////////////////////////////////////////////////////////////////////////////
 procedure TM_Donnees.ConnectionWillExecute(Connection: TADOConnection;
 	var CommandText: WideString; var CursorType: TCursorType;
@@ -192,7 +192,7 @@ procedure TM_Donnees.ConnectionWillExecute(Connection: TADOConnection;
 	var ExecuteOptions: TExecuteOptions; var EventStatus: TEventStatus;
 	const Command: _Command; const Recordset: _Recordset);
 begin
-	// Incrémente les requêtes
+	// IncrÃ©mente les requÃªtes
 	inc ( gi_RequetesSQLEncours );
 	// Curseur SQL
 	Screen.Cursor := crSQLWait ;
@@ -200,9 +200,9 @@ end;
 {$ENDIF}
 {$ENDIF}
 ////////////////////////////////////////////////////////////////////////////////
-// Evènement : Create
+// EvÃ¨nement : Create
 // Description : Initialisation des variables
-// Paramètre : Sender : la fiche
+// ParamÃ¨tre : Sender : la fiche
 ////////////////////////////////////////////////////////////////////////////////
 constructor TM_Donnees.Create(AOwner: TComponent);
 begin

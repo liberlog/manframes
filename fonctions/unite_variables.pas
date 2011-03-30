@@ -21,9 +21,9 @@ const
                         			                	         + 'Version 1.0.3.2 : Modifs GS_MC_VALEUR_UTILISEE et GS_MC_VALEURS_UTILISEES, ajout de GS_MC_DETAILS_TECHNIQUES.' + #13#10
                         			                	         + 'Version 1.0.3.1 : Constante message Form Dico.' + #13#10
                         			                	         + 'Version 1.0.3.0 : Constantes INI.' + #13#10
-                        			                	         + 'Version 1.0.2.0 : Plus de messages dans l''unité.' + #13#10
-                        			                	         + 'Version 1.0.1.0 : Plus de messages dans l''unité.' + #13#10
-                        			                	         + 'Version 1.0.0.0 : Gestion des messages des fenêtres.';
+                        			                	         + 'Version 1.0.2.0 : Plus de messages dans l''unitÃ©.' + #13#10
+                        			                	         + 'Version 1.0.1.0 : Plus de messages dans l''unitÃ©.' + #13#10
+                        			                	         + 'Version 1.0.0.0 : Gestion des messages des fenÃªtres.';
                         			                 UnitType : 1 ;
                         			                 Major : 1 ; Minor : 0 ; Release : 4 ; Build : 0 );
 
@@ -41,7 +41,7 @@ const
   CST_HC_SUPPRIMER        = 0 ;
   CST_ADMIN      = 600;
   CST_PALETTE_COMPOSANTS = 'Extended' ;
-  // Constantes particulières à des champs
+  // Constantes particuliÃ¨res Ã  des champs
   CST_MENU_Numordre       = 'MENU_Numordre' ;
       CST_MENU__SOMM          = 'MENU__SOMM' ;
       CST_MENU_Clep           = 'MENU_Clep' ;
@@ -91,18 +91,18 @@ const
 var
   gb_AccesAuto: Boolean = False ;  // Pour la gestion de la connexion OK
   gb_FirstAcces: Boolean = True ; // Vrai si on arrive dans l'application
-  gb_Reinit: Boolean = False ;     // Vrai si on a demandé à réinitialiser l'application
+  gb_Reinit: Boolean = False ;     // Vrai si on a demandÃ© Ã  rÃ©initialiser l'application
   gb_Resto : Boolean = True ;
   gb_Siege : Boolean = False ;
   gs_DefaultUser,gs_user, gs_computer, gs_sessionuser, gs_serveurbdd, gs_serveur, gs_base: string;
   gs_NomAppli, gs_NomLog, gs_Version, gs_Resto, gs_LibResto: string;
   gi_NbSeparateurs, gi_niveau_priv: integer;
-  // paramètres pour l'édition
+  // paramÃ¨tres pour l'Ã©dition
   gs_edition_nom : string;            // nom du fichier rpt
-  gs_edition_titre : String;          // Titre de l'édition
-  gs_edition_params : TStrings;       // nom des paramètres
-  gs_edition_nom_params : TStrings;   // nom de l'edition associés aux paramètres
-  gs_edition_params_values : TStrings;// valeur des paramètres
+  gs_edition_titre : String;          // Titre de l'Ã©dition
+  gs_edition_params : TStrings;       // nom des paramÃ¨tres
+  gs_edition_nom_params : TStrings;   // nom de l'edition associÃ©s aux paramÃ¨tres
+  gs_edition_params_values : TStrings;// valeur des paramÃ¨tres
   gs_FilePath_Fusion1,
   gs_FilePath_Fusion2,
   gs_File_TempFusion ,
@@ -119,72 +119,72 @@ resourcestring
   GS_LOGIN_FAILED = 'Le Login et son mot de passe sont incorrects.' ;
   GS_LBL_PB        = 'Pb. connexion';
   Gs_InvalidComponentName = 'Ce nom de composant est invalide : ' ;
-  GS_LBL_PCONN     = 'Non connecté';
+  GS_LBL_PCONN     = 'Non connectÃ©';
   GS_mot_passe_invalide = 'Mot de passe invalide.' + #13 + #10
 	 + 'Veuillez resaisir votre mot de passe.' ;
   GS_Nom_Utilisateur_Invalide = 'Nom d''utilisateur invalide.' + #13 + #10
 				 + 'Choisissez un nom d''utilisateur.' ;
-  GS_aucune_connexion = 'Pas de connexion aux données de l''application.' ;
+  GS_aucune_connexion = 'Pas de connexion aux donnÃ©es de l''application.' ;
   GS_administration_seule = 'Seule la fonction d''Administration est accessible...';
   GS_ConfirmOnClose = 'Voulez-vous enregistrer vos modifications ?';
 
   GS_FERMER_APPLICATION = 'Confirmez-vous la fermeture de l''application ?';
   GS_ADMINISTRATION_SEULEMENT = 'Seule la fonction d''Administration est accessible...';
-  GS_DECONNECTER = 'Etes-vous sûr(e) de vouloir vous déconnecter ?';
-  GS_ENREGISTRER = 'Voulez-vous enregistrer les modifications apportées ?';
-  GS_METTRE_A_JOUR_FICHE = 'L''enregistrement a été effacé ou modifié par un autre utilisateur.' + #13 + #13
-                        			+ 'La fiche va être mise à jour.' ;
+  GS_DECONNECTER = 'Etes-vous sÃ»r(e) de vouloir vous dÃ©connecter ?';
+  GS_ENREGISTRER = 'Voulez-vous enregistrer les modifications apportÃ©es ?';
+  GS_METTRE_A_JOUR_FICHE = 'L''enregistrement a Ã©tÃ© effacÃ© ou modifiÃ© par un autre utilisateur.' + #13 + #13
+                        			+ 'La fiche va Ãªtre mise Ã  jour.' ;
   GS_ERREUR_MODIFICATION_MAJ = 'Impossible de supprimer cet enregistrement. ' + #13
-               + 'Il est utilisé dans une autre fonction.';
-  GS_ERREUR_CONNEXION = 'Un problème est survenu pour la connexion aux données.' + #13#10
-                        	 + 'Réessayez d''ouvrir la fiche.' ;
-  GS_ERREUR_RESEAU = 'Erreur réseau.' + #13#10
-                        + 'Vérifier la connexion réseau.' ;
-                        //GS_CHANGEMENTS_SAUVER = 'Des changements ont été effectués.' + #13#10 +' Le trie nécessite alors une sauvegarde.'  + #13#10 + 'Voulez-vous enregistrer les changements effectués ?' ;
+               + 'Il est utilisÃ© dans une autre fonction.';
+  GS_ERREUR_CONNEXION = 'Un problÃ¨me est survenu pour la connexion aux donnÃ©es.' + #13#10
+                        	 + 'RÃ©essayez d''ouvrir la fiche.' ;
+  GS_ERREUR_RESEAU = 'Erreur rÃ©seau.' + #13#10
+                        + 'VÃ©rifier la connexion rÃ©seau.' ;
+                        //GS_CHANGEMENTS_SAUVER = 'Des changements ont Ã©tÃ© effectuÃ©s.' + #13#10 +' Le trie nÃ©cessite alors une sauvegarde.'  + #13#10 + 'Voulez-vous enregistrer les changements effectuÃ©s ?' ;
   GS_GROUPE_MAUVAIS_BOUTONS = 'Les boutons de transfert doivent s''inverser dans les deux listes. ' + #13#10
-                        	+ 'Les boutons de transfert sont identifiés par rapport à leur liste,' + #13#10
-                        	+ ' à l''inverse des numéros d''images identifiés par rapport à la table. ' ;
+                        	+ 'Les boutons de transfert sont identifiÃ©s par rapport Ã  leur liste,' + #13#10
+                        	+ ' Ã  l''inverse des numÃ©ros d''images identifiÃ©s par rapport Ã  la table. ' ;
       // Doit-on enregistrer ou abandonner
   GS_GROUPE_ABANDON = 'Veuillez enregistrer ou abandonner avant de continuer.' ;
       // Vidage du panier : oui ou non
-  GS_GROUPE_VIDER   = 'Le panier utilisé pour les réaffectations n''est pas vide.' + #13#10
-                         + 'Voulez-vous abandonner ces réaffectations ?' ;
-  GS_PAS_GROUPES    = 'DatasourceOwnerTable ou DatasourceOwnerKey non trouvés.' ;
+  GS_GROUPE_VIDER   = 'Le panier utilisÃ© pour les rÃ©affectations n''est pas vide.' + #13#10
+                         + 'Voulez-vous abandonner ces rÃ©affectations ?' ;
+  GS_PAS_GROUPES    = 'DatasourceOwnerTable ou DatasourceOwnerKey non trouvÃ©s.' ;
        /////////////////////
       // Aide du message //
      /////////////////////
-  GS_ERREUR_NOMBRE_GRAND = 'Problème à la validation du nombre :' + #13#10
+  GS_ERREUR_NOMBRE_GRAND = 'ProblÃ¨me Ã  la validation du nombre :' + #13#10
                    + 'Un nombre saisi est trop grand.' + #13#10
                    + 'Modifier la saisie ou annuler.' ;
-  GS_VALEUR_UTILISEE   = 'La valeur @ARG est déjà utilisée.' + #13 + #13
-                        		+ 'Saisir une valeur différente, annuler ou réeffectuer la validation si une valeur n''est pas modifiable.' ;
-  GS_VALEURS_UTILISEES = 'Les valeurs @ARG sont déjà utilisées.' + #13 + #13
-                        		+ 'Saisir des valeurs différentes, annuler ou réeffectuer la validation si une valeur n''est pas modifiable.' ;
-  GS_ZONE_OBLIGATOIRE = 'La zone @ARG ne peut pas être vide.' + #13 + #13
+  GS_VALEUR_UTILISEE   = 'La valeur @ARG est dÃ©jÃ  utilisÃ©e.' + #13 + #13
+                        		+ 'Saisir une valeur diffÃ©rente, annuler ou rÃ©effectuer la validation si une valeur n''est pas modifiable.' ;
+  GS_VALEURS_UTILISEES = 'Les valeurs @ARG sont dÃ©jÃ  utilisÃ©es.' + #13 + #13
+                        		+ 'Saisir des valeurs diffÃ©rentes, annuler ou rÃ©effectuer la validation si une valeur n''est pas modifiable.' ;
+  GS_ZONE_OBLIGATOIRE = 'La zone @ARG ne peut pas Ãªtre vide.' + #13 + #13
                         	+ 'Effectuer une saisie ou annuler.';
-  GS_ZONES_OBLIGATOIRES = 'Les zones suivantes ne peuvent pas être vides : @ARG .' + #13 + #13
+  GS_ZONES_OBLIGATOIRES = 'Les zones suivantes ne peuvent pas Ãªtre vides : @ARG .' + #13 + #13
                         		+ 'Effectuer une saisie ou annuler.';
-  GS_FORM_TABLE_NON_RENSEIGNEE = 'Le composant @ARG et la fiche @ARG doivent sélectionner une table dans le dictionnaire.' ;
-  GS_FORM_SELECTION_ADO_DATASET = 'Le composant @ARG en tant que composant ADO et la fiche @ARG doivent sélectionner une table.' ;
+  GS_FORM_TABLE_NON_RENSEIGNEE = 'Le composant @ARG et la fiche @ARG doivent sÃ©lectionner une table dans le dictionnaire.' ;
+  GS_FORM_SELECTION_ADO_DATASET = 'Le composant @ARG en tant que composant ADO et la fiche @ARG doivent sÃ©lectionner une table.' ;
   GS_FORM_ERREUR_CHARGE_COLONNES = 'Erreur au chargement des colonnes de @ARG...' ;
-  GS_FORM_PAS_CONNEXION = 'Pas de connexion ADO pour les DataSources propriétés de la fiche.' ;
-  GS_FORM_PAS_QUERY_DICO = 'Il faut affecter un Query vide à DatasourceQuery et DatasourceQuerySearch.' + #13 + #13 +
-                                    'Ou alors la propriété Datasource doit etre un Query.' ;
-  GS_FORM_PAS_BONNE_COLONNE = 'Un champ dans la table est mal renseigné' ;
+  GS_FORM_PAS_CONNEXION = 'Pas de connexion ADO pour les DataSources propriÃ©tÃ©s de la fiche.' ;
+  GS_FORM_PAS_QUERY_DICO = 'Il faut affecter un Query vide Ã  DatasourceQuery et DatasourceQuerySearch.' + #13 + #13 +
+                                    'Ou alors la propriÃ©tÃ© Datasource doit etre un Query.' ;
+  GS_FORM_PAS_BONNE_COLONNE = 'Un champ dans la table est mal renseignÃ©' ;
 
-  GS_PROPRIETE_PAS_DE_CHAMP  = 'La propriété @ARG doit être un ou plusieurs champs existant.' ;
-  GS_PROPRIETE_PAS_BONNE_CLE = 'La propriété @ARG ne comporte pas le champ clé primaire @ARG.' ;
+  GS_PROPRIETE_PAS_DE_CHAMP  = 'La propriÃ©tÃ© @ARG doit Ãªtre un ou plusieurs champs existant.' ;
+  GS_PROPRIETE_PAS_BONNE_CLE = 'La propriÃ©tÃ© @ARG ne comporte pas le champ clÃ© primaire @ARG.' ;
 
   GS_ERREUR_CHARGEMENT = 'Erreur au chargement @ARG.' ;
-  GS_COMPOSANT_ADO = 'Le composant @ARG doit être une table ou un query en ADO.' ;
+  GS_COMPOSANT_ADO = 'Le composant @ARG doit Ãªtre une table ou un query en ADO.' ;
 
-  GS_INSERER_ENREGISTREMENT = 'Insérer un enregistrement' ;
+  GS_INSERER_ENREGISTREMENT = 'InsÃ©rer un enregistrement' ;
   GS_VALIDER_MODIFICATIONS  = 'Valider les modifications' ;
   GS_GROUPE_INCLURE         = 'Inclure' ;
   GS_GROUPE_EXCLURE         = 'Exclure' ;
   GS_GROUPE_TOUT_INCLURE    = 'Tout inclure' ;
   GS_GROUPE_TOUT_EXCLURE    = 'Tout exclure' ;
-  GS_GROUPE_RETOUR_ORIGINE  = 'Restaurer les données initiales' ;
+  GS_GROUPE_RETOUR_ORIGINE  = 'Restaurer les donnÃ©es initiales' ;
 
   GS_INI_NAME_FUSION1     = 'Fusion1' ;
   GS_INI_NAME_FUSION2     = 'Fusion2' ;
@@ -193,12 +193,12 @@ resourcestring
   GS_INI_PATH_FUSION2     = 'FUSION\FUSION2.DOT' ;
   GS_INI_FILE_FUSION      = 'FUSION.TMP' ;
 
-  GS_NAVIGATEUR_VERS_LE_BAS  = 'Déplacer la ligne vers le bas' ;
-  GS_NAVIGATEUR_VERS_LE_HAUT = 'Déplacer la ligne vers le haut' ;
+  GS_NAVIGATEUR_VERS_LE_BAS  = 'DÃ©placer la ligne vers le bas' ;
+  GS_NAVIGATEUR_VERS_LE_HAUT = 'DÃ©placer la ligne vers le haut' ;
   GS_AIDE           = 'aide';
   GS_CHEMIN_AIDE    = 'CHM\Aide.chm';
   GS_MODE_ASYNCHRONE = 'Mode Asynchrone' ;
-  GS_ACCES_DIRECT_SERVEUR = 'Accès directs Serveur' ;
+  GS_ACCES_DIRECT_SERVEUR = 'AccÃ¨s directs Serveur' ;
   GS_MODE_CONNEXION_ASYNCHRONE = 'Connection Asynchrone' ;
   GS_MODE_ASYNCHRONE_NB_ENREGISTREMENTS = 'Mode Asynchrone Enregistrements' ;
   GS_MODE_ASYNCHRONE_TIMEOUT = 'Mode Asynchrone TimeOut' ;
@@ -207,7 +207,7 @@ resourcestring
       // Modifier ici les textes d'interaction avec l'utilisateur
       GS_CHANGE_CONNEXION    = 'Vous ne pouvez pas changer le code et l''utilisateur de cette connexion :' + #13#10 + ' C''est une connexion obligatoire.' ;
       GS_CHANGE_UTILISATEUR  = 'Vous ne pouvez changer ni le nom, ni le sommaire, ni la connexion de cet utilisateur :' + #13#10 + ' C''est un utilisateur obligatoire.' ;
-      GS_CHANGE_PAS_SOMMAIRE = 'Vous ne pouvez pas changer le libellé de ce sommaire :' + #13#10 + ' C''est un sommaire obligatoire.' ;
+      GS_CHANGE_PAS_SOMMAIRE = 'Vous ne pouvez pas changer le libellÃ© de ce sommaire :' + #13#10 + ' C''est un sommaire obligatoire.' ;
       GS_PAS_CE_SOMMAIRE     = 'Vous ne pouvez pas effacer ce sommaire :' + #13#10 + ' C''est un sommaire obligatoire.' ;
       GS_PAS_CETTE_FONCTION  = 'Vous ne pouvez pas effacer cette fonction :' + #13#10 + ' C''est une fonction obligatoire dans ce sommaire.' ;
       GS_PAS_CET_UTILISATEUR = 'Vous ne pouvez pas effacer cet utilisateur :' + #13#10 + ' C''est un utilisateur obligatoire.' ;
@@ -219,25 +219,25 @@ resourcestring
       GS_EDITION_FMENU       = 'Edition d'' une fonction d''un menu ' ;
       GS_EDITION_FSOUSMENU   = 'Edition d'' une fonction d'' un sous menu' ;
       GS_EFFACE_1            = 'Voulez-vous supprimer l''enregistrement ' ;
-      GS_EFFACE_2            = ' et ses enregistrements associés ? ' ;
-      GS_EFFACE_MENU         = 'Attention ! Supprimer un menu effacera aussi ses sous-menus et les fonctions associés.' ;
-      GS_EFFACE_SOUS_MENU    = 'Attention ! Supprimer un sous-menu effacera aussi les fonctions associées.' ;
-      GS_EFFACE_SOMMAIRE     = 'Attention ! Supprimer un sommaire effacera aussi ses menus, ses sous-menus et les fonctions associés.' ;
-      GS_EFFACE_PAS_SOMMAIRE = 'Vous ne pouvez pas supprimer un sommaire si des utilisateurs ont été ajoutés.' ;
-      GS_CHOISIR_SOUS_MENU   = 'Un Sous Menu doit être sélectionné.' ;
-      GS_CHOISIR_MENU        = 'Un Menu doit être sélectionné.' ;
-      GS_CHOISIR_FONCTION    = 'Une Fonction doit être sélectionnée.' ;
-      GS_CHOISIR_SOMMAIRE    = 'Un Sommaire doit être sélectionné.' ;
+      GS_EFFACE_2            = ' et ses enregistrements associÃ©s ? ' ;
+      GS_EFFACE_MENU         = 'Attention ! Supprimer un menu effacera aussi ses sous-menus et les fonctions associÃ©es.' ;
+      GS_EFFACE_SOUS_MENU    = 'Attention ! Supprimer un sous-menu effacera aussi les fonctions associÃ©es.' ;
+      GS_EFFACE_SOMMAIRE     = 'Attention ! Supprimer un sommaire effacera aussi ses menus, ses sous-menus et les fonctions associÃ©s.' ;
+      GS_EFFACE_PAS_SOMMAIRE = 'Vous ne pouvez pas supprimer un sommaire si des utilisateurs ont Ã©tÃ© ajoutÃ©s.' ;
+      GS_CHOISIR_SOUS_MENU   = 'Un Sous Menu doit Ãªtre sÃ©lectionnÃ©.' ;
+      GS_CHOISIR_MENU        = 'Un Menu doit Ãªtre sÃ©lectionnÃ©.' ;
+      GS_CHOISIR_FONCTION    = 'Une Fonction doit Ãªtre sÃ©lectionnÃ©e.' ;
+      GS_CHOISIR_SOMMAIRE    = 'Un Sommaire doit Ãªtre sÃ©lectionnÃ©.' ;
       GS_PAS_MOT_PASSE       = 'Pas de mot de passe : Abandon de la sauvegarde.' ;
-      GS_SOMM_CLEP_EN_DOUBLE = 'Ce libellé est déjà utilisé.' ;
-      GS_MENU_CLEP_EN_DOUBLE = 'Ce libellé est déjà utilisé.' ;
-      GS_SOUM_CLEP_EN_DOUBLE = 'Ce libellé est déjà utilisé.' ;
-      GS_SOMMAIRE_VIDE       = 'Le libellé du sommaire ne peut pas être vide.' ;
-      GS_SOUSMENU_VIDE       = 'Le libellé du sous-menu ne peut pas être vide.' ;
-      GS_MENU_VIDE           = 'Le libellé du menu ne peut pas être vide.' ;
-      GS_UTIL_VIDE           = 'Les champs Utilisateur, Sommaire, Privilège ne peuvent pas être vides.' ;
+      GS_SOMM_CLEP_EN_DOUBLE = 'Ce libellÃ© est dÃ©jÃ  utilisÃ©.' ;
+      GS_MENU_CLEP_EN_DOUBLE = 'Ce libellÃ© est dÃ©jÃ  utilisÃ©.' ;
+      GS_SOUM_CLEP_EN_DOUBLE = 'Ce libellÃ© est dÃ©jÃ  utilisÃ©.' ;
+      GS_SOMMAIRE_VIDE       = 'Le libellÃ© du sommaire ne peut pas Ãªtre vide.' ;
+      GS_SOUSMENU_VIDE       = 'Le libellÃ© du sous-menu ne peut pas Ãªtre vide.' ;
+      GS_MENU_VIDE           = 'Le libellÃ© du menu ne peut pas Ãªtre vide.' ;
+      GS_UTIL_VIDE           = 'Les champs Utilisateur, Sommaire, PrivilÃ¨ge ne peuvent pas Ãªtre vides.' ;
       GS_SAISIR_ANNULER      = 'Effectuer une saisie ou annuler.' ;
-      GS_CHANGER_ANNULER     = 'Saisir un autre libellé ou annuler.' ;
+      GS_CHANGER_ANNULER     = 'Saisir un autre libellÃ© ou annuler.' ;
 
 implementation
 

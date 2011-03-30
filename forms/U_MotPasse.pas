@@ -22,10 +22,10 @@ uses
   u_buttons_appli ;
 
   const
-    gVer_F_MotPasse : T_Version = ( Component : 'Fenêtre Mot de passe' ;
+    gVer_F_MotPasse : T_Version = ( Component : 'FenÃªtre Mot de passe' ;
         			 FileUnit : 'U_MotPasse' ;
                                  Owner : 'Matthieu Giroux' ;
-                                 Comment : 'Fenêtre de validation du Mot de passe.' ;
+                                 Comment : 'FenÃªtre de validation du Mot de passe.' ;
         			 BugsStory : 'Version 1.1.0.0 : Passage en non ADO' + #13#10
                                            + '1.0.0.0 : Gestion du mot de passe plus simple.';
                                  UnitType : 2 ;
@@ -49,7 +49,7 @@ type
 
   public
     { Public declarations }
-    // Touche enfoncée
+    // Touche enfoncÃ©e
     function IsShortCut(var ao_Msg: {$IFDEF FPC}TLMKey{$ELSE}TWMKey{$ENDIF}): Boolean; override;
 
   end;
@@ -65,7 +65,7 @@ uses U_FormMainIni, unite_variables ;
 procedure TF_MotPasse.btn_okClick(Sender: TObject);
 begin
   // Utilisateur obligatoire
-      // Vérification du MDP
+      // VÃ©rification du MDP
 {      if fb_stringVide(tx_mdp.Text) then
         begin
         	MessageDlg('Mot de passe invalide' + #13 + #13
@@ -74,7 +74,7 @@ begin
         end
       else
         begin}
-        	// Le mot de passe est comparé à celui dans l'edit
+        	// Le mot de passe est comparÃ© Ã  celui dans l'edit
 
         	if (tx_mdp.Text = fs_stringDeCrypte(M_Donnees.q_user.FieldByName( CST_UTIL_Mdp).Asstring ) ) then
         		begin

@@ -50,7 +50,7 @@ inherited F_FenetrePrincipale: TF_FenetrePrincipale
     Height = 19
     Top = 440
     Width = 17
-    Version = 'Version 3.20, Copyright � 2000-2001 by Peric, E-mail: pericddn@ptt.yu'
+    Version = 'Version 3.20, Copyright © 2000-2001 by Peric, E-mail: pericddn@ptt.yu'
     Visible = False
     TabOrder = 1
   end
@@ -63,11 +63,11 @@ inherited F_FenetrePrincipale: TF_FenetrePrincipale
   object tbar_outils: TToolBar[5]
     Left = 0
     Height = 50
-    Hint = 'Cliquer sur un bouton pour accÃ©der Ã  une fonction'
+    Hint = 'Cliquer sur un bouton pour accéder à une fonction'
     Top = 0
     Width = 775
     HelpContext = 1430
-    Caption = 'Barre d''accÃ¨s'
+    Caption = 'Barre d''accès'
     Color = cl3DLight
     ParentColor = False
     ParentShowHint = False
@@ -165,7 +165,7 @@ inherited F_FenetrePrincipale: TF_FenetrePrincipale
       object dbt_ident: TJvXPButton
         Left = 9
         Height = 41
-        Hint = 'S''identifier/dÃ©connecter|Ouvrir la fenÃªtre d''identification'
+        Hint = 'S''identifier/déconnecter|Ouvrir la fenêtre d''identification'
         Top = 0
         Width = 40
         HelpContext = 1430
@@ -257,7 +257,7 @@ inherited F_FenetrePrincipale: TF_FenetrePrincipale
     object scb_Volet: TScrollBox
       Left = 0
       Height = 453
-      Hint = 'Cliquez pour accÃ©der aux fonctions'
+      Hint = 'Cliquez pour accéder aux fonctions'
       Top = 0
       Width = 197
       HelpContext = 1440
@@ -893,10 +893,10 @@ inherited F_FenetrePrincipale: TF_FenetrePrincipale
     object mu_file: TMenuItem
       Caption = '&Application'
       HelpContext = 1420
-      Hint = 'Fermeture des fenÃªtres ou de l''application'
+      Hint = 'Fermeture des fenêtres ou de l''application'
       object mu_identifier: TMenuItem
         Caption = 'S''&identifier'
-        Hint = 'Ouvrir la fenÃªtre d''identification'
+        Hint = 'Ouvrir la fenêtre d''identification'
         OnClick = dbt_identClick
       end
       object mu_ouvrir: TMenuItem
@@ -931,13 +931,13 @@ inherited F_FenetrePrincipale: TF_FenetrePrincipale
     object mu_affichage: TMenuItem
       Caption = 'Affichage'
       object mu_barreoutils: TMenuItem
-        Caption = 'Barre d''accÃ¨s'
+        Caption = 'Barre d''accès'
         Checked = True
         HelpContext = 1420
         OnClick = mu_barreoutilsClick
       end
       object mu_voletexplore: TMenuItem
-        Caption = 'Volet d''accÃ¨s'
+        Caption = 'Volet d''accès'
         Checked = True
         HelpContext = 1420
         OnClick = mu_voletexploreClick
@@ -958,7 +958,7 @@ inherited F_FenetrePrincipale: TF_FenetrePrincipale
       object mu_apropos: TMenuItem
         Caption = '&A propos...'
         HelpContext = 1420
-        Hint = 'A propos|Afficher des informations sur le programme, le numÃ©ro de version et le copyright'
+        Hint = 'A propos|Afficher des informations sur le programme, le numéro de version et le copyright'
         OnClick = mu_aproposClick
       end
     end

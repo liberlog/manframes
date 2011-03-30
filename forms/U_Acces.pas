@@ -30,16 +30,16 @@ uses
 
 {$IFDEF VERSIONS}
 const
-  gver_F_Acces : T_Version = ( Component : 'Fenêtre d''identification' ;
+  gver_F_Acces : T_Version = ( Component : 'FenÃªtre d''identification' ;
                            FileUnit : 'U_Acces' ;
        			 Owner : 'Matthieu Giroux' ;
-       			 Comment : 'Répertorie les composants.' ;
+       			 Comment : 'RÃ©pertorie les composants.' ;
        			 BugsStory   : 'Version 1.3.0.0 : Passage en LAZARUS' + #13#10
                                  + 'Version 1.2.0.0 : Passage en non ADO' + #13#10
                                  + 'Version 1.1.0.1 : Utilisation de JEDI' + #13#10
 		        	 + 'Version 1.1.0.0 : Passage en Jedi 3' + #13#10
-		        	 + 'Version 1.0.1.0 : Gestion utilisateur par défaut ( voir U_FenetrePrincipale )' + #13#10
-          	        	 + 'Version 1.0.0.0 : Gestion accès multiple.';
+		        	 + 'Version 1.0.1.0 : Gestion utilisateur par dÃ©faut ( voir U_FenetrePrincipale )' + #13#10
+          	        	 + 'Version 1.0.0.0 : Gestion accÃ¨s multiple.';
           		 UnitType : 2 ;
           		 Major : 1 ; Minor : 3 ; Release : 0 ; Build : 0 );
 
@@ -76,7 +76,7 @@ type
 
   public
     { Public declarations }
-    // Touche enfoncée
+    // Touche enfoncÃ©e
     function IsShortCut(var ao_Msg: {$IFDEF FPC}TLMKey{$ELSE}TWMKey{$ENDIF}): Boolean; override;
     constructor Create ( AOwner : TComponent ); override;
     destructor Destroy ; override;
@@ -216,7 +216,7 @@ begin
 {$ENDIF}
           End;
 
-      // Le mot de passe est comparé à celui en base (décrypté auparavant)
+      // Le mot de passe est comparÃ© Ã  celui en base (dÃ©cryptÃ© auparavant)
       try
 {$IFDEF CSV}
         M_Donnees.q_TreeUser.FileName := fs_getSoftData + gs_SoftUsers + gs_DataExtension;
