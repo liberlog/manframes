@@ -1,20 +1,22 @@
 <?xml version="1.0"?>
 <CONFIG>
   <ProjectOptions>
-    <Version Value="7"/>
+    <Version Value="9"/>
     <General>
       <Flags>
         <LRSInOutputDirectory Value="False"/>
       </Flags>
       <MainUnit Value="0"/>
-      <TargetFileExt Value=""/>
-      <ActiveEditorIndexAtStart Value="10"/>
+      <ActiveWindowIndexAtStart Value="0"/>
     </General>
     <VersionInfo>
-      <ProjectVersion Value=""/>
       <Language Value=""/>
       <CharSet Value=""/>
+      <StringTable ProductVersion=""/>
     </VersionInfo>
+    <BuildModes Count="1">
+      <Item1 Name="default" Default="True"/>
+    </BuildModes>
     <PublishOptions>
       <Version Value="2"/>
       <IgnoreBinaries Value="False"/>
@@ -44,121 +46,123 @@
         <PackageName Value="LCL"/>
       </Item5>
     </RequiredPackages>
-    <Units Count="179">
+    <Units Count="43">
       <Unit0>
         <Filename Value="demo.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="Demo"/>
-        <CursorPos X="1" Y="30"/>
-        <TopLine Value="8"/>
         <EditorIndex Value="0"/>
-        <UsageCount Value="89"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="3"/>
+        <CursorPos X="43" Y="32"/>
+        <UsageCount Value="90"/>
         <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit0>
       <Unit1>
         <Filename Value="../../../Lazarus Delphi/Extended/forms/u_zconnection.pas"/>
         <ComponentName Value="F_ZConnectionWindow"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="u_zconnection"/>
-        <CursorPos X="47" Y="100"/>
         <TopLine Value="90"/>
-        <UsageCount Value="34"/>
+        <CursorPos X="47" Y="100"/>
         <SyntaxHighlighter Value="Delphi"/>
+        <UsageCount Value="34"/>
       </Unit1>
       <Unit2>
         <Filename Value="u_constmessage.pas"/>
         <UnitName Value="U_ConstMessage"/>
-        <CursorPos X="1" Y="1"/>
         <TopLine Value="1"/>
+        <CursorPos X="1" Y="1"/>
         <UsageCount Value="12"/>
       </Unit2>
       <Unit3>
         <Filename Value="../../../../../usr/lib/lazarus/lcl/interfaces/gtk/interfaces.pp"/>
         <UnitName Value="Interfaces"/>
-        <CursorPos X="18" Y="17"/>
         <TopLine Value="1"/>
-        <UsageCount Value="9"/>
+        <CursorPos X="18" Y="17"/>
         <SyntaxHighlighter Value="Delphi"/>
+        <UsageCount Value="9"/>
       </Unit3>
       <Unit4>
         <Filename Value="../../composants/Matthieu/forms/U_FenetrePrincipale.pas"/>
         <UnitName Value="U_FenetrePrincipale"/>
-        <CursorPos X="47" Y="72"/>
         <TopLine Value="38"/>
-        <UsageCount Value="9"/>
+        <CursorPos X="47" Y="72"/>
         <SyntaxHighlighter Value="Delphi"/>
+        <UsageCount Value="9"/>
       </Unit4>
       <Unit5>
         <Filename Value="../../composants/Matthieu/forms/u_donnees.pas"/>
         <ComponentName Value="M_Donnees"/>
         <HasResources Value="True"/>
         <UnitName Value="U_Donnees"/>
-        <CursorPos X="1" Y="1"/>
         <TopLine Value="1"/>
-        <UsageCount Value="9"/>
+        <CursorPos X="1" Y="1"/>
         <SyntaxHighlighter Value="Delphi"/>
+        <UsageCount Value="9"/>
       </Unit5>
       <Unit6>
         <Filename Value="../../../../../usr/lib/lazarus/lcl/include/control.inc"/>
-        <CursorPos X="1" Y="2094"/>
         <TopLine Value="2068"/>
-        <UsageCount Value="9"/>
+        <CursorPos X="1" Y="2094"/>
         <SyntaxHighlighter Value="Delphi"/>
+        <UsageCount Value="9"/>
       </Unit6>
       <Unit7>
         <Filename Value="../../composants/Matthieu/fonctions/fonctions_init.pas"/>
         <UnitName Value="fonctions_init"/>
-        <CursorPos X="1" Y="410"/>
         <TopLine Value="384"/>
-        <UsageCount Value="9"/>
+        <CursorPos X="1" Y="410"/>
         <SyntaxHighlighter Value="Delphi"/>
+        <UsageCount Value="9"/>
       </Unit7>
       <Unit8>
         <Filename Value="../../../../../usr/lib/lazarus/lcl/forms.pp"/>
         <UnitName Value="Forms"/>
-        <CursorPos X="15" Y="1022"/>
         <TopLine Value="996"/>
-        <UsageCount Value="9"/>
+        <CursorPos X="15" Y="1022"/>
         <SyntaxHighlighter Value="Delphi"/>
+        <UsageCount Value="9"/>
       </Unit8>
       <Unit9>
         <Filename Value="../../../../../usr/lib/lazarus/lcl/include/application.inc"/>
-        <CursorPos X="1" Y="1617"/>
         <TopLine Value="1591"/>
-        <UsageCount Value="9"/>
+        <CursorPos X="1" Y="1617"/>
         <SyntaxHighlighter Value="Delphi"/>
+        <UsageCount Value="9"/>
       </Unit9>
       <Unit10>
         <Filename Value="../../composants/Matthieu/composants/U_FormMainIni.pas"/>
         <UnitName Value="U_FormMainIni"/>
-        <CursorPos X="9" Y="90"/>
         <TopLine Value="64"/>
-        <UsageCount Value="9"/>
+        <CursorPos X="9" Y="90"/>
         <SyntaxHighlighter Value="Delphi"/>
+        <UsageCount Value="9"/>
       </Unit10>
       <Unit11>
         <Filename Value="../../../Lazarus Delphi/Extended/forms/U_FenetrePrincipale.pas"/>
         <UnitName Value="U_FenetrePrincipale"/>
-        <CursorPos X="12" Y="345"/>
         <TopLine Value="302"/>
-        <UsageCount Value="15"/>
+        <CursorPos X="12" Y="345"/>
         <SyntaxHighlighter Value="Delphi"/>
+        <UsageCount Value="15"/>
       </Unit11>
       <Unit12>
         <Filename Value="../../../Lazarus Delphi/Extended/fonctions/fonctions_Objets_Dynamiques.pas"/>
         <UnitName Value="fonctions_Objets_Dynamiques"/>
-        <CursorPos X="91" Y="586"/>
         <TopLine Value="555"/>
-        <UsageCount Value="14"/>
+        <CursorPos X="91" Y="586"/>
         <SyntaxHighlighter Value="Delphi"/>
+        <UsageCount Value="14"/>
       </Unit12>
       <Unit13>
         <Filename Value="../../composants/Extended/forms/U_FenetrePrincipale.pas"/>
         <UnitName Value="U_FenetrePrincipale"/>
-        <CursorPos X="25" Y="263"/>
         <TopLine Value="223"/>
-        <UsageCount Value="9"/>
+        <CursorPos X="25" Y="263"/>
         <SyntaxHighlighter Value="Delphi"/>
+        <UsageCount Value="9"/>
       </Unit13>
       <Unit14>
         <Filename Value="../../../Lazarus Delphi/Extended/composants/U_FormMainIni.pas"/>
@@ -166,33 +170,33 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="U_FormMainIni"/>
-        <CursorPos X="39" Y="1424"/>
         <TopLine Value="1394"/>
-        <UsageCount Value="14"/>
+        <CursorPos X="39" Y="1424"/>
         <SyntaxHighlighter Value="Delphi"/>
+        <UsageCount Value="14"/>
       </Unit14>
       <Unit15>
         <Filename Value="../../../../../usr/lib/lazarus/lcl/include/customform.inc"/>
-        <CursorPos X="1" Y="34"/>
         <TopLine Value="2"/>
-        <UsageCount Value="10"/>
+        <CursorPos X="1" Y="34"/>
         <SyntaxHighlighter Value="Delphi"/>
+        <UsageCount Value="10"/>
       </Unit15>
       <Unit16>
         <Filename Value="../../../../../usr/lib/lazarus/lcl/controls.pp"/>
         <UnitName Value="Controls"/>
-        <CursorPos X="19" Y="1201"/>
         <TopLine Value="1170"/>
-        <UsageCount Value="10"/>
+        <CursorPos X="19" Y="1201"/>
         <SyntaxHighlighter Value="Delphi"/>
+        <UsageCount Value="10"/>
       </Unit16>
       <Unit17>
         <Filename Value="../../../Lazarus Delphi/Extended/fonctions/fonctions_init.pas"/>
         <UnitName Value="fonctions_init"/>
-        <CursorPos X="3" Y="688"/>
         <TopLine Value="683"/>
-        <UsageCount Value="21"/>
+        <CursorPos X="3" Y="688"/>
         <SyntaxHighlighter Value="Delphi"/>
+        <UsageCount Value="21"/>
       </Unit17>
       <Unit18>
         <Filename Value="../../../Lazarus Delphi/Extended/forms/u_zadministration.pas"/>
@@ -200,17 +204,17 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="u_zadministration"/>
-        <CursorPos X="1" Y="36"/>
         <TopLine Value="1"/>
-        <UsageCount Value="15"/>
+        <CursorPos X="1" Y="36"/>
         <SyntaxHighlighter Value="Delphi"/>
+        <UsageCount Value="15"/>
       </Unit18>
       <Unit19>
         <Filename Value="../../../Lazarus Delphi/Extended/forms/U_DBEAdministration.lfm"/>
-        <CursorPos X="16" Y="30298"/>
         <TopLine Value="30267"/>
+        <CursorPos X="16" Y="30298"/>
         <UsageCount Value="9"/>
-        <SyntaxHighlighter Value="LFM"/>
+        <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit19>
       <Unit20>
         <Filename Value="../../../Lazarus Delphi/Extended/composants/U_FormFrameWork.pas"/>
@@ -218,18 +222,18 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="U_FormFrameWork"/>
-        <CursorPos X="20" Y="1055"/>
         <TopLine Value="1024"/>
-        <UsageCount Value="9"/>
+        <CursorPos X="20" Y="1055"/>
         <SyntaxHighlighter Value="Delphi"/>
+        <UsageCount Value="9"/>
       </Unit20>
       <Unit21>
         <Filename Value="../../../../../usr/share/fpcsrc/2.2.2/packages/fcl-db/src/sqldb/sqldb.pp"/>
         <UnitName Value="sqldb"/>
-        <CursorPos X="28" Y="156"/>
         <TopLine Value="125"/>
-        <UsageCount Value="9"/>
+        <CursorPos X="28" Y="156"/>
         <SyntaxHighlighter Value="Delphi"/>
+        <UsageCount Value="9"/>
       </Unit21>
       <Unit22>
         <Filename Value="../../../Lazarus Delphi/Extended/lazfonctions.pas"/>
@@ -237,1428 +241,256 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="lazfonctions"/>
-        <CursorPos X="1" Y="1"/>
         <TopLine Value="1"/>
-        <UsageCount Value="14"/>
+        <CursorPos X="1" Y="1"/>
         <SyntaxHighlighter Value="Delphi"/>
+        <UsageCount Value="14"/>
       </Unit22>
       <Unit23>
         <Filename Value="../../../Lazarus Delphi/Extended/lazextresources_app.lpk"/>
-        <CursorPos X="28" Y="30"/>
         <TopLine Value="21"/>
+        <CursorPos X="28" Y="30"/>
         <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="XML"/>
+        <DefaultSyntaxHighlighter Value="XML"/>
       </Unit23>
       <Unit24>
         <Filename Value="../../composants/Toolbar97/Source/TB97Tlbr.pas"/>
         <UnitName Value="TB97Tlbr"/>
-        <CursorPos X="86" Y="221"/>
         <TopLine Value="187"/>
-        <UsageCount Value="11"/>
+        <CursorPos X="86" Y="221"/>
         <SyntaxHighlighter Value="Delphi"/>
+        <UsageCount Value="11"/>
       </Unit24>
       <Unit25>
-        <Filename Value="../../composants/Toolbar97/Source/TB97Cmn.pas"/>
-        <UnitName Value="TB97Cmn"/>
-        <CursorPos X="3" Y="318"/>
-        <TopLine Value="120"/>
-        <UsageCount Value="9"/>
-        <SyntaxHighlighter Value="Delphi"/>
+        <Filename Value="../../forms/U_FenetrePrincipale.pas"/>
+        <UnitName Value="U_FenetrePrincipale"/>
+        <EditorIndex Value="6"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="498"/>
+        <CursorPos X="1" Y="520"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit25>
       <Unit26>
-        <Filename Value="../../../Lazarus Delphi/Extended/forms/U_Administration.pas"/>
-        <UnitName Value="U_Administration"/>
-        <CursorPos X="1" Y="1"/>
-        <TopLine Value="1"/>
-        <UsageCount Value="11"/>
-        <SyntaxHighlighter Value="Delphi"/>
+        <Filename Value="/usr/lib/lazarus/0.9.30/lcl/interfaces/gtk2/gtk2wsforms.pp"/>
+        <UnitName Value="Gtk2WSForms"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="116"/>
+        <CursorPos X="1" Y="139"/>
+        <UsageCount Value="10"/>
       </Unit26>
       <Unit27>
-        <Filename Value="../../../Lazarus Delphi/Extended/forms/u_zadministration.lfm"/>
-        <CursorPos X="1" Y="1"/>
-        <TopLine Value="1"/>
-        <UsageCount Value="9"/>
-        <SyntaxHighlighter Value="LFM"/>
+        <Filename Value="/usr/lib/lazarus/0.9.30/lcl/interfaces/gtk2/gtk2widgetset.inc"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="2447"/>
+        <CursorPos X="1" Y="2469"/>
+        <UsageCount Value="10"/>
       </Unit27>
       <Unit28>
-        <Filename Value="../../../Lazarus Delphi/Extended/forms/u_zdonnees.pas"/>
-        <ComponentName Value="M_Donnees"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="DataModule"/>
-        <UnitName Value="U_ZDonnees"/>
-        <CursorPos X="45" Y="17"/>
-        <TopLine Value="1"/>
-        <UsageCount Value="13"/>
-        <SyntaxHighlighter Value="Delphi"/>
+        <Filename Value="/usr/lib/lazarus/0.9.30/lcl/include/application.inc"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="2095"/>
+        <CursorPos X="1" Y="2117"/>
+        <UsageCount Value="10"/>
       </Unit28>
       <Unit29>
-        <Filename Value="../../../Lazarus Delphi/Extended/forms/u_donnees.lfm"/>
-        <CursorPos X="34" Y="65"/>
-        <TopLine Value="24"/>
-        <UsageCount Value="9"/>
-        <SyntaxHighlighter Value="LFM"/>
+        <Filename Value="../../../Extended/composants/U_FormMainIni.pas"/>
+        <UnitName Value="U_FormMainIni"/>
+        <EditorIndex Value="1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1134"/>
+        <CursorPos X="1" Y="1160"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
       </Unit29>
       <Unit30>
-        <Filename Value="../../../Lazarus Delphi/Extended/extends.inc"/>
-        <CursorPos X="1" Y="1"/>
+        <Filename Value="../../lazmanframes.pas"/>
+        <UnitName Value="lazmanframes"/>
+        <WindowIndex Value="0"/>
         <TopLine Value="1"/>
+        <CursorPos X="32" Y="20"/>
         <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit30>
       <Unit31>
-        <Filename Value="../../../Lazarus Delphi/Extended/fonctions/fonctions_db.pas"/>
-        <UnitName Value="fonctions_db"/>
-        <CursorPos X="49" Y="14"/>
-        <TopLine Value="54"/>
-        <UsageCount Value="9"/>
-        <SyntaxHighlighter Value="Delphi"/>
+        <Filename Value="../../forms/U_Acces.pas"/>
+        <UnitName Value="U_Acces"/>
+        <EditorIndex Value="3"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="204"/>
+        <CursorPos X="13" Y="225"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit31>
       <Unit32>
-        <Filename Value="../../../Lazarus Delphi/Extended/forms/U_Acces.pas"/>
-        <ComponentName Value="F_Acces"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-        <UnitName Value="U_Acces"/>
-        <CursorPos X="75" Y="231"/>
-        <TopLine Value="185"/>
-        <UsageCount Value="13"/>
-        <SyntaxHighlighter Value="Delphi"/>
+        <Filename Value="../../forms/U_Administration.pas"/>
+        <UnitName Value="U_Administration"/>
+        <EditorIndex Value="4"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1676"/>
+        <CursorPos X="82" Y="1660"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit32>
       <Unit33>
-        <Filename Value="../../../Lazarus Delphi/Extended/composants/U_OnFormInfoIni.pas"/>
-        <UnitName Value="U_OnFormInfoIni"/>
-        <CursorPos X="19" Y="41"/>
-        <TopLine Value="31"/>
-        <UsageCount Value="12"/>
-        <SyntaxHighlighter Value="Delphi"/>
+        <Filename Value="../../composants/u_customframework.pas"/>
+        <UnitName Value="u_customframework"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="5"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="3042"/>
+        <CursorPos X="22" Y="3079"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit33>
       <Unit34>
-        <Filename Value="../../../Lazarus Delphi/Extended/forms/U_MotPasse.pas"/>
-        <ComponentName Value="F_MotPasse"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-        <UnitName Value="U_MotPasse"/>
-        <CursorPos X="1" Y="21"/>
-        <TopLine Value="1"/>
-        <UsageCount Value="9"/>
-        <SyntaxHighlighter Value="Delphi"/>
+        <Filename Value="/usr/lib/lazarus/0.9.30/lcl/include/customform.inc"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="58"/>
+        <CursorPos X="1" Y="82"/>
+        <UsageCount Value="10"/>
       </Unit34>
       <Unit35>
-        <Filename Value="../../../Lazarus Delphi/Extended/forms/U_MotPasse.lfm"/>
-        <CursorPos X="33" Y="86"/>
-        <TopLine Value="43"/>
-        <UsageCount Value="9"/>
-        <SyntaxHighlighter Value="LFM"/>
-      </Unit35>
-      <Unit36>
-        <Filename Value="../../../../../usr/lib/lazarus/lcl/dbctrls.pp"/>
-        <UnitName Value="DbCtrls"/>
-        <CursorPos X="1" Y="1"/>
-        <TopLine Value="1"/>
-        <UsageCount Value="9"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit36>
-      <Unit37>
-        <Filename Value="../../composants/ZEOSDBO/src/component/ZConnection.pas"/>
-        <UnitName Value="ZConnection"/>
-        <CursorPos X="15" Y="209"/>
-        <TopLine Value="178"/>
-        <UsageCount Value="9"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit37>
-      <Unit38>
-        <Filename Value="../../composants/ZEOSDBO/src/component/ZDataset.pas"/>
-        <UnitName Value="ZDataset"/>
-        <CursorPos X="27" Y="84"/>
-        <TopLine Value="48"/>
-        <UsageCount Value="9"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit38>
-      <Unit39>
-        <Filename Value="../../composants/ZEOSDBO/src/component/ZAbstractDataset.pas"/>
-        <UnitName Value="ZAbstractDataset"/>
-        <CursorPos X="3" Y="88"/>
-        <TopLine Value="80"/>
-        <UsageCount Value="9"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit39>
-      <Unit40>
-        <Filename Value="../../composants/ZEOSDBO/src/dbc/ZDbcIntfs.pas"/>
-        <UnitName Value="ZDbcIntfs"/>
-        <CursorPos X="1" Y="969"/>
-        <TopLine Value="937"/>
-        <UsageCount Value="11"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit40>
-      <Unit41>
-        <Filename Value="../../../Lazarus Delphi/Extended/forms/u_zconnection.lrs"/>
-        <CursorPos X="1" Y="39"/>
-        <TopLine Value="1"/>
-        <UsageCount Value="9"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit41>
-      <Unit42>
-        <Filename Value="../../../../../usr/lib/lazarus/lcl/lresources.pp"/>
-        <UnitName Value="LResources"/>
-        <CursorPos X="1" Y="2858"/>
-        <TopLine Value="2827"/>
-        <UsageCount Value="11"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit42>
-      <Unit43>
-        <Filename Value="../../composants/ZEOSDBO/src/dbc/ZDbcPostgreSqlUtils.pas"/>
-        <UnitName Value="ZDbcPostgreSqlUtils"/>
-        <CursorPos X="1" Y="782"/>
-        <TopLine Value="739"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit43>
-      <Unit44>
-        <Filename Value="../../../Lazarus Delphi/Extended/forms/U_Acces.lrs"/>
-        <CursorPos X="1" Y="43"/>
-        <TopLine Value="1"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit44>
-      <Unit45>
-        <Filename Value="../../composants/ZEOSDBO/src/component/ZAbstractRODataset.pas"/>
-        <UnitName Value="ZAbstractRODataset"/>
-        <CursorPos X="1" Y="1995"/>
-        <TopLine Value="1964"/>
-        <UsageCount Value="11"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit45>
-      <Unit46>
-        <Filename Value="../../../Lazarus Delphi/Extended/compilers.inc"/>
-        <CursorPos X="1" Y="481"/>
-        <TopLine Value="426"/>
-        <UsageCount Value="9"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit46>
-      <Unit47>
-        <Filename Value="../../composants/rxfpc/rxlookup.pas"/>
-        <UnitName Value="rxlookup"/>
-        <CursorPos X="45" Y="4"/>
-        <TopLine Value="1"/>
-        <UsageCount Value="13"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit47>
-      <Unit48>
-        <Filename Value="../../composants/rxfpc/dbutils.pas"/>
-        <UnitName Value="dbutils"/>
-        <CursorPos X="1" Y="207"/>
-        <TopLine Value="186"/>
-        <UsageCount Value="13"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit48>
-      <Unit49>
-        <Filename Value="../../../../../usr/lib/lazarus/lcl/include/wincontrol.inc"/>
-        <CursorPos X="1" Y="5399"/>
-        <TopLine Value="5368"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit49>
-      <Unit50>
-        <Filename Value="../../../../../usr/lib/lazarus/lcl/interfaces/gtk/gtkwscontrols.pp"/>
-        <UnitName Value="GtkWSControls"/>
-        <CursorPos X="1" Y="291"/>
-        <TopLine Value="260"/>
-        <UsageCount Value="9"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit50>
-      <Unit51>
-        <Filename Value="../../../Lazarus Delphi/Extended/fonctions/fonctions_proprietes.pas"/>
-        <UnitName Value="fonctions_proprietes"/>
-        <CursorPos X="1" Y="1"/>
-        <TopLine Value="1"/>
-        <UsageCount Value="9"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit51>
-      <Unit52>
-        <Filename Value="../../../Lazarus Delphi/ManFrames/forms/U_FenetrePrincipale.pas"/>
-        <UnitName Value="U_FenetrePrincipale"/>
-        <CursorPos X="1" Y="277"/>
-        <TopLine Value="260"/>
-        <UsageCount Value="16"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit52>
-      <Unit53>
-        <Filename Value="../../../Lazarus Delphi/ManFrames/fonctions/fonctions_Objets_Dynamiques.pas"/>
-        <UnitName Value="fonctions_Objets_Dynamiques"/>
-        <CursorPos X="1" Y="876"/>
-        <TopLine Value="866"/>
-        <UsageCount Value="15"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit53>
-      <Unit54>
-        <Filename Value="../../../../../usr/lib/lazarus/0.9.28.2/lcl/forms.pp"/>
-        <UnitName Value="Forms"/>
-        <CursorPos X="26" Y="149"/>
-        <TopLine Value="142"/>
-        <UsageCount Value="12"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit54>
-      <Unit55>
-        <Filename Value="../../../../../usr/lib/lazarus/0.9.28.2/lcl/include/customform.inc"/>
-        <CursorPos X="1" Y="1692"/>
-        <TopLine Value="1678"/>
-        <UsageCount Value="12"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit55>
-      <Unit56>
-        <Filename Value="../../../Lazarus Delphi/Extended/composants/PCheck.pas"/>
-        <UnitName Value="PCheck"/>
-        <CursorPos X="1" Y="1001"/>
-        <TopLine Value="977"/>
-        <UsageCount Value="11"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit56>
-      <Unit57>
-        <Filename Value="../../../Lazarus Delphi/Extended/composants/u_buttons_appli.pas"/>
-        <UnitName Value="u_buttons_appli"/>
-        <CursorPos X="55" Y="58"/>
-        <TopLine Value="34"/>
-        <UsageCount Value="11"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit57>
-      <Unit58>
-        <Filename Value="../../composants/jvXP/JvXPBarReg.pp"/>
-        <UnitName Value="JvXPBarReg"/>
-        <CursorPos X="1" Y="1"/>
-        <TopLine Value="1"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit58>
-      <Unit59>
-        <Filename Value="../../composants/jvXP/JvXPButtons.pas"/>
-        <UnitName Value="JvXPButtons"/>
-        <CursorPos X="39" Y="63"/>
-        <TopLine Value="69"/>
-        <UsageCount Value="11"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit59>
-      <Unit60>
-        <Filename Value="../../composants/jvXP/JvXPCore.pas"/>
-        <UnitName Value="JvXPCore"/>
-        <CursorPos X="59" Y="683"/>
-        <TopLine Value="673"/>
-        <UsageCount Value="11"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit60>
-      <Unit61>
-        <Filename Value="../../../../../usr/lib/lazarus/0.9.28.2/lcl/controls.pp"/>
-        <UnitName Value="Controls"/>
-        <CursorPos X="26" Y="1876"/>
-        <TopLine Value="1865"/>
-        <UsageCount Value="11"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit61>
-      <Unit62>
-        <Filename Value="../../../Lazarus Delphi/Extended/forms/U_About.pas"/>
-        <UnitName Value="U_About"/>
-        <CursorPos X="64" Y="11"/>
-        <TopLine Value="1"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit62>
-      <Unit63>
-        <Filename Value="../../../../../usr/lib/lazarus/0.9.28.2/lcl/include/control.inc"/>
-        <CursorPos X="1" Y="2581"/>
-        <TopLine Value="2571"/>
-        <UsageCount Value="11"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit63>
-      <Unit64>
-        <Filename Value="../../../../../usr/lib/lazarus/0.9.28.2/lcl/lclproc.pas"/>
-        <UnitName Value="LCLProc"/>
-        <CursorPos X="1" Y="1505"/>
-        <TopLine Value="1491"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit64>
-      <Unit65>
-        <Filename Value="../../../../../usr/lib/lazarus/0.9.28.2/lcl/include/wincontrol.inc"/>
-        <CursorPos X="1" Y="4921"/>
-        <TopLine Value="4911"/>
-        <UsageCount Value="11"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit65>
-      <Unit66>
-        <Filename Value="../../../Lazarus Delphi/ManFrames/composants/u_customframework.pas"/>
-        <ComponentName Value="F_CustomFrameWork"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-        <UnitName Value="u_customframework"/>
-        <CursorPos X="1" Y="5623"/>
-        <TopLine Value="5591"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit66>
-      <Unit67>
-        <Filename Value="../../../../../usr/lib/lazarus/0.9.28.2/examples/hello.pp"/>
-        <UnitName Value="Hello_world"/>
-        <CursorPos X="1" Y="31"/>
-        <TopLine Value="1"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit67>
-      <Unit68>
-        <Filename Value="../../../Lazarus Delphi/ExtToolbar/Source/extdock.pas"/>
-        <UnitName Value="extdock"/>
-        <CursorPos X="1" Y="1"/>
-        <TopLine Value="1"/>
-        <UsageCount Value="11"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit68>
-      <Unit69>
-        <Filename Value="../../../Lazarus Delphi/ExtToolbar/Source/exttbtlbr.pas"/>
-        <UnitName Value="exttbtlbr"/>
-        <CursorPos X="38" Y="742"/>
-        <TopLine Value="732"/>
-        <UsageCount Value="11"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit69>
-      <Unit70>
-        <Filename Value="../../../Lazarus Delphi/Toolbar97/Source/TB97Tlbr.pas"/>
-        <UnitName Value="TB97Tlbr"/>
-        <CursorPos X="1" Y="1140"/>
-        <TopLine Value="1111"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit70>
-      <Unit71>
-        <Filename Value="../../../../../usr/lib/lazarus/0.9.28.2/lcl/include/application.inc"/>
-        <CursorPos X="1" Y="1993"/>
-        <TopLine Value="1983"/>
-        <UsageCount Value="9"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit71>
-      <Unit72>
-        <Filename Value="../../../Lazarus Delphi/ZEOSDBO-6.6.5-stable/src/dbc/ZDbcIntfs.pas"/>
-        <UnitName Value="ZDbcIntfs"/>
-        <CursorPos X="54" Y="965"/>
-        <TopLine Value="959"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit72>
-      <Unit73>
-        <Filename Value="../../../Lazarus Delphi/ManFrames/composants/U_FormMainIni.pas"/>
-        <ComponentName Value="F_FormMainIni"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-        <UnitName Value="U_FormMainIni"/>
-        <CursorPos X="61" Y="169"/>
-        <TopLine Value="164"/>
-        <UsageCount Value="13"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit73>
-      <Unit74>
-        <Filename Value="../../../Lazarus Delphi/ZEOSDBO-6.6.5-stable/src/plain/ZPlainLoader.pas"/>
-        <UnitName Value="ZPlainLoader"/>
-        <CursorPos X="1" Y="189"/>
-        <TopLine Value="179"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit74>
-      <Unit75>
-        <Filename Value="../../../Lazarus Delphi/ZEOSDBO-6.6.5-stable/src/component/ZAbstractRODataset.pas"/>
-        <UnitName Value="ZAbstractRODataset"/>
-        <CursorPos X="25" Y="583"/>
-        <TopLine Value="573"/>
-        <UsageCount Value="9"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit75>
-      <Unit76>
-        <Filename Value="../../../Lazarus Delphi/ManFrames/forms/U_Donnees.pas"/>
-        <ComponentName Value="M_Donnees"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="DataModule"/>
-        <UnitName Value="U_Donnees"/>
-        <CursorPos X="25" Y="206"/>
-        <TopLine Value="204"/>
-        <UsageCount Value="12"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit76>
-      <Unit77>
-        <Filename Value="../../../Lazarus Delphi/ManFrames/forms/U_Donnees.lfm"/>
-        <CursorPos X="12" Y="60"/>
-        <TopLine Value="50"/>
-        <UsageCount Value="9"/>
-        <SyntaxHighlighter Value="LFM"/>
-      </Unit77>
-      <Unit78>
-        <Filename Value="../../../../../usr/share/fpcsrc/2.2.4/rtl/objpas/classes/classesh.inc"/>
-        <CursorPos X="3" Y="170"/>
-        <TopLine Value="167"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit78>
-      <Unit79>
-        <Filename Value="../../../../../usr/share/fpcsrc/2.2.4/rtl/objpas/classes/lists.inc"/>
-        <CursorPos X="3" Y="623"/>
-        <TopLine Value="621"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit79>
-      <Unit80>
-        <Filename Value="../../../../../usr/lib/lazarus/0.9.28.2/lcl/lclclasses.pp"/>
-        <UnitName Value="LCLClasses"/>
-        <CursorPos X="29" Y="36"/>
-        <TopLine Value="28"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit80>
-      <Unit81>
-        <Filename Value="../../../Lazarus Delphi/ManFrames/forms/U_Splash.pas"/>
-        <UnitName Value="U_Splash"/>
-        <CursorPos X="1" Y="111"/>
-        <TopLine Value="101"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit81>
-      <Unit82>
-        <Filename Value="../../../../../usr/lib/lazarus/0.9.28.2/lcl/include/scrollingwincontrol.inc"/>
-        <CursorPos X="1" Y="86"/>
-        <TopLine Value="76"/>
-        <UsageCount Value="9"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit82>
-      <Unit83>
-        <Filename Value="../../../../../usr/lib/lazarus/0.9.28.2/lcl/lclmessageglue.pas"/>
-        <UnitName Value="LCLMessageGlue"/>
-        <CursorPos X="1" Y="121"/>
-        <TopLine Value="111"/>
-        <UsageCount Value="9"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit83>
-      <Unit84>
-        <Filename Value="../../../../../usr/lib/lazarus/0.9.28.2/lcl/interfaces/gtk/gtkproc.inc"/>
-        <CursorPos X="1" Y="6690"/>
-        <TopLine Value="6680"/>
-        <UsageCount Value="9"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit84>
-      <Unit85>
-        <Filename Value="../../../../../usr/lib/lazarus/0.9.28.2/lcl/interfaces/gtk/gtkcallback.inc"/>
-        <CursorPos X="5" Y="1944"/>
-        <TopLine Value="1938"/>
-        <UsageCount Value="9"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit85>
-      <Unit86>
-        <Filename Value="../../../Lazarus Delphi/ManFrames/forms/U_Acces.pas"/>
-        <ComponentName Value="F_Acces"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-        <UnitName Value="U_Acces"/>
-        <CursorPos X="1" Y="194"/>
-        <TopLine Value="169"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit86>
-      <Unit87>
-        <Filename Value="../../../../../usr/share/fpcsrc/2.2.4/packages/fcl-base/src/inifiles.pp"/>
-        <UnitName Value="IniFiles"/>
-        <CursorPos X="15" Y="132"/>
-        <TopLine Value="131"/>
-        <UsageCount Value="9"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit87>
-      <Unit88>
-        <Filename Value="../../../Lazarus Delphi/ExtToolbar/Source/exttbtls.pas"/>
-        <UnitName Value="exttbtls"/>
-        <CursorPos X="1" Y="1"/>
-        <TopLine Value="1"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit88>
-      <Unit89>
-        <Filename Value="../../../Lazarus Delphi/ExtToolbar/Source/paquets/lazexttools.lpk"/>
-        <CursorPos X="21" Y="16"/>
-        <TopLine Value="8"/>
-        <UsageCount Value="9"/>
-        <SyntaxHighlighter Value="XML"/>
-      </Unit89>
-      <Unit90>
-        <Filename Value="../../../Lazarus Delphi/ExtToolbar/Source/ExtTBTlbr.pas"/>
-        <UnitName Value="exttbtlbr"/>
-        <CursorPos X="12" Y="436"/>
-        <TopLine Value="411"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit90>
-      <Unit91>
-        <Filename Value="../../../Lazarus Delphi/ManFrames/fonctions/fonctions_tableauframework.pas"/>
-        <UnitName Value="fonctions_tableauframework"/>
-        <CursorPos X="75" Y="109"/>
-        <TopLine Value="84"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit91>
-      <Unit92>
-        <Filename Value="../../../Lazarus Delphi/Extended/fonctions/fonctions_version.pas"/>
-        <UnitName Value="fonctions_version"/>
-        <CursorPos X="54" Y="35"/>
-        <TopLine Value="11"/>
-        <UsageCount Value="9"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit92>
-      <Unit93>
-        <Filename Value="../../../Lazarus Delphi/Extended/composants/u_framework_components.pas"/>
-        <UnitName Value="u_framework_components"/>
-        <CursorPos X="92" Y="305"/>
-        <TopLine Value="281"/>
-        <UsageCount Value="9"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit93>
-      <Unit94>
-        <Filename Value="../../../Lazarus Delphi/Extended/composants/U_ExtNumEdits.pas"/>
-        <UnitName Value="U_ExtNumEdits"/>
-        <CursorPos X="132" Y="82"/>
-        <TopLine Value="58"/>
-        <UsageCount Value="9"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit94>
-      <Unit95>
-        <Filename Value="../../../Lazarus Delphi/Extended/composants/u_extcomponent.pas"/>
-        <UnitName Value="u_extcomponent"/>
-        <CursorPos X="23" Y="61"/>
-        <TopLine Value="35"/>
-        <UsageCount Value="9"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit95>
-      <Unit96>
-        <Filename Value="../../../Lazarus Delphi/Extended/composants/U_ExtColorCombos.pas"/>
-        <UnitName Value="U_ExtColorCombos"/>
-        <CursorPos X="81" Y="84"/>
-        <TopLine Value="56"/>
-        <UsageCount Value="9"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit96>
-      <Unit97>
-        <Filename Value="../../../../../usr/lib/lazarus/0.9.28.2/lcl/dbctrls.pp"/>
-        <UnitName Value="DbCtrls"/>
-        <CursorPos X="3" Y="127"/>
-        <TopLine Value="120"/>
-        <UsageCount Value="9"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit97>
-      <Unit98>
-        <Filename Value="../../../Lazarus Delphi/ManFrames/fonctions/fonctions_dbcomponents.pas"/>
-        <UnitName Value="fonctions_dbcomponents"/>
-        <CursorPos X="40" Y="885"/>
-        <TopLine Value="860"/>
-        <UsageCount Value="9"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit98>
-      <Unit99>
-        <Filename Value="../../../Lazarus Delphi/ManFrames/composants/U_GroupView.pas"/>
-        <UnitName Value="U_GroupView"/>
-        <CursorPos X="110" Y="849"/>
-        <TopLine Value="838"/>
-        <UsageCount Value="9"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit99>
-      <Unit100>
-        <Filename Value="../../../Lazarus Delphi/Extended/composants/U_DBListView.pas"/>
-        <UnitName Value="U_DBListView"/>
-        <CursorPos X="40" Y="92"/>
-        <TopLine Value="53"/>
-        <UsageCount Value="9"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit100>
-      <Unit101>
-        <Filename Value="../../../../../usr/lib/lazarus/0.9.28.2/lcl/comctrls.pp"/>
-        <UnitName Value="ComCtrls"/>
-        <CursorPos X="14" Y="1120"/>
-        <TopLine Value="1089"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit101>
-      <Unit102>
-        <Filename Value="../ManFrames/forms/U_FenetrePrincipale.pas"/>
-        <ComponentName Value="F_FenetrePrincipale"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-        <UnitName Value="U_FenetrePrincipale"/>
-        <CursorPos X="1" Y="255"/>
-        <TopLine Value="236"/>
-        <UsageCount Value="19"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit102>
-      <Unit103>
-        <Filename Value="../ManFrames/forms/U_Acces.pas"/>
-        <ComponentName Value="F_Acces"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-        <UnitName Value="U_Acces"/>
-        <CursorPos X="73" Y="226"/>
-        <TopLine Value="208"/>
-        <UsageCount Value="19"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit103>
-      <Unit104>
-        <Filename Value="../ExtToolbar/Source/extdock.pas"/>
-        <UnitName Value="extdock"/>
-        <CursorPos X="71" Y="71"/>
-        <TopLine Value="56"/>
-        <UsageCount Value="9"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit104>
-      <Unit105>
-        <Filename Value="../ManFrames/fonctions/fonctions_Objets_Dynamiques.pas"/>
-        <UnitName Value="fonctions_Objets_Dynamiques"/>
-        <CursorPos X="21" Y="676"/>
-        <TopLine Value="656"/>
-        <UsageCount Value="12"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit105>
-      <Unit106>
-        <Filename Value="../../../Lazarus Delphi/Extended/fonctions/fonctions_string.pas"/>
-        <UnitName Value="fonctions_string"/>
-        <CursorPos X="1" Y="702"/>
-        <TopLine Value="678"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit106>
-      <Unit107>
-        <Filename Value="../../../../../../../usr/share/fpcsrc/2.2.4/rtl/objpas/sysutils/finah.inc"/>
-        <CursorPos X="10" Y="26"/>
-        <TopLine Value="8"/>
-        <UsageCount Value="9"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit107>
-      <Unit108>
-        <Filename Value="../../../../../../../usr/share/fpcsrc/2.2.4/rtl/objpas/sysutils/fina.inc"/>
-        <CursorPos X="3" Y="94"/>
-        <TopLine Value="89"/>
-        <UsageCount Value="9"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit108>
-      <Unit109>
-        <Filename Value="../../../Lazarus Delphi/ZEOSDBO/src/component/ZConnection.pas"/>
-        <UnitName Value="ZConnection"/>
-        <CursorPos X="1" Y="358"/>
-        <TopLine Value="341"/>
-        <UsageCount Value="9"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit109>
-      <Unit110>
-        <Filename Value="../../../Lazarus Delphi/ManFrames/fonctions/fonctions_Objets_Data.pas"/>
-        <UnitName Value="fonctions_Objets_Data"/>
-        <CursorPos X="26" Y="277"/>
-        <TopLine Value="261"/>
-        <UsageCount Value="9"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit110>
-      <Unit111>
-        <Filename Value="../../../Lazarus Delphi/ZEOSDBO/src/dbc/ZDbcIntfs.pas"/>
-        <UnitName Value="ZDbcIntfs"/>
-        <CursorPos X="1" Y="969"/>
-        <TopLine Value="952"/>
-        <UsageCount Value="9"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit111>
-      <Unit112>
-        <Filename Value="../ManFrames/forms/U_Administration.pas"/>
-        <ComponentName Value="F_Administration"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-        <UnitName Value="U_Administration"/>
-        <CursorPos X="37" Y="1680"/>
-        <TopLine Value="1640"/>
-        <UsageCount Value="18"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit112>
-      <Unit113>
-        <Filename Value="../Extended/fonctions/fonctions_images.pas"/>
-        <UnitName Value="fonctions_images"/>
-        <CursorPos X="29" Y="109"/>
-        <TopLine Value="86"/>
-        <UsageCount Value="16"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit113>
-      <Unit114>
-        <Filename Value="../ManFrames/composants/U_GroupView.pas"/>
-        <UnitName Value="U_GroupView"/>
-        <CursorPos X="13" Y="1720"/>
-        <TopLine Value="1691"/>
-        <UsageCount Value="13"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit114>
-      <Unit115>
-        <Filename Value="../Extended/composants/U_DBListView.pas"/>
-        <UnitName Value="U_DBListView"/>
-        <CursorPos X="17" Y="1354"/>
-        <TopLine Value="1335"/>
-        <UsageCount Value="13"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit115>
-      <Unit116>
-        <Filename Value="../ManFrames/composants/u_customframework.pas"/>
-        <UnitName Value="u_customframework"/>
-        <CursorPos X="37" Y="845"/>
-        <TopLine Value="821"/>
-        <UsageCount Value="14"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit116>
-      <Unit117>
-        <Filename Value="../../../../../../../usr/lib/lazarus/0.9.28.2/lcl/include/customnotebook.inc"/>
-        <CursorPos X="1" Y="840"/>
-        <TopLine Value="821"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit117>
-      <Unit118>
-        <Filename Value="../../../../../../../usr/lib/lazarus/0.9.28.2/lcl/include/control.inc"/>
-        <CursorPos X="1" Y="3536"/>
-        <TopLine Value="3517"/>
-        <UsageCount Value="11"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit118>
-      <Unit119>
-        <Filename Value="../../../../../../../usr/lib/lazarus/0.9.28.2/lcl/include/wincontrol.inc"/>
-        <CursorPos X="56" Y="4928"/>
-        <TopLine Value="4902"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit119>
-      <Unit120>
-        <Filename Value="../../../../../../../usr/lib/lazarus/0.9.28.2/lcl/controls.pp"/>
-        <UnitName Value="Controls"/>
-        <CursorPos X="1" Y="2578"/>
-        <TopLine Value="2559"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit120>
-      <Unit121>
-        <Filename Value="../../../../../../../usr/lib/lazarus/0.9.28.2/lcl/include/listitems.inc"/>
-        <CursorPos X="72" Y="332"/>
-        <TopLine Value="306"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit121>
-      <Unit122>
-        <Filename Value="../ManFrames/forms/U_FenetrePrincipale.lrs"/>
-        <CursorPos X="1" Y="1"/>
-        <TopLine Value="1"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit122>
-      <Unit123>
-        <Filename Value="../Extended/composants/U_ExtDBImage.pas"/>
-        <UnitName Value="U_ExtDBImage"/>
-        <CursorPos X="5" Y="172"/>
-        <TopLine Value="134"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit123>
-      <Unit124>
-        <Filename Value="../Extended/composants/u_framework_dbcomponents.pas"/>
-        <UnitName Value="u_framework_dbcomponents"/>
-        <CursorPos X="1" Y="1"/>
-        <TopLine Value="25"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit124>
-      <Unit125>
-        <Filename Value="../Extended/composants/U_OnFormInfoIni.pas"/>
-        <UnitName Value="U_OnFormInfoIni"/>
-        <CursorPos X="1" Y="236"/>
-        <TopLine Value="217"/>
-        <UsageCount Value="13"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit125>
-      <Unit126>
-        <Filename Value="../Extended/composants/u_regframeworkcomponents.pas"/>
-        <UnitName Value="u_regframeworkcomponents"/>
-        <CursorPos X="5" Y="51"/>
-        <TopLine Value="23"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit126>
-      <Unit127>
-        <Filename Value="../Extended/composants/u_framework_components.lrs"/>
-        <CursorPos X="1" Y="1"/>
-        <TopLine Value="83"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit127>
-      <Unit128>
-        <Filename Value="../ManFrames/forms/U_MotPasse.pas"/>
-        <ComponentName Value="F_MotPasse"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-        <UnitName Value="U_MotPasse"/>
-        <CursorPos X="1" Y="121"/>
-        <TopLine Value="87"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit128>
-      <Unit129>
-        <Filename Value="../ManFrames/forms/U_Splash.pas"/>
-        <UnitName Value="U_Splash"/>
-        <CursorPos X="1" Y="1"/>
-        <TopLine Value="1"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit129>
-      <Unit130>
-        <Filename Value="../ManFrames/fonctions/fonctions_Objets_Data.pas"/>
-        <UnitName Value="fonctions_Objets_Data"/>
-        <CursorPos X="1" Y="1981"/>
-        <TopLine Value="1962"/>
-        <UsageCount Value="13"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit130>
-      <Unit131>
-        <Filename Value="../ManFrames/fonctions/fonctions_tableauframework.pas"/>
-        <UnitName Value="fonctions_tableauframework"/>
-        <CursorPos X="1" Y="499"/>
-        <TopLine Value="461"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit131>
-      <Unit132>
-        <Filename Value="../ManFrames/composants/u_formdico.pas"/>
-        <ComponentName Value="F_FormFrameWork"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-        <UnitName Value="u_formdico"/>
-        <CursorPos X="1" Y="258"/>
-        <TopLine Value="239"/>
-        <UsageCount Value="11"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit132>
-      <Unit133>
-        <Filename Value="../ManFrames/forms/U_Donnees.pas"/>
-        <ComponentName Value="M_Donnees"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="DataModule"/>
-        <UnitName Value="U_Donnees"/>
-        <CursorPos X="5" Y="59"/>
-        <TopLine Value="33"/>
-        <UsageCount Value="13"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit133>
-      <Unit134>
-        <Filename Value="../ManFrames/composants/u_searchcomponents.pas"/>
-        <UnitName Value="u_searchcomponents"/>
-        <CursorPos X="1" Y="566"/>
-        <TopLine Value="528"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit134>
-      <Unit135>
-        <Filename Value="../ManFrames/composants/U_RegisterIni.pas"/>
-        <UnitName Value="U_RegisterIni"/>
-        <CursorPos X="5" Y="322"/>
-        <TopLine Value="284"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit135>
-      <Unit136>
-        <Filename Value="../Extended/lazextcomponents.pas"/>
-        <UnitName Value="lazextcomponents"/>
-        <CursorPos X="1" Y="1"/>
-        <TopLine Value="1"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit136>
-      <Unit137>
-        <Filename Value="../ManFrames/forms/U_FenetrePrincipale.lfm"/>
-        <CursorPos X="16" Y="45"/>
-        <TopLine Value="26"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="LFM"/>
-      </Unit137>
-      <Unit138>
-        <Filename Value="../Extended/composants/U_FormMainIni.pas"/>
-        <ComponentName Value="F_FormMainIni"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-        <UnitName Value="U_FormMainIni"/>
-        <CursorPos X="17" Y="129"/>
-        <TopLine Value="109"/>
-        <UsageCount Value="13"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit138>
-      <Unit139>
-        <Filename Value="../ManFrames/composants/U_CustomFrameWork.pas"/>
-        <UnitName Value="u_customframework"/>
-        <CursorPos X="107" Y="11"/>
-        <TopLine Value="1"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit139>
-      <Unit140>
-        <Filename Value="../XMLFrames/forms/U_XMLFenetrePrincipale.pas"/>
-        <ComponentName Value="F_FenetrePrincipale"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-        <UnitName Value="U_XMLFenetrePrincipale"/>
-        <CursorPos X="1" Y="1"/>
-        <TopLine Value="1"/>
-        <UsageCount Value="12"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit140>
-      <Unit141>
-        <Filename Value="../XMLFrames/forms/U_XMLFenetrePrincipale.dfm"/>
-        <CursorPos X="30" Y="267"/>
-        <TopLine Value="248"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="LFM"/>
-      </Unit141>
-      <Unit142>
-        <Filename Value="../../../../../../../usr/lib/lazarus/0.9.28.2/lcl/include/application.inc"/>
-        <CursorPos X="1" Y="1257"/>
-        <TopLine Value="1238"/>
-        <UsageCount Value="11"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit142>
-      <Unit143>
-        <Filename Value="../ExtToolbar/Source/exttbtlbr.pas"/>
-        <UnitName Value="exttbtlbr"/>
-        <CursorPos X="13" Y="751"/>
-        <TopLine Value="731"/>
-        <UsageCount Value="11"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit143>
-      <Unit144>
-        <Filename Value="../ManFrames/forms/U_Acces.lfm"/>
-        <CursorPos X="67" Y="53"/>
-        <TopLine Value="27"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="LFM"/>
-      </Unit144>
-      <Unit145>
-        <Filename Value="../XMLFrames/fonctions/fonctions_ObjetsXML.pas"/>
-        <UnitName Value="fonctions_ObjetsXML"/>
-        <CursorPos X="26" Y="162"/>
-        <TopLine Value="143"/>
-        <UsageCount Value="12"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit145>
-      <Unit146>
-        <Filename Value="../XMLFrames/fonctions/u_languagevars.pas"/>
-        <UnitName Value="u_languagevars"/>
-        <CursorPos X="1" Y="8"/>
-        <TopLine Value="1"/>
-        <UsageCount Value="12"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit146>
-      <Unit147>
-        <Filename Value="../ManFrames/fonctions/unite_variables.pas"/>
-        <UnitName Value="unite_variables"/>
-        <CursorPos X="1" Y="118"/>
-        <TopLine Value="97"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit147>
-      <Unit148>
-        <Filename Value="../../../../../../../usr/share/fpcsrc/2.4.0/rtl/objpas/sysutils/sysstrh.inc"/>
-        <CursorPos X="28" Y="33"/>
-        <TopLine Value="14"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit148>
-      <Unit149>
-        <Filename Value="../../forms/U_FenetrePrincipale.pas"/>
-        <ComponentName Value="F_FenetrePrincipale"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-        <UnitName Value="U_FenetrePrincipale"/>
-        <CursorPos X="1" Y="265"/>
-        <TopLine Value="245"/>
-        <EditorIndex Value="7"/>
-        <UsageCount Value="14"/>
-        <Loaded Value="True"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit149>
-      <Unit150>
-        <Filename Value="../../../Extended/composants/U_FormMainIni.pas"/>
-        <ComponentName Value="F_FormMainIni"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-        <UnitName Value="U_FormMainIni"/>
-        <CursorPos X="1" Y="1477"/>
-        <TopLine Value="1457"/>
-        <EditorIndex Value="4"/>
-        <UsageCount Value="14"/>
-        <Loaded Value="True"/>
-      </Unit150>
-      <Unit151>
-        <Filename Value="../../forms/U_Acces.pas"/>
-        <ComponentName Value="F_Acces"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-        <UnitName Value="U_Acces"/>
-        <CursorPos X="1" Y="227"/>
-        <TopLine Value="207"/>
-        <EditorIndex Value="8"/>
-        <UsageCount Value="14"/>
-        <Loaded Value="True"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit151>
-      <Unit152>
-        <Filename Value="../../../../../../../../../usr/lib/lazarus/0.9.28.2/lcl/include/control.inc"/>
-        <CursorPos X="1" Y="2793"/>
-        <TopLine Value="2773"/>
-        <UsageCount Value="14"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit152>
-      <Unit153>
-        <Filename Value="../../forms/U_Donnees.pas"/>
-        <ComponentName Value="M_Donnees"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="DataModule"/>
-        <UnitName Value="U_Donnees"/>
-        <CursorPos X="1" Y="275"/>
-        <TopLine Value="255"/>
-        <EditorIndex Value="2"/>
-        <UsageCount Value="14"/>
-        <Loaded Value="True"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit153>
-      <Unit154>
-        <Filename Value="../../../Extended/fonctions/fonctions_dbcomponents.pas"/>
-        <UnitName Value="fonctions_dbcomponents"/>
-        <CursorPos X="1" Y="301"/>
-        <TopLine Value="281"/>
-        <UsageCount Value="12"/>
-      </Unit154>
-      <Unit155>
         <Filename Value="../../fonctions/fonctions_Objets_Data.pas"/>
         <UnitName Value="fonctions_Objets_Data"/>
-        <CursorPos X="66" Y="439"/>
-        <TopLine Value="419"/>
-        <EditorIndex Value="3"/>
-        <UsageCount Value="14"/>
-        <Loaded Value="True"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit155>
-      <Unit156>
-        <Filename Value="../../../../../../../../../usr/lib/lazarus/0.9.28.2/lcl/include/statuspanels.inc"/>
-        <CursorPos X="1" Y="35"/>
-        <TopLine Value="15"/>
+        <EditorIndex Value="2"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="304"/>
+        <CursorPos X="1" Y="326"/>
         <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit156>
-      <Unit157>
-        <Filename Value="../../forms/U_Administration.pas"/>
-        <ComponentName Value="F_Administration"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-        <UnitName Value="U_Administration"/>
-        <CursorPos X="1" Y="1642"/>
-        <TopLine Value="1622"/>
-        <EditorIndex Value="9"/>
-        <UsageCount Value="12"/>
         <Loaded Value="True"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit157>
-      <Unit158>
-        <Filename Value="../../../../../../../../../usr/lib/lazarus/0.9.28.2/lcl/include/customform.inc"/>
-        <CursorPos X="80" Y="2175"/>
-        <TopLine Value="2161"/>
-        <UsageCount Value="12"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit158>
-      <Unit159>
-        <Filename Value="../../../../../../../../../usr/lib/lazarus/0.9.28.2/lcl/include/application.inc"/>
-        <CursorPos X="1" Y="1993"/>
-        <TopLine Value="1973"/>
-        <EditorIndex Value="1"/>
-        <UsageCount Value="12"/>
-        <Loaded Value="True"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit159>
-      <Unit160>
-        <Filename Value="../../../../Lazarus/composants/jvXP/JvXPButtons.pas"/>
-        <UnitName Value="JvXPButtons"/>
-        <CursorPos X="1" Y="618"/>
-        <TopLine Value="586"/>
-        <EditorIndex Value="11"/>
-        <UsageCount Value="12"/>
-        <Loaded Value="True"/>
-      </Unit160>
-      <Unit161>
-        <Filename Value="../../../../Delphi/composants/jedi/jvcl/run/JvXPButtons.pas"/>
-        <UnitName Value="JvXPButtons"/>
-        <CursorPos X="32" Y="617"/>
-        <TopLine Value="604"/>
-        <UsageCount Value="11"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit161>
-      <Unit162>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit35>
+      <Unit36>
+        <Filename Value="/usr/lib/lazarus/0.9.30/lcl/include/control.inc"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1663"/>
+        <CursorPos X="1" Y="1685"/>
+        <UsageCount Value="10"/>
+      </Unit36>
+      <Unit37>
         <Filename Value="../../../../Lazarus/composants/jvXP/JvXPCore.pas"/>
         <UnitName Value="JvXPCore"/>
-        <CursorPos X="1" Y="522"/>
-        <TopLine Value="502"/>
-        <EditorIndex Value="13"/>
-        <UsageCount Value="11"/>
-        <Loaded Value="True"/>
-      </Unit162>
-      <Unit163>
-        <Filename Value="../../../Extended/composants/u_buttons_appli.pas"/>
-        <UnitName Value="u_buttons_appli"/>
-        <CursorPos X="46" Y="66"/>
-        <TopLine Value="46"/>
-        <EditorIndex Value="12"/>
+        <EditorIndex Value="7"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="548"/>
+        <CursorPos X="1" Y="571"/>
         <UsageCount Value="10"/>
         <Loaded Value="True"/>
-      </Unit163>
-      <Unit164>
-        <Filename Value="../../../../../../../../../usr/lib/lazarus/0.9.28.2/lcl/controls.pp"/>
-        <UnitName Value="Controls"/>
-        <CursorPos X="15" Y="1122"/>
-        <TopLine Value="1102"/>
-        <UsageCount Value="11"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit164>
-      <Unit165>
-        <Filename Value="../../../../../../../../../usr/lib/lazarus/0.9.28.2/lcl/include/customcontrol.inc"/>
-        <CursorPos X="43" Y="11"/>
-        <TopLine Value="1"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit165>
-      <Unit166>
-        <Filename Value="../../../../../../../../../usr/lib/lazarus/0.9.28.2/lcl/include/wincontrol.inc"/>
-        <CursorPos X="3" Y="5984"/>
-        <TopLine Value="5975"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit166>
-      <Unit167>
-        <Filename Value="../../../../../../../../../usr/share/fpcsrc/2.4.0/rtl/objpas/classes/classesh.inc"/>
-        <CursorPos X="1" Y="1"/>
-        <TopLine Value="1"/>
-        <UsageCount Value="11"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit167>
-      <Unit168>
-        <Filename Value="../../../../../../../../../usr/share/fpcsrc/2.4.0/rtl/objpas/classes/compon.inc"/>
-        <CursorPos X="1" Y="1"/>
-        <TopLine Value="1"/>
-        <UsageCount Value="11"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit168>
-      <Unit169>
-        <Filename Value="../../../../../../../../../usr/lib/lazarus/0.9.28.2/lcl/lclproc.pas"/>
-        <UnitName Value="LCLProc"/>
-        <CursorPos X="1" Y="1505"/>
-        <TopLine Value="1485"/>
-        <UsageCount Value="11"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit169>
-      <Unit170>
-        <Filename Value="../../forms/U_Administration.lfm"/>
-        <CursorPos X="1" Y="12"/>
-        <TopLine Value="1"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="LFM"/>
-      </Unit170>
-      <Unit171>
-        <Filename Value="../../composants/u_customframework.pas"/>
-        <UnitName Value="u_customframework"/>
-        <CursorPos X="50" Y="29"/>
-        <TopLine Value="9"/>
-        <EditorIndex Value="6"/>
+      </Unit37>
+      <Unit38>
+        <Filename Value="../../../../Lazarus/composants/jvXP/JvXPButtons.pas"/>
+        <UnitName Value="JvXPButtons"/>
+        <EditorIndex Value="8"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="374"/>
+        <CursorPos X="1" Y="397"/>
         <UsageCount Value="10"/>
         <Loaded Value="True"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit171>
-      <Unit172>
-        <Filename Value="../../../SuperFormExpert/CompSuperForm.pas"/>
-        <ComponentName Value="SuperForm"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-        <UnitName Value="CompSuperForm"/>
-        <CursorPos X="1" Y="1"/>
-        <TopLine Value="1"/>
+      </Unit38>
+      <Unit39>
+        <Filename Value="/usr/lib/lazarus/0.9.30/lcl/include/wincontrol.inc"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="5219"/>
+        <CursorPos X="1" Y="5242"/>
         <UsageCount Value="10"/>
-      </Unit172>
-      <Unit173>
-        <Filename Value="../../../../../../../../../usr/lib/lazarus/0.9.28.2/components/sdf/registersdf.pas"/>
-        <UnitName Value="RegisterSDF"/>
-        <CursorPos X="115" Y="9"/>
-        <TopLine Value="3"/>
+      </Unit39>
+      <Unit40>
+        <Filename Value="/usr/lib/lazarus/0.9.30/lcl/lclmessageglue.pas"/>
+        <UnitName Value="LCLMessageGlue"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="94"/>
+        <CursorPos X="1" Y="121"/>
         <UsageCount Value="10"/>
-      </Unit173>
-      <Unit174>
-        <Filename Value="../../../Extended/fonctions/fonctions_init.pas"/>
-        <UnitName Value="fonctions_init"/>
-        <CursorPos X="8" Y="52"/>
-        <TopLine Value="31"/>
-        <EditorIndex Value="5"/>
+      </Unit40>
+      <Unit41>
+        <Filename Value="/usr/lib/lazarus/0.9.30/lcl/interfaces/gtk2/gtk2proc.inc"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="3507"/>
+        <CursorPos X="1" Y="3531"/>
         <UsageCount Value="10"/>
-        <Loaded Value="True"/>
-      </Unit174>
-      <Unit175>
-        <Filename Value="../../../Extended/forms/u_zconnection.pas"/>
-        <ComponentName Value="F_ZConnectionWindow"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-        <UnitName Value="u_zconnection"/>
-        <CursorPos X="50" Y="10"/>
-        <TopLine Value="1"/>
+      </Unit41>
+      <Unit42>
+        <Filename Value="/usr/lib/lazarus/0.9.30/lcl/interfaces/gtk2/gtk2callback.inc"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1948"/>
+        <CursorPos X="1" Y="1970"/>
         <UsageCount Value="10"/>
-      </Unit175>
-      <Unit176>
-        <Filename Value="../../composants/U_RegisterIni.pas"/>
-        <UnitName Value="U_RegisterIni"/>
-        <CursorPos X="16" Y="20"/>
-        <TopLine Value="1"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit176>
-      <Unit177>
-        <Filename Value="../../forms/U_Administration.dfm"/>
-        <CursorPos X="35" Y="26"/>
-        <TopLine Value="13"/>
-        <UsageCount Value="10"/>
-        <SyntaxHighlighter Value="LFM"/>
-      </Unit177>
-      <Unit178>
-        <Filename Value="../../fonctions/fonctions_FenetrePrincipale.pas"/>
-        <UnitName Value="fonctions_FenetrePrincipale"/>
-        <CursorPos X="131" Y="104"/>
-        <TopLine Value="83"/>
-        <EditorIndex Value="10"/>
-        <UsageCount Value="10"/>
-        <Loaded Value="True"/>
-        <SyntaxHighlighter Value="Delphi"/>
-      </Unit178>
+      </Unit42>
     </Units>
-    <JumpHistory Count="30" HistoryIndex="29">
+    <JumpHistory Count="14" HistoryIndex="13">
       <Position1>
-        <Filename Value="../../../Extended/fonctions/fonctions_init.pas"/>
-        <Caret Line="615" Column="1" TopLine="595"/>
+        <Filename Value="../../fonctions/fonctions_Objets_Data.pas"/>
+        <Caret Line="447" Column="1" TopLine="411"/>
       </Position1>
       <Position2>
-        <Filename Value="../../../Extended/fonctions/fonctions_init.pas"/>
-        <Caret Line="621" Column="1" TopLine="601"/>
+        <Filename Value="../../fonctions/fonctions_Objets_Data.pas"/>
+        <Caret Line="449" Column="1" TopLine="412"/>
       </Position2>
       <Position3>
-        <Filename Value="../../../Extended/fonctions/fonctions_init.pas"/>
-        <Caret Line="749" Column="1" TopLine="729"/>
+        <Filename Value="../../fonctions/fonctions_Objets_Data.pas"/>
+        <Caret Line="455" Column="1" TopLine="418"/>
       </Position3>
       <Position4>
-        <Filename Value="../../../Extended/fonctions/fonctions_init.pas"/>
-        <Caret Line="752" Column="1" TopLine="732"/>
+        <Filename Value="../../fonctions/fonctions_Objets_Data.pas"/>
+        <Caret Line="456" Column="1" TopLine="419"/>
       </Position4>
       <Position5>
-        <Filename Value="../../../Extended/fonctions/fonctions_init.pas"/>
-        <Caret Line="755" Column="1" TopLine="735"/>
+        <Filename Value="../../fonctions/fonctions_Objets_Data.pas"/>
+        <Caret Line="462" Column="1" TopLine="425"/>
       </Position5>
       <Position6>
-        <Filename Value="../../../Extended/fonctions/fonctions_init.pas"/>
-        <Caret Line="614" Column="1" TopLine="594"/>
+        <Filename Value="../../fonctions/fonctions_Objets_Data.pas"/>
+        <Caret Line="463" Column="1" TopLine="426"/>
       </Position6>
       <Position7>
-        <Filename Value="../../../Extended/fonctions/fonctions_init.pas"/>
-        <Caret Line="615" Column="1" TopLine="595"/>
+        <Filename Value="../../fonctions/fonctions_Objets_Data.pas"/>
+        <Caret Line="466" Column="1" TopLine="429"/>
       </Position7>
       <Position8>
-        <Filename Value="../../forms/U_FenetrePrincipale.pas"/>
-        <Caret Line="269" Column="1" TopLine="249"/>
+        <Filename Value="../../fonctions/fonctions_Objets_Data.pas"/>
+        <Caret Line="326" Column="1" TopLine="304"/>
       </Position8>
       <Position9>
-        <Filename Value="../../../Extended/fonctions/fonctions_init.pas"/>
-        <Caret Line="745" Column="26" TopLine="724"/>
+        <Filename Value="../../forms/U_FenetrePrincipale.pas"/>
+        <Caret Line="520" Column="1" TopLine="498"/>
       </Position9>
       <Position10>
-        <Filename Value="../../../Extended/fonctions/fonctions_init.pas"/>
-        <Caret Line="38" Column="40" TopLine="25"/>
+        <Filename Value="../../../../Lazarus/composants/jvXP/JvXPCore.pas"/>
+        <Caret Line="571" Column="1" TopLine="548"/>
       </Position10>
       <Position11>
-        <Filename Value="../../../Extended/fonctions/fonctions_init.pas"/>
-        <Caret Line="609" Column="22" TopLine="595"/>
+        <Filename Value="../../../../Lazarus/composants/jvXP/JvXPButtons.pas"/>
+        <Caret Line="397" Column="1" TopLine="374"/>
       </Position11>
       <Position12>
-        <Filename Value="../../../Extended/fonctions/fonctions_init.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="../../composants/u_customframework.pas"/>
+        <Caret Line="1630" Column="13" TopLine="1614"/>
       </Position12>
       <Position13>
-        <Filename Value="../../../Extended/fonctions/fonctions_init.pas"/>
-        <Caret Line="610" Column="1" TopLine="589"/>
+        <Filename Value="../../composants/u_customframework.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position13>
       <Position14>
-        <Filename Value="../../../Extended/fonctions/fonctions_init.pas"/>
-        <Caret Line="72" Column="24" TopLine="41"/>
-      </Position14>
-      <Position15>
-        <Filename Value="../../../Extended/fonctions/fonctions_init.pas"/>
-        <Caret Line="32" Column="44" TopLine="13"/>
-      </Position15>
-      <Position16>
-        <Filename Value="../../../Extended/fonctions/fonctions_init.pas"/>
-        <Caret Line="635" Column="39" TopLine="613"/>
-      </Position16>
-      <Position17>
         <Filename Value="../../composants/u_customframework.pas"/>
-        <Caret Line="3790" Column="32" TopLine="3784"/>
-      </Position17>
-      <Position18>
-        <Filename Value="../../../Extended/fonctions/fonctions_init.pas"/>
-        <Caret Line="746" Column="73" TopLine="728"/>
-      </Position18>
-      <Position19>
-        <Filename Value="../../../Extended/fonctions/fonctions_init.pas"/>
-        <Caret Line="151" Column="3" TopLine="121"/>
-      </Position19>
-      <Position20>
-        <Filename Value="../../../Extended/fonctions/fonctions_init.pas"/>
-        <Caret Line="190" Column="27" TopLine="170"/>
-      </Position20>
-      <Position21>
-        <Filename Value="../../../Extended/fonctions/fonctions_init.pas"/>
-        <Caret Line="618" Column="72" TopLine="598"/>
-      </Position21>
-      <Position22>
-        <Filename Value="../../forms/U_Administration.pas"/>
-        <Caret Line="1645" Column="65" TopLine="1625"/>
-      </Position22>
-      <Position23>
-        <Filename Value="../../forms/U_Administration.pas"/>
-        <Caret Line="2076" Column="27" TopLine="2056"/>
-      </Position23>
-      <Position24>
-        <Filename Value="../../fonctions/fonctions_FenetrePrincipale.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
-      </Position24>
-      <Position25>
-        <Filename Value="../../forms/U_FenetrePrincipale.pas"/>
-        <Caret Line="253" Column="49" TopLine="249"/>
-      </Position25>
-      <Position26>
-        <Filename Value="../../fonctions/fonctions_FenetrePrincipale.pas"/>
-        <Caret Line="79" Column="113" TopLine="59"/>
-      </Position26>
-      <Position27>
-        <Filename Value="../../fonctions/fonctions_FenetrePrincipale.pas"/>
-        <Caret Line="311" Column="245" TopLine="291"/>
-      </Position27>
-      <Position28>
-        <Filename Value="../../fonctions/fonctions_FenetrePrincipale.pas"/>
-        <Caret Line="79" Column="152" TopLine="59"/>
-      </Position28>
-      <Position29>
-        <Filename Value="../../forms/U_FenetrePrincipale.pas"/>
-        <Caret Line="265" Column="1" TopLine="245"/>
-      </Position29>
-      <Position30>
-        <Filename Value="../../forms/U_Acces.pas"/>
-        <Caret Line="227" Column="1" TopLine="207"/>
-      </Position30>
+        <Caret Line="1035" Column="33" TopLine="998"/>
+      </Position14>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
-    <Version Value="8"/>
+    <Version Value="9"/>
     <SearchPaths>
       <UnitOutputDirectory Value="$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
+    <Parsing>
+      <SyntaxOptions>
+        <UseAnsiStrings Value="False"/>
+      </SyntaxOptions>
+    </Parsing>
     <Linking>
       <Options>
         <Win32>
@@ -1671,7 +503,7 @@
     </Other>
   </CompilerOptions>
   <Debugging>
-    <BreakPoints Count="7">
+    <BreakPoints Count="8">
       <Item1>
         <Source Value="../../composants/Matthieu/forms/U_FenetrePrincipale.pas"/>
         <Line Value="241"/>
@@ -1700,6 +532,10 @@
         <Source Value="../ManFrames/forms/U_Administration.pas"/>
         <Line Value="1640"/>
       </Item7>
+      <Item8>
+        <Source Value="../../forms/U_Administration.pas"/>
+        <Line Value="2200"/>
+      </Item8>
     </BreakPoints>
     <Exceptions Count="2">
       <Item1>

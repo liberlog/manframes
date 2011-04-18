@@ -604,15 +604,15 @@ type
     procedure DoHide; override;
     procedure DoClose ( var AAction: TCloseAction ); override;
     function fs_GetLabel(const as_OldLabel, as_Table,
-      as_Field: WideString): WideString; overload;
+      as_Field: String): String; overload;
     {$IFDEF VIRTUALTREES}
-    function fb_SetLabels ( const ahea_Header : TVTHeader ; const aws_Table, aws_FieldMainColumn, aws_Fields : WideString ; const ach_Separator : Char ):Boolean ; overload;
-    function fb_SetLabels ( const ahea_Header : TVTHeader ; const aws_Table : WideString ; const alst_Fields : TStringlist ):Boolean ; overload;
+    function fb_SetLabels ( const ahea_Header : TVTHeader ; const aws_Table, aws_FieldMainColumn, aws_Fields : String ; const ach_Separator : Char ):Boolean ; overload;
+    function fb_SetLabels ( const ahea_Header : TVTHeader ; const aws_Table : String ; const alst_Fields : TStringlist ):Boolean ; overload;
     {$ENDIF}
-    function fb_SetLabels ( const alv_ListeView : TListView ; const aws_Table, aws_Fields : WideString ; const ach_Separator : Char ):Boolean ; overload;
-    function fb_SetLabels ( const alv_ListeView : TListView ; const aws_Table : WideString ; const alst_Fields : TStringlist ):Boolean ; overload;
+    function fb_SetLabels ( const alv_ListeView : TListView ; const aws_Table, aws_Fields : String ; const ach_Separator : Char ):Boolean ; overload;
+    function fb_SetLabels ( const alv_ListeView : TListView ; const aws_Table : String ; const alst_Fields : TStringlist ):Boolean ; overload;
 
-    function fs_GetLabel(const as_OldLabel : WideString ; const acom_Control : TComponent ): WideString; overload;
+    function fs_GetLabel(const as_OldLabel : String ; const acom_Control : TComponent ): String; overload;
 
     {$IFDEF EADO}
     procedure p_AffecteEvenementsDatasetPrincipal(
@@ -4091,9 +4091,9 @@ begin
     p_PlacerFocus ( gFWColumns [ CST_FRAMEWORK_DATASOURCE_PRINC ].con_ControlFocus );
   gb_Close := False ;
   try
-      if  not gb_Show
+      if {$IFNDEF SFORM} not gb_Show
       // regarde si pas de rafraichissement demandé par l'appli
-      and not gb_DicoNoRefresh
+      and {$ENDIF} not gb_DicoNoRefresh
       and (    not assigned ( gF_FormMain )
             or not ( gF_FormMain.gb_CloseQuery )) Then
         Begin
@@ -5782,7 +5782,7 @@ end;
 // as_Table    : La table du champ
 // as_Field    : Le champ du libellé
 ///////////////////////////////////////////////////////////////////////
-function TF_CustomFrameWork.fs_GetLabel ( const as_OldLabel, as_Table, as_Field : WideString ): WideString;
+function TF_CustomFrameWork.fs_GetLabel ( const as_OldLabel, as_Table, as_Field : String ): String;
 var lcf_Champ : TFWFieldColumn ;
 begin
   lcf_Champ := fcf_chercheChamp ( as_Table, as_Field );
@@ -5797,7 +5797,7 @@ End ;
 // as_OldLabel : L'ancien libellé si pas dans DICO
 // ai_Tag      : Tag non dico
 ///////////////////////////////////////////////////////////////////////
-function TF_CustomFrameWork.fs_GetLabel ( const as_OldLabel : WideString ; const acom_Control : TComponent ): WideString;
+function TF_CustomFrameWork.fs_GetLabel ( const as_OldLabel : String ; const acom_Control : TComponent ): String;
 var li_i, li_NumSource, li_Delete: Integer ;
   lFw_Column : TFWColumn ; 
 
@@ -5887,7 +5887,7 @@ End ;
 // ach_Separator       : Le séparateur de champs
 // Retour : affecté ou non
 ///////////////////////////////////////////////////////////////////////
-function TF_CustomFrameWork.fb_SetLabels ( const alv_ListeView : TListView ; const aws_Table, aws_Fields : WideString ; const ach_Separator : Char ):Boolean ;
+function TF_CustomFrameWork.fb_SetLabels ( const alv_ListeView : TListView ; const aws_Table, aws_Fields : String ; const ach_Separator : Char ):Boolean ;
 var lstl_Liste : TStringList ;
 Begin
   lstl_Liste := nil ;
@@ -5904,7 +5904,7 @@ End ;
 // alst_Fields : Les champs de colonnes
 // Retour : affecté ou non
 ///////////////////////////////////////////////////////////////////////
-function TF_CustomFrameWork.fb_SetLabels ( const alv_ListeView : TListView ; const aws_Table : WideString ; const alst_Fields : TStringlist ):Boolean ;
+function TF_CustomFrameWork.fb_SetLabels ( const alv_ListeView : TListView ; const aws_Table : String ; const alst_Fields : TStringlist ):Boolean ;
 var li_i ,
     li_j ,
     li_NumSource : Integer ;
