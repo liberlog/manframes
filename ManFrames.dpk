@@ -71,7 +71,8 @@ requires
   rxctl,
   dxPack2D10,
   JvCmpD10R,
-  ExtToolbarTools;
+  ExtToolbarTools,
+  RVFree_D6;
 
 contains
   fonctions_aide in 'fonctions\fonctions_aide.pas',
