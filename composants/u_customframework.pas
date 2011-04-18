@@ -5830,7 +5830,7 @@ End ;
 // Retour : affecté ou non
 ///////////////////////////////////////////////////////////////////////
 {$IFDEF VIRTUALTREES}
-function TF_CustomFrameWork.fb_SetLabels ( const ahea_Header : TVTHeader ; const aws_Table, aws_FieldMainColumn, aws_Fields : WideString ; const ach_Separator : Char ):Boolean ;
+function TF_CustomFrameWork.fb_SetLabels (const ahea_Header : TVTHeader ; const aws_Table, aws_FieldMainColumn, aws_Fields : String ; const ach_Separator : Char ):Boolean ;
 var lstl_Liste : TStringList ;
 Begin
   lstl_Liste := nil ;
@@ -5853,7 +5853,7 @@ End ;
 // alst_Fields : Les champs de colonnes
 // Retour : affecté ou non
 ///////////////////////////////////////////////////////////////////////
-function TF_CustomFrameWork.fb_SetLabels ( const ahea_Header : TVTHeader ; const aws_Table : WideString ; const alst_Fields : TStringlist ):Boolean ;
+function TF_CustomFrameWork.fb_SetLabels ( const ahea_Header : TVTHeader ; const aws_Table : String ; const alst_Fields : TStringlist ):Boolean ;
 var li_i ,
     li_j ,
     li_NumSource : Integer ;
@@ -6308,8 +6308,8 @@ begin
            Begin
             lt_Arg [0] := ls_Message ;
             if li_Compteur = 1
-              Then  MessageDlg ( GS_SAISIR_ANNULER, fs_RemplaceMsg ( GS_ZONE_OBLIGATOIRE  , lt_Arg ), mtWarning, [mbOk], 0)
-              Else  MessageDlg ( GS_SAISIR_ANNULER, fs_RemplaceMsg ( GS_ZONES_OBLIGATOIRES, lt_Arg ), mtWarning, [mbOk], 0);
+              Then  MessageDlg ( {$IFDEF FPC}GS_SAISIR_ANNULER,{$ENDIF} fs_RemplaceMsg ( GS_ZONE_OBLIGATOIRE  , lt_Arg ), mtWarning, [mbOk], 0)
+              Else  MessageDlg ( {$IFDEF FPC}GS_SAISIR_ANNULER,{$ENDIF} fs_RemplaceMsg ( GS_ZONES_OBLIGATOIRES, lt_Arg ), mtWarning, [mbOk], 0);
            End ;
           Abort;
          End ;

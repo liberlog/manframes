@@ -300,8 +300,10 @@ procedure p_pa_5Resize(const Sender: TObject;const pa_5:{$IFDEF TNT}TTntPanel{$E
 begin
   if Assigned(tbar_volet.DockedTo) and tbar_volet.Visible then
     begin
-      tbar_volet.Width := (Sender as TControl).Width;
-      dock_volet.Width := (Sender as TControl).Width;
+      tbar_volet.Width  := pa_5.Width;
+      dock_volet.Width  := pa_5.Width;
+      tbar_volet.Height := pa_5.Height;
+      dock_volet.Height := pa_5.Height;
       spl_volet.Left := pa_5.Width;
     end;
 
