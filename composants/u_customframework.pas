@@ -796,7 +796,7 @@ uses fonctions_string,
      JvToolEdit , JvDbControls,
   {$ENDIF}
      fonctions_db, fonctions_dbcomponents, u_extcomponent,
-     fonctions_numedit, unite_variables,
+     fonctions_numedit, unite_variables, u_framework_dbcomponents,
      U_ExtColorCombos, ActnList, unite_messages,
      fonctions_proprietes, fonctions_variant ;
 
@@ -6200,6 +6200,8 @@ begin
             Begin
               // On renseigne la colonne selon dico
               lcol_Colonne.FieldName := FieldName ;
+              if lcol_Colonne is TFWGridColumn then
+                ( lcol_Colonne as TFWGridColumn ).FieldTag:= NumTag;
               lcol_Colonne.Visible := AffiCol <> 0;
               if AffiCol >= 1 Then
                 Begin
