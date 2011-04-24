@@ -1,8 +1,9 @@
-SET client_encoding = 'LATIN1';
+SET client_encoding = 'UTF8';
 SET check_function_bodies = false;
 SET client_min_messages = warning;
 COMMENT ON SCHEMA public IS 'Standard public schema';
 
+--CREATE LANGUAGE plpgsql;
 DROP TYPE function_type CASCADE;
 DROP TYPE clep_fonction CASCADE;
 DROP TYPE type_fonction CASCADE;
@@ -13,58 +14,58 @@ DROP TYPE groupe_function_type CASCADE;
 
 CREATE TYPE function_type AS (
 MENU_Numordre smallint,
-MENU_Clep varchar(50), 
-MENU_Bmp OID,
-FONC_Clep varchar(50),
-FONC_Libelle varchar(250), 
-FONC_Type varchar(10), 
-FONC_Mode varchar(20), 
-FONC_Nom varchar(20), 
-FONC_Bmp OID
+MENU_Clep character varying, 
+MENU_Bmp bytea,
+FONC_Clep character varying,
+FONC_Libelle character varying, 
+FONC_Type character varying, 
+FONC_Mode character varying, 
+FONC_Nom character varying, 
+FONC_Bmp bytea
 );
 
 CREATE TYPE clep_fonction AS (
-FONC_Clep varchar(50)
+FONC_Clep character varying
 );
 
 CREATE TYPE type_fonction AS (
-FONC_Type varchar(10)
+FONC_Type character varying
 );
 
 CREATE TYPE sommaire_type AS (
-SOMM_Clep varchar(50), 
-FONC_Clep varchar(50),
-FONC_Libelle varchar(250), 
-FONC_Type varchar(10), 
-FONC_Mode varchar(20), 
-FONC_Nom varchar(20), 
-FONC_Bmp OID
+SOMM_Clep character varying, 
+FONC_Clep character varying,
+FONC_Libelle character varying, 
+FONC_Type character varying, 
+FONC_Mode character varying, 
+FONC_Nom character varying, 
+FONC_Bmp bytea
 );
 CREATE type groupe_menu_function_type AS (
-MENU_Clep varchar(50),
-MENU_Bmp OID, 
-FONC_Clep varchar(50),
-FONC_Libelle varchar(250), 
-FONC_Type varchar(10), 
-FONC_Mode varchar(20), 
-FONC_Nom varchar(20), 
-FONC_Bmp OID
+MENU_Clep character varying,
+MENU_Bmp bytea, 
+FONC_Clep character varying,
+FONC_Libelle character varying, 
+FONC_Type character varying, 
+FONC_Mode character varying, 
+FONC_Nom character varying, 
+FONC_Bmp bytea
 );
 CREATE TYPE niveau_type AS (
 SOMM_Niveau bool
 );
 
 CREATE TYPE groupe_function_type AS (
-MENU_Clep varchar(50), 
-MENU_Bmp oid, 
-SOUM_Clep varchar(50), 
-SOUM_Bmp OID, 
-FONC_Clep varchar(50),
-FONC_Libelle varchar(250), 
-FONC_Type varchar(10),
-FONC_Mode varchar(20), 
-FONC_Nom varchar(20), 
-FONC_Bmp OID,
+MENU_Clep character varying, 
+MENU_Bmp bytea, 
+SOUM_Clep character varying, 
+SOUM_Bmp bytea, 
+FONC_Clep character varying,
+FONC_Libelle character varying, 
+FONC_Type character varying,
+FONC_Mode character varying, 
+FONC_Nom character varying, 
+FONC_Bmp bytea,
 MENU_Numordre INT, 
 SOUM_Numordre INT, 
 SMFC_Numordre INT,
@@ -78,50 +79,60 @@ FUNCTION fc_barre_de_menu
 --
 ------------------------------------------------------ 
 -- param entree
-( un_sommaire varchar(50))
+( un_sommaire character varying)
 RETURNS 
 -- structure de la table en sortie
 SETOF
 function_type
 AS
-$$
+'
+declare
+    r record;
+BEGIN
 -- insertion des menus du un_sommaire
-select 	
+for r in select 	
 	MENU_Numordre, MENU_Clep, MENU_Bmp,
-	CAST ( null as varchar ), CAST ( null as varchar ), CAST ( null as varchar ), CAST ( null as varchar ), CAST ( null as varchar ), CAST ( null as oid )
+	CAST ( null as varchar ), CAST ( null as varchar ), CAST ( null as varchar ), CAST ( null as varchar ), CAST ( null as varchar ), CAST ( null as bytea )
 from 	MENUS 
 WHERE 
 	MENU__SOMM = un_sommaire
 ORDER BY MENU_Numordre UNION
 -----------------------------------------------------------------------
 -- insertion des fonctions du un_sommaire
-select 	100 + SOFC_Numordre, CAST ( null as varchar ), CAST ( null as oid ), 
+select 	100 + SOFC_Numordre, CAST ( null as varchar ), CAST ( null as bytea ), 
  	FONC_Clep,FONC_Libelle, FONC_Type, FONC_Mode, FONC_Nom, FONC_Bmp 
 
 from  SOMM_FONCTIONS, FONCTIONS
 WHERE 
 	SOFC__SOMM = un_sommaire
 	AND FONC_Clep = SOFC__FONC
-ORDER BY SOFC_Numordre
+ORDER BY SOFC_Numordre loop
+	return next r;
+end loop;
+RETURN;
 --------------------------------------------------------------------------
-$$
+END
+'
 LANGUAGE plpgsql;
 
 CREATE OR REPLACE
 FUNCTION fc_simples_menus_sans_sommaire
 ------------------------------------------------------
--- Création d'une barre xp de niveau 1
+-- CrÃ©ation d'une barre xp de niveau 1
 ------------------------------------------------------ 
 -- param entree
-( un_sommaire varchar(50))
+( un_sommaire character varying)
 RETURNS
 -- structure de la table en sortie
 SETOF
 function_type
 AS
-$$
+'
+declare
+    r record;
+BEGIN
 -- corps de la fonction
-select MEFC__MENU, MENU_Bmp, MEFC__FONC,FONC_Libelle, FONC_Type, FONC_Mode, FONC_Nom, FONC_Bmp 
+for r in select MEFC__MENU, MENU_Bmp, MEFC__FONC,FONC_Libelle, FONC_Type, FONC_Mode, FONC_Nom, FONC_Bmp 
 from  MENU_FONCTIONS, FONCTIONS, MENUS 
 WHERE 
 	MEFC__SOMM = un_sommaire
@@ -131,8 +142,12 @@ WHERE
 	AND MENU__SOMM = 	MEFC__SOMM
 	AND MENU_Clep =		MEFC__MENU
 
-ORDER BY MENU_Numordre, MEFC_Numordre
-$$
+ORDER BY MENU_Numordre, MEFC_Numordre loop
+	return next r;
+end loop;
+RETURN;
+END
+'
 LANGUAGE plpgsql;
 
 CREATE OR REPLACE
@@ -169,7 +184,7 @@ FUNCTION fc_menus_sous_menus_items
 --
 ------------------------------------------------------ 
 -- param entree
-( un_sommaire varchar(50))
+( un_sommaire character varying)
 RETURNS 
 -- structure de la table en sortie
 SETOF
@@ -180,7 +195,7 @@ AS
 DECLARE RESULTAT1 record;
 BEGIN
 INSERT RESULTAT1
-select MENU_Clep, MENU_Bmp, SOUM_Clep , SOUM_Bmp, FONC_Clep,FONC_Libelle, FONC_Type, FONC_Mode, FONC_Nom, FONC_Bmp, MENU_Numordre, SOUM_Numordre, SMFC_Numordre, CAST ( null as oid )
+select MENU_Clep, MENU_Bmp, SOUM_Clep , SOUM_Bmp, FONC_Clep,FONC_Libelle, FONC_Type, FONC_Mode, FONC_Nom, FONC_Bmp, MENU_Numordre, SOUM_Numordre, SMFC_Numordre, CAST ( null as bytea )
 from SOUM_FONCTIONS, FONCTIONS, SOUS_MENUS, MENUS 
 WHERE 
 	SMFC__SOMM = un_sommaire
@@ -209,7 +224,7 @@ WHERE
 SELECT MENU_Clep, MENU_Bmp, SOUM_Clep , SOUM_Bmp, FONC_Clep,FONC_Libelle, FONC_Type, FONC_Mode, FONC_Nom, FONC_Bmp
 FROM RESULTAT1
 ORDER BY MENU_Numordre, MEFC_Numordre, SOUM_Numordre, SMFC_Numordre UNION
-select CAST ( null as varchar ), CAST ( null as oid ), CAST ( null as varchar ) , CAST ( null as varchar ), FONC_Clep,FONC_Libelle, FONC_Type, FONC_Mode, FONC_Nom, FONC_Bmp 
+select CAST ( null as varchar ), CAST ( null as bytea ), CAST ( null as varchar ) , CAST ( null as varchar ), FONC_Clep,FONC_Libelle, FONC_Type, FONC_Mode, FONC_Nom, FONC_Bmp 
 from  SOMM_FONCTIONS, FONCTIONS
 WHERE 
 	SOFC__SOMM = un_sommaire
@@ -259,15 +274,18 @@ FUNCTION fc_menu
 --
 ------------------------------------------------------ 
 -- param entree
-( un_sommaire varchar(50) , menu varchar(50))
+( un_sommaire character varying , menu character varying)
 RETURNS 
 -- structure de la table en sortie
 SETOF
 function_type
 AS
-$$	
+'
+declare
+    r record;
+BEGIN
 -- corps de la fonction
-select MENU_Clep, MENU_Bmp, SOUM_Clep , SOUM_Bmp, FONC_Clep,FONC_Libelle, FONC_Type, FONC_Mode, FONC_Nom, FONC_Bmp 
+for r in select MENU_Clep, MENU_Bmp, SOUM_Clep , SOUM_Bmp, FONC_Clep,FONC_Libelle, FONC_Type, FONC_Mode, FONC_Nom, FONC_Bmp 
 from SOUM_FONCTIONS, FONCTIONS, SOUS_MENUS, MENUS 
 WHERE 
 	SMFC__SOMM = un_sommaire
@@ -284,7 +302,7 @@ WHERE
 	AND MENU_Clep =		SMFC__MENU
 ORDER BY MENU_Numordre, SOUM_Numordre, SMFC_Numordre
 UNION
-select MENU_Clep, MENU_Bmp, CAST ( null as varchar ) , CAST ( null as oid ), FONC_Clep,FONC_Libelle, FONC_Type, FONC_Mode, FONC_Nom, FONC_Bmp 
+select MENU_Clep, MENU_Bmp, CAST ( null as varchar ) , CAST ( null as bytea ), FONC_Clep,FONC_Libelle, FONC_Type, FONC_Mode, FONC_Nom, FONC_Bmp 
 from  MENU_FONCTIONS, FONCTIONS, MENUS 
 WHERE 
 	MEFC__SOMM = un_sommaire
@@ -297,9 +315,11 @@ WHERE
 	AND MENU_Clep =		MEFC__MENU
 
 
-ORDER BY MENU_Numordre, MEFC_Numordre
-
-$$
+ORDER BY MENU_Numordre, MEFC_Numordre loop
+	return next r;
+end loop;
+RETURN;
+'
 LANGUAGE plpgsql;
  -- fin
 
@@ -310,7 +330,7 @@ FUNCTION fc_fonctions_utilisees
 --
 ------------------------------------------------------ 
 -- param entree
-( un_sommaire varchar(50))
+( un_sommaire character varying)
 RETURNS 
 -- structure de la table en sortie
 SETOF
@@ -359,11 +379,11 @@ LANGUAGE plpgsql;
 CREATE OR REPLACE
 FUNCTION fc_un_sommaire
 ------------------------------------------------------
--- Barre de navigation d'un un_sommaire sans les boutons d'accès aux menus
+-- Barre de navigation d'un un_sommaire sans les boutons d'accÃ¨s aux menus
 --
 ------------------------------------------------------ 
 -- param entree
-( un_sommaire varchar(50))
+( un_sommaire character varying)
 RETURNS 
 -- structure de la table en sortie
 SETOF
@@ -393,10 +413,10 @@ LANGUAGE plpgsql;
 CREATE OR REPLACE
 FUNCTION fc_simples_menus
 ------------------------------------------------------
--- Création d'un menu dans la barre de menus
+-- CrÃ©ation d'un menu dans la barre de menus
 ------------------------------------------------------ 
 -- param entree
-( un_sommaire varchar(50))
+( un_sommaire character varying)
 RETURNS SETOF
 -- structure de la table en sortie
 groupe_menu_function_type
@@ -419,7 +439,7 @@ WHERE
 ORDER BY MENU_Numordre, MEFC_Numordre loop
 return next r;
 end loop;
-for r in select CAST ( null as varchar ),CAST ( null as oid ), FONC_Clep,FONC_Libelle, FONC_Type, FONC_Mode, FONC_Nom, FONC_Bmp
+for r in select CAST ( null as varchar (50)),CAST ( null as bytea ), FONC_Clep,FONC_Libelle, FONC_Type, FONC_Mode, FONC_Nom, FONC_Bmp
 from  SOMM_FONCTIONS, FONCTIONS
 WHERE 
 	SOFC__SOMM = un_sommaire

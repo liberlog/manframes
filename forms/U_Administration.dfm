@@ -795,7 +795,7 @@ object F_Administration: TF_Administration
                 Visible = False
                 OnClick = dxb_ChargerImageClick
               end
-              object dbi_ImageTemp: TDBImage
+              object dbi_ImageTemp: TExtDBImage
                 Left = 331
                 Top = 16
                 Width = 32
@@ -2371,7 +2371,7 @@ object F_Administration: TF_Administration
             OnBtnPost = nav_UtilisateurBtnPost
             OnBtnDelete = nav_UtilisateurBtnDelete
           end
-          object im_aide: TDBImage
+          object im_aide: TExtDBImage
             Tag = 12
             Left = 256
             Top = 328
@@ -2381,7 +2381,7 @@ object F_Administration: TF_Administration
             TabOrder = 3
             OnDblClick = im_DblClick
           end
-          object im_quitter: TDBImage
+          object im_quitter: TExtDBImage
             Tag = 11
             Left = 256
             Top = 269
@@ -2391,7 +2391,7 @@ object F_Administration: TF_Administration
             TabOrder = 4
             OnDblClick = im_DblClick
           end
-          object im_acces: TDBImage
+          object im_acces: TExtDBImage
             Tag = 10
             Left = 256
             Top = 210
@@ -2401,7 +2401,7 @@ object F_Administration: TF_Administration
             TabOrder = 5
             OnDblClick = im_DblClick
           end
-          object im_about: TDBImage
+          object im_about: TExtDBImage
             Tag = 9
             Left = 256
             Top = 151
@@ -2411,7 +2411,7 @@ object F_Administration: TF_Administration
             TabOrder = 6
             OnDblClick = im_DblClick
           end
-          object im_app: TDBImage
+          object im_app: TExtDBImage
             Tag = 8
             Left = 256
             Top = 92

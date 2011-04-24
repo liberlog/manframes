@@ -66,7 +66,7 @@ uses
 {$IFDEF TNT}
   TntDBCtrls, TntDBGrids, TntStdCtrls,
 {$ENDIF}
-  U_FormDico,
+  U_FormDico, U_ExtDBImage,
   U_ExtDBNavigator, Graphics,
   JvXPButtons, u_framework_components,
   u_framework_dbcomponents, u_buttons_appli ;
@@ -212,7 +212,7 @@ type
     dbe_Edition: TFWDBEdit;
     dxb_Image: TJvXpButton;
     dxb_ChargerImage: TJvXpButton;
-    dbi_ImageTemp: TDBImage;
+    dbi_ImageTemp: TExtDBImage;
     nav_NavigationEnCours: TExtDBNavigator;
     RbSplitter8: TSplitter;
     pa_3: TPanel;
@@ -229,15 +229,15 @@ type
     lb_nomapp: TFWLabel;
     ed_nomapp: TFWDBEdit;
     nv_Entreprise: TExtDBNavigator;
-    im_aide: TDBImage;
+    im_aide: TExtDBImage;
     lb_imaide: TFWLabel;
-    im_quitter: TDBImage;
+    im_quitter: TExtDBImage;
     lb_imquitter: TFWLabel;
-    im_acces: TDBImage;
+    im_acces: TExtDBImage;
     lb_imacces: TFWLabel;
     lb_imabout: TFWLabel;
-    im_about: TDBImage;
-    im_app: TDBImage;
+    im_about: TExtDBImage;
+    im_app: TExtDBImage;
     lb_imapp: TFWLabel;
     Panel5: TPanel;
     dbt_quitter: TJvXPButton;
@@ -618,7 +618,7 @@ end;
 
 // Mise à jour de l'image en cours sur les Menus
 // Dataset : Table menus
-procedure adot_admin_MenusAfterScroll(var DatasetClep : String ; var lvar_EnrMenu : Variant;const Dataset,adot_SousMenus,adoq_MenuFonctions,adoq_SousMenuFonctions:TDataset ; const dbg_Dataset : TCustomDBgrid; const dxb_Image : TJvXpButton ; const dbi_ImageTemp: TDBImage ; const ls_Clep :String);
+procedure adot_admin_MenusAfterScroll(var DatasetClep : String ; var lvar_EnrMenu : Variant;const Dataset,adot_SousMenus,adoq_MenuFonctions,adoq_SousMenuFonctions:TDataset ; const dbg_Dataset : TCustomDBgrid; const dxb_Image : TJvXpButton ; const dbi_ImageTemp: TExtDBImage ; const ls_Clep :String);
 begin
   try
     if assigned ( adot_SousMenus ) then
@@ -3750,16 +3750,16 @@ end;
 procedure TF_Administration.im_DblClick(Sender: TObject);
 begin
   if Sender = im_about Then
-    fb_ChargeIcoBmp ( od_ChargerImage, (Sender as TDBImage).DataSource.DataSet, (Sender as TDBImage).DataSource.DataSet.FieldByName ( (Sender as TDBImage).DataField ), 16, True, nil )
+    fb_ChargeIcoBmp ( od_ChargerImage, (Sender as TExtDBImage).DataSource.DataSet, (Sender as TExtDBImage).DataSource.DataSet.FieldByName ( (Sender as TExtDBImage).DataField ), 16, True, nil )
   Else
-    fb_ChargeIcoBmp ( od_ChargerImage, (Sender as TDBImage).DataSource.DataSet, (Sender as TDBImage).DataSource.DataSet.FieldByName ( (Sender as TDBImage).DataField ), 32, True, nil );
+    fb_ChargeIcoBmp ( od_ChargerImage, (Sender as TExtDBImage).DataSource.DataSet, (Sender as TExtDBImage).DataSource.DataSet.FieldByName ( (Sender as TExtDBImage).DataField ), 32, True, nil );
   // Mise à jour du glyph
- //  (Sender as TDBImage).Repaint;
+ //  (Sender as TExtDBImage).Repaint;
 {  if OpenDialog.Execute then
     begin
-      (Sender as TDBImage).Picture.LoadFromFile(OpenDialog.FileName);
-      (Sender as TDBImage).CopytoClipboard;
-      (Sender as TDBImage).PasteFromClipboard;
+      (Sender as TExtDBImage).Picture.LoadFromFile(OpenDialog.FileName);
+      (Sender as TExtDBImage).CopytoClipboard;
+      (Sender as TExtDBImage).PasteFromClipboard;
       adoq_entr.Post;
     end;}
 end;
