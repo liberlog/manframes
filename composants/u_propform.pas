@@ -32,7 +32,7 @@ uses
 {$IFDEF VERSIONS}
   fonctions_version,
 {$ENDIF}
-  fonctions_erreurs,
+  fonctions_erreurs, fonctions_manbase,
   fonctions_init, ExtCtrls, fonctions_tableauframework ;
 
   const

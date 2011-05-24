@@ -62,7 +62,7 @@ uses
   fonctions_tableauframework, u_searchcomponents,
   U_FormMainIni, Buttons, Forms, DBCtrls, Grids,
   DBGrids, ComCtrls, StdCtrls, SysUtils, U_ExtDBNavigator,
-  TypInfo, Variants, U_GroupView,
+  TypInfo, Variants, U_GroupView, fonctions_manbase,
 {$IFDEF VERSIONS}
   fonctions_version,
 {$ENDIF}
@@ -79,7 +79,8 @@ uses
                                       FileUnit : 'U_CustomFrameWork' ;
                                       Owner : 'Matthieu Giroux' ;
                                       Comment : 'Fiche personnalisée avec méthodes génériques et gestion de données.' ;
-                                      BugsStory : '1.0.0.2 : Parent Panel bug, begining with 1.' + #13#10
+                                      BugsStory : '1.1.0.0 : Creating fonctions_manbase and manbase package.' + #13#10
+                                                + '1.0.0.2 : Parent Panel bug, begining with 1.' + #13#10
                                                 + '1.0.0.1 : Multiple Panels integration.' + #13#10
                                                 + '1.0.0.0 : Création de la propriété Columns.' + #13#10
                                                 + '0.9.0.0 : La recherche fonctionne.' + #13#10
@@ -88,7 +89,7 @@ uses
                                                 + '0.1.1.1 : Gestion mieux centralisée sur Datasource, Datasource2,etc.' + #13#10
                                                 + '0.1.0.1 : Version non testée' + #13#10 ;
                                        UnitType : 3 ;
-                                       Major : 1 ; Minor : 0 ; Release : 0; Build : 2 );
+                                       Major : 1 ; Minor : 1 ; Release : 0; Build : 0 );
 
 {$ENDIF}
 
@@ -96,9 +97,8 @@ uses
 type
   TF_CustomFrameWork = class;
   TDicoColumnDatalink = class;
-  TFWFieldColumn = class;
-  TFWFieldColumns = class;
   TFWColumn = class;
+  TFWColumnClass = class of TFWColumn;
   TFWPanelColumn = class(TCollectionItem)
   private
     FPanel : TWinControl ;
@@ -234,48 +234,6 @@ type
 
    End;
 
-  TFWColumnClass = class of TFWColumn;
- { TFWColumn }
-  TFWFieldColumn = class(TCollectionItem)
-  private
-    s_NomTable, s_FieldName : String;
-    s_CaptionName, s_HintName: WideString;
-    i_NumTag                               : Integer ;
-    i_AffiCol, i_AffiRech, i_AffiSort, i_Aide : Integer ;
-    s_LookupTable, s_LookupKey, s_LookupDisplay: String;
-    b_ColObl: Boolean;
-  public
-    property NomTable : String read s_NomTable write s_NomTable;
-    property FieldName : String read s_FieldName write s_FieldName;
-    property CaptionName : WideString read s_CaptionName write s_CaptionName;
-    property HintName : WideString read s_HintName write s_HintName;
-    property NumTag : Longint read i_NumTag write i_NumTag;
-    property AffiCol : Longint read i_AffiCol write i_AffiCol;
-    property AffiRech : Longint read i_AffiRech write i_AffiRech;
-    property AffiSort : Longint read i_AffiSort write i_AffiSort;
-    property Aide : Longint read i_Aide write i_Aide;
-    property LookupTable : String read s_LookupTable write s_LookupTable;
-    property LookupKey : String read s_LookupKey write s_LookupKey;
-    property LookupDisplay : String read s_LookupDisplay write s_LookupDisplay;
-    property ColObl : Boolean read b_ColObl write b_ColObl;
-  End;
-  TFWFieldColumnClass = class of TFWFieldColumn;
-
- { TFWFieldColumns }
-  TFWFieldColumns = class(TCollection)
-  private
-    FColumn: TFWColumn;
-    function GetColumnField( Index: Integer): TFWFieldColumn;
-    procedure SetColumnField( Index: Integer; Value: TFWFieldColumn);
-  protected
-    function GetOwner: TPersistent; override;
-  public
-    constructor Create(Column: TFWColumn; ColumnClass: TFWFieldColumnClass); virtual;
-    function Add: TFWFieldColumn;
-    property Column : TFWColumn read FColumn;
-    property Items[Index: Integer]: TFWFieldColumn read GetColumnField write SetColumnField; default;
-  End;
-
  { TFWColumns }
   TFWColumns = class(TCollection)
   private
@@ -287,10 +245,10 @@ type
   public
     constructor Create(Form: TF_CustomFrameWork; ColumnClass: TFWColumnClass); virtual;
     function Add: TFWColumn;
-    procedure LoadFromFile(const Filename: string);
-    procedure LoadFromStream(S: TStream);
-    procedure SaveToFile(const Filename: string);
-    procedure SaveToStream(S: TStream);
+    procedure LoadFromFile(const Filename: string); virtual;
+    procedure LoadFromStream(S: TStream); virtual;
+    procedure SaveToFile(const Filename: string); virtual;
+    procedure SaveToStream(S: TStream); virtual;
     property Form: TF_CustomFrameWork read FForm;
     property Items[Index: Integer]: TFWColumn read GetColumn write SetColumn; default;
   End;
@@ -1419,36 +1377,6 @@ begin
   gb_RafraichitForm := False ;
 end;
 
-{ TFWFieldColumns }
-
-constructor TFWFieldColumns.Create(Column: TFWColumn; ColumnClass: TFWFieldColumnClass);
-Begin
-  inherited Create(ColumnClass);
-  FColumn := Column;
-End;
-
-function TFWFieldColumns.GetColumnField(Index: Integer): TFWFieldColumn;
-begin
-  Result := TFWFieldColumn(inherited Items[Index]);
-end;
-
-procedure TFWFieldColumns.SetColumnField(Index: Integer; Value: TFWFieldColumn);
-begin
-  Items[Index].Assign(Value);
-end;
-
-
-function TFWFieldColumns.Add: TFWFieldColumn;
-begin
-  Result := TFWFieldColumn(inherited Add);
-end;
-
-function TFWFieldColumns.GetOwner: TPersistent;
-begin
-  Result := FColumn;
-end;
-
-
 { TFWColumns }
 
 constructor TFWColumns.Create(Form: TF_CustomFrameWork; ColumnClass: TFWColumnClass);
@@ -2332,7 +2260,7 @@ begin
 
       for li_i := 0 to FieldsDefs.Count - 1 do
         for li_j := 0 to adbgd_DataGridColumns.Count - 1 do
-         if adbgd_DataGridColumns[li_j].FieldName = FieldsDefs [ li_i ].s_FieldName
+         if adbgd_DataGridColumns[li_j].FieldName = FieldsDefs [ li_i ].FieldName
           Then
            Begin
   {           if ( gTs_FieldName [ li_i ] = as_FieldName ) Then
@@ -2863,7 +2791,7 @@ begin
             nav_Saisie.Controls[10].Enabled :=    not gb_SauverModifications
                                                      and assigned ( ddl_DataLink.DataSet )
                                                      and (ddl_DataLink.DataSet.State = dsBrowse);
-            gs_NomColTri  := FieldsDefs [ li_NumCol ].s_FieldName;
+            gs_NomColTri  := FieldsDefs [ li_NumCol ].FieldName;
             gi_NumColRech := FieldsDefs [ li_NumCol ].AffiRech;
           end;
 
@@ -3445,7 +3373,7 @@ Begin
         adat_Dataset.FindField ( astl_Cle [ li_i ] ).AsString := Trim ( adat_Dataset.FindField ( astl_Cle [ li_i ] ).AsString );
 {      Result := True ;
       for li_j := 0 to FieldsDefs.Count - 1   do
-        if  ( gtr_InfosChargees  [ li_j ].s_FieldName = astl_Cle [ li_i ] )
+        if  ( gtr_InfosChargees  [ li_j ].FieldName = astl_Cle [ li_i ] )
         and ( gtr_InfosChargees  [ li_j ].i_NumSource = li_i )
         and ( Trim ( gtr_InfosChargees [ li_j ].s_CaptionName) = '' ) Then
             begin
