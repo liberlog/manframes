@@ -1,6 +1,8 @@
-unit fonctions_manbase;
+﻿unit fonctions_manbase;
 
-{$mode objfpc}{$H+}
+{$IFDEF FPC}
+{$mode Delphi}
+{$ENDIF}
 
 interface
 
