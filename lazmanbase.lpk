@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<CONFIG>
+  <Package Version="3">
+    <Name Value="lazmanbase"/>
+    <AutoUpdate Value="Manually"/>
+    <CompilerOptions>
+      <Version Value="9"/>
+      <SearchPaths>
+        <IncludeFiles Value="forms"/>
+        <OtherUnitFiles Value="fonctions;forms;composants"/>
+        <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
+      </SearchPaths>
+      <Parsing>
+        <SyntaxOptions>
+          <CStyleOperator Value="False"/>
+          <CPPInline Value="False"/>
+          <UseAnsiStrings Value="False"/>
+        </SyntaxOptions>
+      </Parsing>
+      <Other>
+        <CompilerPath Value="$(CompPath)"/>
+      </Other>
+    </CompilerOptions>
+    <Version Major="1" Release="1" Build="6"/>
+    <Files Count="1">
+      <Item1>
+        <Filename Value="fonctions/fonctions_manbase.pas"/>
+        <UnitName Value="fonctions_manbase"/>
+      </Item1>
+    </Files>
+    <i18n>
+      <OutDir Value="fonctions"/>
+    </i18n>
+    <Type Value="RunAndDesignTime"/>
+    <RequiredPkgs Count="1">
+      <Item1>
+        <PackageName Value="FCL"/>
+        <MinVersion Major="1" Valid="True"/>
+      </Item1>
+    </RequiredPkgs>
+    <UsageOptions>
+      <UnitPath Value="$(PkgOutDir)"/>
+    </UsageOptions>
+    <PublishOptions>
+      <Version Value="2"/>
+      <IgnoreBinaries Value="False"/>
+    </PublishOptions>
+  </Package>
+</CONFIG>

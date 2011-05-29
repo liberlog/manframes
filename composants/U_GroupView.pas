@@ -77,6 +77,7 @@ type
 
   TDBGroupView = class(TDBListView)
    private
+     gb_CaseInSensitive: Boolean;
 {$IFDEF DELPHI_9_UP}
     gwst_SQLCommand,
     gwst_SQLSource,
@@ -245,6 +246,7 @@ type
     Procedure DataLinkClosed; virtual;
     procedure DblClick ; override;
     procedure DragOver ( aobj_Source : Tobject; ai_X, ai_Y : Integer ; ads_Etat : TDragState ; var ab_Accepte : Boolean ); override;
+    procedure KeyUp(var Key: Word; Shift: TShiftState); override;
     procedure MouseDown( abt_Bouton : TMouseButton ; ass_EtatShift : TShiftState ; ai_x, ai_y : Integer ); override;
     procedure p_PostDataSourceOwner;
     procedure p_CreateSQL;
@@ -829,6 +831,7 @@ begin
          end ;
     End ;
 End;
+
 // Initialisation des images d'état
 procedure TDBGroupView.p_AffecteListImages ;
 var lbmp_Image : TBitmap ;
@@ -4146,6 +4149,19 @@ begin
    Then
     p_groupeMouseDownDisableEnableFleche ( Self, gBt_Autre );
 end;
+
+procedure TDBGroupView.KeyUp(var Key: Word; Shift: TShiftState);
+begin
+  inherited KeyUp(Key, Shift);
+  if ( csDesigning in ComponentState ) Then
+    Exit ;
+  // Appel du transfert dasn l'autre liste
+  if assigned ( galv_AutreListe )
+  and ( Key in [VK_LEFT, VK_RIGHT ])
+   Then
+    galv_AutreListe.p_ClickTransfert ( galv_AutreListe );
+end;
+
 
 // Sélection d'un item : méthode statique
 // ai_index : Le numéro de l'item sélectionné obligatoire
