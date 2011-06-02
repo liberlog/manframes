@@ -51,7 +51,7 @@ uses
 type
   { TFWPropColumn }
 
-  TFWPropColumn = class(TFWColumn)
+  TFWPropColumn = class(TFWSource)
   published
     property FieldsDefs : TFWFieldColumns read FFieldsDefs;
   End;
@@ -76,15 +76,15 @@ type
                              var ads_DataSource : TDataSource ;
                              var ai_Tag : Longint ):Integer;
   protected
-    function CreateColumns: TFWColumns; override;
-    procedure p_AfterColumnFrameShow( const aFWColumn : TFWColumn); override;
+    function CreateSources: TFWSources; override;
+    procedure p_AfterColumnFrameShow( const aFWColumn : TFWSource); override;
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
-    function  fb_ReinitCols ( const at_datawork : TFWColumn ; const ai_table : Integer ) : Boolean; override;
+    function  fb_ReinitCols ( const at_datawork : TFWSource ; const ai_table : Integer ) : Boolean; override;
     function fb_ChargeDonnees : Boolean; override;
-    function fb_ChargementNomCol ( const at_DataWork : TFWColumn;
+    function fb_ChargementNomCol ( const at_DataWork : TFWSource;
                                    const ai_NumSource : Integer ) : Boolean; override;
     procedure p_InitFrameWork ( const Sender : TComponent ); override;
-    procedure p_assignColumnsDatasourceOwner ( const afw_Column : TFWColumn ; const ads_DataSource : TDatasource ; const ai_NumArray : Integer ; const acom_Component : TComponent );override;
+    procedure p_assignColumnsDatasourceOwner ( const afw_Column : TFWSource ; const ads_DataSource : TDatasource ; const ai_NumArray : Integer ; const acom_Component : TComponent );override;
     procedure p_InitExecutionFrameWork ( const Sender : TObject ); override;
    public
     function fb_InsereCompteur ( const adat_Dataset : TDataset ;
@@ -169,13 +169,13 @@ end;
 function TF_PropForm.fstl_getDataKeyList ( Index : Longint ):TStringList;
 Begin
   Result := nil;
-  if Index < Columns.Count then
-    Result := Columns.Items[ Index ].KeyList;
+  if Index < Sources.Count then
+    Result := Sources.Items[ Index ].KeyList;
 End;
 
 // Réinitialisation des colonnes pour n'afficher que celles visibles dans le dico
 // adbgd_DataGrid : Le DataGrid en cours
-function TF_PropForm.fb_ReinitCols ( const at_datawork : TFWColumn ; const ai_table : Integer ) : Boolean;
+function TF_PropForm.fb_ReinitCols ( const at_datawork : TFWSource ; const ai_table : Integer ) : Boolean;
 begin
 //  li_k := 0 ;
   if not gb_PasUtiliserDico Then
@@ -239,8 +239,8 @@ begin
     and not ( lcom_Component is TCustomPanel )
     and not ( lcom_Component is TTabSheet    ) Then
      Begin
-      li_DataWork := fi_ParentEstPanel ( Columns, lcom_Component as TControl );
-      with Columns.Items [ li_DataWork ] do
+      li_DataWork := fi_ParentEstPanel ( Sources, lcom_Component as TControl );
+      with Sources.Items [ li_DataWork ] do
        Begin
           lds_DataSource := Datasource;
           li_Tag := 0 ;
@@ -250,8 +250,8 @@ begin
             Continue ;
           if not assigned ( lds_DataSource ) Then
             Begin
-              li_j := fi_ParentEstPanel( Columns, lcom_Component as TControl);
-              lds_DataSource := Columns [ li_j ].Datasource;
+              li_j := fi_ParentEstPanel( Sources, lcom_Component as TControl);
+              lds_DataSource := Sources [ li_j ].Datasource;
             End;
           if ( lcom_Component is TLabel ) then
             Begin
@@ -329,7 +329,7 @@ begin
                         End ;
 
                       p_SetComponentProperty ( lcom_Component, 'HelpContext', tkInteger, Aide);
-                      p_assignColumnsDatasourceOwner ( Columns.Items [ li_DataWork ], lds_DataSource, li_NumArray, lcom_Component );
+                      p_assignColumnsDatasourceOwner ( Sources.Items [ li_DataWork ], lds_DataSource, li_NumArray, lcom_Component );
 
                     End;
 
@@ -345,13 +345,13 @@ End ;
 
 // Chargement des tableaux pour le nom des colonnes (SQL), leur nom d'affichage leur
 // état d'affichage (visible ou non), et le Hint de la barre de statut correspondant
-function TF_PropForm.fb_ChargementNomCol ( const at_DataWork : TFWColumn ; const ai_NumSource : Integer ) : Boolean;
+function TF_PropForm.fb_ChargementNomCol ( const at_DataWork : TFWSource ; const ai_NumSource : Integer ) : Boolean;
 var li_i , li_j,
     li_TotalEnregistrements : integer;
     lb_Loaded  : Boolean ;
     ls_NomTable : String ;
     ls_SQL : WideString ;
-    lfwc_Column : TFWColumn ;
+    lfwc_Column : TFWSource ;
 begin
   Result := False ;
   lb_Loaded := False ;
@@ -408,11 +408,11 @@ begin
         Begin
           lfwc_Column := nil;
           if ls_NomTable <> dataset.Fields[0].AsString then
-           for li_j := 0 to Columns.Count - 1 do
-             if dataset.Fields[0].AsString = Columns [ li_j ].Table then
+           for li_j := 0 to Sources.Count - 1 do
+             if dataset.Fields[0].AsString = Sources [ li_j ].Table then
               Begin
-                lfwc_Column := Columns [ li_j ];
-                ls_NomTable := Columns [ li_j ].Table;
+                lfwc_Column := Sources [ li_j ];
+                ls_NomTable := Sources [ li_j ].Table;
                 Break;
               End;
            with dataset, lfwc_Column.FieldsDefs.Add do
@@ -456,13 +456,13 @@ procedure TF_PropForm.p_OrderEdit ( Edit : TObject );
 var li_i, li_j : Integer ;
 Begin
   li_j := 0 ;
-  li_i := fi_GetDataWork(Columns, Edit as TControl, li_j) ;
+  li_i := fi_GetDataWork(Sources, Edit as TControl, li_j) ;
   if li_i > 0 then
-    p_PlacerFlecheTri ( Columns.Items [ li_i ], Edit as TWinControl,
+    p_PlacerFlecheTri ( Sources.Items [ li_i ], Edit as TWinControl,
                                ( Edit as TwinControl ).Left, True );
 End;
 
-procedure TF_PropForm.p_assignColumnsDatasourceOwner ( const afw_Column : TFWColumn ; const ads_DataSource : TDatasource ; const ai_NumArray : Integer ; const acom_Component : TComponent );
+procedure TF_PropForm.p_assignColumnsDatasourceOwner ( const afw_Column : TFWSource ; const ads_DataSource : TDatasource ; const ai_NumArray : Integer ; const acom_Component : TComponent );
 var lds_DataSource : TDatasource;
 Begin
   if assigned ( ads_DataSource ) Then
@@ -620,7 +620,7 @@ begin
         end ;
     End;
   Result := ai_Tag;
-  with Columns.Items [ li_DataWork ] do
+  with Sources.Items [ li_DataWork ] do
     Begin
       for li_i := 0 to FieldsDefs.Count - 1 do
         if FieldsDefs [ li_i ].NumTag = ai_Tag + 1 Then
@@ -648,7 +648,7 @@ begin
 {$ENDIF}
 end;
 
-procedure TF_PropForm.p_AfterColumnFrameShow( const aFWColumn : TFWColumn );
+procedure TF_PropForm.p_AfterColumnFrameShow( const aFWColumn : TFWSource );
 Begin
   if DataAutoInsert // Mode auto-insertion
   and ( assigned ( gstl_SQLWork )
@@ -662,9 +662,9 @@ Begin
     End ;
 End;
 
-function TF_PropForm.CreateColumns: TFWColumns;
+function TF_PropForm.CreateSources: TFWSources;
 begin
-  Result := TFWColumns.Create(Self, TFWPropColumn);
+  Result := TFWSources.Create(Self, TFWPropColumn);
 end;
 
 

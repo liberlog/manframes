@@ -71,10 +71,10 @@ type
     {$IFDEF DELPHI_9_UP} const awst_SQL : TWideStrings ;{$ENDIF}
       const as_Table: String);
   protected
-    procedure p_AfterColumnFrameShow( const aFWColumn : TFWColumn); override;
+    procedure p_AfterColumnFrameShow( const aFWColumn : TFWSource); override;
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
-    function  fb_ReinitCols ( const at_datawork : TFWColumn ; const ai_table : Integer ) : Boolean; override;
-    function fb_ChargementNomCol ( const at_DataWork : TFWColumn;
+    function  fb_ReinitCols ( const at_datawork : TFWSource ; const ai_table : Integer ) : Boolean; override;
+    function fb_ChargementNomCol ( const at_DataWork : TFWSource;
                                    const ai_NumSource : Integer ) : Boolean; override;
     procedure p_InitFrameWork ( const Sender : TComponent ); override;
     procedure p_InitExecutionFrameWork ( const Sender : TObject ); override;
@@ -152,13 +152,13 @@ end;
 function TF_FormDico.fstl_getDataKeyList ( Index : Longint ):TStringList;
 Begin
   Result := nil;
-  if Index < Columns.Count then
-    Result := Columns.Items[ Index ].KeyList;
+  if Index < Sources.Count then
+    Result := Sources.Items[ Index ].KeyList;
 End;
 
 // Réinitialisation des colonnes pour n'afficher que celles visibles dans le dico
 // adbgd_DataGrid : Le DataGrid en cours
-function TF_FormDico.fb_ReinitCols ( const at_datawork : TFWColumn ; const ai_table : Integer ) : Boolean;
+function TF_FormDico.fb_ReinitCols ( const at_datawork : TFWSource ; const ai_table : Integer ) : Boolean;
 begin
 //  li_k := 0 ;
   if not DataPropsOff Then
@@ -178,13 +178,13 @@ end;
 
 // Chargement des tableaux pour le nom des colonnes (SQL), leur nom d'affichage leur
 // état d'affichage (visible ou non), et le Hint de la barre de statut correspondant
-function TF_FormDico.fb_ChargementNomCol ( const at_DataWork : TFWColumn ; const ai_NumSource : Integer ) : Boolean;
+function TF_FormDico.fb_ChargementNomCol ( const at_DataWork : TFWSource ; const ai_NumSource : Integer ) : Boolean;
 var li_i , li_j,
     li_TotalEnregistrements : integer;
     lb_Loaded  : Boolean ;
     ls_NomTable : String ;
     ls_SQL : WideString ;
-    lfwc_Column : TFWColumn ;
+    lfwc_Column : TFWSource ;
 begin
   Result := False ;
   lb_Loaded := False ;
@@ -241,11 +241,11 @@ begin
         Begin
           lfwc_Column := nil;
           if ls_NomTable <> dataset.Fields[0].AsString then
-           for li_j := 0 to Columns.Count - 1 do
-             if dataset.Fields[0].AsString = Columns [ li_j ].Table then
+           for li_j := 0 to Sources.Count - 1 do
+             if dataset.Fields[0].AsString = Sources [ li_j ].Table then
               Begin
-                lfwc_Column := Columns [ li_j ];
-                ls_NomTable := Columns [ li_j ].Table;
+                lfwc_Column := Sources [ li_j ];
+                ls_NomTable := Sources [ li_j ].Table;
                 Break;
               End;
            with dataset, lfwc_Column.FieldsDefs.Add do
@@ -289,9 +289,9 @@ procedure TF_FormDico.p_OrderEdit ( Edit : TObject );
 var li_i, li_j : Integer ;
 Begin
   li_j := 0 ;
-  li_i := fi_GetDataWork(Columns, Edit as TControl, li_j) ;
+  li_i := fi_GetDataWork(Sources, Edit as TControl, li_j) ;
   if li_i > 0 then
-    p_PlacerFlecheTri ( Columns.Items [ li_i ], Edit as TWinControl,
+    p_PlacerFlecheTri ( Sources.Items [ li_i ], Edit as TWinControl,
                                ( Edit as TwinControl ).Left, True );
 End;
 
@@ -335,7 +335,7 @@ begin
 {$ENDIF}
 end;
 
-procedure TF_FormDico.p_AfterColumnFrameShow( const aFWColumn : TFWColumn );
+procedure TF_FormDico.p_AfterColumnFrameShow( const aFWColumn : TFWSource );
 Begin
   if DataAutoInsert // Mode auto-insertion
   and ( assigned ( gstl_SQLWork )

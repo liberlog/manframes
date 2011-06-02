@@ -172,10 +172,10 @@ begin // Enregistre le nouvel expert de projet
    {$IFDEF FPC}
    RegisterPropertyEditor(TypeInfo(string), TManPreview, 'LeonardiRTF', {$IFDEF FPC}TFileNamePropertyEditor{$ELSE}{$ENDIF});
    {$ENDIF}
-   RegisterPropertyEditor(TypeInfo(string), TFWColumn, 'Key', {$IFDEF FPC}TFieldProperty{$ELSE}TDataFieldProperty{$ENDIF});
+   RegisterPropertyEditor(TypeInfo(string), TFWSource, 'Key', {$IFDEF FPC}TFieldProperty{$ELSE}TDataFieldProperty{$ENDIF});
 
-   RegisterPropertyEditor(TypeInfo(string), TFWColumn, 'Navigator', TNavigatorsProperty);
-   RegisterPropertyEditor(TypeInfo(string), TFWColumn, 'NavEdit', TNavigatorsProperty);
+   RegisterPropertyEditor(TypeInfo(string), TFWSource, 'Navigator', TNavigatorsProperty);
+   RegisterPropertyEditor(TypeInfo(string), TFWSource, 'NavEdit', TNavigatorsProperty);
 
 end;
 
