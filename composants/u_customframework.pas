@@ -788,6 +788,7 @@ uses fonctions_string,
      JvToolEdit , JvDbControls,
   {$ENDIF}
      fonctions_db, fonctions_dbcomponents, u_extcomponent,
+     u_extdbgrid,
      fonctions_numedit, unite_variables, u_framework_dbcomponents,
      U_ExtColorCombos, ActnList, unite_messages,
      fonctions_proprietes, fonctions_variant ;

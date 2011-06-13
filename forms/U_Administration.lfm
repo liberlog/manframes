@@ -299,7 +299,7 @@ object F_Administration: TF_Administration
                   'Déplacer à la marque'
                 )
               end
-              object dbg_Menu: TFWDBGrid
+              object dbg_Menu: TExtDBGrid
                 Left = 0
                 Height = 119
                 Hint = 'Choisir un menu'
@@ -354,7 +354,7 @@ object F_Administration: TF_Administration
               ClientHeight = 139
               ClientWidth = 176
               TabOrder = 1
-              object dbg_MenuFonctions: TFWDBGrid
+              object dbg_MenuFonctions: TExtDBGrid
                 Left = 0
                 Height = 119
                 Hint = 'Insérer une fonction'
@@ -489,7 +489,7 @@ object F_Administration: TF_Administration
                     'Déplacer à la marque'
                   )
                 end
-                object dbg_SousMenu: TFWDBGrid
+                object dbg_SousMenu: TExtDBGrid
                   Left = 0
                   Height = 100
                   Hint = 'Choisir un sous-menu'
@@ -580,7 +580,7 @@ object F_Administration: TF_Administration
                     'Déplacer à la marque'
                   )
                 end
-                object dbg_SousMenuFonctions: TFWDBGrid
+                object dbg_SousMenuFonctions: TExtDBGrid
                   Left = 0
                   Height = 100
                   Hint = 'Insérer une fonction'
@@ -798,7 +798,7 @@ object F_Administration: TF_Administration
                     'Déplacer à la marque'
                   )
                 end
-                object dbg_Sommaire: TFWDBGrid
+                object dbg_Sommaire: TExtDBGrid
                   Left = 0
                   Height = 79
                   Top = 20
@@ -849,7 +849,7 @@ object F_Administration: TF_Administration
                 ClientHeight = 99
                 ClientWidth = 176
                 TabOrder = 1
-                object dbg_SommaireFonctions: TFWDBGrid
+                object dbg_SommaireFonctions: TExtDBGrid
                   Left = 0
                   Height = 79
                   Hint = 'Insérer une fonction'
@@ -1110,7 +1110,7 @@ object F_Administration: TF_Administration
             VisibleButtons = [nbEFirst, nbEPrior, nbENext, nbELast]
             GlyphSize = gsSmall
           end
-          object gd_connexion: TFWDBGrid
+          object gd_connexion: TExtDBGrid
             Left = 2
             Height = 477
             Top = 27
@@ -2089,7 +2089,7 @@ object F_Administration: TF_Administration
             VisibleButtons = [nbEFirst, nbEPrior, nbENext, nbELast]
             GlyphSize = gsSmall
           end
-          object gd_utilisateurs: TFWDBGrid
+          object gd_utilisateurs: TExtDBGrid
             Left = 2
             Height = 477
             Hint = 'Sélectionner un utilisateur'

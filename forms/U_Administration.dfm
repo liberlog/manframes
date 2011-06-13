@@ -13,7 +13,7 @@ object F_Administration: TF_Administration
   OldCreateOrder = False
   OnClose = FormClose
   DataPropsOff = True
-  Columns = <
+  Sources = <
     item
       Table = 'UTILISATEURS'
       Key = 'UTIL_Clep'
@@ -397,7 +397,7 @@ object F_Administration: TF_Administration
                   'Marquer l'#39'enregistrement '#224' d'#233'placer'
                   'D'#233'placer '#224' la marque')
               end
-              object dbg_Menu: TFWDBGrid
+              object dbg_Menu: TExtDBGrid
                 Left = 0
                 Top = 20
                 Width = 193
@@ -442,7 +442,7 @@ object F_Administration: TF_Administration
               Align = alClient
               BevelOuter = bvNone
               TabOrder = 1
-              object dbg_MenuFonctions: TFWDBGrid
+              object dbg_MenuFonctions: TExtDBGrid
                 Left = 0
                 Top = 20
                 Width = 176
@@ -569,7 +569,7 @@ object F_Administration: TF_Administration
                     'Marquer l'#39'enregistrement '#224' d'#233'placer'
                     'D'#233'placer '#224' la marque')
                 end
-                object dbg_SousMenu: TFWDBGrid
+                object dbg_SousMenu: TExtDBGrid
                   Left = 0
                   Top = 20
                   Width = 193
@@ -651,7 +651,7 @@ object F_Administration: TF_Administration
                     'Marquer l'#39'enregistrement '#224' d'#233'placer'
                     'D'#233'placer '#224' la marque')
                 end
-                object dbg_SousMenuFonctions: TFWDBGrid
+                object dbg_SousMenuFonctions: TExtDBGrid
                   Left = 0
                   Top = 20
                   Width = 176
@@ -872,7 +872,7 @@ object F_Administration: TF_Administration
                     'Marquer l'#39'enregistrement '#224' d'#233'placer'
                     'D'#233'placer '#224' la marque')
                 end
-                object dbg_Sommaire: TFWDBGrid
+                object dbg_Sommaire: TExtDBGrid
                   Left = 0
                   Top = 20
                   Width = 193
@@ -911,7 +911,7 @@ object F_Administration: TF_Administration
                 Align = alClient
                 BevelOuter = bvNone
                 TabOrder = 1
-                object dbg_SommaireFonctions: TFWDBGrid
+                object dbg_SommaireFonctions: TExtDBGrid
                   Left = 0
                   Top = 20
                   Width = 176
@@ -1155,7 +1155,7 @@ object F_Administration: TF_Administration
             VisibleButtons = [nbEFirst, nbEPrior, nbENext, nbELast]
             GlyphSize = gsSmall
           end
-          object gd_connexion: TFWDBGrid
+          object gd_connexion: TExtDBGrid
             Left = 2
             Top = 27
             Width = 293
@@ -2149,7 +2149,7 @@ object F_Administration: TF_Administration
             VisibleButtons = [nbEFirst, nbEPrior, nbENext, nbELast]
             GlyphSize = gsSmall
           end
-          object gd_utilisateurs: TFWDBGrid
+          object gd_utilisateurs: TExtDBGrid
             Left = 2
             Top = 27
             Width = 293
