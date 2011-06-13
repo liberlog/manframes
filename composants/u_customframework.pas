@@ -6346,8 +6346,8 @@ begin
             Begin
               // On renseigne la colonne selon dico
               lcol_Colonne.FieldName := FieldName ;
-              if lcol_Colonne is TFWGridColumn then
-                ( lcol_Colonne as TFWGridColumn ).FieldTag:= NumTag;
+              if lcol_Colonne is TExtGridColumn then
+                ( lcol_Colonne as TExtGridColumn ).FieldTag:= NumTag;
               lcol_Colonne.Visible := AffiCol <> 0;
               if AffiCol >= 1 Then
                 Begin
