@@ -33,13 +33,13 @@ uses
   {$ENDIF}
   Graphics, Controls, Classes, Dialogs, DB,
   U_FormMainIni, Buttons, Forms, DBCtrls, u_customframework,
-  ComCtrls, StdCtrls, SysUtils, U_ExtDBNavigator,
+  ComCtrls, SysUtils, U_ExtDBNavigator,
   TypInfo, Variants, U_GroupView,
 {$IFDEF VERSIONS}
   fonctions_version,
 {$ENDIF}
   fonctions_erreurs,
-  fonctions_init, ExtCtrls, fonctions_tableauframework ;
+  fonctions_init, ExtCtrls ;
 
   const
     CST_FORMDICO_LAST_WORK_DATASOURCE = 0 ;

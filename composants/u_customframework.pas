@@ -789,7 +789,7 @@ uses fonctions_string,
   {$ENDIF}
      fonctions_db, fonctions_dbcomponents, u_extcomponent,
      u_extdbgrid,
-     fonctions_numedit, unite_variables, u_framework_dbcomponents,
+     fonctions_numedit, unite_variables,
      U_ExtColorCombos, ActnList, unite_messages,
      fonctions_proprietes, fonctions_variant ;
 
@@ -2482,6 +2482,7 @@ begin
     Begin
       // Test si c'est un tag d'édition
         // Test si le panel correspond au datasource2
+      li_Delete := 0 ;
       li_NumSource := fi_GetDataWork ( gFWSources, acom_Control as TControl, li_Delete);
       if li_NumSource < 0 then
         Exit;
@@ -3622,12 +3623,7 @@ End ;
 
 // filtrage de DataGridLookup
 function TF_CustomFrameWork.fb_DataGridLookupFiltrage ( const GfwSource : TfwSource ) : Boolean ;
-var li_h, li_i : Integer ;
-  // variable utilisée pour savoir si le filtre doit changer
-    lobj_Parameters : Tobject ;
-    lb_UseQuery     ,
-    lb_Open          ,
-    lb_isfirstField : Boolean ;
+var li_h : Integer ;
 
 Begin
   Result := False ;
@@ -3658,6 +3654,7 @@ var li_i : Integer ;
     lb_Open          ,
     lb_isfirstField : Boolean ;
 Begin
+  Result := False ;
   with gFWSource.ddl_DataLink, GfwLookupSource do
     if  assigned ( ds_DataSourcesWork )
     and assigned ( ds_DataSourcesWork.DataSet )
@@ -3694,6 +3691,7 @@ Begin
                                                   lobj_Parameters as TCollection ) ;
                 End;
           ds_DataSourcesWork.DataSet.Filtered := True ;
+          Result := True ;
     //            p_GridLookupAfterScroll ( dbgd_DataGridLookupDataSource.DataSet );
           if  lb_UseQuery
           and lb_Open Then
@@ -3707,13 +3705,7 @@ Begin
 end;
 // filtrage de DataGridLookup
 function TF_CustomFrameWork.fb_SourceChildsLookupFiltering ( const gfwSource : TFWSource ) : Boolean ;
-var li_h, li_i, li_j : Integer ;
-  // variable utilisée pour savoir si le filtre doit changer
-    lobj_Parameters : Tobject ;
-    lb_UseQuery     ,
-    lb_Open          ,
-    lb_isfirstField : Boolean ;
-
+var  li_j : Integer ;
 Begin
   Result := False ;
   if not Visible Then
