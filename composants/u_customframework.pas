@@ -6012,13 +6012,13 @@ begin
   for li_NumSource := 0 to Sources.Count - 1 do
    with Sources [ li_NumSource ] do
     for li_i := 0 to alst_Fields.Count - 1 do
-      if li_i < ahea_Header.Sources.Count Then
+      if li_i < ahea_Header.Columns.Count Then
         Begin
           for li_j := 0 to FieldsDefs.Count - 1 do
             if  ( FieldsDefs [ li_j ].NomTable  = aws_Table )
             and ( FieldsDefs [ li_j ].FieldName = alst_Fields [ li_i ] ) Then
               Begin
-                ahea_Header.Sources [ li_i ].Text := FieldsDefs [ li_j ].CaptionName ;
+                ahea_Header.Columns [ li_i ].Text := FieldsDefs [ li_j ].CaptionName ;
                 Result := True ;
               End ;
         End ;
@@ -6289,6 +6289,9 @@ var li_i ,
     lcol_Colonne : TColumn ;
     lb_Trouve    ,
     lb_Reinit    : boolean ;
+    {$IFNDEF FPC}
+    lcom_Columns : TComponent;
+    {$ENDIF}
 begin
   Result := False ;
 //  li_k := 0 ;
@@ -6305,11 +6308,11 @@ begin
 //      lb_Reinit := gd_grid.Sources.Count <= 1 ;
       Dataset.Open ;
 
-      {$IFDEF DELPHI}
-      lobj_Columns := TComponent ( fobj_getComponentObjectProperty ( Grid, 'Sources' ));
-      lb_Reinit := fvar_getComponentProperty ( lobj_Columns, 'State' ) = Integer ( csDefault );
-      {$ELSE}
+      {$IFDEF FPC}
       lb_Reinit := True ;
+      {$ELSE}
+      lcom_Columns := TComponent ( fobj_getComponentObjectProperty ( Grid, 'Columns' ));
+      lb_Reinit := flin_getComponentProperty ( lcom_Columns, 'State' ) = Integer ( csDefault );
       {$ENDIF}
       if lb_Reinit Then
         gridColumns.Clear ;
