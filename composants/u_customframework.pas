@@ -396,12 +396,12 @@ type
     gb_AnnuleModifs : Boolean ;
     //////// Images flèches
 
-    gt_Groupes    : array of TDBGroupView ;
 //    im_Fleche      : TImage ;
 
      twin_edition   : TWinControl; // DBEdit de gestion de la tabulation, du Focus et
                              // de certaines propriétés graphiques
 
+    gt_Groupes    : array of TDBGroupView ;
                // DataSource de recherche non dynamique
     ds_DicoFrameWork ,
     gds_recherche : TDatasource ;
@@ -544,6 +544,7 @@ type
                              var ads_DataSource : TDataSource ;
                              var ai_Tag : Longint ):Integer; virtual;
     procedure p_InitOpenedDatasets; virtual;
+    procedure p_AddGroupView ( const adgv_GroupViewToAdd : TDBGroupView ); virtual;
     procedure p_AfterColumnFrameShow( const aFWColumn : TFWSource ); virtual; abstract;
     function  CreateSources: TFWSources; virtual;
     procedure p_CreateColumns; virtual;
@@ -2021,8 +2022,7 @@ Begin
      p_ChargeIndicateurs ( Components [ li_i ] );
      if ( Components [ li_i ] is TDBGroupView ) Then
        Begin
-         Setlength ( gt_Groupes, high ( gt_Groupes ) + 2 );
-         gt_Groupes [ high ( gt_Groupes )] := Components [ li_i ] as TDBGroupView ;
+         p_AddGroupView( Components [ li_i ] as TDBGroupView );
          Continue ;
        End ;
      if  ( Components [ li_i ] is TCustomPanel)
@@ -4064,6 +4064,14 @@ Begin
              End ;
       End;
 End;
+
+procedure TF_CustomFrameWork.p_AddGroupView(
+  const adgv_GroupViewToAdd: TDBGroupView);
+begin
+  SetLength(gt_Groupes, high ( gt_Groupes ) + 2 );
+  gt_Groupes [ high ( gt_Groupes )] := adgv_GroupViewToAdd;
+end;
+
 // Mise à jour du datasource
 function TF_CustomFrameWork.fb_MAJDatasource ( const ads_Datasource : TDatasource; const as_ClePrimaire : String ; const avar_Enregistrement : Variant ):Boolean;
 var lvar_Enregistrement : Variant ;
