@@ -48,14 +48,15 @@ uses
                                       FileUnit : 'U_FormDico' ;
                                       Owner : 'Matthieu Giroux' ;
                                       Comment : 'Fiche personnalisée avec méthodes génériques et gestion de données liées Ã  une table DICO.' ;
-                                      BugsStory : '1.1.0.0 : Création de la propriété Columns' +
-                                                  '1.0.1.3 : Bug DatasourceQuery non trouvé enlevé' +
-                                                  '1.0.1.2 : Récupération de TableName pour tous Datasets' +
-                                                  '1.0.1.1 : Ajouts de la gestion DBExpress et BDE' +
-                                                  '1.0.1.0 : Gestion FrameWork pour tous Datasources testée' +
+                                      BugsStory : '1.1.0.1 : Chanching Columns to Sources, optimising.' + #13#10 +
+                                                  '1.1.0.0 : Création de la propriété Columns.' + #13#10 +
+                                                  '1.0.1.3 : Bug DatasourceQuery non trouvé enlevé.' + #13#10 +
+                                                  '1.0.1.2 : Récupération de TableName pour tous Datasets.' + #13#10 +
+                                                  '1.0.1.1 : Ajouts de la gestion DBExpress et BDE.' + #13#10 +
+                                                  '1.0.1.0 : Gestion FrameWork pour tous Datasources testée.' + #13#10 +
                                                   '1.0.0.0 : Gestion FrameWork avec ADO non testée' ;
                                        UnitType : 3 ;
-                                       Major : 1 ; Minor : 1 ; Release : 0 ; Build : 0 );
+                                       Major : 1 ; Minor : 1 ; Release : 0 ; Build : 1 );
 {$ENDIF}
 
 

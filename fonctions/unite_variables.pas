@@ -4,6 +4,10 @@ interface
 
 {$I ..\extends.inc}
 
+{$IFDEF FPC}
+{$mode Delphi}
+{$ENDIF}
+
 
 uses
 {$IFDEF VERSIONS}
@@ -140,6 +144,8 @@ resourcestring
                         	 + 'Réessayez d''ouvrir la fiche.' ;
   GS_ERREUR_RESEAU = 'Erreur réseau.' + #13#10
                         + 'Vérifier la connexion réseau.' ;
+  GS_GROUP_INCLUDE_LIST = 'Liste d''inclusion';
+  GS_GROUP_EXCLUDE_LIST = 'Liste d''exclusion';
                         //GS_CHANGEMENTS_SAUVER = 'Des changements ont été effectués.' + #13#10 +' Le trie nécessite alors une sauvegarde.'  + #13#10 + 'Voulez-vous enregistrer les changements effectués ?' ;
   GS_GROUPE_MAUVAIS_BOUTONS = 'Les boutons de transfert doivent s''inverser dans les deux listes. ' + #13#10
                         	+ 'Les boutons de transfert sont identifiés par rapport à leur liste,' + #13#10
