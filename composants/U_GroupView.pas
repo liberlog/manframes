@@ -49,10 +49,14 @@ uses
 {$IFDEF DELPHI_9_UP}
      WideStrings ,
 {$ENDIF}
+{$IFDEF VERSIONS}
+  fonctions_version,
+{$ENDIF}
      SyncObjs, U_DBListView,
-     ComCtrls, fonctions_variant, fonctions_version;
+     ComCtrls, fonctions_variant;
 
-  const
+{$IFDEF VERSIONS}
+const
     gVer_TDBGroupView : T_Version = (Component : 'Composant TDBGroupView' ;
                                      FileUnit : 'U_GroupView' ;
                                      Owner : 'Matthieu Giroux' ;
@@ -63,8 +67,7 @@ uses
                                                   '1.0.0.0 : Gestion de groupe avec gestion de l''ADO non testée.';
                                      UnitType : 3 ;
                                      Major : 1 ; Minor : 0 ; Release : 1 ; Build : 2 );
-
-
+{$ENDIF}
 
 type
 
@@ -4649,7 +4652,9 @@ initialization
 {$IFDEF FPC}
   {$I U_GroupView.lrs}
 {$ENDIF}
+{$IFDEF VERSIONS}
   p_ConcatVersion ( gVer_TDBGroupView );
+{$ENDIF}
 finalization
   gim_GroupViewImageList.Free;
 end.

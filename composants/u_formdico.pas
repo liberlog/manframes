@@ -1,16 +1,17 @@
 unit u_formdico;
  // Unité de TF_FormFrameWork
+ // Auteur : Matthieu GIROUX - liberlog.fr
 
- // Le module crée des propriétés servant Ã  récupérer des informations dans la table dico
- // Il adapte aussi des couleurs Ã  la form enfant
+ // Le module crée des propriétés servant à récupérer des informations dans la table dico
+ // Il adapte aussi des couleurs à la form enfant
  // IL comporte :
  // Un DataSource, son DataGrid, ses navigateurs, ses zones d'éditions
  // Un deuxième DataSource, son navigateur, ses zones d'éditions
  // Un DataGridLookup et son navigateur
  // créé par Matthieu Giroux en décembre 2006
 
-{///////////////////////////////////////////////////////////////////////////////////////////
-}
+///////////////////////////////////////////////////////////////////////////////////////////
+
 
 {$I ..\extends.inc}
 {$I ..\Compilers.inc}
@@ -41,13 +42,12 @@ uses
   fonctions_erreurs,
   fonctions_init, ExtCtrls ;
 
-  const
-    CST_FORMDICO_LAST_WORK_DATASOURCE = 0 ;
 {$IFDEF VERSIONS}
+const
     gVer_TFormFrameWork : T_Version = ( Component : 'Composant TF_FormDico' ;
                                       FileUnit : 'U_FormDico' ;
                                       Owner : 'Matthieu Giroux' ;
-                                      Comment : 'Fiche personnalisée avec méthodes génériques et gestion de données liées Ã  une table DICO.' ;
+                                      Comment : 'Fiche personnalisée avec méthodes génériques et gestion de données liées à une table DICO.' ;
                                       BugsStory : '1.1.0.1 : Chanching Columns to Sources, optimising.' + #13#10 +
                                                   '1.1.0.0 : Création de la propriété Columns.' + #13#10 +
                                                   '1.0.1.3 : Bug DatasourceQuery non trouvé enlevé.' + #13#10 +
@@ -131,11 +131,11 @@ type
 
 implementation
 
-uses fonctions_db, unite_variables,
+uses unite_variables,
 {$IFNDEF FPC}
      fonctions_array,
 {$ENDIF}
-     fonctions_variant, fonctions_string, fonctions_proprietes,
+     fonctions_variant, fonctions_proprietes,
      fonctions_dbcomponents;
 
 { TF_FormFrameWork }
@@ -169,7 +169,7 @@ begin
 end;
 
 
-// Renseignement de la table Ã  charger et de ses colonnes correspondantes
+// Renseignement de la table à charger et de ses colonnes correspondantes
 // Gestion des évenements liés aux Label et aux DBEdit et gestion des DBEdit
 procedure TF_FormDico.BeforeCreateFrameWork(Sender: TComponent);
 begin
@@ -324,7 +324,7 @@ End ;
 
 
 
-// Vérification du fait que des propriétés ne sont pas Ã  nil et n'existent pas
+// Vérification du fait que des propriétés ne sont pas à nil et n'existent pas
 procedure TF_FormDico.Notification ( AComponent : TComponent ; Operation : TOperation );
 begin
   inherited Notification(AComponent, Operation);

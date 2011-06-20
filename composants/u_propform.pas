@@ -149,7 +149,7 @@ uses fonctions_db, unite_variables,
 {$IFNDEF FPC}
      fonctions_array,
 {$ENDIF}
-     fonctions_variant, fonctions_string, fonctions_proprietes,
+     fonctions_variant, fonctions_proprietes,
      fonctions_dbcomponents;
 
 { TF_FormFrameWork }

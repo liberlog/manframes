@@ -5324,7 +5324,7 @@ begin
   if not ( lfie_Champ is TNumericField )
     Then
       Exit ;
-  p_editGridKeyPress ( aobj_Sender, ach_Key, lby_NbApVirgule , lby_NbAvVirgule, lb_Negatif, li_SelStart, ls_Texte, ls_SelTexte, lfie_Champ );
+  p_editGridKeyPress ( aobj_Sender, ach_Key, lby_NbApVirgule , lby_NbAvVirgule, lb_Negatif, li_SelStart, ls_Texte, ls_SelTexte, not ( lfie_Champ is TIntegerField ) );
 
 End ;
 // A ne pas utiliser
@@ -5410,6 +5410,7 @@ procedure TF_CustomFrameWork.p_edGridKeyUp ( aobj_Sender : Tobject ; var ach_Key
 var li_i         : Integer ;
     lfie_Champ   : TField ;
     ls_Texte     : String ;
+    lext_Value   : Extended;
     lby_NbAvVirgule ,
     lby_NbApVirgule : Byte ;
 {$IFDEF JEDI}
@@ -5505,7 +5506,12 @@ begin
       Exit ;
 
   if  (  aobj_Sender is TDBEdit ) Then
-    p_editKeyUp ( aobj_Sender as TDBEdit, lfie_Champ, ach_Key, lby_NbApVirgule , lby_NbAvVirgule, lb_Negatif, ls_Texte )
+   Begin
+     lext_Value := lfie_Champ.Value;
+     p_editKeyUp ( lext_Value, aobj_Sender as TDBEdit, ach_Key, lby_NbApVirgule , lby_NbAvVirgule, lb_Negatif, ls_Texte );
+     if lext_Value <> lfie_Champ.Value Then
+      lfie_Champ.Value := lext_Value;
+   end
 {$IFDEF RX}
   Else
    if  (  aobj_Sender is TRxDBGrid )

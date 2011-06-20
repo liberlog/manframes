@@ -177,7 +177,7 @@ begin
       // gestion du numérique si c'est un champ numérique
       if  ( FieldByName ( gs_NomColRech ) is TNumericField )
         Then
-          p_editGridKeyPress ( Self, ach_Key, 250 , 250, True, Self.SelStart, Self.Text, Self.SelText, FieldByName ( gs_NomColRech ) );
+          p_editGridKeyPress ( Self, ach_Key, 250 , 250, True, Self.SelStart, Self.Text, Self.SelText, not (FieldByName ( gs_NomColRech ) is TIntegerField ));
 end;
 
 ////////////////////////////////////////////////////////////////////////////////
