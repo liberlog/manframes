@@ -99,7 +99,9 @@ type
     dbt_aide: TJvXPButton;
     dbt_ident: TJvXPButton;
     dbt_quitter: TJvXPButton;
+    {$IFDEF VERSIONS}
     mu_apropos: TMenuItem;
+    {$ENDIF}
 
 
     mu_MainMenu: {$IFDEF TNT}TTntMainMenu{$ELSE}TMainMenu{$ENDIF};
@@ -177,7 +179,9 @@ type
 
     procedure mu_barreoutilsClick(Sender: TObject);
     procedure mu_voletexploreClick(Sender: TObject);
+    {$IFDEF VERSIONS}
     procedure mu_aproposClick(Sender: TObject);
+    {$ENDIF}
     procedure SvgFormInfoIniIniLoad(const AInifile: TCustomInifile;
       var Continue: Boolean);
     procedure SvgFormInfoIniIniWrite(const AInifile: TCustomInifile;
@@ -294,6 +298,9 @@ begin
    inherited ;
   if ( csDesigning in ComponentState ) Then
     Exit ;
+  {$IFDEF VERSIONS}
+  mu_apropos.OnClick := mu_aproposClick;
+  {$ENDIF}
   // Initialisation
   p_initialisationBoutons(Self, scb_volet, mu_voletexplore, M_Donnees.q_TreeUser,
                           nil, tbar_outils, tbsep_1, pa_2, CST_LARGEUR_PANEL,
@@ -805,12 +812,12 @@ end;
 ////////////////////////////////////////////////////////////////////////////////
 //  Boîte de dialogue à propos
 ////////////////////////////////////////////////////////////////////////////////
+{$IFDEF VERSIONS}
 procedure TF_FenetrePrincipale.mu_aproposClick(Sender: TObject);
 begin
-{$IFDEF VERSIONS}
   gb_Reinit := fb_AfficheApropos ( False, gs_NomAppli, gs_Version );
-{$ENDIF}
 end;
+{$ENDIF}
 
 procedure TF_FenetrePrincipale.SvgFormInfoIniIniLoad(
   const AInifile: TCustomInifile; var Continue: Boolean);

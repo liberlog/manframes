@@ -44,9 +44,9 @@ uses
   JvXPContainer, ComCtrls, JvXPButtons,
   IniFiles, Dialogs, Printers,
   JvXPBar, Forms,  U_FormMainIni, fonctions_init,
-  fonctions_Objets_Dynamiques, fonctions_images,
+  fonctions_Objets_Dynamiques,
   u_buttons_appli, fonctions_string,
-  U_OnFormInfoIni, DBCtrls ;
+  DBCtrls ;
 
 {$IFDEF VERSIONS}
 const

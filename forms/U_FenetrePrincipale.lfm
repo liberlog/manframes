@@ -959,7 +959,6 @@ inherited F_FenetrePrincipale: TF_FenetrePrincipale
         Caption = '&A propos...'
         HelpContext = 1420
         Hint = 'A propos|Afficher des informations sur le programme, le numéro de version et le copyright'
-        OnClick = mu_aproposClick
       end
     end
   end
