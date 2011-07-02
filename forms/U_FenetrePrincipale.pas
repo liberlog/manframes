@@ -50,10 +50,11 @@ uses
   ExtCtrls, ActnList, Menus,
   JvXPContainer, ComCtrls, JvXPButtons,
   IniFiles, Dialogs, Printers,
-  JvXPBar, Forms,  U_FormMainIni, fonctions_init,
+  JvXPBar, menutbar, Forms,  U_FormMainIni, fonctions_init,
   fonctions_Objets_Dynamiques, fonctions_Objets_Data, fonctions_images,
   u_buttons_appli, fonctions_string,
-  U_OnFormInfoIni, DBCtrls ;
+  U_OnFormInfoIni, u_extmenutoolbar,
+  u_extmenucustomize, DBCtrls ;
 
 {$IFDEF VERSIONS}
 const
@@ -61,7 +62,8 @@ const
        			                 FileUnit : 'U_FenetrePrincipale' ;
        			                 Owner : 'Matthieu Giroux' ;
        			                 Comment : 'Fenêtre principale utilisée pour la gestion automatisée à partir du fichier INI, avec des menus composés à partir des données.' + #13#10 + 'Elle dépend du composant Fenêtre principale qui lui n''est pas lié à l''application.' ;
-      			                 BugsStory : 'Version 3.1.0.1 : No ExtToolBar on Lazarus.' + #13#10 +
+      			                 BugsStory : 'Version 3.1.0.2 : Adding Customized Menu.' + #13#10 +
+                                                     'Version 3.1.0.1 : No ExtToolBar on Lazarus.' + #13#10 +
                                                      'Version 3.1.0.0 : Passage en générique' + #13#10
                                                    + '3.0.5.3 : Désactivation du timer au destroy.' + #13#10
                                                    + '3.0.5.2 : p_FreeChildForms à la fermeture de l''appli.' + #13#10
@@ -88,7 +90,7 @@ const
 			                	   + '3.0.0.1 : Bug AutoScroll sur le TScrollBox.' + #13#10
 			                	   + '3.0.0.0 : Gestion de l''INI par application.';
 			                 UnitType : CST_TYPE_UNITE_FICHE ;
-			                 Major : 3 ; Minor : 1 ; Release : 0 ; Build : 1 );
+			                 Major : 3 ; Minor : 1 ; Release : 0 ; Build : 2 );
 {$ENDIF}
 
 type
@@ -99,6 +101,11 @@ type
     dbt_aide: TJvXPButton;
     dbt_ident: TJvXPButton;
     dbt_quitter: TJvXPButton;
+    mc_Customize: TExtMenuCustomize;
+    mi_CustomizedMenu: TMenuItem;
+    mtb_CustomizedMenu: TExtMenuToolBar;
+    mu_MenuIni: TMainMenu;
+    mu_apropos: TMenuItem;
     {$IFDEF VERSIONS}
     mu_apropos: TMenuItem;
     {$ENDIF}
@@ -130,6 +137,7 @@ type
     pa_3: {$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF};
     pa_4: {$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF};
     pa_5: {$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF};
+    tbsep_4: TPanel;
     {$IFDEF MDI}
     {$IFDEF MDI}
     WindowCascade: {$IFDEF TNT}TTntWindowCascade{$ELSE}TWindowCascade{$ENDIF};
@@ -165,6 +173,7 @@ type
     scb_Volet: TScrollBox;
     mu_langue: TMenuItem;
 
+    procedure mi_CustomizedMenuClick(Sender: TObject);
     procedure p_ChargeAide;
     procedure p_OnClickFonction(Sender: TObject);
     procedure p_OnClickMenuLang(Sender:TObject);
@@ -206,7 +215,8 @@ type
 {$IFDEF CLR}
     procedure InitializeControls;
 {$ENDIF}
-    procedure mu_voletchange(const ab_visible: Boolean);
+    procedure mu_voletchange(const ab_visible, ab_OtherVisible: Boolean);
+    procedure mu_voletPersonnalisechange(const ab_visible, ab_OtherVisible: Boolean);
 {$IFNDEF FPC}
     procedure WMHelp (var Message: TWMHelp); message WM_HELP;
 {$ENDIF}
@@ -461,13 +471,16 @@ begin
         lbmp_Bitmap.FreeImage ;
         lbmp_Bitmap.Handle := 0 ;
       End ;
-    lbmp_Bitmap.Free ;
+
   Finally
   End ;
   // Transformation des icones 32*32 en 16*16 pour le menu
   {$IFDEF VIRTUALTREES}
-    im_icones.GetIcon(2, gic_F_AboutIcon);
+  im_icones.GetBitmap(2, lbmp_Bitmap);
+  gic_F_AboutIcon := TIcon.Create;
+  p_BitmapVersIco ( lbmp_Bitmap, gic_F_AboutIcon );
   {$ENDIF}
+  lbmp_Bitmap.Free ;
 
   // Initialisation de la LED de connexion à la base...
 //  im_led.
@@ -516,6 +529,11 @@ begin
   // Si le fichier d'aide est introuvable
   if not FileExists(Application.HelpFile) then ShowMessage('Le fichier d''aide est introuvable !');
   {$ENDIF}
+end;
+
+procedure TF_FenetrePrincipale.mi_CustomizedMenuClick(Sender: TObject);
+begin
+  mu_voletPersonnalisechange( not mi_CustomizedMenu.Checked, mu_voletexplore.Checked );
 end;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -752,6 +770,7 @@ begin
     p_setComponentBoolProperty ( Connector, 'Connected', False );
   Screen.Cursor := Self.Cursor;
   gb_FirstAcces := False;
+  mc_Customize.LoadIni;
   {$IFNDEF FPC}
   F_Acces.Free;
   {$ENDIF}
@@ -778,20 +797,33 @@ begin
 end;
 
 
-procedure TF_FenetrePrincipale.mu_voletchange(const ab_visible : Boolean);
+procedure TF_FenetrePrincipale.mu_voletchange(const ab_visible, ab_OtherVisible  : Boolean);
 begin
   DisableAlign ;
   mu_voletexplore.Checked := ab_visible;
 {$IFNDEF FPC}
   tbar_volet.Visible := ab_visible;
   dock_volet.Visible := ab_visible;
-  pa_5      .Visible := ab_visible;
-  spl_volet .Visible := ab_visible;
   if tbar_volet.Visible then
     tbar_voletDockChanged(Self);
 {$ENDIF}
+  pa_5      .Visible := ab_visible;
+  spl_volet .Visible := ab_visible;
+  if ab_visible Then
+    Begin
+      mu_voletPersonnalisechange(False,ab_visible);
+    end;
   spl_volet.Left := pa_5.Width;
   EnableAlign ;
+end;
+
+procedure TF_FenetrePrincipale.mu_voletPersonnalisechange(
+  const ab_visible, ab_OtherVisible : Boolean);
+begin
+  mi_CustomizedMenu .Checked := ab_visible;
+  mtb_CustomizedMenu.Visible := ab_visible;
+  if ab_visible Then
+    mu_voletchange(False, True);
 end;
 
 
@@ -806,7 +838,7 @@ end;
 
 procedure TF_FenetrePrincipale.mu_voletexploreClick(Sender: TObject);
 begin
-  mu_voletchange( not mu_voletexplore.Checked );
+  mu_voletchange( not mu_voletexplore.Checked, False );
 end;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -822,15 +854,18 @@ end;
 procedure TF_FenetrePrincipale.SvgFormInfoIniIniLoad(
   const AInifile: TCustomInifile; var Continue: Boolean);
 begin
-  tbar_outils    .Visible := AInifile.ReadBool ( 'F_FenetrePrincipale', 'tbar_outils.Visible', tbar_outils.Visible );
-  mu_voletchange ( AInifile.ReadBool ( 'F_FenetrePrincipale',  'tbar_volet.Visible', mu_voletexplore.Checked ));
+  tbar_outils    .Visible := AInifile.ReadBool ( Name, 'tbar_outils.Visible', tbar_outils.Visible );
+  mu_voletchange ( AInifile.ReadBool ( Name,  'tbar_volet.Visible', mu_voletexplore.Checked ), False);
+  mu_voletPersonnalisechange ( AInifile.ReadBool ( Name,  'tbar_voletcustom.Visible', mi_CustomizedMenu.Checked ), False);
 
 end;
 
 procedure TF_FenetrePrincipale.SvgFormInfoIniIniWrite(
   const AInifile: TCustomInifile; var Continue: Boolean);
 begin
-  SvgFormInfoIniIniWrite(AInifile, Continue );
+  AInifile.WriteBool ( Name,  'tbar_volet.Visible', mu_voletexplore.Checked );
+  AInifile.WriteBool ( Name,  'tbar_voletcustom.Visible', mi_CustomizedMenu.Checked );
+  AInifile.WriteBool ( Name,  'tbar_outils.Visible', mu_barreoutils.Checked );
 
 end;
 
@@ -1043,8 +1078,8 @@ Begin
 end;
 
 
-initialization
 {$IFDEF VERSIONS}
+initialization
   p_ConcatVersion ( gVer_F_FenetrePrincipale );
 {$ENDIF}
 end.

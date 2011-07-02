@@ -28,7 +28,6 @@ var lico_Icon        : TIcon ;
 begin
   p_InitRegisterForms;
   Application.Initialize;
-  Application.Title := 'GENERIQUE';
   F_SplashForm := TF_SplashForm.Create(nil);
   F_SplashForm.Label1.Caption := 'GENERIC' ;
   F_SplashForm.Label1.Width   := F_SplashForm.Width ;
