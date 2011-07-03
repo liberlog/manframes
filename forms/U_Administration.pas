@@ -38,7 +38,7 @@ Gestion des connexions - Utilisateurs / Connexion
 interface
 
 uses
-  DB, Dialogs, ImgList, Controls,
+  DB, Dialogs, Controls,
 {$IFDEF ADO}
   ADOInt,
   ADODB,
@@ -46,7 +46,7 @@ uses
   ZConnection,
 {$ENDIF}
 {$IFDEF FPC}
-  lmessages, lcltype, MaskEdit,
+  lmessages, lcltype,
   LResources, 
 {$ELSE}
   Windows, Variants, Mask, RXDBCtrl,
@@ -59,7 +59,7 @@ uses
   DBCtrls, StdCtrls, Grids, DBGrids, U_DBListView,
   ComCtrls, U_GroupView, RxLookup,
   Forms,
-  ExtCtrls, Classes, Messages, U_OnFormInfoIni,
+  ExtCtrls, Classes, U_OnFormInfoIni,
 {$IFDEF VERSIONS}
   fonctions_version,
 {$ENDIF}
@@ -77,7 +77,8 @@ const
   gver_F_Administration : T_Version = ( Component : 'Fenêtre de gestion de droits (ADO et ZEOS)' ; FileUnit : 'U_Administration' ;
       			           Owner : 'Matthieu Giroux' ;
       			           Comment : 'Gère les sommaires, les connexions, les utilisateurs.' ;
-      			           BugsStory   : 'Version 2.0.0.3 : No ExtToolBar on Lazarus.' + #13#10 +
+      			           BugsStory   : 'Version 2.0.0.4 : No Data Glyph to abort.' + #13#10 +
+                                                 'Version 2.0.0.3 : No ExtToolBar on Lazarus.' + #13#10 +
                                                  'Version 2.0.0.2 : Special form properties bug.' + #13#10 +
       			                	 'Version 2.0.0.1 : Integrating LAZARUS with no special form properties.' + #13#10 +
       			                	 'Version 2.0.0.0 : Version générique de la fiche : on copie un query.' + #13#10 +
@@ -88,7 +89,7 @@ const
      			                	 'Version 1.1.0.0 : Passage en Jedi 3.' + #13#10 +
      			                	 'Version 1.0.0.0 : Mot de passe en varbinary.'  ;
       			           UnitType : 2 ;
-      			           Major : 2 ; Minor : 0 ; Release : 0 ; Build : 3 );
+      			           Major : 2 ; Minor : 0 ; Release : 0 ; Build : 4 );
 {$ENDIF}
 
 
@@ -141,7 +142,7 @@ type
     Panel7: TPanel;
     Panel13: TPanel;
     Panel11: TPanel;
-    BT_Abandon: TJvXpButton;
+    BT_Abandon: TFWCancel;
     BT_enregistre: TFWOK;
     Panel14: TPanel;
     BT_in_item: TFWInSelect;
@@ -165,7 +166,7 @@ type
     Panel15: TPanel;
     Panel18: TPanel;
     Panel19: TPanel;
-    bt_abd: TJvXpButton;
+    bt_abd: TFWCancel;
     bt_enr: TFWOK;
     Panel22: TPanel;
     bt_in: TFWInSelect;
@@ -3907,8 +3908,8 @@ begin
 
 end;
 
-initialization
 {$IFDEF VERSIONS}
+initialization
   p_ConcatVersion ( gver_F_Administration );
 {$ENDIF}
 end.

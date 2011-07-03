@@ -51,12 +51,13 @@ uses
 {$IFDEF VERSIONS}
 const
     gVer_fonctions_FenetrePrincipale : T_Version = ( Component : 'Fenêtre principale troisième version' ;
-       			                 FileUnit : 'U_FenetrePrincipale' ;
+       			                 FileUnit : 'fonctions_FenetrePrincipale' ;
        			                 Owner : 'Matthieu Giroux' ;
        			                 Comment : 'Fenêtre principale utilisée pour la gestion automatisée à partir du fichier INI, avec des menus composés à partir des données.' + #13#10 + 'Elle dépend du composant Fenêtre principale qui lui n''est pas lié à l''application.' ;
-      			                 BugsStory : 'Version 0.0.0.1 : Centralising.' + #13#10 ;
-			                 UnitType : CST_TYPE_UNITE_FICHE ;
-			                 Major : 0 ; Minor : 0 ; Release : 0 ; Build : 1 );
+      			                 BugsStory : 'Version 1.0.0.0 : Tested.' + #13#10
+                                                   + 'Version 0.0.0.1 : Centralising.' + #13#10 ;
+			                 UnitType : CST_TYPE_UNITE_FONCTIONS ;
+			                 Major : 1 ; Minor : 0 ; Release : 0 ; Build : 0 );
 {$ENDIF}
 
 {$IFNDEF FPC}

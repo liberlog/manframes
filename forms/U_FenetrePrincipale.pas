@@ -46,11 +46,11 @@ uses
   TntActnList,
 {$ENDIF}
   U_Donnees,
-  Controls, Graphics, Classes, SysUtils, StrUtils,
+  Controls, Graphics, Classes, SysUtils,
   ExtCtrls, ActnList, Menus,
   JvXPContainer, ComCtrls, JvXPButtons,
   IniFiles, Dialogs, Printers,
-  JvXPBar, menutbar, Forms,  U_FormMainIni, fonctions_init,
+  JvXPBar, Forms,  U_FormMainIni, fonctions_init,
   fonctions_Objets_Dynamiques, fonctions_Objets_Data, fonctions_images,
   u_buttons_appli, fonctions_string,
   U_OnFormInfoIni, u_extmenutoolbar,
@@ -542,6 +542,9 @@ procedure TF_FenetrePrincipale.mtb_CustomizedMenuClickCustomize(Sender: TObject
   );
 begin
   mc_Customize.Click;
+  mtb_CustomizedMenu.Menu := nil;
+  mtb_CustomizedMenu.Menu := mu_MenuIni;
+  mc_Customize.SaveIni ( gs_user );
 end;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -778,7 +781,8 @@ begin
     p_setComponentBoolProperty ( Connector, 'Connected', False );
   Screen.Cursor := Self.Cursor;
   gb_FirstAcces := False;
-  mc_Customize.LoadIni;
+  if not mc_Customize.LoadIni ( gs_user ) then
+    mc_Customize.LoadIni;
   mtb_CustomizedMenu.Menu := nil;
   mtb_CustomizedMenu.Menu := mu_MenuIni;
   {$IFNDEF FPC}
@@ -794,6 +798,7 @@ begin
   Except
   End ;
 end;
+
 procedure TF_FenetrePrincipale.dbt_aideClick(Sender: TObject);
 begin
   {$IFNDEF FPC}

@@ -31,7 +31,10 @@ uses Forms, JvXPBar, JvXPContainer,
 {$ENDIF}
 
   Controls, Classes, JvXPButtons, ExtCtrls,
-  Menus, fonctions_version,
+  Menus,
+{$IFDEF VERSIONS}
+  fonctions_version,
+{$ENDIF}
 {$IFDEF DELPHI_9_UP}
   WideStrings ,
 {$ENDIF}
@@ -55,51 +58,52 @@ var ga_SoftwareLanguages : TTheLanguages;
 {$ENDIF}
 
 const // Evènements gérés
-      CST_sdb_consts      = 'sdb_consts';
-      CST_ldd_consts      = 'ldd_consts';
-      CST_lclstrconsts    = 'lclstrconsts';
-      CST_lazdatadeskstr  = 'lazdatadeskstr';
-      CSt_lr_const        = 'lr_const' ;
-      CST_u_languagevars  = 'u_languagevars' ;
-      CST_unite_messages  = 'unite_messages' ;
-      CST_unite_variables = 'unite_variables' ;
-            CST_EVT_STANDARD           = 'OnCLick' ;
-      // Nom par défaut des composants
-//      CST_XPBAR_NOM_DEBUT  = 'xpb_Menu' ;
-//      CST_MENU_NOM_DEBUT   = 'men_Menu' ;
-//      CST_XPITEM_NOM_DEBUT = 'xpi_SMenu' ; // Nom par défaut du xp item
-//      CST_DBT_NOM_DEBUT    = 'dbt_Sommaire' ;
-      CST_SEP_NOM_DEBUT    = 'tbsep_Sommaire' ;
-      CST_PANEL_NOM_DEBUT    = 'pan_Sommaire' ;
-      // Types de fonctions gérées
-      CST_FCT_TYPE_MENU   = 'MENU' ;
-      CST_FCT_TYPE_FICHE  = 'FICHE' ;
-      CST_FCT_MODE_MODAL  = 'MODAL' ;
-      CST_FCT_NOM_TOUT    = 'TOUT' ;
-      CST_LANG_MENU_ITEM = 'LangMenuItem';
-      CST_FONCTION_CLICK  = 'p_OnClickFonction' ;
-      CST_FONCTION_LANG   = 'p_OnClickMenuLang' ;
-      CST_LNG_DIRECTORY = 'LangFiles' +DirectorySeparator ;
-
+  CST_sdb_consts      = 'sdb_consts';
+  CST_ldd_consts      = 'ldd_consts';
+  CST_lclstrconsts    = 'lclstrconsts';
+  CST_lazdatadeskstr  = 'lazdatadeskstr';
+  CSt_lr_const        = 'lr_const' ;
+  CST_u_languagevars  = 'u_languagevars' ;
+  CST_unite_messages  = 'unite_messages' ;
+  CST_unite_variables = 'unite_variables' ;
+        CST_EVT_STANDARD           = 'OnCLick' ;
+  // Nom par défaut des composants
+  CST_XPBAR_NOM_DEBUT  = 'xpb_Menu' ;
+  CST_MENU_NOM_DEBUT   = 'men_Menu' ;
+  CST_XPITEM_NOM_DEBUT = 'xpi_SMenu' ; // Nom par défaut du xp item
+  CST_DBT_NOM_DEBUT    = 'dbt_Sommaire' ;
+  CST_SEP_NOM_DEBUT    = 'tbsep_Sommaire' ;
+  CST_PANEL_NOM_DEBUT    = 'pan_Sommaire' ;
+  // Types de fonctions gérées
+  CST_FCT_TYPE_MENU   = 'MENU' ;
+  CST_FCT_TYPE_FICHE  = 'FICHE' ;
+  CST_FCT_MODE_MODAL  = 'MODAL' ;
+  CST_FCT_NOM_TOUT    = 'TOUT' ;
+  CST_LANG_MENU_ITEM = 'LangMenuItem';
+  CST_FONCTION_CLICK  = 'p_OnClickFonction' ;
+  CST_FONCTION_LANG   = 'p_OnClickMenuLang' ;
+  CST_LNG_DIRECTORY = 'LangFiles' +DirectorySeparator ;
+{$IFDEF VERSIONS}
   gver_fonctions_Objets_Dynamiques : T_Version = ( Component : 'Gestion des objets dynamiques' ; FileUnit : 'fonctions_Objets_Dynamiques' ;
               			                 Owner : 'Matthieu Giroux' ;
               			                 Comment : 'Gestion des objets dynamiques du composant Fenêtre principale.' + #13#10 + 'Il comprend une création de menus' ;
               			                 BugsStory : 'Version 1.3.0.1 : No ExtToolBar on Lazarus.' + #13#10 +
                                                              'Version 1.3.0.0 : Création fonction_objets_data' + #13#10 +
-                                'Version 1.2.0.0 : Passage en générique' + #13#10 +
-                                'Version 1.1.2.0 : raccourcis d''aide répétés.' + #13#10 +
-                                'Version 1.1.1.1 : Ne pas utiliser HandleAllocated mais Handle <> 0.' + #13#10 +
-			                	 	      'Version 1.1.1.0 : Sauvegarde de la visibilité des barres de menus.' + #13#10 +
-			                	        'Version 1.1.0.0 : Passage en Jedi 3, Utilisation de la JvXPBar.' + #13#10 +
-			                	 	      'Version 1.0.1.3 : Mises à jour sur la destruction.' + #13#10 +
-			                	 	      'Version 1.0.1.2 : Handle à 0 après FreeImage.' + #13#10 +
-			                	        'Version 1.0.1.1 : Suppression du RealeaseHandle après FreeImage.' + #13#10 +
-	                	        		'Version 1.0.1.0 : Toutes les fonctions peuvent être appelées.' + #13#10 +
-                                'Version 1.0.0.2 : Gestion des caractères accentuées.' + #13#10 +
-			                	        'Version 1.0.0.1 : Meilleure gestion des images, problèmes de rafraichissement.' + #13#10 +
-			                	        'Version 1.0.0.0 : La création est utilisée par Fenêtre Principale.';
+                                                             'Version 1.2.0.0 : Passage en générique' + #13#10 +
+                                                             'Version 1.1.2.0 : raccourcis d''aide répétés.' + #13#10 +
+                                                             'Version 1.1.1.1 : Ne pas utiliser HandleAllocated mais Handle <> 0.' + #13#10 +
+			                	 	     'Version 1.1.1.0 : Sauvegarde de la visibilité des barres de menus.' + #13#10 +
+			                	             'Version 1.1.0.0 : Passage en Jedi 3, Utilisation de la JvXPBar.' + #13#10 +
+			                	 	     'Version 1.0.1.3 : Mises à jour sur la destruction.' + #13#10 +
+			                	 	     'Version 1.0.1.2 : Handle à 0 après FreeImage.' + #13#10 +
+			                	             'Version 1.0.1.1 : Suppression du RealeaseHandle après FreeImage.' + #13#10 +
+	                	        		     'Version 1.0.1.0 : Toutes les fonctions peuvent être appelées.' + #13#10 +
+                                                             'Version 1.0.0.2 : Gestion des caractères accentuées.' + #13#10 +
+			                	             'Version 1.0.0.1 : Meilleure gestion des images, problèmes de rafraichissement.' + #13#10 +
+			                	             'Version 1.0.0.0 : La création est utilisée par Fenêtre Principale.';
               			                 UnitType : 1 ;
               			                 Major : 1 ; Minor : 3 ; Release : 0 ; Build : 1 );
+{$ENDIF}
 
 
 

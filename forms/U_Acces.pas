@@ -233,19 +233,19 @@ begin
 
       if (tx_mdp.Text = ls_mdp) then
         begin
-        	gb_AccesAuto := True;
-        	gs_user := cbx_user.Text;
+          gb_AccesAuto := True;
+          gs_user := cbx_user.Text;
 
-                Close;
+          Close;
 
-                {$IFDEF FPC}
-                F_FenetrePrincipale.p_ConnectToData ();
-                {$ENDIF}
+          {$IFDEF FPC}
+          F_FenetrePrincipale.p_ConnectToData ();
+          {$ENDIF}
         end
       else
         begin
-        	MessageDlg( GS_mot_passe_invalide , mtWarning, [mbOk], 0);
-        	tx_mdp.SetFocus;
+          MessageDlg( GS_mot_passe_invalide , mtWarning, [mbOk], 0);
+          tx_mdp.SetFocus;
         end;
     end;
 

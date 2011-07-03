@@ -92,7 +92,7 @@ type  TFonction            = Record
                               Mode    : String  ;
                               Nom     : String  ;
                              End ;
-     TMenu                 = Record
+     TUnMenu                 = Record
                         			Image    : TIcon   ;
                         			Menu     : WideString  ;
                         			SousMenu : WideString  ;
@@ -101,7 +101,7 @@ type  TFonction            = Record
 
 
 var   gT_TableauFonctions : ARRAY of TFonction ; // tableau gérant les fonctions
-      gT_TableauMenus     : ARRAY of TMenu ;     // tableau gérant les menus
+      gT_TableauMenus     : ARRAY of TUnMenu ;     // tableau gérant les menus
 
 
       gs_SommaireEnCours      : string       ;   // Sommaire en cours MAJ régulièrement
@@ -213,7 +213,7 @@ procedure p_Ajoutebitmap        ( const aF_FormParent       : TCustomForm       
                         			          as_FonctionType     ,
                         			          as_FonctionMode     ,
                         			          as_FonctionNom      : String     ;
-                        			          as_FonctionBmp      : TBitmap    );
+                        			          abmp_FonctionBmp      : TBitmap    );
 procedure p_AjouteEvenementBitmap(const aF_FormParent       : TCustomForm        ;
                         			    const aObj_Objet          : TObject     ;
                         			    const as_Fonction         ,
@@ -1428,7 +1428,7 @@ Begin
                lMen_MenuEnCours.HelpContext := aMen_MenuVolet.HelpContext ;
 
                 // affectation du compteur de nom
-//               lMen_MenuEnCours.Name := CST_MENU_NOM_DEBUT + IntToStr ( li_CompteurMenu );
+               lMen_MenuEnCours.Name := CST_MENU_NOM_DEBUT + IntToStr ( li_CompteurMenu );
                aMen_MenuParent.Add ( lMen_MenuEnCours );
                  // Menu Parent
                lMen_Menu        := lMen_MenuEnCours ;
@@ -1501,7 +1501,7 @@ Begin
 
                  lMen_MenuEnCours.Bitmap.Handle := 0 ;
                  // affectation du compteur de nom
-//                 lMen_MenuEnCours.Name := CST_MENU_NOM_DEBUT + IntToStr ( li_CompteurMenu );
+                 lMen_MenuEnCours.Name := CST_MENU_NOM_DEBUT + IntToStr ( li_CompteurMenu );
                  // Menu Parent
                  lMen_Menu.Add ( lMen_MenuEnCours );
                  // affectation du libellé du sous menu
@@ -2198,13 +2198,13 @@ End ;
 // as_FonctionMode         : Mode de la Fonction
 // as_FonctionNom          : Nom de la Fonction
 procedure p_AjouteBitmap        ( const aF_FormParent       : TCustomForm        ;
-                        			    const aObj_Objet          : TObject     ;
-                        			    const as_Fonction         ,
-                        			          as_FonctionLibelle  ,
-                        			          as_FonctionType     ,
-                        			          as_FonctionMode     ,
-                        			          as_FonctionNom      : String     ;
-                        			          as_FonctionBmp      : TBitmap    );
+                        	  const aObj_Objet          : TObject     ;
+                        	  const as_Fonction         ,
+                        		as_FonctionLibelle  ,
+                        		as_FonctionType     ,
+                        		as_FonctionMode     ,
+                        		as_FonctionNom      : String     ;
+                        		abmp_FonctionBmp      : TBitmap    );
 Var li_FonctionEnCours : Integer ;
 Begin
   //création d'une action dans la bar XP
@@ -2233,12 +2233,14 @@ Begin
     gT_TableauFonctions [ li_FonctionEnCours ].Mode     := as_FonctionMode     ;
     gT_TableauFonctions [ li_FonctionEnCours ].Nom      := as_FonctionNom      ;
     // Si image alors affectation
-    if assigned ( as_FonctionBmp )
-    and ( as_FonctionBmp.Handle <> 0 )
+    if assigned ( abmp_FonctionBmp )
+    and ( abmp_FonctionBmp.Handle <> 0 )
+    and ( abmp_FonctionBmp.Width > 0 )
+    and ( abmp_FonctionBmp.Height > 0 )
      Then
       Begin
         gT_TableauFonctions [ li_FonctionEnCours ].Image := TBitmap.Create ;
-        gT_TableauFonctions [ li_FonctionEnCours ].Image.Assign ( as_FonctionBmp );
+        gT_TableauFonctions [ li_FonctionEnCours ].Image.Assign ( abmp_FonctionBmp );
       End
      Else
       gT_TableauFonctions [ li_FonctionEnCours ].Image := nil ;
