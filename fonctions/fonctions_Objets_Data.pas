@@ -24,7 +24,7 @@ uses Forms, JvXPBar, DB, JvXPContainer,
 {$IFDEF FPC}
    LCLIntf, LCLType, ComCtrls,
 {$ELSE}
-   Windows, ExtTbTlbr,
+   Windows, ExtTbTlbr, ToolWin,
 {$ENDIF}
   {$IFDEF ADO}
   ADODB,
@@ -112,7 +112,7 @@ var   gT_TableauFonctions : ARRAY of TFonction ; // tableau gérant les fonctions
       gIco_DefaultPicture     : TIcon        ;   // Ico apparaissant si il n'y a pas d'image
       gi_TailleUnPanel        ,                  // Taille d'un panel de dxbutton
       gi_FinCompteurImages    : Integer      ;   // Un seul imagelist des menus donc efface après la dernière image
-      gBar_ToolBarParent      : TCustomControl;   // Barre d'accès
+      gBar_ToolBarParent      : {$IFDEF FPC}TCustomControl{$ELSE}TToolWindow{$ENDIF};   // Barre d'accès
       gSep_ToolBarSepareDebut : TControl      ;   // Séparateur de début délimitant les boutons à effacer
       gPan_PanelSepareFin     : {$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF}       ;   // Panel      de fin   délimitant les boutons à effacer
       gb_UtiliseSMenu         : Boolean      ;            // Utilise-t-on les sous-menus
@@ -179,7 +179,7 @@ procedure p_initialisationBoutons ( const aF_FormParent           : TForm       
                                     const aMen_MenuVolet          : TMenuItem    ;
                                     const aadoq_QueryFonctions    : TDataset    ;
                                     const aIco_DefaultPicture     : TIcon        ;
-                                    const aBar_ToolBarParent      : TCustomControl   ;
+                                    const aBar_ToolBarParent      : {$IFDEF FPC}TCustomControl{$ELSE}TToolWindow{$ENDIF}   ;
                                     const aSep_ToolBarSepareDebut : TControl;
                                     const aPan_PanelSepareFin     : {$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF}       ;
                                     const ai_TailleUnPanel        : Integer      ;
@@ -242,7 +242,7 @@ function  fi_CreeSommaire (         const aF_FormMain             : TCustomForm 
                                     const as_SommaireEnCours      : String       ;
                                     const aadoq_QueryFonctions    : TDataset     ;
                                     const aIco_DefaultPicture     : TIcon        ;
-                                    const aBar_ToolBarParent      : TCustomControl   ;
+                                    const aBar_ToolBarParent      : {$IFDEF FPC}TCustomControl{$ELSE}TToolWindow{$ENDIF}   ;
                                     const aSep_ToolBarSepareDebut : TControl;
                                     const aPan_PanelSepareFin     : TWinControl  ;
                                     const ai_TailleUnPanel        : Integer      ;
@@ -517,7 +517,7 @@ procedure p_initialisationBoutons ( const aF_FormParent           : TForm       
                                     const aMen_MenuVolet          : TMenuItem    ;
                                     const aadoq_QueryFonctions    : TDataset    ;
                                     const aIco_DefaultPicture     : TIcon        ;
-                                    const aBar_ToolBarParent      : TCustomControl   ;
+                                    const aBar_ToolBarParent      : {$IFDEF FPC}TCustomControl{$ELSE}TToolWindow{$ENDIF}   ;
                                     const aSep_ToolBarSepareDebut : TControl;
                                     const aPan_PanelSepareFin     : {$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF}       ;
                                     const ai_TailleUnPanel        : Integer      ;
@@ -1644,7 +1644,7 @@ function  fi_CreeSommaire (         const aF_FormMain             : TCustomForm 
                         			      const as_SommaireEnCours      : String       ;
                         			      const aadoq_QueryFonctions    : TDataset     ;
                         			      const aIco_DefaultPicture     : TIcon        ;
-                        			      const aBar_ToolBarParent      : TCustomControl;
+                        			      const aBar_ToolBarParent      : {$IFDEF FPC}TCustomControl{$ELSE}TToolWindow{$ENDIF};
                         			      const aSep_ToolBarSepareDebut : TControl;
                         			      const aPan_PanelSepareFin     : TWinControl  ;
                         			      const ai_TailleUnPanel        : Integer      ;
@@ -1866,14 +1866,7 @@ Begin
            // Aligne en haut
           aBar_ToolBarParent.Realign ;
           lPan_ToolBarPanel.TabOrder   := aPan_PanelSepareFin.TabOrder - 1 ;
-          {$IFDEF FPC}
           lPan_ToolBarPanel .Left := lSep_OldToolBarSepare.Left + lSep_OldToolBarSepare.Width + 1;
-          {$ELSE}
-          lPan_ToolBarPanel.Left := aPan_PanelSepareFin.Left -1 ;
-          if aBar_ToolBarParent is TExtToolBar Then
-            ( aBar_ToolBarParent as TExtToolBar ).OrderIndex [ lPan_ToolBarPanel ]  := ( aBar_ToolBarParent as TExtToolBar ).OrderIndex [ aPan_PanelSepareFin ] ;
-          lPan_ToolBarPanel.Height     := aPan_PanelSepareFin.Height ;
-          {$ENDIF}
 //          if ( aPan_PanelSepareFin <> gPan_PanelSepareFin ) Then
 //            ShowMessage ( IntToStr ( aBar_ToolBarParent.OrderIndex [ lPan_ToolBarPanel ]) +' '  + IntTOStr ( aBar_ToolBarParent.OrderIndex [ aPan_PanelSepareFin ]));
           lPan_ToolBarPanel.Width      := ai_TailleUnPanel ;
@@ -1882,13 +1875,7 @@ Begin
             // affectation du compteur de nom
 
     //      lSep_ToolBarSepare.Align    := alClient ;
-          {$IFDEF FPC}
           lSep_ToolBarSepare.Left := lPan_ToolBarPanel.Left + lPan_ToolBarPanel.Width + 1 ;
-          {$ELSE}
-          lSep_ToolBarSepare.Left := aPan_PanelSepareFin.Left - 1 ;
-          if aBar_ToolBarParent is TExtToolBar Then
-            ( aBar_ToolBarParent as TExtToolBar ).OrderIndex [ lSep_ToolBarSepare ]  := ( aBar_ToolBarParent as TExtToolBar ).OrderIndex [ aPan_PanelSepareFin ] ;
-          {$ENDIF}
           lSep_OldToolBarSepare := lSep_ToolBarSepare;
                        // affectation du libellé du menu
           lbtn_ToolBarButton.Layout   := blGlyphRight ;

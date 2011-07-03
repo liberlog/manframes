@@ -30,9 +30,10 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
   end
   object spl_volet: TJvSplitter
     Left = 197
-    Top = 45
+    Top = 29
     Width = 5
-    Height = 449
+    Height = 465
+    ExplicitTop = 45
     ExplicitHeight = 439
   end
   object im_appli: TImage
@@ -59,131 +60,130 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
     AutoSize = True
     Visible = False
   end
-  object dock_outils: TDock
+  object tbar_outils: TToolBar
     Left = 0
     Top = 0
     Width = 757
-    Height = 45
-    object tbar_outils: TExtToolbar
+    Height = 29
+    Hint = 'Cliquer sur un bouton pour acc'#195#402#194#169'der '#195#402#194#160' une fonction'
+    HelpContext = 1430
+    Caption = 'Barre d'#39'acc'#195#402#194#168's'
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 0
+    object pa_1: TTntPanel
       Left = 0
       Top = 0
-      Hint = 'Cliquer sur un bouton pour acc'#195#402#194#169'der '#195#402#194#160' une fonction'
-      HelpContext = 1430
-      Caption = 'Barre d'#39'acc'#195#402#194#168's'
-      DockableTo = [dpTop]
-      DockPos = 0
-      FullSize = True
-      ParentShowHint = False
-      ShowHint = True
+      Width = 57
+      Height = 22
+      BevelOuter = bvNone
       TabOrder = 0
-      UseLastDock = False
-      OnClose = tbar_outilsClose
-      OnDockChanged = F_FormMainIniResize
-      object tbsep_3: TExtToolbarSep
-        Left = 656
+      object dbt_ident: TJvXPButton
+        Left = 9
         Top = 0
-      end
-      object tbsep_1: TExtToolbarSep
-        Left = 57
-        Top = 0
-      end
-      object tbsep_2: TExtToolbarSep
-        Left = 593
-        Top = 0
-      end
-      object pa_4: TTntPanel
-        Left = 662
-        Top = 0
-        Width = 57
+        Width = 40
         Height = 41
-        Align = alRight
-        BevelOuter = bvNone
+        Hint = 
+          'S'#39'identifier/d'#195#402#194#169'connecter|Ouvrir la fen'#195#402#194#170'tre d'#39'identificatio' +
+          'n'
+        HelpContext = 1430
         TabOrder = 0
-        object dbt_quitter: TJvXPButton
-          Left = 9
-          Top = 0
-          Width = 41
-          Height = 41
-          Hint = 'Quitter'
-          HelpContext = 1430
-          TabOrder = 0
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -13
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
-          ParentShowHint = False
-          ShowHint = True
-          OnClick = dbt_quitterClick
-        end
+        Layout = blGlyphRight
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = True
+        OnClick = dbt_identClick
       end
-      object pa_1: TTntPanel
-        Left = 0
+    end
+    object tbsep_1: TPanel
+      Left = 57
+      Top = 0
+      Width = 3
+      Height = 22
+      TabOrder = 4
+    end
+    object pa_2: TTntPanel
+      Left = 60
+      Top = 0
+      Width = 530
+      Height = 22
+      BevelOuter = bvNone
+      TabOrder = 1
+    end
+    object tbsep_2: TPanel
+      Left = 590
+      Top = 0
+      Width = 3
+      Height = 22
+      TabOrder = 5
+    end
+    object pa_3: TTntPanel
+      Left = 593
+      Top = 0
+      Width = 57
+      Height = 22
+      Align = alRight
+      BevelOuter = bvNone
+      TabOrder = 2
+      object dbt_aide: TJvXPButton
+        Left = 9
         Top = 0
-        Width = 57
+        Width = 41
         Height = 41
-        BevelOuter = bvNone
-        TabOrder = 1
-        object dbt_ident: TJvXPButton
-          Left = 9
-          Top = 0
-          Width = 40
-          Height = 41
-          Hint = 
-            'S'#39'identifier/d'#195#402#194#169'connecter|Ouvrir la fen'#195#402#194#170'tre d'#39'identificatio' +
-            'n'
-          HelpContext = 1430
-          TabOrder = 0
-          Layout = blGlyphRight
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -13
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
-          ParentShowHint = False
-          ShowHint = True
-          OnClick = dbt_identClick
-        end
+        Hint = 'Ouvrir l'#39'aide|Rubrique d'#39'aide'
+        HelpContext = 1430
+        TabOrder = 0
+        Layout = blGlyphRight
+        Spacing = 0
+        Align = alCustom
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = True
+        OnClick = dbt_aideClick
       end
-      object pa_2: TTntPanel
-        Left = 63
+    end
+    object tbsep_3: TPanel
+      Left = 650
+      Top = 0
+      Width = 3
+      Height = 22
+      TabOrder = 3
+    end
+    object pa_4: TTntPanel
+      Left = 653
+      Top = 0
+      Width = 57
+      Height = 22
+      Align = alRight
+      BevelOuter = bvNone
+      TabOrder = 6
+      object dbt_quitter: TJvXPButton
+        Left = 9
         Top = 0
-        Width = 530
+        Width = 41
         Height = 41
-        BevelOuter = bvNone
-        TabOrder = 2
-      end
-      object pa_3: TTntPanel
-        Left = 599
-        Top = 0
-        Width = 57
-        Height = 41
-        Align = alRight
-        BevelOuter = bvNone
-        TabOrder = 3
-        object dbt_aide: TJvXPButton
-          Left = 9
-          Top = 0
-          Width = 41
-          Height = 41
-          Hint = 'Ouvrir l'#39'aide|Rubrique d'#39'aide'
-          HelpContext = 1430
-          TabOrder = 0
-          Layout = blGlyphRight
-          Spacing = 0
-          Align = alCustom
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -13
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
-          ParentShowHint = False
-          ShowHint = True
-          OnClick = dbt_aideClick
-        end
+        Hint = 'Quitter'
+        HelpContext = 1430
+        TabOrder = 0
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = True
+        OnClick = dbt_quitterClick
       end
     end
   end
@@ -234,51 +234,36 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
   end
   object pa_5: TTntPanel
     Left = 0
-    Top = 45
+    Top = 29
     Width = 197
-    Height = 449
+    Height = 465
     Align = alLeft
     BevelOuter = bvNone
     DockSite = True
     TabOrder = 2
     OnResize = pa_5Resize
-    object dock_volet: TDock
+    object tbar_volet: TToolBar
       Left = 0
       Top = 0
-      Width = 201
-      Height = 449
-      FixAlign = True
-      Position = dpLeft
-      object tbar_volet: TExtToolbar
+      Width = 197
+      Height = 29
+      Caption = 'Volet d'#39'acc'#195#402#194#168's'
+      TabOrder = 0
+      object scb_Volet: TScrollBox
         Left = 0
         Top = 0
-        Caption = 'Volet d'#39'acc'#195#402#194#168's'
-        CloseButtonWhenDocked = True
-        DockableTo = [dpLeft]
-        DockPos = 0
-        FloatingMode = fmOnTopOfAllForms
-        FullSize = True
+        Width = 197
+        Height = 22
+        Hint = 'Cliquez pour acc'#195#402#194#169'der aux fonctions'
+        HelpContext = 1440
+        Align = alClient
+        BorderStyle = bsNone
+        Constraints.MinHeight = 10
+        Constraints.MinWidth = 10
+        DockSite = True
+        ParentShowHint = False
+        ShowHint = True
         TabOrder = 0
-        UseLastDock = False
-        OnClose = tbar_voletClose
-        OnCloseQuery = tbar_voletCloseQuery
-        OnDockChanged = tbar_voletDockChanged
-        object scb_Volet: TScrollBox
-          Left = 0
-          Top = 0
-          Width = 197
-          Height = 458
-          Hint = 'Cliquez pour acc'#195#402#194#169'der aux fonctions'
-          HelpContext = 1440
-          Align = alClient
-          BorderStyle = bsNone
-          Constraints.MinHeight = 10
-          Constraints.MinWidth = 10
-          DockSite = True
-          ParentShowHint = False
-          ShowHint = True
-          TabOrder = 0
-        end
       end
     end
   end
@@ -1089,25 +1074,25 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
     Images = im_Liste
     Left = 256
     Top = 266
-    object mu_file: TMenuItem
+    object mu_file: TMenuitem
       Caption = '&Application'
       HelpContext = 1420
       Hint = 'Fermeture des fen'#234'tres ou de l'#39'application'
-      object mu_identifier: TMenuItem
+      object mu_identifier: TMenuitem
         Caption = 'S'#39'&identifier'
         Hint = 'Ouvrir la fen'#234'tre d'#39'identification'
         OnClick = dbt_identClick
       end
-      object mu_ouvrir: TMenuItem
+      object mu_ouvrir: TMenuitem
         Caption = '&Ouvrir'
         HelpContext = 1420
         Hint = 'Ouvrir une fonction'
         Visible = False
       end
-      object mu_sep1: TMenuItem
+      object mu_sep1: TMenuitem
         Caption = '-'
       end
-      object mu_quitter: TMenuItem
+      object mu_quitter: TMenuitem
         Caption = '&Quitter'
         HelpContext = 1420
         Hint = 'Quitter|Quitter l'#39'application'
@@ -1115,67 +1100,71 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
         OnClick = dbt_quitterClick
       end
     end
-    object mu_fenetre: TMenuItem
+    object mu_fenetre: TMenuitem
       Caption = 'Fe&n'#234'tre'
       Hint = 'Commandes relatives aux fen'#234'tres'
-      object mu_Reinitiliserpresentation: TMenuItem
+      object mu_Reinitiliserpresentation: TMenuitem
         Caption = 'R'#233'initialiser la pr'#233'sentation'
         HelpContext = 1420
         OnClick = mu_ReinitiliserpresentationClick
       end
-      object mu_sep3: TMenuItem
+      object mu_sep3: TMenuitem
         Caption = '-'
       end
-      object mu_cascade: TMenuItem
+      object mu_cascade: TMenuitem
         Action = WindowCascade
         HelpContext = 1420
       end
-      object mu_mosaiqueh: TMenuItem
+      object mu_mosaiqueh: TMenuitem
         Action = WindowTileHorizontal
         HelpContext = 1420
       end
-      object mu_mosaiquev: TMenuItem
+      object mu_mosaiquev: TMenuitem
         Action = WindowTileVertical
         HelpContext = 1420
       end
-      object mu_reduire: TMenuItem
+      object mu_reduire: TMenuitem
         Action = WindowMinimizeAll
         HelpContext = 1420
       end
-      object mu_organiser: TMenuItem
+      object mu_organiser: TMenuitem
         Action = WindowArrangeAll
         HelpContext = 1420
       end
     end
-    object mu_affichage: TMenuItem
+    object mu_affichage: TMenuitem
       Caption = 'Affichage'
-      object mu_barreoutils: TMenuItem
+      object mu_barreoutils: TMenuitem
         Caption = 'Barre d'#39'acc'#232's'
         HelpContext = 1420
         OnClick = mu_barreoutilsClick
       end
-      object mu_voletexplore: TMenuItem
+      object mu_voletexplore: TMenuitem
         Caption = 'Volet d'#39'acc'#232's'
         HelpContext = 1420
         OnClick = mu_voletexploreClick
       end
+      object mi_CustomizedMenu: TMenuitem
+        Caption = 'Volet personnalisé'
+        OnClick = mi_CustomizedMenuClick
+      end
     end
-    object mu_langue: TMenuItem
+    object mu_langue: TMenuitem
       Caption = 'Langage'
     end
-    object mu_aide: TMenuItem
+    object mu_aide: TMenuitem
       Caption = '&Aide'
       Hint = 'Rubriques d'#39'aide'
-      object mu_ouvriraide: TMenuItem
+      object mu_ouvriraide: TMenuitem
         Caption = '&Ouvrir l'#39'aide'
         HelpContext = 1420
         Hint = 'Rubriques d'#39'aide'
         OnClick = dbt_aideClick
       end
-      object mu_sep2: TMenuItem
+      object mu_sep2: TMenuitem
         Caption = '-'
       end
-      object mu_apropos: TMenuItem
+      object mu_apropos: TMenuitem
         Caption = '&A propos...'
         HelpContext = 1420
         Hint = 
@@ -1230,5 +1219,41 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
     SauvePosForm = True
     Left = 256
     Top = 168
+  end
+  object mtb_CustomizedMenu: TExtMenuToolBar
+    Left = 197
+    Height = 453
+    Top = 50
+    Width = 30
+    Align = alLeft
+    AutoSize = False
+    Caption = 'mtb_CustomizedMenu'
+    Color = cl3DLight
+    DisabledImages = im_ListeDisabled
+    HotImages = im_Liste
+    Images = im_Liste
+    List = False
+    ParentColor = False
+    ShowCaptions = False
+    TabOrder = 5
+    Visible = False
+    Menu = mu_MenuIni
+    OnClickCustomize = mtb_CustomizedMenuClickCustomize
+  end
+  object mc_Customize: TExtMenuCustomize
+    AutoIni = False
+    MenuIni = mu_MenuIni
+    MainMenu = mu_MainMenu
+    left = 480
+    top = 264
+  end
+  object im_ListeDisabled: TImageList
+    left = 360
+    top = 216
+  end
+  object mu_MenuIni: TTntMainMenu
+    Images = im_Liste
+    left = 360
+    top = 266
   end
 end

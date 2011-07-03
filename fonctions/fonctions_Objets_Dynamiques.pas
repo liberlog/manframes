@@ -28,6 +28,7 @@ uses Forms, JvXPBar, JvXPContainer,
    LCLIntf, LCLType, ComCtrls, gettext, Translations,
 {$ELSE}
    Windows, ExtTBTls, ExtDock, ExtTBTlwn, ExtTBTlbr,
+   ToolWin,
 {$ENDIF}
 
   Controls, Classes, JvXPButtons, ExtCtrls,
@@ -127,7 +128,7 @@ procedure p_AjouteEvenement       ( const aF_FormParent       : TComponent  ;
         			          as_Evenement        : String     );
 function fcom_FindComponent ( const as_Name : String ; const AOwner : TComponent ): TComponent;
 procedure p_InitButtons ( const anav_Navigateur : TDBNavigator );
-procedure  p_EnableSommaire (       const aBar_ToolBarParent      : TCustomControl  ;
+procedure  p_EnableSommaire (       const aBar_ToolBarParent      : {$IFDEF FPC}TCustomControl{$ELSE}TToolWindow{$ENDIF}  ;
                         			      const aSep_ToolBarSepareDebut : TControl;
                         			      const aPan_PanelSepareFin     : TWinControl  );
 function fIco_getIcon ( const aobj_Sender : Tobject ): TIcon;
@@ -137,7 +138,7 @@ function fs_getComponentName ( const acom_Owner : TComponent ; const as_Name : S
 procedure p_setComponentName ( const acom_Component : TComponent ; const as_Name : String );
 function fs_getComponentNameXPBar ( const adx_WinXpBar        : TJvXpBar ; const as_Name : String ):String;
 
-procedure  p_DetruitSommaire (      const aBar_ToolBarParent      : TCustomControl   ;
+procedure  p_DetruitSommaire (      const aBar_ToolBarParent      : {$IFDEF FPC}TCustomControl{$ELSE}TToolWindow{$ENDIF}   ;
                                     const aSep_ToolBarSepareDebut : TControl;
                                     const aPan_PanelSepareFin     : TWinControl  );
 
@@ -779,7 +780,7 @@ End ;}
 // aSep_ToolBarSepareDebut : Le séparateur de début
 // aSep_ToolBarSepareFin   : Le séparateur de fin
 
-procedure  p_DetruitSommaire (      const aBar_ToolBarParent      : TCustomControl ;
+procedure  p_DetruitSommaire (      const aBar_ToolBarParent      : {$IFDEF FPC}TCustomControl{$ELSE}TToolWindow{$ENDIF} ;
                                     const aSep_ToolBarSepareDebut : TControl;
                                     const aPan_PanelSepareFin     : TWinControl  );
 var li_i : integer ;
@@ -812,7 +813,7 @@ End ;
 // aSep_ToolBarSepareDebut : Le séparateur de début
 // aSep_ToolBarSepareFin   : Le séparateur de fin
 
-procedure  p_EnableSommaire (       const aBar_ToolBarParent      : TCustomControl   ;
+procedure  p_EnableSommaire (       const aBar_ToolBarParent      : {$IFDEF FPC}TCustomControl{$ELSE}TToolWindow{$ENDIF}   ;
                                     const aSep_ToolBarSepareDebut : TControl;
                                     const aPan_PanelSepareFin     : TWinControl  );
 var li_i : integer ;

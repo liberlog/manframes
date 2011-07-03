@@ -1,9 +1,10 @@
 object F_Administration: TF_Administration
-  Left = 503
-  Top = 287
+  Left = 320
+  Top = 188
+  ActiveControl = dbg_Menu
   Caption = 'Administration'
-  ClientHeight = 562
-  ClientWidth = 776
+  ClientHeight = 564
+  ClientWidth = 784
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -12,144 +13,46 @@ object F_Administration: TF_Administration
   Font.Style = []
   OldCreateOrder = False
   OnClose = FormClose
-  DataPropsOff = True
-  Sources = <
-    item
-      Table = 'UTILISATEURS'
-      Key = 'UTIL_Clep'
-      ControlFocus = dbe_Nom
-      Grid = gd_utilisateurs
-      Navigator = nv_navigue
-      NavEdit = nav_Utilisateur
-      Panels = <
-        item
-          Panel = PanelUtilisateur
-        end>
-      OnScroll = adoq_UtilisateursAfterScroll
-    end
-    item
-      Table = 'CONNEXION'
-      Key = 'CONN_Clep'
-      ControlFocus = ed_code
-      Grid = gd_connexion
-      Navigator = nv_connexion
-      NavEdit = nv_conn_saisie
-      Panels = <
-        item
-          Panel = Panel_Connexion
-        end>
-    end
-    item
-      Table = 'SOMMAIRE'
-      Key = 'SOMM_Clep'
-      ControlFocus = dbe_Edition
-      Grid = dbg_Sommaire
-      Navigator = nav_Sommaire
-      Panels = <>
-      OnScroll = adoq_SommaireAfterScroll
-    end
-    item
-      Table = 'SOMM_FONCTIONS'
-      Key = 'SOFC__FONC'
-      ControlFocus = dbe_Edition
-      Grid = dbg_SommaireFonctions
-      Navigator = nav_NavigateurSommaireFonctions
-      Panels = <>
-      OnScroll = adoq_SommaireFonctionsAfterScroll
-    end
-    item
-      Table = 'MENUS'
-      Key = 'MENU_Clep'
-      ControlFocus = dbe_Edition
-      Grid = dbg_Menu
-      Navigator = nav_NavigateurMenu
-      Panels = <>
-      OnScroll = adoq_MenusAfterScroll
-    end
-    item
-      Table = 'MENU_FONCTIONS'
-      Key = 'MEFC__FONC'
-      ControlFocus = dbe_Edition
-      Grid = dbg_MenuFonctions
-      Navigator = nav_NavigateurMenuFonctions
-      Panels = <>
-      OnScroll = adoq_MenuFonctionsAfterScroll
-    end
-    item
-      Table = 'SOUS_MENUS'
-      Key = 'SOUM_Clep'
-      ControlFocus = dbe_Edition
-      Grid = dbg_SousMenu
-      Navigator = nav_NavigateurSousMenu
-      Panels = <>
-      OnScroll = adoq_SousMenusAfterScroll
-    end
-    item
-      Table = 'SOUM_FONCTIONS'
-      Key = 'SMFC__FONC'
-      ControlFocus = dbe_Edition
-      Grid = dbg_SousMenuFonctions
-      Navigator = nav_NavigateurSousMenuFonctions
-      Panels = <>
-      OnScroll = adoq_SousMenuFonctionsAfterScroll
-    end
-    item
-      Table = 'ENTREPRISE'
-      ControlFocus = ed_nomapp
-      NavEdit = nv_connexion
-      Panels = <
-        item
-          Panel = p_Entreprise
-        end>
-    end
-    item
-      Table = 'FONCTIONS'
-      Key = 'FONC_Clep'
-      ControlFocus = dbl_Fonctions
-      Navigator = nav_Fonctions
-      Panels = <>
-      OnScroll = adoq_FonctionsAfterScroll
-    end>
-  DataCloseMessage = True
-  DataErrorMessage = False
-  Version = '1.0.0.2'
+  Sources = <>
+  Version = '1.1.0.2'
   PixelsPerInch = 96
   TextHeight = 13
-  object Panel1: TPanel
+  object pa_Main: TPanel
     Left = 0
     Top = 25
-    Width = 792
-    Height = 541
+    Width = 784
+    Height = 539
     Align = alClient
     TabOrder = 0
     object pc_Onglets: TPageControl
       Left = 1
       Top = 1
-      Width = 790
-      Height = 539
+      Width = 782
+      Height = 537
       ActivePage = ts_Sommaire
       Align = alClient
       TabOrder = 0
-      OnChange = pc_OngletsChange
       object ts_Sommaire: TTabSheet
         Caption = 'Gestion des sommaires'
         object RbSplitter2: TSplitter
           Left = 601
-          Top = 45
+          Top = 50
           Width = 5
-          Height = 466
+          Height = 459
+          ExplicitHeight = 456
         end
         object RbSplitter3: TSplitter
           Left = 223
-          Top = 45
+          Top = 50
           Width = 5
-          Height = 466
+          Height = 459
+          ExplicitHeight = 456
         end
         object pa_Volet: TPanel
           Left = 0
-          Top = 45
+          Top = 50
           Width = 223
-          Height = 466
+          Height = 459
           Align = alLeft
           BevelOuter = bvNone
           Caption = 'pa_Volet'
@@ -162,16 +65,9 @@ object F_Administration: TF_Administration
             Left = 0
             Top = 0
             Width = 223
-            Height = 466
-            Hint = 'Visionner ici votre volet d'#39'acc'#232's'
-            HorzScrollBar.Smooth = True
-            HorzScrollBar.Style = ssFlat
-            HorzScrollBar.Tracking = True
-            VertScrollBar.Smooth = True
-            VertScrollBar.Style = ssFlat
-            VertScrollBar.Tracking = True
+            Height = 459
+            Hint = 'Visionner ici votre volet d'#39'acc'#195#168's'
             Align = alClient
-            BorderStyle = bsNone
             Constraints.MinHeight = 10
             Constraints.MinWidth = 10
             DockSite = True
@@ -184,9 +80,9 @@ object F_Administration: TF_Administration
         end
         object RbPanel1: TPanel
           Left = 606
-          Top = 45
-          Width = 176
-          Height = 466
+          Top = 50
+          Width = 168
+          Height = 459
           Align = alClient
           BorderWidth = 1
           Constraints.MinHeight = 10
@@ -201,7 +97,7 @@ object F_Administration: TF_Administration
           object Panel12: TPanel
             Left = 2
             Top = 2
-            Width = 172
+            Width = 164
             Height = 47
             Align = alTop
             BevelOuter = bvNone
@@ -210,7 +106,7 @@ object F_Administration: TF_Administration
             object Panel31: TPanel
               Left = 0
               Top = 17
-              Width = 172
+              Width = 164
               Height = 3
               Align = alTop
               BevelOuter = bvNone
@@ -219,19 +115,19 @@ object F_Administration: TF_Administration
             object pa_FonctionsType: TPanel
               Left = 0
               Top = 20
-              Width = 172
+              Width = 164
               Height = 22
               Align = alTop
               BevelOuter = bvNone
               TabOrder = 1
               OnResize = pa_FonctionsTypeResize
               DesignSize = (
-                172
+                164
                 22)
               object com_FonctionsType: TRxDBLookupCombo
                 Left = 0
                 Top = 0
-                Width = 152
+                Width = 148
                 Height = 21
                 Hint = 'Filtrer ici un type de fonction'
                 DropDownCount = 8
@@ -247,7 +143,7 @@ object F_Administration: TF_Administration
             object Panel4: TPanel
               Left = 0
               Top = 0
-              Width = 172
+              Width = 164
               Height = 17
               Align = alTop
               BevelOuter = bvNone
@@ -255,15 +151,17 @@ object F_Administration: TF_Administration
               object Label4: TFWLabel
                 Left = 1
                 Top = 4
-                Width = 150
-                Height = 13
-                Cursor = crHandPoint
+                Width = 157
+                Height = 19
+                AutoSize = False
                 Caption = 'Rechercher un type de fonction'
+                Color = clBtnFace
                 Font.Charset = DEFAULT_CHARSET
                 Font.Color = clBlack
                 Font.Height = -11
                 Font.Name = 'MS Sans Serif'
                 Font.Style = []
+                ParentColor = False
                 ParentFont = False
                 ColorFocus = clMaroon
               end
@@ -272,13 +170,11 @@ object F_Administration: TF_Administration
           object nav_Fonctions: TExtDBNavigator
             Left = 2
             Top = 49
-            Width = 172
+            Width = 164
             Height = 20
             Flat = True
             DeleteQuestion = 'Confirmez-vous l'#39'effacement de l'#39'enregistrement ?'
             Align = alTop
-            Ctl3D = False
-            ParentCtl3D = False
             TabOrder = 1
             Orientation = noHorizontal
             VisibleButtons = [nbEFirst, nbEPrior, nbENext, nbELast]
@@ -287,38 +183,27 @@ object F_Administration: TF_Administration
           object dbl_Fonctions: TDBListView
             Left = 2
             Top = 69
-            Width = 172
-            Height = 395
+            Width = 164
+            Height = 388
             Align = alClient
-            Columns = <
-              item
-                AutoSize = True
-                Caption = 'Fonctions'
-              end>
+            Columns = <>
             DragMode = dmAutomatic
             MultiSelect = True
             RowSelect = True
-            StateImages = im_ListeImages
             TabOrder = 2
-            ViewStyle = vsList
             OnEndDrag = dbl_FonctionsEndDrag
-            OnSelectItem = dbl_FonctionsLeftClickCell
             OnStartDrag = dbl_FonctionsStartDrag
-            ColumnsOrder = '0=168'
             Groups = <>
-            ExtendedColumns = <
-              item
-              end>
+            ExtendedColumns = <>
             DataKeyUnit = 'FONC_Clep'
             DataFieldsDisplay = 'FONC_Libelle'
-            DataTableUnit = 'FONCTIONS'
           end
         end
         object RbPanel3: TPanel
           Left = 228
-          Top = 45
+          Top = 50
           Width = 373
-          Height = 466
+          Height = 459
           Align = alLeft
           BorderWidth = 1
           Constraints.MinHeight = 10
@@ -332,15 +217,16 @@ object F_Administration: TF_Administration
           TabOrder = 1
           object RbSplitter7: TSplitter
             Left = 2
-            Top = 195
+            Top = 188
             Width = 369
             Height = 5
             Cursor = crVSplit
             Align = alBottom
+            ExplicitTop = 185
           end
           object pa_2: TPanel
             Left = 2
-            Top = 200
+            Top = 193
             Width = 369
             Height = 264
             Align = alBottom
@@ -370,8 +256,6 @@ object F_Administration: TF_Administration
                 Flat = True
                 DeleteQuestion = 'Confirmez-vous l'#39'effacement de l'#39'enregistrement ?'
                 Align = alTop
-                Ctl3D = False
-                ParentCtl3D = False
                 ParentShowHint = False
                 ShowHint = True
                 TabOrder = 0
@@ -384,18 +268,18 @@ object F_Administration: TF_Administration
                 OnBtnDelete = nav_NavigateurMenuBtnDelete
                 Hints.Strings = (
                   'Premier enregistrement'
-                  'Enregistrement pr'#233'c'#233'dent'
+                  'Enregistrement pr'#195#169'c'#195#169'dent'
                   'Enregistrement suivant'
                   'Dernier enregistrement'
-                  'Ins'#233'rer enregistrement'
+                  'Ins'#195#169'rer enregistrement'
                   'Supprimer l'#39'enregistrement'
                   'Modifier l'#39'enregistrement'
                   'Valider modifications'
                   'Annuler les modifications'
-                  'Rafra'#238'chir les donn'#233'es'
+                  'Rafra'#195#174'chir les donn'#195#169'es'
                   'Rechercher un enregistrement'
-                  'Marquer l'#39'enregistrement '#224' d'#233'placer'
-                  'D'#233'placer '#224' la marque')
+                  'Marquer l'#39'enregistrement '#195#160' d'#195#169'placer'
+                  'D'#195#169'placer '#195#160' la marque')
               end
               object dbg_Menu: TExtDBGrid
                 Left = 0
@@ -405,6 +289,25 @@ object F_Administration: TF_Administration
                 Hint = 'Choisir un menu'
                 Align = alClient
                 BorderStyle = bsNone
+                Columns = <
+                  item
+                    Expanded = False
+                    FieldName = 'MENU_Clep'
+                    Title.Alignment = taCenter
+                    Title.Caption = 'Menu'
+                    Width = 72
+                    Visible = True
+                    FieldTag = 0
+                  end
+                  item
+                    Alignment = taCenter
+                    Expanded = False
+                    FieldName = 'MENU_Bmp'
+                    Title.Alignment = taCenter
+                    Title.Caption = 'Ic'#195#180'ne'
+                    Visible = False
+                    FieldTag = 0
+                  end>
                 ParentShowHint = False
                 ShowHint = True
                 TabOrder = 1
@@ -423,14 +326,16 @@ object F_Administration: TF_Administration
                     Title.Caption = 'Menu'
                     Width = 72
                     Visible = True
+                    FieldTag = 0
                   end
                   item
                     Alignment = taCenter
                     Expanded = False
                     FieldName = 'MENU_Bmp'
                     Title.Alignment = taCenter
-                    Title.Caption = 'Ic'#244'ne'
+                    Title.Caption = 'Ic'#195#180'ne'
                     Visible = False
+                    FieldTag = 0
                   end>
               end
             end
@@ -447,9 +352,29 @@ object F_Administration: TF_Administration
                 Top = 20
                 Width = 176
                 Height = 119
-                Hint = 'Ins'#233'rer une fonction'
+                Hint = 'Ins'#195#169'rer une fonction'
                 Align = alClient
                 BorderStyle = bsNone
+                Columns = <
+                  item
+                    Color = clInfoBk
+                    Expanded = False
+                    FieldName = 'FONC_Libelle'
+                    Title.Alignment = taCenter
+                    Title.Caption = 'Fonctions au menu'
+                    Visible = True
+                    FieldTag = 0
+                  end
+                  item
+                    Alignment = taCenter
+                    Color = clMoneyGreen
+                    Expanded = False
+                    FieldName = 'FONC_Bmp'
+                    Title.Alignment = taCenter
+                    Title.Caption = 'Ic'#195#180'ne'
+                    Visible = False
+                    FieldTag = 0
+                  end>
                 ParentShowHint = False
                 ReadOnly = True
                 ShowHint = True
@@ -459,8 +384,6 @@ object F_Administration: TF_Administration
                 TitleFont.Height = -11
                 TitleFont.Name = 'MS Sans Serif'
                 TitleFont.Style = []
-                OnDragDrop = dbg_MenuFonctionsDragDrop
-                OnDragOver = dbg_MenuFonctionsDragOver
                 OnKeyUp = dbg_KeyUp
                 Columns = <
                   item
@@ -470,6 +393,7 @@ object F_Administration: TF_Administration
                     Title.Alignment = taCenter
                     Title.Caption = 'Fonctions au menu'
                     Visible = True
+                    FieldTag = 0
                   end
                   item
                     Alignment = taCenter
@@ -477,8 +401,9 @@ object F_Administration: TF_Administration
                     Expanded = False
                     FieldName = 'FONC_Bmp'
                     Title.Alignment = taCenter
-                    Title.Caption = 'Ic'#244'ne'
+                    Title.Caption = 'Ic'#195#180'ne'
                     Visible = False
+                    FieldTag = 0
                   end>
               end
               object nav_NavigateurMenuFonctions: TExtDBNavigator
@@ -486,12 +411,10 @@ object F_Administration: TF_Administration
                 Top = 0
                 Width = 176
                 Height = 20
-                Hint = 'Cliquer ici pour supprimer une fonction ou la d'#233'placer'
+                Hint = 'Cliquer ici pour supprimer une fonction ou la d'#195#169'placer'
                 Flat = True
                 DeleteQuestion = 'Confirmez-vous l'#39'effacement de l'#39'enregistrement ?'
                 Align = alTop
-                Ctl3D = False
-                ParentCtl3D = False
                 ParentShowHint = False
                 ShowHint = True
                 TabOrder = 1
@@ -504,18 +427,18 @@ object F_Administration: TF_Administration
                 OnBtnDelete = nav_NavigateurFonctionsBtnDelete
                 Hints.Strings = (
                   'Premier enregistrement'
-                  'Enregistrement pr'#233'c'#233'dent'
+                  'Enregistrement pr'#195#169'c'#195#169'dent'
                   'Enregistrement suivant'
                   'Dernier enregistrement'
-                  'Ins'#233'rer enregistrement'
+                  'Ins'#195#169'rer enregistrement'
                   'Supprimer l'#39'enregistrement'
                   'Modifier l'#39'enregistrement'
                   'Valider modifications'
                   'Annuler les modifications'
-                  'Rafra'#238'chir les donn'#233'es'
+                  'Rafra'#195#174'chir les donn'#195#169'es'
                   'Rechercher un enregistrement'
-                  'Marquer l'#39'enregistrement '#224' d'#233'placer'
-                  'D'#233'placer '#224' la marque')
+                  'Marquer l'#39'enregistrement '#195#160' d'#195#169'placer'
+                  'D'#195#169'placer '#195#160' la marque')
               end
             end
             object pa_4: TPanel
@@ -542,8 +465,6 @@ object F_Administration: TF_Administration
                   Flat = True
                   DeleteQuestion = 'Confirmez-vous l'#39'effacement de l'#39'enregistrement ?'
                   Align = alTop
-                  Ctl3D = False
-                  ParentCtl3D = False
                   ParentShowHint = False
                   ShowHint = True
                   TabOrder = 0
@@ -556,18 +477,18 @@ object F_Administration: TF_Administration
                   OnBtnDelete = nav_NavigateurSousMenuBtnDelete
                   Hints.Strings = (
                     'Premier enregistrement'
-                    'Enregistrement pr'#233'c'#233'dent'
+                    'Enregistrement pr'#195#169'c'#195#169'dent'
                     'Enregistrement suivant'
                     'Dernier enregistrement'
-                    'Ins'#233'rer enregistrement'
+                    'Ins'#195#169'rer enregistrement'
                     'Supprimer l'#39'enregistrement'
                     'Modifier l'#39'enregistrement'
                     'Valider modifications'
                     'Annuler les modifications'
-                    'Rafra'#238'chir les donn'#233'es'
+                    'Rafra'#195#174'chir les donn'#195#169'es'
                     'Rechercher un enregistrement'
-                    'Marquer l'#39'enregistrement '#224' d'#233'placer'
-                    'D'#233'placer '#224' la marque')
+                    'Marquer l'#39'enregistrement '#195#160' d'#195#169'placer'
+                    'D'#195#169'placer '#195#160' la marque')
                 end
                 object dbg_SousMenu: TExtDBGrid
                   Left = 0
@@ -577,6 +498,25 @@ object F_Administration: TF_Administration
                   Hint = 'Choisir un sous-menu'
                   Align = alClient
                   BorderStyle = bsNone
+                  Columns = <
+                    item
+                      Expanded = False
+                      FieldName = 'SOUM_Clep'
+                      Title.Alignment = taCenter
+                      Title.Caption = 'Sous-Menu'
+                      Width = 61
+                      Visible = True
+                      FieldTag = 0
+                    end
+                    item
+                      Alignment = taCenter
+                      Expanded = False
+                      FieldName = 'SOUM_Bmp'
+                      Title.Alignment = taCenter
+                      Title.Caption = 'Ic'#195#180'ne'
+                      Visible = False
+                      FieldTag = 0
+                    end>
                   ParentShowHint = False
                   ReadOnly = True
                   ShowHint = True
@@ -596,14 +536,16 @@ object F_Administration: TF_Administration
                       Title.Caption = 'Sous-Menu'
                       Width = 61
                       Visible = True
+                      FieldTag = 0
                     end
                     item
                       Alignment = taCenter
                       Expanded = False
                       FieldName = 'SOUM_Bmp'
                       Title.Alignment = taCenter
-                      Title.Caption = 'Ic'#244'ne'
+                      Title.Caption = 'Ic'#195#180'ne'
                       Visible = False
+                      FieldTag = 0
                     end>
                 end
               end
@@ -620,12 +562,10 @@ object F_Administration: TF_Administration
                   Top = 0
                   Width = 176
                   Height = 20
-                  Hint = 'Cliquer ici pour supprimer une fonction ou la d'#233'placer'
+                  Hint = 'Cliquer ici pour supprimer une fonction ou la d'#195#169'placer'
                   Flat = True
                   DeleteQuestion = 'Confirmez-vous l'#39'effacement de l'#39'enregistrement ?'
                   Align = alTop
-                  Ctl3D = False
-                  ParentCtl3D = False
                   ParentShowHint = False
                   ShowHint = True
                   TabOrder = 0
@@ -638,27 +578,48 @@ object F_Administration: TF_Administration
                   OnBtnDelete = nav_NavigateurFonctionsBtnDelete
                   Hints.Strings = (
                     'Premier enregistrement'
-                    'Enregistrement pr'#233'c'#233'dent'
+                    'Enregistrement pr'#195#169'c'#195#169'dent'
                     'Enregistrement suivant'
                     'Dernier enregistrement'
-                    'Ins'#233'rer enregistrement'
+                    'Ins'#195#169'rer enregistrement'
                     'Supprimer l'#39'enregistrement'
                     'Modifier l'#39'enregistrement'
                     'Valider modifications'
                     'Annuler les modifications'
-                    'Rafra'#238'chir les donn'#233'es'
+                    'Rafra'#195#174'chir les donn'#195#169'es'
                     'Rechercher un enregistrement'
-                    'Marquer l'#39'enregistrement '#224' d'#233'placer'
-                    'D'#233'placer '#224' la marque')
+                    'Marquer l'#39'enregistrement '#195#160' d'#195#169'placer'
+                    'D'#195#169'placer '#195#160' la marque')
                 end
                 object dbg_SousMenuFonctions: TExtDBGrid
                   Left = 0
                   Top = 20
                   Width = 176
                   Height = 100
-                  Hint = 'Ins'#233'rer une fonction'
+                  Hint = 'Ins'#195#169'rer une fonction'
                   Align = alClient
                   BorderStyle = bsNone
+                  Columns = <
+                    item
+                      Color = clInfoBk
+                      Expanded = False
+                      FieldName = 'FONC_Libelle'
+                      Title.Alignment = taCenter
+                      Title.Caption = 'Fonctions au sous-menu'
+                      Width = 65
+                      Visible = True
+                      FieldTag = 0
+                    end
+                    item
+                      Alignment = taCenter
+                      Color = clMoneyGreen
+                      Expanded = False
+                      FieldName = 'FONC_Bmp'
+                      Title.Alignment = taCenter
+                      Title.Caption = 'Ic'#195#180'ne'
+                      Visible = False
+                      FieldTag = 0
+                    end>
                   ParentShowHint = False
                   ReadOnly = True
                   ShowHint = True
@@ -668,8 +629,6 @@ object F_Administration: TF_Administration
                   TitleFont.Height = -11
                   TitleFont.Name = 'MS Sans Serif'
                   TitleFont.Style = []
-                  OnDragDrop = dbg_SousMenuFonctionsDragDrop
-                  OnDragOver = dbg_SousMenuFonctionsDragOver
                   OnKeyUp = dbg_KeyUp
                   Columns = <
                     item
@@ -680,6 +639,7 @@ object F_Administration: TF_Administration
                       Title.Caption = 'Fonctions au sous-menu'
                       Width = 65
                       Visible = True
+                      FieldTag = 0
                     end
                     item
                       Alignment = taCenter
@@ -687,8 +647,9 @@ object F_Administration: TF_Administration
                       Expanded = False
                       FieldName = 'FONC_Bmp'
                       Title.Alignment = taCenter
-                      Title.Caption = 'Ic'#244'ne'
+                      Title.Caption = 'Ic'#195#180'ne'
                       Visible = False
+                      FieldTag = 0
                     end>
                 end
               end
@@ -698,7 +659,7 @@ object F_Administration: TF_Administration
             Left = 2
             Top = 2
             Width = 369
-            Height = 193
+            Height = 186
             Align = alClient
             BevelOuter = bvNone
             TabOrder = 1
@@ -715,7 +676,7 @@ object F_Administration: TF_Administration
               Top = 0
               Width = 369
               Height = 79
-              Hint = 'Editer votre ic'#244'ne et votre libell'#233' en cours'
+              Hint = 'Editer votre ic'#195#180'ne et votre libell'#195#169' en cours'
               Align = alTop
               BevelOuter = bvNone
               ParentShowHint = False
@@ -725,17 +686,26 @@ object F_Administration: TF_Administration
                 Tag = 1001
                 Left = 9
                 Top = 28
-                Width = 32
-                Height = 13
-                Cursor = crHandPoint
+                Width = 33
+                Height = 19
+                AutoSize = False
                 Caption = 'Edition'
+                Color = clBtnFace
                 Font.Charset = DEFAULT_CHARSET
                 Font.Color = clBlack
                 Font.Height = -11
                 Font.Name = 'MS Sans Serif'
                 Font.Style = []
+                ParentColor = False
                 ParentFont = False
                 ColorFocus = clMaroon
+              end
+              object dbi_ImageTemp: TExtDBImage
+                Left = 331
+                Top = 16
+                Width = 32
+                Height = 32
+                Visible = False
               end
               object dbe_Edition: TFWDBEdit
                 Tag = 1
@@ -761,7 +731,7 @@ object F_Administration: TF_Administration
                 Top = 34
                 Width = 40
                 Height = 38
-                Hint = 'Ic'#244'ne en cours'
+                Hint = 'Ic'#195#180'ne en cours'
                 TabOrder = 1
                 TabStop = False
                 Layout = blGlyphRight
@@ -780,7 +750,7 @@ object F_Administration: TF_Administration
                 Top = 50
                 Width = 22
                 Height = 22
-                Hint = 'Choisir son ic'#244'ne'
+                Hint = 'Choisir son ic'#195#180'ne'
                 Caption = '...'
                 TabOrder = 2
                 Layout = blGlyphRight
@@ -795,18 +765,6 @@ object F_Administration: TF_Administration
                 Visible = False
                 OnClick = dxb_ChargerImageClick
               end
-              object dbi_ImageTemp: TExtDBImage
-                Left = 331
-                Top = 16
-                Width = 32
-                Height = 32
-                BorderStyle = bsNone
-                Color = clWhite
-                Ctl3D = False
-                ParentCtl3D = False
-                TabOrder = 3
-                Visible = False
-              end
               object nav_NavigationEnCours: TExtDBNavigator
                 Left = 0
                 Top = 0
@@ -815,9 +773,7 @@ object F_Administration: TF_Administration
                 Flat = True
                 DeleteQuestion = 'Confirmez-vous l'#39'effacement de l'#39'enregistrement ?'
                 Align = alTop
-                Ctl3D = False
-                ParentCtl3D = False
-                TabOrder = 4
+                TabOrder = 3
                 Orientation = noHorizontal
                 VisibleButtons = [nbEInsert, nbEDelete, nbEPost, nbECancel]
                 GlyphSize = gsSmall
@@ -828,7 +784,7 @@ object F_Administration: TF_Administration
               Left = 0
               Top = 84
               Width = 369
-              Height = 109
+              Height = 102
               Align = alClient
               BevelOuter = bvNone
               TabOrder = 1
@@ -836,7 +792,7 @@ object F_Administration: TF_Administration
                 Left = 0
                 Top = 0
                 Width = 193
-                Height = 109
+                Height = 102
                 Align = alLeft
                 BevelOuter = bvNone
                 TabOrder = 0
@@ -848,8 +804,6 @@ object F_Administration: TF_Administration
                   Flat = True
                   DeleteQuestion = 'Confirmez-vous l'#39'effacement de l'#39'enregistrement ?'
                   Align = alTop
-                  Ctl3D = False
-                  ParentCtl3D = False
                   ParentShowHint = False
                   ShowHint = True
                   TabOrder = 0
@@ -859,26 +813,44 @@ object F_Administration: TF_Administration
                   OnBtnDelete = nav_SommaireBtnDelete
                   Hints.Strings = (
                     'Premier enregistrement'
-                    'Enregistrement pr'#233'c'#233'dent'
+                    'Enregistrement pr'#195#169'c'#195#169'dent'
                     'Enregistrement suivant'
                     'Dernier enregistrement'
-                    'Ins'#233'rer enregistrement'
+                    'Ins'#195#169'rer enregistrement'
                     'Supprimer l'#39'enregistrement'
                     'Modifier l'#39'enregistrement'
                     'Valider modifications'
                     'Annuler les modifications'
-                    'Rafra'#238'chir les donn'#233'es'
+                    'Rafra'#195#174'chir les donn'#195#169'es'
                     'Rechercher un enregistrement'
-                    'Marquer l'#39'enregistrement '#224' d'#233'placer'
-                    'D'#233'placer '#224' la marque')
+                    'Marquer l'#39'enregistrement '#195#160' d'#195#169'placer'
+                    'D'#195#169'placer '#195#160' la marque')
                 end
                 object dbg_Sommaire: TExtDBGrid
                   Left = 0
                   Top = 20
                   Width = 193
-                  Height = 89
+                  Height = 82
                   Align = alClient
                   BorderStyle = bsNone
+                  Columns = <
+                    item
+                      Expanded = False
+                      FieldName = 'SOMM_Clep'
+                      Title.Alignment = taCenter
+                      Title.Caption = 'Sommaire'
+                      Width = 65
+                      Visible = True
+                      FieldTag = 0
+                    end
+                    item
+                      Expanded = False
+                      FieldName = 'SOMM_Niveau'
+                      Title.Alignment = taCenter
+                      Title.Caption = 'Sous-menus'
+                      Visible = True
+                      FieldTag = 0
+                    end>
                   TabOrder = 1
                   TitleFont.Charset = DEFAULT_CHARSET
                   TitleFont.Color = clWindowText
@@ -891,15 +863,19 @@ object F_Administration: TF_Administration
                     item
                       Expanded = False
                       FieldName = 'SOMM_Clep'
+                      Title.Alignment = taCenter
                       Title.Caption = 'Sommaire'
                       Width = 65
                       Visible = True
+                      FieldTag = 0
                     end
                     item
                       Expanded = False
                       FieldName = 'SOMM_Niveau'
+                      Title.Alignment = taCenter
                       Title.Caption = 'Sous-menus'
                       Visible = True
+                      FieldTag = 0
                     end>
                 end
               end
@@ -907,7 +883,7 @@ object F_Administration: TF_Administration
                 Left = 193
                 Top = 0
                 Width = 176
-                Height = 109
+                Height = 102
                 Align = alClient
                 BevelOuter = bvNone
                 TabOrder = 1
@@ -915,10 +891,31 @@ object F_Administration: TF_Administration
                   Left = 0
                   Top = 20
                   Width = 176
-                  Height = 89
-                  Hint = 'Ins'#233'rer une fonction'
+                  Height = 82
+                  Hint = 'Ins'#195#169'rer une fonction'
                   Align = alClient
                   BorderStyle = bsNone
+                  Columns = <
+                    item
+                      Color = clInfoBk
+                      Expanded = False
+                      FieldName = 'FONC_Libelle'
+                      Title.Alignment = taCenter
+                      Title.Caption = 'Fonctions au sommaire'
+                      Width = 90
+                      Visible = True
+                      FieldTag = 0
+                    end
+                    item
+                      Alignment = taCenter
+                      Color = clMoneyGreen
+                      Expanded = False
+                      FieldName = 'FONC_Bmp'
+                      Title.Alignment = taCenter
+                      Title.Caption = 'Ic'#195#180'ne'
+                      Visible = False
+                      FieldTag = 0
+                    end>
                   ParentShowHint = False
                   ReadOnly = True
                   ShowHint = True
@@ -928,8 +925,6 @@ object F_Administration: TF_Administration
                   TitleFont.Height = -11
                   TitleFont.Name = 'MS Sans Serif'
                   TitleFont.Style = []
-                  OnDragDrop = dbg_SommaireFonctionsDragDrop
-                  OnDragOver = dbg_SommaireFonctionsDragOver
                   OnKeyUp = dbg_KeyUp
                   Columns = <
                     item
@@ -940,6 +935,7 @@ object F_Administration: TF_Administration
                       Title.Caption = 'Fonctions au sommaire'
                       Width = 90
                       Visible = True
+                      FieldTag = 0
                     end
                     item
                       Alignment = taCenter
@@ -947,8 +943,9 @@ object F_Administration: TF_Administration
                       Expanded = False
                       FieldName = 'FONC_Bmp'
                       Title.Alignment = taCenter
-                      Title.Caption = 'Ic'#244'ne'
+                      Title.Caption = 'Ic'#195#180'ne'
                       Visible = False
+                      FieldTag = 0
                     end>
                 end
                 object nav_NavigateurSommaireFonctions: TExtDBNavigator
@@ -956,12 +953,10 @@ object F_Administration: TF_Administration
                   Top = 0
                   Width = 176
                   Height = 20
-                  Hint = 'Cliquer ici pour supprimer une fonction ou la d'#233'placer'
+                  Hint = 'Cliquer ici pour supprimer une fonction ou la d'#195#169'placer'
                   Flat = True
                   DeleteQuestion = 'Confirmez-vous l'#39'effacement de l'#39'enregistrement ?'
                   Align = alTop
-                  Ctl3D = False
-                  ParentCtl3D = False
                   ParentShowHint = False
                   ShowHint = True
                   TabOrder = 1
@@ -974,144 +969,168 @@ object F_Administration: TF_Administration
                   OnBtnDelete = nav_NavigateurFonctionsBtnDelete
                   Hints.Strings = (
                     'Premier enregistrement'
-                    'Enregistrement pr'#233'c'#233'dent'
+                    'Enregistrement pr'#195#169'c'#195#169'dent'
                     'Enregistrement suivant'
                     'Dernier enregistrement'
-                    'Ins'#233'rer enregistrement'
+                    'Ins'#195#169'rer enregistrement'
                     'Supprimer l'#39'enregistrement'
                     'Modifier l'#39'enregistrement'
                     'Valider modifications'
                     'Annuler les modifications'
-                    'Rafra'#238'chir les donn'#233'es'
+                    'Rafra'#195#174'chir les donn'#195#169'es'
                     'Rechercher un enregistrement'
-                    'Marquer l'#39'enregistrement '#224' d'#233'placer'
-                    'D'#233'placer '#224' la marque')
+                    'Marquer l'#39'enregistrement '#195#160' d'#195#169'placer'
+                    'D'#195#169'placer '#195#160' la marque')
                 end
               end
             end
           end
         end
-        object dock_outils: TDock
+        object tbar_outils: TToolBar
           Left = 0
           Top = 0
-          Width = 782
-          Height = 45
-          object tbar_outils: TExtToolbar
+          Width = 774
+          Height = 50
+          Hint = 'Cliquer sur un bouton pour acc'#195#402#194#169'der '#195#402#194#160' une fonction'
+          HelpContext = 1430
+          Caption = 'Barre d'#39'acc'#195#402#194#168's'
+          Color = cl3DLight
+          ParentColor = False
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 3
+          object pa_8: TPanel
             Left = 0
             Top = 0
-            Hint = 'Cliquer sur un bouton pour acc'#195#402#194#169'der '#195#402#194#160' une fonction'
-            HelpContext = 1430
-            Caption = 'Barre d'#39'acc'#195#402#194#168's'
-            DockableTo = [dpTop]
-            DockPos = 0
-            FullSize = True
-            ParentShowHint = False
-            ShowHint = True
-            TabOrder = 0
-            UseLastDock = False
-            object tbsep_3: TExtToolbarSep
-              Left = 656
-              Top = 0
-            end
-            object tbsep_1: TExtToolbarSep
-              Left = 57
-              Top = 0
-            end
-            object tbsep_2: TExtToolbarSep
-              Left = 593
-              Top = 0
-            end
-            object Panel5: TPanel
-              Left = 662
-              Top = 0
-              Width = 57
+            Width = 57
+            Height = 22
+            Align = alLeft
+            BevelOuter = bvNone
+            TabOrder = 7
+            object dbt_ident: TJvXPButton
+              Left = 6
+              Top = 3
+              Width = 40
               Height = 41
-              Align = alRight
-              BevelOuter = bvNone
+              Hint = 
+                'S'#39'identifier/d'#195#402#194#169'connecter|Ouvrir la fen'#195#402#194#170'tre d'#39'identificatio' +
+                'n'
+              HelpContext = 1430
               TabOrder = 0
-              object dbt_quitter: TJvXPButton
-                Left = 9
-                Top = 0
-                Width = 41
-                Height = 41
-                Hint = 'Quitter'
-                HelpContext = 1430
-                TabOrder = 0
-                Font.Charset = DEFAULT_CHARSET
-                Font.Color = clWindowText
-                Font.Height = -13
-                Font.Name = 'MS Sans Serif'
-                Font.Style = []
-                ParentFont = False
-                ParentShowHint = False
-                ShowHint = True
-              end
+              Layout = blGlyphRight
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -13
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
+              ParentShowHint = False
+              ShowHint = True
             end
-            object Panel6: TPanel
-              Left = 0
+          end
+          object tbsep_1: TPanel
+            Left = 57
+            Top = 0
+            Width = 3
+            Height = 22
+            Align = alRight
+            TabOrder = 8
+          end
+          object Panel_Fin: TPanel
+            Left = 60
+            Top = 0
+            Width = 594
+            Height = 22
+            Align = alClient
+            BevelOuter = bvNone
+            TabOrder = 2
+          end
+          object tbsep_2: TPanel
+            Left = 654
+            Top = 0
+            Width = 3
+            Height = 22
+            Align = alRight
+            TabOrder = 0
+          end
+          object pa_7: TPanel
+            Left = 657
+            Top = 0
+            Width = 57
+            Height = 22
+            Align = alRight
+            BevelOuter = bvNone
+            TabOrder = 4
+            object dbt_aide: TJvXPButton
+              Left = 9
               Top = 0
-              Width = 57
+              Width = 41
               Height = 41
-              BevelOuter = bvNone
-              TabOrder = 1
-              object dbt_ident: TJvXPButton
-                Left = 9
-                Top = 0
-                Width = 40
-                Height = 41
-                Hint = 
-                  'S'#39'identifier/d'#195#402#194#169'connecter|Ouvrir la fen'#195#402#194#170'tre d'#39'identificatio' +
-                  'n'
-                HelpContext = 1430
-                TabOrder = 0
-                Layout = blGlyphRight
-                Font.Charset = DEFAULT_CHARSET
-                Font.Color = clWindowText
-                Font.Height = -13
-                Font.Name = 'MS Sans Serif'
-                Font.Style = []
-                ParentFont = False
-                ParentShowHint = False
-                ShowHint = True
-              end
+              Hint = 'Ouvrir l'#39'aide|Rubrique d'#39'aide'
+              HelpContext = 1430
+              TabOrder = 0
+              Layout = blGlyphRight
+              Spacing = 0
+              Align = alCustom
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -13
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
+              ParentShowHint = False
+              ShowHint = True
             end
-            object Panel_Fin: TPanel
-              Left = 63
+          end
+          object tbsep_3: TPanel
+            Left = 714
+            Top = 0
+            Width = 3
+            Height = 22
+            Align = alRight
+            TabOrder = 6
+          end
+          object pa_5: TPanel
+            Left = 717
+            Top = 0
+            Width = 57
+            Height = 22
+            Align = alRight
+            BevelOuter = bvNone
+            TabOrder = 1
+            object dbt_quitter: TJvXPButton
+              Left = 9
               Top = 0
-              Width = 530
+              Width = 41
               Height = 41
-              BevelOuter = bvNone
-              TabOrder = 2
+              Hint = 'Quitter'
+              HelpContext = 1430
+              TabOrder = 0
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -13
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
+              ParentShowHint = False
+              ShowHint = True
             end
-            object Panel9: TPanel
-              Left = 599
-              Top = 0
-              Width = 57
-              Height = 41
-              Align = alRight
-              BevelOuter = bvNone
-              TabOrder = 3
-              object dbt_aide: TJvXPButton
-                Left = 9
-                Top = 0
-                Width = 41
-                Height = 41
-                Hint = 'Ouvrir l'#39'aide|Rubrique d'#39'aide'
-                HelpContext = 1430
-                TabOrder = 0
-                Layout = blGlyphRight
-                Spacing = 0
-                Align = alCustom
-                Font.Charset = DEFAULT_CHARSET
-                Font.Color = clWindowText
-                Font.Height = -13
-                Font.Name = 'MS Sans Serif'
-                Font.Style = []
-                ParentFont = False
-                ParentShowHint = False
-                ShowHint = True
-              end
-            end
+          end
+          object tbsep_4: TPanel
+            Left = 774
+            Top = 0
+            Width = 3
+            Height = 22
+            Align = alRight
+            TabOrder = 5
+          end
+          object tbsep_Debut: TPanel
+            Left = 777
+            Top = 0
+            Width = 3
+            Height = 22
+            Align = alLeft
+            TabOrder = 3
           end
         end
       end
@@ -1121,13 +1140,14 @@ object F_Administration: TF_Administration
           Left = 297
           Top = 0
           Width = 5
-          Height = 511
+          Height = 509
+          ExplicitHeight = 506
         end
         object RbPanel5: TPanel
           Left = 0
           Top = 0
           Width = 297
-          Height = 511
+          Height = 509
           Align = alLeft
           BorderWidth = 1
           Font.Charset = DEFAULT_CHARSET
@@ -1144,7 +1164,7 @@ object F_Administration: TF_Administration
             Top = 2
             Width = 293
             Height = 25
-            Hint = 'S'#233'lectionner une connexion'
+            Hint = 'S'#195#169'lectionner une connexion'
             Flat = True
             DeleteQuestion = 'Confirmez-vous l'#39'effacement de l'#39'enregistrement ?'
             Align = alTop
@@ -1159,17 +1179,43 @@ object F_Administration: TF_Administration
             Left = 2
             Top = 27
             Width = 293
-            Height = 482
+            Height = 480
             Align = alClient
             BorderStyle = bsNone
-            Ctl3D = False
+            Columns = <
+              item
+                Expanded = False
+                FieldName = 'CONN_Clep'
+                Title.Alignment = taCenter
+                Title.Caption = 'Code'
+                Width = 50
+                Visible = True
+                FieldTag = 0
+              end
+              item
+                Expanded = False
+                FieldName = 'CONN_Libelle'
+                Title.Alignment = taCenter
+                Title.Caption = 'Libell'#195#169
+                Width = 125
+                Visible = True
+                FieldTag = 0
+              end
+              item
+                Expanded = False
+                FieldName = 'CONN_Chaine'
+                Title.Alignment = taCenter
+                Title.Caption = 'Cha'#195#174'ne de connexion'
+                Width = 150
+                Visible = True
+                FieldTag = 0
+              end>
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
             Font.Height = -11
             Font.Name = 'MS Sans Serif'
             Font.Style = []
             Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
-            ParentCtl3D = False
             ParentFont = False
             ReadOnly = True
             TabOrder = 1
@@ -1182,31 +1228,37 @@ object F_Administration: TF_Administration
               item
                 Expanded = False
                 FieldName = 'CONN_Clep'
+                Title.Alignment = taCenter
                 Title.Caption = 'Code'
                 Width = 50
                 Visible = True
+                FieldTag = 0
               end
               item
                 Expanded = False
                 FieldName = 'CONN_Libelle'
-                Title.Caption = 'Libell'#233
+                Title.Alignment = taCenter
+                Title.Caption = 'Libell'#195#169
                 Width = 125
                 Visible = True
+                FieldTag = 0
               end
               item
                 Expanded = False
                 FieldName = 'CONN_Chaine'
-                Title.Caption = 'Cha'#238'ne de connexion'
+                Title.Alignment = taCenter
+                Title.Caption = 'Cha'#195#174'ne de connexion'
                 Width = 150
                 Visible = True
+                FieldTag = 0
               end>
           end
         end
         object RbPanel6: TPanel
           Left = 302
           Top = 0
-          Width = 480
-          Height = 511
+          Width = 472
+          Height = 509
           Align = alClient
           BorderWidth = 2
           Font.Charset = DEFAULT_CHARSET
@@ -1221,16 +1273,15 @@ object F_Administration: TF_Administration
           object pg_conn_util: TPageControl
             Left = 3
             Top = 177
-            Width = 474
-            Height = 331
+            Width = 466
+            Height = 329
             ActivePage = ts_2
             Align = alClient
-            MultiLine = True
             TabOrder = 1
             object ts_2: TTabSheet
               Caption = 'Utilisateurs'
               Font.Charset = DEFAULT_CHARSET
-              Font.Color = clBlack
+              Font.Color = 13500416
               Font.Height = -11
               Font.Name = 'MS Sans Serif'
               Font.Style = []
@@ -1239,12 +1290,13 @@ object F_Administration: TF_Administration
                 Left = 304
                 Top = 25
                 Width = 5
-                Height = 278
+                Height = 276
+                ExplicitHeight = 270
               end
               object Panel10: TPanel
                 Left = 0
                 Top = 0
-                Width = 466
+                Width = 458
                 Height = 25
                 Align = alTop
                 TabOrder = 0
@@ -1275,48 +1327,14 @@ object F_Administration: TF_Administration
                   BevelOuter = bvNone
                   TabOrder = 4
                 end
-                object BT_Abandon: TJvXPButton
+                object BT_Abandon: TFWCancel
                   Left = 134
                   Top = 1
                   Width = 92
                   Height = 23
                   Hint = 'Abandonner les modifications de constitution du groupe'
-                  Caption = 'Abandonner'
                   Enabled = False
                   TabOrder = 0
-                  Glyph.Data = {
-                    07544269746D6170EE030000424DEE03000000000000EE020000280000001000
-                    000010000000010008000000000000010000120B0000120B0000AE000000AE00
-                    0000247BEB004696F3004A98F4002F87F000116CE600075FDC002D82EB0091C5
-                    FB00CCE6FF00D9EDFF00DCEDFE00C4E0FE0086BFFC00348BF4000A65E1004997
-                    F300C7E3FF00F7FBFF00FFFFFF00E0EFFE005CA5F8000E6BE7000552C200237B
-                    EB00BFDEFF00F3F8FF00FAFCFF00B0D5FF003E96FF002B89FF00308CFF006AB0
-                    FE005DA6F7000860DE00024FC000EDF6FF005DA9FF00469AFF001F81FF001E80
-                    FF001C7DFC004D9CFB00F0F8FF00F2F8FE003089F400146FE7009ACAFC00B2D8
-                    FF00318EFF00E7F3FF0067AFFF001D7EFE001A7AFB0060A7FC00E5F2FE003F8F
-                    F600E2EFFE0081BAF8000258D800033E9600207AEB00A5CFFE003F97FF003B93
-                    FE00E1EFFF006BADFC0069ABFB00E0EEFE002C80F3000C65EE00C6DEFB00CEE5
-                    FE000763E20003419E001B76ED00A4CFFC002988FF001C7EFE001C7BFB002D87
-                    FB00EDF6FE002279F2000B63ED00085DEA0088BAF400EBF6FF000C68E6000141
-                    A1000F6BE6008BC1FC002987FC001F7DFA001674F70079B5FA00DEEDFE00DDED
-                    FC006EAAF400065AE9000455E500A0C5F600DEEFFF000560E20002409C00085F
-                    DA0056A1FA009ECBFB001573F70079B4FA00CFE3FC001C72EF002274EE00CBE1
-                    FB006DA5F2000556E300DEEBFC009FCBFA000050D4000455C900207DF000E1EF
-                    FE006FA7F00076AFF700176CED00075AE6000F5EE6006AA1F0003E8FF2000043
-                    B700075DD700529EF700FEFEFF00E2EFFC000F65EB000558E7000959E5000250
-                    E2000454E1006FA6F0009CC9F8000355DE0002398B000762E10055A0F700F3F8
-                    FE00E9F3FC00C6DEFA00D9E9FC0099C5F800055DE7000040A3000650BA000357
-                    D3002781F20078B4F700CAE2FC00E9F4FF00DCEDFF009CC7FA003F8FF2000155
-                    DD000140A40004367D000147B2000051D000035CE0000763E300004ED3000042
-                    B700023A8F00033B8A00033D9000013D9500023B9100033A89001212121212A9
-                    AAABACADAD121212121212121297A2A3A4A5A4A6A7A8A8121212121296979899
-                    9A9B9C9D9E9FA0A1121212808D8E8F1290919212129394958C12128081828384
-                    8586878889728A8B8C127576771278797A617B7C7D78127E7F3B676812696A6B
-                    6C6D6E6F70717273743B5859125A5B5C5D5E5F606162636465664A4B124C4D4E
-                    4F5050515253545556573C3D123E263F404142434445464748492D2E122F3031
-                    32333435363738393A3B1217231A242526262728292A2B2C2212121718191A1B
-                    1C1D1E1F1A122021221212120F10111212121212131415161212121212060708
-                    090A0B0C0D0E0E12121212121212120001020304051212121212}
                   Align = alLeft
                   Font.Charset = DEFAULT_CHARSET
                   Font.Color = clBlack
@@ -1347,7 +1365,7 @@ object F_Administration: TF_Administration
                 Left = 225
                 Top = 25
                 Width = 79
-                Height = 278
+                Height = 276
                 Align = alLeft
                 BevelOuter = bvNone
                 TabOrder = 1
@@ -1356,7 +1374,7 @@ object F_Administration: TF_Administration
                   Top = 32
                   Width = 49
                   Height = 33
-                  Hint = 'Ajouter le ou les utilisateurs '#224' la connexion'
+                  Hint = 'Ajouter le ou les utilisateurs '#195#160' la connexion'
                   TabOrder = 0
                 end
                 object BT_out_total: TFWOutAll
@@ -1380,15 +1398,15 @@ object F_Administration: TF_Administration
                   Top = 72
                   Width = 49
                   Height = 33
-                  Hint = 'Ajouter tous les utilisateurs '#224' la connexion'
+                  Hint = 'Ajouter tous les utilisateurs '#195#160' la connexion'
                   TabOrder = 1
                 end
               end
               object lst_UtilisateursOut: TDBGroupView
                 Left = 309
                 Top = 25
-                Width = 157
-                Height = 278
+                Width = 149
+                Height = 276
                 Align = alClient
                 Columns = <
                   item
@@ -1408,10 +1426,9 @@ object F_Administration: TF_Administration
                 ParentFont = False
                 ParentShowHint = False
                 ShowHint = True
-                StateImages = im_images
                 TabOrder = 2
                 ViewStyle = vsReport
-                ColumnsOrder = '0=153'
+                ColumnsOrder = '0=145'
                 Groups = <>
                 ExtendedColumns = <
                   item
@@ -1440,7 +1457,7 @@ object F_Administration: TF_Administration
                 Left = 0
                 Top = 25
                 Width = 225
-                Height = 278
+                Height = 276
                 Align = alLeft
                 Columns = <
                   item
@@ -1460,7 +1477,6 @@ object F_Administration: TF_Administration
                 ParentFont = False
                 ParentShowHint = False
                 ShowHint = True
-                StateImages = im_images
                 TabOrder = 3
                 ViewStyle = vsReport
                 ColumnsOrder = '0=221'
@@ -1493,7 +1509,7 @@ object F_Administration: TF_Administration
           object Panel_Connexion: TPanel
             Left = 3
             Top = 3
-            Width = 474
+            Width = 466
             Height = 174
             Align = alTop
             BevelOuter = bvNone
@@ -1502,15 +1518,17 @@ object F_Administration: TF_Administration
               Tag = 1003
               Left = 14
               Top = 89
-              Width = 125
-              Height = 16
-              Cursor = crHandPoint
-              Caption = 'Cha'#238'ne de connexion'
+              Width = 130
+              Height = 23
+              AutoSize = False
+              Caption = 'Cha'#195#174'ne de connexion'
+              Color = clBtnFace
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clBlack
               Font.Height = -13
               Font.Name = 'MS Sans Serif'
               Font.Style = []
+              ParentColor = False
               ParentFont = False
               ColorFocus = clMaroon
             end
@@ -1518,14 +1536,17 @@ object F_Administration: TF_Administration
               Tag = 1002
               Left = 99
               Top = 64
-              Width = 40
-              Height = 16
-              Caption = 'Libell'#233
+              Width = 39
+              Height = 23
+              AutoSize = False
+              Caption = 'Libell'#195#169
+              Color = clBtnFace
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clBlack
               Font.Height = -13
               Font.Name = 'MS Sans Serif'
               Font.Style = []
+              ParentColor = False
               ParentFont = False
               ColorFocus = clMaroon
             end
@@ -1533,15 +1554,17 @@ object F_Administration: TF_Administration
               Tag = 1001
               Left = 106
               Top = 38
-              Width = 33
-              Height = 16
-              Cursor = crHandPoint
+              Width = 32
+              Height = 23
+              AutoSize = False
               Caption = 'Code'
+              Color = clBtnFace
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clBlack
               Font.Height = -13
               Font.Name = 'MS Sans Serif'
               Font.Style = []
+              ParentColor = False
               ParentFont = False
               ColorFocus = clMaroon
             end
@@ -1551,7 +1574,7 @@ object F_Administration: TF_Administration
               Top = 86
               Width = 297
               Height = 73
-              Hint = 'Cha'#238'ne de connexion'
+              Hint = 'Cha'#195#174'ne de connexion'
               Color = 16776176
               DataField = 'CONN_Chaine'
               Font.Charset = DEFAULT_CHARSET
@@ -1566,7 +1589,7 @@ object F_Administration: TF_Administration
               Left = 448
               Top = 91
               Width = 21
-              Hint = 'Modifier la cha'#238'ne de connexion'
+              Hint = 'Modifier la cha'#195#174'ne de connexion'
               Caption = '...'
               TabOrder = 3
               Font.Charset = DEFAULT_CHARSET
@@ -1585,11 +1608,11 @@ object F_Administration: TF_Administration
               Top = 60
               Width = 297
               Height = 24
-              Hint = 'Libell'#233' de connexion'
+              Hint = 'Libell'#195#169' de connexion'
               Color = clMoneyGreen
               DataField = 'CONN_Libelle'
               Font.Charset = DEFAULT_CHARSET
-              Font.Color = clWindowText
+              Font.Color = 13500416
               Font.Height = -13
               Font.Name = 'MS Sans Serif'
               Font.Style = []
@@ -1608,7 +1631,7 @@ object F_Administration: TF_Administration
               Color = clMoneyGreen
               DataField = 'CONN_Clep'
               Font.Charset = DEFAULT_CHARSET
-              Font.Color = clWindowText
+              Font.Color = 13500416
               Font.Height = -13
               Font.Name = 'MS Sans Serif'
               Font.Style = []
@@ -1621,7 +1644,7 @@ object F_Administration: TF_Administration
             object nv_conn_saisie: TExtDBNavigator
               Left = 0
               Top = 0
-              Width = 474
+              Width = 466
               Height = 25
               Hint = 'Enregistrer annuler les modifications'
               Flat = True
@@ -1642,13 +1665,14 @@ object F_Administration: TF_Administration
           Left = 297
           Top = 0
           Width = 5
-          Height = 511
+          Height = 509
+          ExplicitHeight = 506
         end
         object RbPanel4: TPanel
           Left = 302
           Top = 0
-          Width = 480
-          Height = 511
+          Width = 472
+          Height = 509
           Hint = 'Modifier les utilisateurs'
           Align = alClient
           BorderWidth = 2
@@ -1661,10 +1685,10 @@ object F_Administration: TF_Administration
           ParentShowHint = False
           ShowHint = True
           TabOrder = 0
-          object RbPanel8: TPanel
+          object PanelUtilisateur: TPanel
             Left = 3
             Top = 3
-            Width = 474
+            Width = 466
             Height = 158
             Hint = 'Modifier les utilisateurs'
             Align = alTop
@@ -1682,15 +1706,17 @@ object F_Administration: TF_Administration
               Tag = 1005
               Left = 70
               Top = 46
-              Width = 59
-              Height = 16
-              Cursor = crHandPoint
+              Width = 60
+              Height = 23
+              AutoSize = False
               Caption = 'Utilisateur'
+              Color = clBtnFace
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clBlack
               Font.Height = -13
               Font.Name = 'MS Sans Serif'
               Font.Style = []
+              ParentColor = False
               ParentFont = False
               ColorFocus = clMaroon
             end
@@ -1698,15 +1724,17 @@ object F_Administration: TF_Administration
               Tag = 1002
               Left = 67
               Top = 72
-              Width = 62
-              Height = 16
-              Cursor = crHandPoint
+              Width = 60
+              Height = 23
+              AutoSize = False
               Caption = 'Sommaire'
+              Color = clBtnFace
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clBlack
               Font.Height = -13
               Font.Name = 'MS Sans Serif'
               Font.Style = []
+              ParentColor = False
               ParentFont = False
               ColorFocus = clMaroon
             end
@@ -1714,15 +1742,17 @@ object F_Administration: TF_Administration
               Tag = 1004
               Left = 47
               Top = 124
-              Width = 82
-              Height = 16
-              Cursor = crHandPoint
+              Width = 86
+              Height = 23
+              AutoSize = False
               Caption = 'Mot de passe'
+              Color = clBtnFace
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clBlack
               Font.Height = -13
               Font.Name = 'MS Sans Serif'
               Font.Style = []
+              ParentColor = False
               ParentFont = False
               ColorFocus = clMaroon
             end
@@ -1730,14 +1760,17 @@ object F_Administration: TF_Administration
               Tag = 1003
               Left = 75
               Top = 98
-              Width = 53
-              Height = 16
-              Caption = 'Privil'#232'ge'
+              Width = 52
+              Height = 23
+              AutoSize = False
+              Caption = 'Privil'#195#168'ge'
+              Color = clBtnFace
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clBlack
               Font.Height = -13
               Font.Name = 'MS Sans Serif'
               Font.Style = []
+              ParentColor = False
               ParentFont = False
               ColorFocus = clMaroon
             end
@@ -1747,11 +1780,11 @@ object F_Administration: TF_Administration
               Top = 42
               Width = 297
               Height = 24
-              Hint = 'Nom pr'#233'nom de l'#39'utilisateur'
+              Hint = 'Nom pr'#195#169'nom de l'#39'utilisateur'
               Color = clMoneyGreen
               DataField = 'UTIL_Clep'
               Font.Charset = DEFAULT_CHARSET
-              Font.Color = clWindowText
+              Font.Color = 13500416
               Font.Height = -13
               Font.Name = 'MS Sans Serif'
               Font.Style = []
@@ -1772,7 +1805,7 @@ object F_Administration: TF_Administration
               Color = 16776176
               DataField = 'UTIL__SOMM'
               Font.Charset = DEFAULT_CHARSET
-              Font.Color = clWindowText
+              Font.Color = 13500416
               Font.Height = -13
               Font.Name = 'MS Sans Serif'
               Font.Style = []
@@ -1790,7 +1823,7 @@ object F_Administration: TF_Administration
               Hint = 'Modifier le mot de passe'
               Color = 16776176
               Font.Charset = DEFAULT_CHARSET
-              Font.Color = clWindowText
+              Font.Color = 13500416
               Font.Height = -13
               Font.Name = 'MS Sans Serif'
               Font.Style = []
@@ -1811,12 +1844,12 @@ object F_Administration: TF_Administration
               Top = 94
               Width = 298
               Height = 24
-              Hint = 'S'#233'lectionner un privil'#232'ge'
+              Hint = 'S'#195#169'lectionner un privil'#195#168'ge'
               DropDownCount = 8
               Color = 16776176
               DataField = 'UTIL__PRIV'
               Font.Charset = DEFAULT_CHARSET
-              Font.Color = clWindowText
+              Font.Color = 13500416
               Font.Height = -13
               Font.Name = 'MS Sans Serif'
               Font.Style = []
@@ -1828,9 +1861,9 @@ object F_Administration: TF_Administration
             object nav_Utilisateur: TExtDBNavigator
               Left = 3
               Top = 3
-              Width = 468
+              Width = 460
               Height = 25
-              Hint = 'Action d'#39#233'dition sur les utilisateurs'
+              Hint = 'Action d'#39#195#169'dition sur les utilisateurs'
               Flat = True
               DeleteQuestion = 'Confirmez-vous l'#39'effacement de l'#39'enregistrement ?'
               Align = alTop
@@ -1846,16 +1879,15 @@ object F_Administration: TF_Administration
           object pg_util_conn: TPageControl
             Left = 3
             Top = 161
-            Width = 474
-            Height = 347
+            Width = 466
+            Height = 345
             ActivePage = TabSheet1
             Align = alClient
-            MultiLine = True
             TabOrder = 1
             object TabSheet1: TTabSheet
               Caption = 'Connexions'
               Font.Charset = DEFAULT_CHARSET
-              Font.Color = clBlack
+              Font.Color = 13500416
               Font.Height = -11
               Font.Name = 'MS Sans Serif'
               Font.Style = []
@@ -1864,12 +1896,13 @@ object F_Administration: TF_Administration
                 Left = 304
                 Top = 25
                 Width = 5
-                Height = 294
+                Height = 292
+                ExplicitHeight = 286
               end
               object Panel15: TPanel
                 Left = 0
                 Top = 0
-                Width = 466
+                Width = 458
                 Height = 25
                 Align = alTop
                 TabOrder = 0
@@ -1891,48 +1924,14 @@ object F_Administration: TF_Administration
                   BevelOuter = bvNone
                   TabOrder = 3
                 end
-                object bt_abd: TJvXPButton
+                object bt_abd: TFWCancel
                   Left = 115
                   Top = 1
                   Width = 92
                   Height = 23
                   Hint = 'Abandonner les modifications de constitution du groupe'
-                  Caption = 'Abandonner'
                   Enabled = False
                   TabOrder = 1
-                  Glyph.Data = {
-                    07544269746D6170EE030000424DEE03000000000000EE020000280000001000
-                    000010000000010008000000000000010000120B0000120B0000AE000000AE00
-                    0000247BEB004696F3004A98F4002F87F000116CE600075FDC002D82EB0091C5
-                    FB00CCE6FF00D9EDFF00DCEDFE00C4E0FE0086BFFC00348BF4000A65E1004997
-                    F300C7E3FF00F7FBFF00FFFFFF00E0EFFE005CA5F8000E6BE7000552C200237B
-                    EB00BFDEFF00F3F8FF00FAFCFF00B0D5FF003E96FF002B89FF00308CFF006AB0
-                    FE005DA6F7000860DE00024FC000EDF6FF005DA9FF00469AFF001F81FF001E80
-                    FF001C7DFC004D9CFB00F0F8FF00F2F8FE003089F400146FE7009ACAFC00B2D8
-                    FF00318EFF00E7F3FF0067AFFF001D7EFE001A7AFB0060A7FC00E5F2FE003F8F
-                    F600E2EFFE0081BAF8000258D800033E9600207AEB00A5CFFE003F97FF003B93
-                    FE00E1EFFF006BADFC0069ABFB00E0EEFE002C80F3000C65EE00C6DEFB00CEE5
-                    FE000763E20003419E001B76ED00A4CFFC002988FF001C7EFE001C7BFB002D87
-                    FB00EDF6FE002279F2000B63ED00085DEA0088BAF400EBF6FF000C68E6000141
-                    A1000F6BE6008BC1FC002987FC001F7DFA001674F70079B5FA00DEEDFE00DDED
-                    FC006EAAF400065AE9000455E500A0C5F600DEEFFF000560E20002409C00085F
-                    DA0056A1FA009ECBFB001573F70079B4FA00CFE3FC001C72EF002274EE00CBE1
-                    FB006DA5F2000556E300DEEBFC009FCBFA000050D4000455C900207DF000E1EF
-                    FE006FA7F00076AFF700176CED00075AE6000F5EE6006AA1F0003E8FF2000043
-                    B700075DD700529EF700FEFEFF00E2EFFC000F65EB000558E7000959E5000250
-                    E2000454E1006FA6F0009CC9F8000355DE0002398B000762E10055A0F700F3F8
-                    FE00E9F3FC00C6DEFA00D9E9FC0099C5F800055DE7000040A3000650BA000357
-                    D3002781F20078B4F700CAE2FC00E9F4FF00DCEDFF009CC7FA003F8FF2000155
-                    DD000140A40004367D000147B2000051D000035CE0000763E300004ED3000042
-                    B700023A8F00033B8A00033D9000013D9500023B9100033A89001212121212A9
-                    AAABACADAD121212121212121297A2A3A4A5A4A6A7A8A8121212121296979899
-                    9A9B9C9D9E9FA0A1121212808D8E8F1290919212129394958C12128081828384
-                    8586878889728A8B8C127576771278797A617B7C7D78127E7F3B676812696A6B
-                    6C6D6E6F70717273743B5859125A5B5C5D5E5F606162636465664A4B124C4D4E
-                    4F5050515253545556573C3D123E263F404142434445464748492D2E122F3031
-                    32333435363738393A3B1217231A242526262728292A2B2C2212121718191A1B
-                    1C1D1E1F1A122021221212120F10111212121212131415161212121212060708
-                    090A0B0C0D0E0E12121212121212120001020304051212121212}
                   Align = alLeft
                   Font.Charset = DEFAULT_CHARSET
                   Font.Color = clBlack
@@ -1972,7 +1971,7 @@ object F_Administration: TF_Administration
                 Left = 225
                 Top = 25
                 Width = 79
-                Height = 294
+                Height = 292
                 Align = alLeft
                 BevelOuter = bvNone
                 TabOrder = 1
@@ -2012,8 +2011,8 @@ object F_Administration: TF_Administration
               object lst_out: TDBGroupView
                 Left = 309
                 Top = 25
-                Width = 157
-                Height = 294
+                Width = 149
+                Height = 292
                 Align = alClient
                 Columns = <
                   item
@@ -2033,10 +2032,9 @@ object F_Administration: TF_Administration
                 ParentFont = False
                 ParentShowHint = False
                 ShowHint = True
-                StateImages = im_images
                 TabOrder = 2
                 ViewStyle = vsReport
-                ColumnsOrder = '0=153'
+                ColumnsOrder = '0=145'
                 Groups = <>
                 ExtendedColumns = <
                   item
@@ -2065,7 +2063,7 @@ object F_Administration: TF_Administration
                 Left = 0
                 Top = 25
                 Width = 225
-                Height = 294
+                Height = 292
                 Align = alLeft
                 Columns = <
                   item
@@ -2085,7 +2083,6 @@ object F_Administration: TF_Administration
                 ParentFont = False
                 ParentShowHint = False
                 ShowHint = True
-                StateImages = im_images
                 TabOrder = 3
                 ViewStyle = vsReport
                 ColumnsOrder = '0=221'
@@ -2120,7 +2117,7 @@ object F_Administration: TF_Administration
           Left = 0
           Top = 0
           Width = 297
-          Height = 511
+          Height = 509
           Hint = 'Modifier les utilisateurs'
           Align = alLeft
           BorderWidth = 1
@@ -2138,7 +2135,7 @@ object F_Administration: TF_Administration
             Top = 2
             Width = 293
             Height = 25
-            Hint = 'S'#233'lectionner un utilisateur'
+            Hint = 'S'#195#169'lectionner un utilisateur'
             Flat = True
             DeleteQuestion = 'Confirmez-vous l'#39'effacement de l'#39'enregistrement ?'
             Align = alTop
@@ -2153,10 +2150,29 @@ object F_Administration: TF_Administration
             Left = 2
             Top = 27
             Width = 293
-            Height = 482
-            Hint = 'S'#233'lectionner un utilisateur'
+            Height = 480
+            Hint = 'S'#195#169'lectionner un utilisateur'
             Align = alClient
             BorderStyle = bsNone
+            Columns = <
+              item
+                Expanded = False
+                FieldName = 'UTIL_Clep'
+                Title.Alignment = taCenter
+                Title.Caption = 'Utilisateur'
+                Width = 140
+                Visible = True
+                FieldTag = 0
+              end
+              item
+                Expanded = False
+                FieldName = 'UTIL__SOMM'
+                Title.Alignment = taCenter
+                Title.Caption = 'Sommaire'
+                Width = 139
+                Visible = True
+                FieldTag = 0
+              end>
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
             Font.Height = -11
@@ -2164,9 +2180,7 @@ object F_Administration: TF_Administration
             Font.Style = []
             Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
             ParentFont = False
-            ParentShowHint = False
             ReadOnly = True
-            ShowHint = True
             TabOrder = 1
             TitleFont.Charset = DEFAULT_CHARSET
             TitleFont.Color = clBlack
@@ -2177,38 +2191,32 @@ object F_Administration: TF_Administration
               item
                 Expanded = False
                 FieldName = 'UTIL_Clep'
-                Font.Charset = DEFAULT_CHARSET
-                Font.Color = 13500416
-                Font.Height = -11
-                Font.Name = 'MS Sans Serif'
-                Font.Style = []
+                Title.Alignment = taCenter
                 Title.Caption = 'Utilisateur'
                 Width = 140
                 Visible = True
+                FieldTag = 0
               end
               item
                 Expanded = False
                 FieldName = 'UTIL__SOMM'
-                Font.Charset = DEFAULT_CHARSET
-                Font.Color = 13500416
-                Font.Height = -11
-                Font.Name = 'MS Sans Serif'
-                Font.Style = []
+                Title.Alignment = taCenter
                 Title.Caption = 'Sommaire'
                 Width = 139
                 Visible = True
+                FieldTag = 0
               end>
           end
         end
       end
       object ts_infos: TTabSheet
-        Caption = 'Informations g'#233'n'#233'rales'
+        Caption = 'Informations g'#195#169'n'#195#169'rales'
         ImageIndex = 3
         object p_Entreprise: TPanel
           Left = 0
           Top = 0
-          Width = 782
-          Height = 511
+          Width = 774
+          Height = 509
           Align = alClient
           TabOrder = 0
           object Label6: TFWLabel
@@ -2216,13 +2224,16 @@ object F_Administration: TF_Administration
             Left = 152
             Top = 70
             Width = 91
-            Height = 16
-            Caption = 'Libell'#233' de login'
+            Height = 23
+            AutoSize = False
+            Caption = 'Libell'#195#169' de login'
+            Color = clBtnFace
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
             Font.Height = -13
             Font.Name = 'MS Sans Serif'
             Font.Style = []
+            ParentColor = False
             ParentFont = False
             ColorFocus = clMaroon
           end
@@ -2230,91 +2241,159 @@ object F_Administration: TF_Administration
             Tag = 1006
             Left = 110
             Top = 44
-            Width = 134
-            Height = 16
-            Caption = 'Libell'#233' de l'#39'application'
+            Width = 132
+            Height = 23
+            AutoSize = False
+            Caption = 'Libell'#195#169' de l'#39'application'
+            Color = clBtnFace
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
             Font.Height = -13
             Font.Name = 'MS Sans Serif'
             Font.Style = []
+            ParentColor = False
             ParentFont = False
             ColorFocus = clMaroon
           end
           object lb_imaide: TFWLabel
             Tag = 1012
             Left = 164
-            Top = 348
-            Width = 79
-            Height = 16
+            Top = 356
+            Width = 78
+            Height = 23
+            AutoSize = False
             Caption = 'Image d'#39'aide'
+            Color = clBtnFace
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
             Font.Height = -13
             Font.Name = 'MS Sans Serif'
             Font.Style = []
+            ParentColor = False
             ParentFont = False
             ColorFocus = clMaroon
           end
           object lb_imquitter: TFWLabel
             Tag = 1011
             Left = 61
-            Top = 289
-            Width = 182
-            Height = 16
+            Top = 297
+            Width = 187
+            Height = 23
+            AutoSize = False
             Caption = 'Image pour quitter l'#39'application'
+            Color = clBtnFace
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
             Font.Height = -13
             Font.Name = 'MS Sans Serif'
             Font.Style = []
+            ParentColor = False
             ParentFont = False
             ColorFocus = clMaroon
           end
           object lb_imacces: TFWLabel
             Tag = 1010
             Left = 154
-            Top = 230
-            Width = 89
-            Height = 16
-            Caption = 'Image d'#39'acc'#232's'
+            Top = 238
+            Width = 90
+            Height = 23
+            AutoSize = False
+            Caption = 'Image d'#39'acc'#195#168's'
+            Color = clBtnFace
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
             Font.Height = -13
             Font.Name = 'MS Sans Serif'
             Font.Style = []
+            ParentColor = False
             ParentFont = False
             ColorFocus = clMaroon
           end
           object lb_imabout: TFWLabel
             Tag = 1009
             Left = 148
-            Top = 171
+            Top = 179
             Width = 95
-            Height = 16
-            Caption = 'Image '#224' propos'
+            Height = 23
+            AutoSize = False
+            Caption = 'Image '#195#160' propos'
+            Color = clBtnFace
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
             Font.Height = -13
             Font.Name = 'MS Sans Serif'
             Font.Style = []
+            ParentColor = False
             ParentFont = False
             ColorFocus = clMaroon
           end
           object lb_imapp: TFWLabel
             Tag = 1008
             Left = 111
-            Top = 112
-            Width = 132
-            Height = 16
+            Top = 120
+            Width = 133
+            Height = 23
+            AutoSize = False
             Caption = 'Image de l'#39'application'
+            Color = clBtnFace
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
             Font.Height = -13
             Font.Name = 'MS Sans Serif'
             Font.Style = []
+            ParentColor = False
             ParentFont = False
             ColorFocus = clMaroon
+          end
+          object im_aide: TExtDBImage
+            Tag = 12
+            Left = 256
+            Top = 336
+            Width = 65
+            Height = 57
+            Cursor = crHandPoint
+            OnClick = im_DblClick
+            Datafield = 'ENTR_Aide'
+          end
+          object im_quitter: TExtDBImage
+            Tag = 11
+            Left = 256
+            Top = 277
+            Width = 65
+            Height = 57
+            Cursor = crHandPoint
+            OnClick = im_DblClick
+            Datafield = 'ENTR_Quitter'
+          end
+          object im_acces: TExtDBImage
+            Tag = 10
+            Left = 256
+            Top = 218
+            Width = 65
+            Height = 57
+            Cursor = crHandPoint
+            OnClick = im_DblClick
+            Datafield = 'ENTR_Acces'
+          end
+          object im_about: TExtDBImage
+            Tag = 9
+            Left = 256
+            Top = 159
+            Width = 65
+            Height = 57
+            Cursor = crHandPoint
+            OnClick = im_DblClick
+            Datafield = 'ENTR_About'
+          end
+          object im_app: TExtDBImage
+            Tag = 8
+            Left = 256
+            Top = 100
+            Width = 65
+            Height = 57
+            Cursor = crHandPoint
+            OnClick = im_DblClick
+            Datafield = 'ENTR_Icone'
           end
           object ed_nomlog: TFWDBEdit
             Tag = 7
@@ -2322,7 +2401,7 @@ object F_Administration: TF_Administration
             Top = 66
             Width = 297
             Height = 24
-            Hint = 'Libell'#233' de connexion'
+            Hint = 'Libell'#195#169' de connexion'
             Color = clMoneyGreen
             DataField = 'ENTR_Nomlog'
             Font.Charset = DEFAULT_CHARSET
@@ -2357,7 +2436,7 @@ object F_Administration: TF_Administration
           object nv_Entreprise: TExtDBNavigator
             Left = 1
             Top = 1
-            Width = 780
+            Width = 772
             Height = 25
             Hint = 'Enregistrer annuler les modifications'
             Flat = True
@@ -2371,56 +2450,6 @@ object F_Administration: TF_Administration
             OnBtnPost = nav_UtilisateurBtnPost
             OnBtnDelete = nav_UtilisateurBtnDelete
           end
-          object im_aide: TExtDBImage
-            Tag = 12
-            Left = 256
-            Top = 328
-            Width = 65
-            Height = 57
-            DataField = 'ENTR_Aide'
-            TabOrder = 3
-            OnDblClick = im_DblClick
-          end
-          object im_quitter: TExtDBImage
-            Tag = 11
-            Left = 256
-            Top = 269
-            Width = 65
-            Height = 57
-            DataField = 'ENTR_Quitter'
-            TabOrder = 4
-            OnDblClick = im_DblClick
-          end
-          object im_acces: TExtDBImage
-            Tag = 10
-            Left = 256
-            Top = 210
-            Width = 65
-            Height = 57
-            DataField = 'ENTR_Acces'
-            TabOrder = 5
-            OnDblClick = im_DblClick
-          end
-          object im_about: TExtDBImage
-            Tag = 9
-            Left = 256
-            Top = 151
-            Width = 65
-            Height = 57
-            DataField = 'ENTR_About'
-            TabOrder = 6
-            OnDblClick = im_DblClick
-          end
-          object im_app: TExtDBImage
-            Tag = 8
-            Left = 256
-            Top = 92
-            Width = 65
-            Height = 57
-            DataField = 'ENTR_Icone'
-            TabOrder = 7
-            OnDblClick = im_DblClick
-          end
         end
       end
     end
@@ -2428,13 +2457,13 @@ object F_Administration: TF_Administration
   object Panel2: TPanel
     Left = 0
     Top = 0
-    Width = 792
+    Width = 784
     Height = 25
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 1
     object Panel3: TPanel
-      Left = 706
+      Left = 698
       Top = 0
       Width = 13
       Height = 25
@@ -2443,7 +2472,7 @@ object F_Administration: TF_Administration
       TabOrder = 2
     end
     object bt_fermer: TFWClose
-      Left = 719
+      Left = 711
       Top = 0
       Height = 25
       Caption = 'Fermer'
@@ -2453,11 +2482,11 @@ object F_Administration: TF_Administration
       OnClick = bt_fermerClick
     end
     object bt_apercu: TFWPreview
-      Left = 633
+      Left = 625
       Top = 0
       Height = 25
-      Hint = 'Aper'#231'u  (Impression / exportation)'
-      Caption = 'Aper'#231'u'
+      Hint = 'Aper'#195#167'u  (Impression / exportation)'
+      Caption = 'Aper'#195#167'u'
       Enabled = False
       TabOrder = 0
       Align = alRight
@@ -2470,708 +2499,24 @@ object F_Administration: TF_Administration
     end
   end
   object im_ListeImages: TImageList
-    Left = 111
+    Left = 200
     Top = 344
-    Bitmap = {
-      494C010104000900040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
-      0000000000003600000028000000400000003000000001002000000000000030
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000848484008484
-      8400848484000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000005E50
-      4A005E504A000000000000000000000000000000000000000000000000003D6A
-      8500777777000000000000000000000000000000000000000000BD000000BD00
-      0000848484008484840000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      000000000000FF00000000000000000000000000000000000000237BA70028D9
-      FF000174A7005A4A430000000000000000000000000000000000237BA70096F8
-      FF003B62790000000000000000000000000000FF000000BD000000BD000000BD
-      000000BD0000BD00000084848400000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      000000000000000084000000000000000000000000000000000000000000FF00
-      0000000000000000000000000000000000000000000000000000000000000000
-      000000000000000000000000000000000000000000000000000000000000EEF9
-      FC0002CDFF000190C3005A4A4300000000000000000063AECC0027D7FF0038CE
-      EE007777770000000000000000000000000084848400CED6D60000BD000000BD
-      000000BD000000BD000084848400848484000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      8400000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000FF000000FF00
-      0000FF0000000000000000000000000000000000000000000000000000000000
-      0000FF000000000000000000000000000000000000000000000000000000086A
-      9B0011D2FF0011D2FF0038CEEE0033495700CBE4EE004AE5FF0007CFFF000269
-      9B000000000000000000000000000000000000FF000000BD000000BD000000BD
-      000000BD000000BD0000BD000000848484008484840000000000000000000000
-      0000000000000000000000000000000000000000000000000000000084000000
-      8400000084000000000000000000000000000000000000000000000000000000
-      0000000084000000000000000000000000000000000000000000FF000000FF00
-      0000FF000000000000000000000000000000000000000000000000000000FF00
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000EFFDFF0002CDFF0033DDFF006CF0FF0094FDFF005DEBFF0024D8FF003F5F
-      73000000000000000000000000000000000084848400CED6D60000BD000000BD
-      000000BD000000BD000000BD0000BD0000008484840084848400000000000000
-      0000000000000000000000000000000000000000000000000000000084000000
-      8400000084000000000000000000000000000000000000000000000000000000
-      840000000000000000000000000000000000000000000000000000000000FF00
-      0000FF000000FF00000000000000000000000000000000000000FF000000FF00
-      0000000000000000000000000000000000000000000000000000000000000000
-      00005DACCC0006CEFF001ED6FF0052E8FF008DFBFF007EF6FF0022A4CC007777
-      77000000000000000000000000000000000000FF000000BD000000BD0000BD00
-      00008484840000FF000000BD000000BD000000BD0000BD000000848484000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      8400000084000000840000000000000000000000000000000000000084000000
-      8400000000000000000000000000000000000000000000000000000000000000
-      0000FF000000FF000000FF0000000000000000000000FF000000FF0000000000
-      000000000000000000000000000000000000000000000000000000000000386D
-      8B000AC6F60017D4FF0007CFFF003BE0FF0071F2FF0094FDFF0046D8F3001C70
-      A0007777770000000000000000000000000084848400CED6D60000BD0000BD00
-      0000848484008484840000BD000000BD000000BD000000BD0000848484008484
-      8400000000000000000000000000000000000000000000000000000000000000
-      0000000084000000840000008400000000000000000000008400000084000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      000000000000FF000000FF000000FF000000FF000000FF000000000000000000
-      0000000000000000000000000000000000000000000077777700078ABB001BD5
-      FF005DEBFF002ADAFF0004CEFF0024D8FF005DEBFF008DFBFF0073F2FF0031DC
-      FF000289BB0058494300000000000000000000FF000000BD000000BD0000BD00
-      0000848484008484840000FF000000BD000000BD000000BD0000BD0000008484
-      8400848484000000000000000000000000000000000000000000000000000000
-      0000000000000000840000008400000084000000840000008400000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      00000000000000000000FF000000FF000000FF00000000000000000000000000
-      0000000000000000000000000000000000002C7AA80000CCFF0071F2FF0094FD
-      FF006CF0FF0046E4FF0011D2FF0011D2FF0042E2FF007EF6FF008DFBFF004AE5
-      FF0011D2FF0017D4FF001D628A000000000000000000CED6D60000BD0000BD00
-      000084848400848484000000000000FF000000BD000000BD0000BD0000008484
-      8400848484000000000000000000000000000000000000000000000000000000
-      0000000000000000000000008400000084000000840000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      000000000000FF000000FF000000FF000000FF000000FF000000000000000000
-      00000000000000000000000000000000000002699B00CBE4EE00A1DEEE0063AE
-      CC003295BC000A7EAE0052E8FF0002CDFF002DDBFF000A7EAE003295BC007DB2
-      CC00D3E5EE00D3E5EE000971A100000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000FF000000BD000000BD
-      0000BD000000BD00000000000000000000000000000000000000000000000000
-      0000000000000000840000008400000084000000840000008400000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000FF000000FF000000FF0000000000000000000000FF000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      00000000000000000000E7FCFF0011D2FF0011D2FF0077777700000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      000000000000000000000000000000000000000000000000000000BD000000BD
-      000000BD0000BD00000084848400000000000000000000000000000000000000
-      0000000084000000840000008400000000000000000000008400000000000000
-      0000000000000000000000000000000000000000000000000000FF000000FF00
-      0000FF000000FF00000000000000000000000000000000000000FF000000FF00
-      0000000000000000000000000000000000000000000000000000000000000000
-      00000000000000000000D3E5EE001ED6FF0000ACDF0077777700000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      000000000000000000000000000000000000000000000000000000FF000000BD
-      000000BD000000BD000084848400000000000000000000000000000084000000
-      8400000084000000840000000000000000000000000000000000000084000000
-      84000000000000000000000000000000000000000000FF000000FF000000FF00
-      0000FF000000000000000000000000000000000000000000000000000000FF00
-      0000FF0000000000000000000000000000000000000000000000000000000000
-      00000000000000000000086A9B0031DCFF00036FA10000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      00000000000000000000000000000000000000000000000000000000000000FF
-      000000BD000000BD0000BD000000848484000000000000008400000084000000
-      8400000084000000000000000000000000000000000000000000000000000000
-      84000000840000000000000000000000000000000000FF000000FF0000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000FF000000FF00000000000000000000000000000000000000000000000000
-      00000000000000000000086A9B0062E5FF0026668B0000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      00000000000000FF0000BD000000848484000000000000008400000084000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000084000000840000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      000000000000000000000000000002699B000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000BD0000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      000000000000000000000000000000000000424D3E000000000000003E000000
-      2800000040000000300000000100010000000000800100000000000000000000
-      000000000000000000000000FFFFFF0000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      00000000000000000000000000000000FFFFFFFFC7FFFFFFFFFFE7E7C3FFFFFF
-      FFFBC3C701FFFFFBEFFFE18700FFEFFFC7F7E00F007FC7F7C7EFF00F003FC7EF
-      E3CFF00F001FE3CFF19FE007000FF19FF83F80030007F83FFC7F00018207FC7F
-      F83F0001FF83F83FF1BFFC3FFFC1F1BFC3CFFC3FFFC1C3CF87E7FC7FFFE087E7
-      9FF3FC7FFFF89FF3FFFFFEFFFFFDFFFF00000000000000000000000000000000
-      000000000000}
   end
   object od_ChargerImage: TOpenDialog
-    DefaultExt = 'bmp'
-    Filter = 'Bitmaps et Ic'#244'nes|*.bmp;*.ico'
+    DefaultExt = '.bmp'
+    Filter = 'Bitmaps et Ic'#195#180'nes|*.bmp;*.ico'
     Options = [ofReadOnly, ofHideReadOnly, ofPathMustExist, ofFileMustExist, ofEnableSizing]
-    Left = 32
-    Top = 344
+    Left = 56
+    Top = 248
   end
   object iml_Menus: TImageList
-    Left = 191
+    Left = 224
     Top = 344
-    Bitmap = {
-      494C010101000400040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
-      0000000000003600000028000000400000001000000001002000000000000010
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      00000000000000000000C8C8C80088888800D094F60000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      000000000000000000000000000000000000000000000000000000000000D094
-      F6005454F00038ACED0038ACED004848480088888800D0D0D000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      00000000000000000000000000000000000000000000C8C8C8000082CF000082
-      CF000082CF000082CF00009F9F00404000004848480048484800D0D0D0000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      000000000000000000000000000000000000000000000082CF000082CF000082
-      CF0000649F0000649F0000649F0058585800484848008744000048484800C8C8
-      C800FFFFFF000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      000000000000000000000000000000000000000000000082CF0000649F000064
-      9F000082CF000082CF0000649F00874400004848480048484800874400008744
-      0000C8C8C800FFFFFF0000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000054B8F0000082CF000082
-      CF0000649F005858580058585800005587008744000087440000484848008744
-      000087440000A8A8A800D0D0D000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000009F9F000064
-      9F000055870000649F0000649F00006F6F005858580040400000874400004848
-      48008744000088888800F9CCA800000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      00000000000000000000000000000000000000000000000000000000000038AC
-      ED0000649F0000649F0000649F0000649F0000649F0048484800874400004040
-      00005858580088888800D0D0D000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      00000082CF0000649F0000649F0000649F005858580000649F00404000004040
-      000058585800D0D0D00000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000D094F60000649F0000649F0000649F0000649F0000649F00484848004040
-      0000C8C8C8000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000004848480000649F00006F6F00005587000055870000649F005858
-      5800D0D0D0000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000E7E7000082CF005858580054B8F000C8C8C800D0D0
-      D000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000038ACED0038ACED000000000054B8F00000649F000064
-      9F00D0D0D0000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      00000000000000000000FFFFFF00FFFFFF0000000000009F9F0038ACED0038AC
-      ED00C8C8C8000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000D0D0D000D0D0
-      D000D0D0D0000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      000000000000000000000000000000000000424D3E000000000000003E000000
-      2800000040000000100000000100010000000000800000000000000000000000
-      000000000000000000000000FFFFFF00FFFF000000000000FC7F000000000000
-      E03F000000000000801F00000000000080070000000000008003000000000000
-      8001000000000000C001000000000000E001000000000000F003000000000000
-      F007000000000000F807000000000000FC0F000000000000FC87000000000000
-      FC87000000000000FFC700000000000000000000000000000000000000000000
-      000000000000}
-  end
-  object im_images: TImageList
-    Left = 272
-    Top = 346
-    Bitmap = {
-      494C010102000400040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
-      0000000000003600000028000000400000001000000001002000000000000010
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000008484
-      0000848400000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000008484
-      0000848400000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      000000000000000000000000000000000000000000000000FF000000FF000000
-      FF000000FF000000FF000000FF00000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000084840000848400008484
-      0000848400008484000084840000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      000000000000000000000000000000000000000000000000FF000000FF000000
-      FF000000FF000000FF000000FF00000000000000FF00000000000000FF000000
-      00000000FF000000000000000000000000000000000000000000000000008484
-      0000000000008484000000000000848400000000000084840000848400008484
-      0000848400008484000084840000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000008484
-      0000848400000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      00000000FF000000000000000000000000000000000000000000000000008484
-      0000000000000000000000000000000000000000000000000000000000008484
-      0000848400000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000FF0000000000000000000000000000000000000000000000FF000000FF00
-      0000FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF00
-      0000FF000000FF0000000000000000000000000000000000000000000000FF00
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      00000000000000000000000000000000000000000000FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF0000000000000000000000000000000000FF000000FFFF
-      FF0000FFFF00FFFFFF0000FFFF00FF000000FF00000000FFFF00FFFFFF0000FF
-      FF00FFFFFF00FF00000000000000000000000000000000000000FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00FFFFFF00000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      00000000000000000000000000000000000000000000FFFFFF00FF000000FF00
-      0000FF000000FF000000FF000000FF00000000000000FFFFFF00FF000000FF00
-      0000FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF00
-      0000FF000000FF000000FFFFFF0000000000FF000000FF000000FF000000FF00
-      0000FF000000FF000000FFFFFF00000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      00000000000000000000000000000000000000000000FFFFFF00FF000000FFFF
-      FF0000FFFF00FFFFFF0000FFFF00FF00000000000000FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF0000000000000000000000000000000000FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00FFFFFF0000000000FF00000000FFBD00FFFFFF0000FF
-      FF00FFFFFF00FF000000FFFFFF00000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      00000000000000000000000000000000000000000000FFFFFF00FF000000FF00
-      0000FF000000FF000000FF000000FF00000000000000FFFFFF00848484008484
-      840084848400FFFFFF0000000000000000000000000000000000FFFFFF008484
-      84008484840084848400FFFFFF0000000000FF000000FF000000FF000000FF00
-      0000FF000000FF000000FFFFFF00000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      00000000000000000000000000000000000000000000FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00000000000000000000000000FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF0000000000000000000000000000000000FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00FFFFFF00000000000000000000000000FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00FFFFFF00000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      00000000000000000000000000000000000000000000FFFFFF00848484008484
-      840084848400FFFFFF00000000000000000000000000FFFFFF00848484008484
-      840084848400FFFFFF0000000000000000000000000000000000FFFFFF008484
-      84008484840084848400FFFFFF00000000000000000000000000FFFFFF008484
-      84008484840084848400FFFFFF00000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      00000000000000000000000000000000000000000000FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00000000000000000000000000FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF0000000000000000000000000000000000FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00FFFFFF00000000000000000000000000FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00FFFFFF00000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      000000000000000000000000000000000000424D3E000000000000003E000000
-      2800000040000000100000000100010000000000800000000000000000000000
-      000000000000000000000000FFFFFF00FFFFFFE700000000FFFFFFE700000000
-      81FFFF81000000008157EA8100000000FFFFFFE700000000FFF7EFE700000000
-      01C0038000000000010000800000000000000000000000000001800000000000
-      0001800000000000010180800000000001018080000000000101808000000000
-      0101808000000000FFFFFFFF0000000000000000000000000000000000000000
-      000000000000}
   end
   object OpenDialog: TOpenDialog
-    DefaultExt = 'bmp'
+    DefaultExt = '.bmp'
     Filter = 'Fichiers Bitmap|*.bmp'
-    Left = 32
+    Left = 48
+    Top = 160
   end
 end

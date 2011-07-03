@@ -12,26 +12,26 @@ unit U_Administration;
 {$ENDIF}
 
 {
-CrÃ©Ã©e par Yves Michard le 12-2003
+Créée par Yves Michard le 12-2003
 
 Maquettage
-ModifiÃ©e par Matthieu Giroux le 02-2004
-ModifiÃ©e par Seb le 05-2004
+Modifiée par Matthieu Giroux le 02-2004
+Modifiée par Seb le 05-2004
 
 Ajouts :
 Manipulation des fonctions
 Manipulation de l'ordre
-Glisser DÃ©placer
+Glisser Déplacer
 Gestion de la suppression
 Mot de passe utilisateur
-Protection de l'accÃ¨s
+Protection de l'accès
 
 Modifications :
-Mise Ã  jour de la barre d'accÃ¨s
-Mise Ã  jour du volet d'accÃ¨s
-PrÃ©sentation
-Mise Ã  jour des icÃ´nes
-EvÃ¨nements de gestion des tableaux
+Mise à jour de la barre d'accès
+Mise à jour du volet d'accès
+Présentation
+Mise à jour des icônes
+Evènements de gestion des tableaux
 Gestion des connexions - Utilisateurs / Connexion
 }
 
@@ -49,7 +49,7 @@ uses
   lmessages, lcltype,
   LResources, 
 {$ELSE}
-  Windows, Variants, Mask, RXDBCtrl,
+  Windows, Variants, Mask, RXDBCtrl, Messages,
   JvExComCtrls, JvListView, JvExControls, JvXPCore,
   ExtTBTls, ExtDock, ExtTBTlwn, ExtTBTlbr,
 {$ENDIF}
@@ -70,21 +70,21 @@ uses
   u_extdbgrid,
   U_ExtDBNavigator, Graphics,
   JvXPButtons, u_framework_components,
-  u_framework_dbcomponents, u_buttons_appli ;
+  u_framework_dbcomponents, u_buttons_appli, ImgList, ToolWin;
 
 {$IFDEF VERSIONS}
 const
-  gver_F_Administration : T_Version = ( Component : 'FenÃªtre de gestion de droits (ADO et ZEOS)' ; FileUnit : 'U_Administration' ;
+  gver_F_Administration : T_Version = ( Component : 'Fenêtre de gestion de droits (ADO et ZEOS)' ; FileUnit : 'U_Administration' ;
       			           Owner : 'Matthieu Giroux' ;
-      			           Comment : 'GÃ¨re les sommaires, les connexions, les utilisateurs.' ;
+      			           Comment : 'Gère les sommaires, les connexions, les utilisateurs.' ;
       			           BugsStory   : 'Version 2.0.0.4 : No Data Glyph to abort.' + #13#10 +
                                                  'Version 2.0.0.3 : No ExtToolBar on Lazarus.' + #13#10 +
                                                  'Version 2.0.0.2 : Special form properties bug.' + #13#10 +
       			                	 'Version 2.0.0.1 : Integrating LAZARUS with no special form properties.' + #13#10 +
-      			                	 'Version 2.0.0.0 : Version gÃ©nÃ©rique de la fiche : on copie un query.' + #13#10 +
+      			                	 'Version 2.0.0.0 : Version générique de la fiche : on copie un query.' + #13#10 +
       			                	 'Version 1.1.0.4 : Code validation mot de passe refait.' + #13#10 +
- 			                	 'Version 1.1.0.3 : Bug fb_ChargeIcoBmp (pas besoin d''image Ã  afficher quand on utilise un DBimage).' + #13#10 +
-     			                	 'Version 1.1.0.2 : Suppression du rafraÃ®chissement utilisateur car dans dico.' + #13#10 +
+ 			                	 'Version 1.1.0.3 : Bug fb_ChargeIcoBmp (pas besoin d''image à afficher quand on utilise un DBimage).' + #13#10 +
+     			                	 'Version 1.1.0.2 : Suppression du rafraîchissement utilisateur car dans dico.' + #13#10 +
      			                	 'Version 1.1.0.1 : Bug retaillage au centre.' + #13#10 +
      			                	 'Version 1.1.0.0 : Passage en Jedi 3.' + #13#10 +
      			                	 'Version 1.0.0.0 : Mot de passe en varbinary.'  ;
@@ -101,13 +101,8 @@ type
     im_ListeImages: TImageList;
     od_ChargerImage: TOpenDialog;
     pa_2       : TPanel;
-    {$IFNDEF FPC}
-    dock_outils: TDock;
-    {$ENDIF}
-    tbar_outils: {$IFDEF FPC}TToolbar{$ELSE}TExtToolbar{$ENDIF};
-    tbsep_1    : {$IFDEF FPC}TPanel{$ELSE}TExtToolbarSep{$ENDIF};  
-    tbsep_2    : {$IFDEF FPC}TPanel{$ELSE}TExtToolbarSep{$ENDIF};
-    tbsep_3    : {$IFDEF FPC}TPanel{$ELSE}TExtToolbarSep{$ENDIF};
+    tbar_outils: TToolbar;
+    tbsep_2    : TPanel;
     com_FonctionsType: TRxDBLookupCombo;
     PanelUtilisateur: TPanel;
     pc_Onglets: TPageControl;
@@ -241,13 +236,17 @@ type
     im_about: TExtDBImage;
     im_app: TExtDBImage;
     lb_imapp: TFWLabel;
-    Panel5: TPanel;
+    pa_5: TPanel;
     dbt_quitter: TJvXPButton;
-    Panel6: TPanel;
-    dbt_ident: TJvXPButton;
     Panel_Fin: TPanel;
-    Panel9: TPanel;
+    tbsep_Debut: TPanel;
+    pa_7: TPanel;
     dbt_aide: TJvXPButton;
+    tbsep_4: TPanel;
+    tbsep_3: TPanel;
+    pa_8: TPanel;
+    dbt_ident: TJvXPButton;
+    tbsep_1: TPanel;
     procedure adl_FonctionsCustomDrawItem(Sender: TCustomListView;
       Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
     procedure dxb_ChargerImageClick(Sender: TObject);
@@ -262,7 +261,7 @@ type
       Y: Integer; State: TDragState; var Accept: Boolean);
     procedure dbl_FonctionsLeftClickCell(Sender: TObject;
   iItem : TListItem; Selected: Boolean);
-// LibÃ©ration Ã  la fermeture
+// Libération à la fermeture
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
    procedure dbg_MenuFonctionsDragDrop(Sender, Source: TObject; X,
       Y: Integer);
@@ -271,13 +270,13 @@ type
     procedure dbg_SousMenuFonctionsDragDrop(Sender, Source: TObject; X,
       Y: Integer);
 // Adaption de la recherche de fonctions au resize
-// Sender : Obligatoire pour l'Ã©vÃ¨nement
+// Sender : Obligatoire pour l'évènement
     procedure pa_FonctionsTypeResize(Sender: TObject);
-// EvÃ¨nement on change du filtre de recherche
-// Sender : Obligatoire pour l'Ã©vÃ¨nement
+// Evènement on change du filtre de recherche
+// Sender : Obligatoire pour l'évènement
     procedure com_FonctionsTypeChange(Sender: TObject);
 // Supprime l'enregistrement fonction de groupe en cours
-// Sender : Obligatoire pour crÃ©er l'Ã©vÃ¨nement
+// Sender : Obligatoire pour créer l'évènement
     procedure nav_NavigateurFonctionsBtnDelete(Sender: TObject);
 // Insertion d'une fonction dans un sous menu par le bouton +
 // Sender : Le navigateur de fonctions du sommaire, menu ou sous menu
@@ -288,7 +287,7 @@ type
 // Insertion d'une fonction dans un sommairepar le bouton +
 // Sender : Le navigateur de fonctions du sommaire, menu ou sous menu
     procedure nav_NavigateurSommaireFonctionsBtnInsert(Sender: TObject);
-    // EvÃ¨nements des menus
+    // Evènements des menus
     procedure adoq_MenusAfterCancel(DataSet: TDataSet);
     procedure adoq_MenusAfterInsert(DataSet: TDataSet);
     procedure adoq_MenusAfterDelete(DataSet: TDataSet);
@@ -296,33 +295,33 @@ type
     procedure adoq_MenusBeforePost(DataSet: TDataSet);
     procedure adoq_MenusBeforeDelete(DataSet: TDataSet);
     procedure adoq_MenusAfterScroll(DataSet: TDataSet);
-    // EvÃ¨nements des fonctions du menu
+    // Evènements des fonctions du menu
     procedure adoq_MenuFonctionsAfterOpen(DataSet: TDataSet);
     procedure adoq_MenuFonctionsAfterScroll(DataSet: TDataSet);
-    // EvÃ¨nements des fonctions du sommaire
+    // Evènements des fonctions du sommaire
     procedure adoq_SommaireFonctionsAfterOpen(DataSet: TDataSet);
     procedure adoq_SommaireFonctionsAfterScroll(DataSet: TDataSet);
-    // Mise Ã  jour du bouton goto bookmark en fonction du bookmark
-// EvÃ¨nement delete
+    // Mise à jour du bouton goto bookmark en fonction du bookmark
+// Evènement delete
 // Efface un menu et ses sous menus
 // Sender : Le navigateur
     procedure nav_NavigateurMenuBtnDelete(Sender: TObject);
-// EvÃ¨nement delete
+// Evènement delete
 // Efface un sous menu
 // Sender : Le navigateur
     procedure nav_NavigateurSousMenuBtnDelete(Sender: TObject);
-// EvÃ¨nement delete
-// Efface Ã  partir de la table en cours
+// Evènement delete
+// Efface à partir de la table en cours
 // Sender : Le navigateur
     procedure nav_NavigationEnCoursBtnDelete(Sender: TObject);
-    // Mise Ã  jour des numÃ©ros d'ordre aprÃ¨s la suppression
+    // Mise à jour des numéros d'ordre après la suppression
     // Dataset : La table des sous menus
-    // Touche VK_RETURN = Validation des donnÃ©es
+    // Touche VK_RETURN = Validation des données
     procedure dbg_KeyUp(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     // Suppression d'un enregistrement et de ses descendants
     procedure nav_SommaireBtnDelete(Sender: TObject);
-    // Bouton personnalisÃ© pour l'enregistrement
+    // Bouton personnalisé pour l'enregistrement
     procedure btn_insereClick(Sender: TObject);
     // Bouton abandonner pour l'enregistrement
     procedure btn_abandonneClick(Sender: TObject);
@@ -343,9 +342,9 @@ type
     procedure dbe_MotPasseExit(Sender: TObject);
     // Bouton post : Valider le mot de passe
     procedure nav_UtilisateurBtnPost(Sender: TObject);
-    // Mise Ã  jour ou non  : valider ou non le tableau
+    // Mise à jour ou non  : valider ou non le tableau
     procedure ds_UtilisateursStateChange(Sender: TObject);
-    // Il faut renseigner l'Ã©vÃ¨nement insert pour que le insert fonctionne
+    // Il faut renseigner l'évènement insert pour que le insert fonctionne
     procedure nav_UtilisateurBtnInsert(Sender: TObject);
     procedure dbl_FonctionsResize(Sender: TObject);
     procedure dbl_FonctionsExit(Sender: TObject);
@@ -362,28 +361,28 @@ type
     procedure dbg_SousMenuKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure dbl_FonctionsMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure dbe_MotPasseKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-    // EvÃ¨nements du sous menu
+    // Evènements du sous menu
     procedure adoq_SousMenusBeforePost(DataSet: TDataSet);
     procedure adoq_SousMenusAfterOpen(DataSet: TDataSet);
     procedure adoq_SousMenusAfterDelete(DataSet: TDataSet);
     procedure adoq_SousMenusAfterInsert(DataSet: TDataSet);
     procedure adoq_SousMenusBeforeDelete(DataSet: TDataSet);
     procedure adoq_SousMenusAfterScroll(DataSet: TDataSet);
-    // EvÃ¨nements des fonctions
+    // Evènements des fonctions
     procedure adoq_FonctionsBeforeScroll(DataSet: TDataSet);
     procedure adoq_FonctionsAfterOpen(DataSet: TDataSet);
     procedure adoq_FonctionsAfterScroll(DataSet: TDataSet);
-    // EvÃ¨nements des fonctions du sous menu
+    // Evènements des fonctions du sous menu
     procedure adoq_SousMenuFonctionsAfterOpen(DataSet: TDataSet);
     procedure adoq_SousMenuFonctionsAfterScroll(DataSet: TDataSet);
-    // EvÃ¨nements des sommaires
+    // Evènements des sommaires
     procedure adoq_SommaireBeforePost(DataSet: TDataSet);
     procedure adoq_SommaireAfterInsert(DataSet: TDataSet);
     procedure adoq_SommaireAfterOpen(DataSet: TDataSet);
     procedure adoq_SommaireBeforeDelete(DataSet: TDataSet);
     procedure adoq_SommaireAfterDelete(DataSet: TDataSet);
     procedure adoq_SommaireAfterScroll(DataSet: TDataSet);
-    // EvÃ¨nements des utilisateurs
+    // Evènements des utilisateurs
     procedure adoq_UtilisateursBeforePost(DataSet: TDataSet);
     procedure adoq_UtilisateursAfterPost(DataSet: TDataSet);
     procedure adoq_UtilisateursAfterCancel(DataSet: TDataSet);
@@ -431,9 +430,9 @@ type
     gcco_Connexion : TComponent ;
 
     adoq_QueryTempo: TDataset;
-    { DÃ©clarations privÃ©es }
+    { Déclarations privées }
 
-    // PropriÃ©tÃ© Droits de l'utilisateur
+    // Propriété Droits de l'utilisateur
     gi_NiveauDroits       : Integer ;
     gb_PeutEffacer        ,
     gb_PeutCreer          ,
@@ -448,33 +447,33 @@ type
 
     gb_MotPasseModifie          : Boolean ;
 
-    // Mise Ã  jour du numÃ©ro d'ordre ( position  dans une table )
-    // ai_NoTable : NumÃ©ro de la table de 1 Ã  5
-    // ai_NumOrdre : Nouveau numÃ©ro d'ordre de la table
-    // as_Clep     : derniÃ¨re partie de clÃ© primaire lue sÃ©quentiellement ( tous les enregistrements sont modifiÃ©s pour mettre Ã  jour un numÃ©ro d'ordre )
+    // Mise à jour du numéro d'ordre ( position  dans une table )
+    // ai_NoTable : Numéro de la table de 1 à 5
+    // ai_NumOrdre : Nouveau numéro d'ordre de la table
+    // as_Clep     : dernière partie de clé primaire lue séquentiellement ( tous les enregistrements sont modifiés pour mettre à jour un numéro d'ordre )
     // ab_erreur   : Y a - t-il eu une erreur
     function  fb_MAJTableNumOrdre(const ai_NoTable, ai_Numordre : Integer ; const as_Clep, as_SommaireClep, as_MenuClep, as_SousMenuClep : String ; var ab_Erreur : Boolean ): Boolean; overload;
     function  fb_MAJTableNumOrdre(const ai_NoTable, ai_Numordre : Integer ; const as_Clep : String ; var ab_Erreur : Boolean ): Boolean; overload;
     // Recherche la position max du champs NumOrdre dans un dataset
     // aadoq_GroupeFonctions : LE dataset
-    // as_ChampNumOrdre      : Le champ associÃ© au dataset
+    // as_ChampNumOrdre      : Le champ associé au dataset
     // Sortie :
     // ab_erreur             : Erreur ou non
-    // Fonction trouvant le numÃ©ro d'ordre max
-    // aDat_Dataset : Le dataset associÃ©
-    // as_ChampNumOrdre : LE numÃ©ro d'ordre du dataset
+    // Fonction trouvant le numéro d'ordre max
+    // aDat_Dataset : Le dataset associé
+    // as_ChampNumOrdre : LE numéro d'ordre du dataset
     // ab_erreur : Existe-t-il une erreur ?
     // Ab_Sort   : Trier le numero d'ordre
     function p_RechercheNumOrdreMax ( const aDat_Dataset : TDataset ; const as_ChampNumOrdre : String ; var ab_erreur : Boolean ; const ab_Sort : Boolean ): Integer;
-    // MÃ©thodes des propriÃ©tÃ©s
-    // MÃ©thodes de la propriÃ©tÃ© montrer l'onglet utilisateurs
-    // ab_Value : PropriÃ©tÃ© MontreUtilisateurs Ã  changer
+    // Méthodes des propriétés
+    // Méthodes de la propriété montrer l'onglet utilisateurs
+    // ab_Value : Propriété MontreUtilisateurs à changer
     procedure p_SetMontreUtilisateurs ( const ab_Value : Boolean );
-    // PropriÃ©tÃ© Droits de l'utilisateur
-    // ai_Value : Il y a DiffÃ©rents niveaux de droits
+    // Propriété Droits de l'utilisateur
+    // ai_Value : Il y a Différents niveaux de droits
     procedure p_Set_NiveauDroits      ( const ai_Value : Integer );
-    // MÃ©thodes de la propriÃ©tÃ© montrer l'onglet sommaires
-    // ab_Value : PropriÃ©tÃ© MontreSommaires Ã  changer
+    // Méthodes de la propriété montrer l'onglet sommaires
+    // ab_Value : Propriété MontreSommaires à changer
     procedure p_SetMontreSommaires     ( const ab_Value : Boolean );
 
     // Modification du menu et de la fonction sommaire en cours dans le sommaire
@@ -485,25 +484,25 @@ type
      // uniquement pour savoir si un enregistrement existe
 //    function  fb_ExisteEnregistrementATable(const ai_NoTable : Integer ): Boolean;
     // Existence d'un enregistrement dans une table sommaire, menu, sous menu
-    // Alors non validation des donnÃ©es
+    // Alors non validation des données
 //    procedure  p_VerificationExistenceEnregistrement(const ai_NoTable : Integer );
-    // MÃ©thode des fonctions
+    // Méthode des fonctions
     // Existence d'une fonction dans une table
     function  fb_ExisteFonctionATable(const ai_NoTable : Integer ; var ab_Erreur : Boolean ; const ab_ChercheFonction : Boolean ): Boolean;
     // Insertion d'une fonction dans une table
     function  fb_InsereFonctionATable(const ai_NoTable, ai_Numordre : Integer ; var ab_Erreur : Boolean ): Boolean;
-    // ProblÃ¨me de connexion
+    // Problème de connexion
     procedure p_NoConnexion ;
 // Effacement d'un enregistrement et de ses associations
-// ADat_Dataset : Le dataset de l'enregistrement Ã  supprimer
+// ADat_Dataset : Le dataset de l'enregistrement à supprimer
     procedure p_EffaceEnregistrements( const aDat_Dataset: TDataSet);
 // Effacement d'un enregistrement et de ses associations
-// as_Message : La partie de message spÃ©cifiÃ©e
-// ADat_Dataset : Le dataset de l'enregistrement Ã  supprimer
-// SOrtie : Enregistrement supprimÃ© ou non
+// as_Message : La partie de message spécifiée
+// ADat_Dataset : Le dataset de l'enregistrement à supprimer
+// SOrtie : Enregistrement supprimé ou non
     function fb_EffaceEnregistrements(const as_Message: String; const as_Enregistrement : String ;
       const aDat_Dataset: TDataSet) : Boolean ;
-// Modification de la non sÃ©lection vers sÃ©lection d'une fonction
+// Modification de la non sélection vers sélection d'une fonction
     procedure p_SelectionneFonction;
 // Ajouter la Modification
 // nav_Navigateur : Le navigateur qui sera non modifiable
@@ -514,24 +513,24 @@ type
     procedure p_NavigateurModifiable(
       const nav_Navigateur: TExtDBNavigator);
 // ajouter la modification
-// nav_Navigateur : Le navigateur qui sera modifiable avec les bookmarks pour dÃ©placer
+// nav_Navigateur : Le navigateur qui sera modifiable avec les bookmarks pour déplacer
     procedure p_NavigateurModifiableBookmark(
       const nav_Navigateur: TExtDBNavigator);
-// ajouter la crÃ©ation et la suppression
+// ajouter la création et la suppression
 // nav_Navigateur : Le navigateur
     procedure p_NavigateurCreation(const nav_Navigateur: TExtDBNavigator);
-// enlever la crÃ©ation et la suppression
+// enlever la création et la suppression
 // nav_Navigateur : Le navigateur
     procedure p_NavigateurPasCreation(
       const nav_Navigateur: TExtDBNavigator);
 // ajouter la modification uniquement sur les bookmark
-// nav_Navigateur : Le navigateur avec les bookmarks pour dÃ©placer
+// nav_Navigateur : Le navigateur avec les bookmarks pour déplacer
     procedure p_NavigateurBookmark(const nav_Navigateur: TExtDBNavigator);
     // Il faut filtrer les fonctions en fonction du sommaire et du menu
     procedure p_FiltreMenuFonctions;
     // Il faut filtrer les fonctions du sous menu en fonction du sommaire du menu et du sous menu
     procedure p_FiltreSousMenuFonctions;
-  // enlever la crÃ©ation et pas la suppression
+  // enlever la création et pas la suppression
   // nav_Navigateur : Le navigateur
     procedure p_NavigateurSupprimeUniquement(
       const nav_Navigateur: TExtDBNavigator);
@@ -541,14 +540,14 @@ type
   protected
     procedure p_InitExecutionFrameWork ( const Sender : TObject ); override;
   public
-    { DÃ©clarations publiques }
+    { Déclarations publiques }
     procedure p_Connexion ;
-// Modification de la sÃ©lection des fonctions
-// Une fonction sÃ©lectionnÃ©e est une fonction dÃ©jÃ  utilisÃ©e
+// Modification de la sélection des fonctions
+// Une fonction sélectionnée est une fonction déjà utilisée
     procedure p_SelectionneFonctions;
-    // Touche enfoncÃ©e
+    // Touche enfoncée
     function IsShortCut(var ao_Msg: {$IFDEF FPC}TLMKey{$ELSE}TWMKey{$ENDIF}): Boolean; override;
-  // PropriÃ©tÃ© Droits de l'utilisateur
+  // Propriété Droits de l'utilisateur
     property NiveauDroits : Integer read gi_NiveauDroits write p_Set_NiveauDroits stored False default 0 ;
   // Montrer l'onglet utilisateurs
     property MontreUtilisateurs : Boolean read gb_AccesUtilisateurs write p_SetMontreUtilisateurs stored False default True ;
@@ -573,8 +572,8 @@ uses fonctions_Objets_Dynamiques, fonctions_images, fonctions_string,
      unite_variables, fonctions_tableauframework, fonctions_dbcomponents, fonctions_proprietes,
      U_MotPasse, Fonctions_init , u_customframework, unite_messages, U_Donnees ;
 
-// MÃ©thodes de la propriÃ©tÃ© montrer l'onglet utilisateurs
-// ab_Value : PropriÃ©tÃ© MontreUtilisateurs Ã  changer
+// Méthodes de la propriété montrer l'onglet utilisateurs
+// ab_Value : Propriété MontreUtilisateurs à changer
 procedure p_admin_MontreTabSheet ( const ab_AccesSommaires, ab_AccesUtilisateurs : Boolean ; const pc_onglets : TPageControl; const ts_Utilisateurs, ts_Sommaire : TTabSheet );
 Begin
   if not ab_AccesSommaires
@@ -585,40 +584,40 @@ Begin
     pc_onglets.Activepage := ts_Sommaire ;
 End ;
 
-// EvÃ¨nement de sÃ©lection des fonctions
-// EntrÃ©es : Obligatoire pour crÃ©er l'Ã©vÃ¨nement
+// Evènement de sélection des fonctions
+// Entrées : Obligatoire pour créer l'évènement
 procedure adl_admin_FonctionsCustomDrawItem(Sender: TCustomListView;
   Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean;
   const dbl_Fonctions : TDBListView);
 begin
-    // Si la fonction est sÃ©lectionnÃ©e
+    // Si la fonction est sélectionnée
   If ( Item.Index div 2 = Item.Index / 2 )
    Then  dbl_Fonctions.Canvas.Brush.Color := clInfoBk
    Else  dbl_Fonctions.Canvas.Brush.Color := clWhite  ;
 
   If ( Item.ImageIndex = 1 )
   or ( Item.ImageIndex = 2 )
-// Si l'Ã©tat de l'item n'est pas initialisÃ© on utilise la propriÃ©tÃ© checked
+// Si l'état de l'item n'est pas initialisé on utilise la propriété checked
 //  or (( Item.ImageIndex = -1 ) and Item.Checked )
 
    then
     Begin
       Sender.Canvas.Font.Style := [fsBold];
-      if Item.Selected // L'item peut Ãªtre sÃ©lectionnÃ© ou non
+      if Item.Selected // L'item peut être sélectionné ou non
        Then Item.ImageIndex := 1
        Else Item.ImageIndex := 2 ;
     End
    Else
     Begin
       Sender.Canvas.Font.Color := clBlack;
-       if Item.Selected // L'item peut Ãªtre sÃ©lectionnÃ© ou non
+       if Item.Selected // L'item peut être sélectionné ou non
         Then Item.ImageIndex := 0
         Else Item.ImageIndex := 3 ;
     End ;
 end;
 
 
-// Mise Ã  jour de l'image en cours sur les Menus
+// Mise à jour de l'image en cours sur les Menus
 // Dataset : Table menus
 procedure adot_admin_MenusAfterScroll(var DatasetClep : String ; var lvar_EnrMenu : Variant;const Dataset,adot_SousMenus,adoq_MenuFonctions,adoq_SousMenuFonctions:TDataset ; const dbg_Dataset : TCustomDBgrid; const dxb_Image : TJvXpButton ; const dbi_ImageTemp: TExtDBImage ; const ls_Clep :String);
 begin
@@ -661,8 +660,8 @@ begin
 End;
 
 
-// MÃ©thodes de la propriÃ©tÃ© montrer l'onglet utilisateurs
-// ab_Value : PropriÃ©tÃ© MontreUtilisateurs Ã  changer
+// Méthodes de la propriété montrer l'onglet utilisateurs
+// ab_Value : Propriété MontreUtilisateurs à changer
 procedure TF_Administration.p_SetMontreUtilisateurs ( const ab_Value : Boolean );
 Begin
   if ab_Value <> gb_AccesUtilisateurs
@@ -680,8 +679,8 @@ Begin
     End ;
 End ;
 
-// MÃ©thodes de la propriÃ©tÃ© montrer l'onglet utilisateurs
-// ab_Value : PropriÃ©tÃ© MontreUtilisateurs Ã  changer
+// Méthodes de la propriété montrer l'onglet utilisateurs
+// ab_Value : Propriété MontreUtilisateurs à changer
 procedure TF_Administration.p_MontreTabSheet;
 Begin
   if not gb_AccesSommaires
@@ -691,8 +690,8 @@ Begin
    Then
     pc_onglets.Activepage := ts_Sommaire ;
 End ;
-// MÃ©thodes de la propriÃ©tÃ© montrer l'onglet sommaires
-// ab_Value : PropriÃ©tÃ© MontreSommaires Ã  changer
+// Méthodes de la propriété montrer l'onglet sommaires
+// ab_Value : Propriété MontreSommaires à changer
 procedure TF_Administration.p_SetMontreSommaires     ( const ab_Value : Boolean );
 Begin
   if ab_Value <> gb_AccesSommaires
@@ -714,8 +713,8 @@ Begin
     End ;
 End ;
 
-// EvÃ¨nement de sÃ©lection des fonctions
-// EntrÃ©es : Obligatoire pour crÃ©er l'Ã©vÃ¨nement
+// Evènement de sélection des fonctions
+// Entrées : Obligatoire pour créer l'évènement
 procedure TF_Administration.adl_FonctionsCustomDrawItem(Sender: TCustomListView;
   Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
 begin
@@ -723,7 +722,7 @@ begin
 end;
 
 
-// Chargement d'une image et mise Ã  jour du glyph et des queries
+// Chargement d'une image et mise à jour du glyph et des queries
 // Sender : Le bouton de chargement
 procedure TF_Administration.dxb_ChargerImageClick(Sender: TObject);
 //var lstr_IconeTemp : TStream ;
@@ -732,7 +731,7 @@ try
 //    dxb_Image.BeginUpdate ;
     fb_ChargeIcoBmp ( od_ChargerImage, dbi_ImageTemp.DataSource.DataSet, dbi_ImageTemp.DataSource.DataSet.FieldByName ( dbi_ImageTemp.DataField ), 32, True, nil );
 //    dxb_Image.EndUpdate ;
-    // Mise Ã  jour du glyph
+    // Mise à jour du glyph
     dxb_Image.Repaint;
     if dbi_ImageTemp.DataSource = dbl_Fonctions.DataSource
      Then
@@ -759,7 +758,7 @@ begin
             crypte := text1;
 end;
 
-function decrypte(text:string):string;           //Fonction pour dÃ©crypter la chaine
+function decrypte(text:string):string;           //Fonction pour décrypter la chaine
 var
 pos:integer;
 text1:string;
@@ -872,10 +871,6 @@ begin
 
   if pc_onglets.ActivePage = ts_Sommaire then
     begin
-      // Docker la toolbar Ã  l'entrÃ©e
-      {$IFNDEF FPC}
-      tbar_outils.DockedTo := dock_outils;
-      {$ENDIF}
       // Affectation du sommaire du menu et du sous menu en cours
       //dbg_SommaireCellClick(dbg_Sommaire.Columns.Items[0]);
       // Aller sur sommaire
@@ -895,7 +890,7 @@ var lws_TextSQL : WideString ;
 begin
 // Initialisation
   Result    := False ; // Pas d'enregistrement
-  ab_Erreur := True  ; // PAr dÃ©faut : erreur   : VÃ©rification du Resultat
+  ab_Erreur := True  ; // PAr défaut : erreur   : Vérification du Resultat
 
   if not gb_PeutGererFonctions
   or not gb_AccesSommaires
@@ -920,7 +915,7 @@ begin
       Exit ;
     End ;
 
-  // Initialisation de la requÃªte
+  // Initialisation de la requête
   adoq_TreeUser.Close ;
   case ai_NoTable of
    1 : if  ( Sources [ 2 ].MyRecord <> Null )
@@ -980,7 +975,7 @@ begin
       Result := True ; // C'est ok
     ab_Erreur := False ; // Erreur
   except
-    p_NoConnexion ;    // Pas de connexion : VÃ©rification du RÃ©sultat
+    p_NoConnexion ;    // Pas de connexion : Vérification du Résultat
   End ;
 end;
 
@@ -989,9 +984,9 @@ var lws_TextSQL: WideString;
 begin
 // Initialisation
   Result    := False ; // Pas d'enregistrement
-  ab_Erreur := False ; // Pas d'erreur   : VÃ©rification du Resultat
+  ab_Erreur := False ; // Pas d'erreur   : Vérification du Resultat
 
-  // Initialisation de la requÃªte
+  // Initialisation de la requête
   adoq_TreeUser.Close ;
   case ai_NoTable of
    1 : if ( Sources [ 9 ].MyRecord <> Null )
@@ -1043,7 +1038,7 @@ begin
 
   End ;
   try
-    p_ExecuteSQLQuery(adoq_TreeUser,lws_TextSQL); // ExÃ©cution ( ce n'est pas un select )
+    p_ExecuteSQLQuery(adoq_TreeUser,lws_TextSQL); // Exécution ( ce n'est pas un select )
     Result := True ; // C'est ok
     p_SelectionneFonction ;
     case ai_NoTable of
@@ -1091,8 +1086,8 @@ end;
 
 {
 // Change la position d'une fonction dans les fonctions du sommaire,
-// aadoq_GroupeFonctions : LE dataset Ã  changer
-// ab_Precedent          : Ã©changer avec le prÃ©cÃ©dent sinon suivant
+// aadoq_GroupeFonctions : LE dataset à changer
+// ab_Precedent          : échanger avec le précédent sinon suivant
 procedure TF_Administration.p_GroupeFonctionsChangePosition ( const aDat_GroupeFonctions : TDataset ; const ab_Precedent : Boolean );
 var li_Numordre1      ,
     li_Numordre2      ,
@@ -1111,7 +1106,7 @@ begin
   and aDat_GroupeFonctions.Eof
    Then
     Exit ;
-// Bookmark pour revenir Ã  l'enregistrement sÃ©lectionnÃ©
+// Bookmark pour revenir à l'enregistrement sélectionné
   lbkm_GardeEnr := adat_GroupeFonctions.GetBookmark ;
 // Initialisation en fonction du dataset
   if adat_GroupeFonctions = adoq_Menus  // Table menu
@@ -1156,14 +1151,14 @@ begin
           Else
            Exit ;
 
-    // RÃ©cupÃ¨re les donnÃ©es
+    // Récupère les données
     // Enregistement en cours
   try
       li_Numordre1      := aDat_GroupeFonctions.FieldByName ( ls_ChampNumOrdre ).AsInteger ;
       if ab_Precedent
        Then
         Begin
-        // Enregistement prÃ©cÃ©dent
+        // Enregistement précédent
           aDat_GroupeFonctions.Prior ;
           if aDat_GroupeFonctions.Bof
            Then
@@ -1178,7 +1173,7 @@ begin
         End
        Else
         Begin
-        // Enregistement prÃ©cÃ©dent
+        // Enregistement précédent
           aDat_GroupeFonctions.Next ;
           if aDat_GroupeFonctions.Eof
            Then
@@ -1204,7 +1199,7 @@ begin
           fi_CreeSommaire  ( Application.MainForm, Self, Sources [ 2 ].MyRecord, adoq_TreeUser, nil, tbar_outils, tbsep_Debut, pa_FinDyna, 49, nil, False );
           p_MAJBoutonsSommaire ;
         End ;
-       // Mise Ã  jour de la table liÃ©e
+       // Mise à jour de la table liée
       if ( aDat_GroupeFonctions is TCustomADODataSet )
       and ( ( aDat_GroupeFonctions as TCustomADODataSet ).Sort <> ls_ChampNumOrdre + GS_SQL_ASC )
        Then ( aDat_GroupeFonctions as TCustomADODataSet ).Sort := ls_ChampNumOrdre + GS_SQL_ASC ;
@@ -1215,10 +1210,10 @@ begin
   End ;
 end;
 }
-    // Mise Ã  jour du numÃ©ro d'ordre ( position  dans une table )
-    // ai_NoTable : NumÃ©ro de la table de 1 Ã  5
-    // ai_NumOrdre : Nouveau numÃ©ro d'ordre de la table
-    // as_Clep     : derniÃ¨re partie de clÃ© primaire lue sÃ©quentiellement ( tous les enregistrements supÃ©rieurs  Ã  ai_Numordre sont modifiÃ©s pour mettre Ã  jour un numÃ©ro d'ordre )
+    // Mise à jour du numéro d'ordre ( position  dans une table )
+    // ai_NoTable : Numéro de la table de 1 à 5
+    // ai_NumOrdre : Nouveau numéro d'ordre de la table
+    // as_Clep     : dernière partie de clé primaire lue séquentiellement ( tous les enregistrements supérieurs  à ai_Numordre sont modifiés pour mettre à jour un numéro d'ordre )
     // ab_erreur   : Y a - t-il eu une erreur
 function TF_Administration.fb_MAJTableNumOrdre(const ai_NoTable, ai_Numordre : Integer ; const as_Clep : String ; var ab_Erreur : Boolean ): Boolean;
 begin
@@ -1227,19 +1222,19 @@ begin
   Else
     Result := False;
 End ;
-    // Mise Ã  jour du numÃ©ro d'ordre ( position  dans une table )
-    // ai_NoTable : NumÃ©ro de la table de 1 Ã  5
-    // ai_NumOrdre : Nouveau numÃ©ro d'ordre de la table
-    // as_Clep     : derniÃ¨re partie de clÃ© primaire lue sÃ©quentiellement ( tous les enregistrements supÃ©rieurs  Ã  ai_Numordre sont modifiÃ©s pour mettre Ã  jour un numÃ©ro d'ordre )
+    // Mise à jour du numéro d'ordre ( position  dans une table )
+    // ai_NoTable : Numéro de la table de 1 à 5
+    // ai_NumOrdre : Nouveau numéro d'ordre de la table
+    // as_Clep     : dernière partie de clé primaire lue séquentiellement ( tous les enregistrements supérieurs  à ai_Numordre sont modifiés pour mettre à jour un numéro d'ordre )
     // ab_erreur   : Y a - t-il eu une erreur
 function TF_Administration.fb_MAJTableNumOrdre(const ai_NoTable, ai_Numordre : Integer ; const as_Clep, as_SommaireClep, as_MenuClep, as_SousMenuClep : String ; var ab_Erreur : Boolean ): Boolean;
 var lws_TextSQL: WideString;
 begin
 // Initialisation
   Result    := False ; // Pas d'enregistrement
-  ab_Erreur := False ; // Pas d'erreur   : VÃ©rification du Resultat
+  ab_Erreur := False ; // Pas d'erreur   : Vérification du Resultat
 
-  // Initialisation de la requÃªte
+  // Initialisation de la requête
   adoq_TreeUser.Close ;
   case ai_NoTable of
    1 :  Begin // Table menu
@@ -1283,7 +1278,7 @@ begin
 
   End ;
   try
-    p_ExecuteSQLQuery ( adoq_TreeUser, lws_TextSQL ); // ExÃ©cution ( ce n'est pas un select )
+    p_ExecuteSQLQuery ( adoq_TreeUser, lws_TextSQL ); // Exécution ( ce n'est pas un select )
     Result := True ; // C'est ok
   except
     ab_Erreur := True ;// Il y a une erreur en cours de finition
@@ -1302,9 +1297,9 @@ begin
 end;
 
 // Effacement d'un enregistrement et de ses associations
-// as_Message : La partie de message spÃ©cifiÃ©e
-// ADat_Dataset : Le dataset de l'enregistrement Ã  supprimer
-// SOrtie : Enregistrement supprimÃ© ou non
+// as_Message : La partie de message spécifiée
+// ADat_Dataset : Le dataset de l'enregistrement à supprimer
+// SOrtie : Enregistrement supprimé ou non
 function TF_Administration.fb_EffaceEnregistrements ( const as_Message : String ; const as_Enregistrement : String ; const aDat_Dataset : TDataSet ) : Boolean ;
 // Si on n'efface pas on retourne sur l'enregistrement
 //var lbmk_GardeEnregistrement : TBookmark ;
@@ -1353,7 +1348,7 @@ begin
 end;
 
 // Effacement d'un enregistrement et de ses associations
-// ADat_Dataset : Le dataset de l'enregistrement Ã  supprimer
+// ADat_Dataset : Le dataset de l'enregistrement à supprimer
 procedure TF_Administration.p_EffaceEnregistrements ( const aDat_Dataset : TDataSet );
  // Pb Delphi : Si on n'efface pas on retourne sur l'enregistrement
 var lbmk_GardeEnregistrement : TBookmark ;
@@ -1405,20 +1400,20 @@ begin
 
 end;
 
-/// EvÃ¨nement Coller Fonction
+/// Evènement Coller Fonction
 // Drop pour les fonctions du sommaire
 // Sender    : Le composant du drop
 // source    : Le composant du drag
-// X, Y      : CoordonnÃ©es souris
+// X, Y      : Coordonnées souris
 // State     : Etat du drop
-// EntrÃ©es : Obligatoire pour crÃ©er l'Ã©vÃ¨nement
+// Entrées : Obligatoire pour créer l'évènement
 procedure TF_Administration.dbg_SommaireFonctionsDragDrop(Sender,
   Source: TObject; X, Y: Integer);
 var ab_Erreur : Boolean ;
 begin
 // Existence ou non de la fonction
   if not fb_ExisteFonctionATable ( 1, ab_Erreur, True )
-  and not ab_Erreur // VÃ©rification supplÃ©mentaire de la non existence de la fonction
+  and not ab_Erreur // Vérification supplémentaire de la non existence de la fonction
    Then
    // Insertion de la fonction
     fb_InsereFonctionATable( 1, adoq_SommaireFonctions.RecordCount + 1, ab_Erreur );
@@ -1427,13 +1422,13 @@ end;
 // Validation du drag and drop pour les fonctions du sommaire
 // Sender    : Le composant du drop
 // source    : Le composant du drag
-// X, Y      : CoordonnÃ©es souris
+// X, Y      : Coordonnées souris
 // State     : Etat du drop
 // Accept    : Variable d'acceptation du drop
 // Validation du drag and drop pour les fonctions du sommaire
 // Sender    : Le composant du drop
 // source    : Le composant du drag
-// X, Y      : CoordonnÃ©es souris
+// X, Y      : Coordonnées souris
 // State     : Etat du drop
 // Accept    : Variable d'acceptation du drop
 procedure TF_Administration.dbg_SommaireFonctionsDragOver(Sender,
@@ -1445,12 +1440,12 @@ begin
     Accept := True ;
 end;
 
-/// EvÃ¨nement Coller Fonction
-/// EvÃ¨nement Coller Fonction
+/// Evènement Coller Fonction
+/// Evènement Coller Fonction
 // Validation du drag and drop pour les fonctions du menu
 // Sender    : Le composant du drop
 // source    : Le composant du drag
-// X, Y      : CoordonnÃ©es souris
+// X, Y      : Coordonnées souris
 // State     : Etat du drop
 // Accept    : Variable d'acceptation du drop
 procedure TF_Administration.dbg_MenuFonctionsDragOver(Sender,
@@ -1463,11 +1458,11 @@ begin
 
 end;
 
-/// EvÃ¨nement Coller Fonction
+/// Evènement Coller Fonction
 // Validation du drag and drop pour les fonctions du sous menu
 // Sender    : Le composant du drop
 // source    : Le composant du drag
-// X, Y      : CoordonnÃ©es souris
+// X, Y      : Coordonnées souris
 // State     : Etat du drop
 // Accept    : Variable d'acceptation du drop
 procedure TF_Administration.dbg_SousMenuFonctionsDragOver(Sender,
@@ -1478,10 +1473,10 @@ begin
     Accept := True ;
 end;
 
-// EvÃ¨nement on click fonction
+// Evènement on click fonction
 // Edition d'une fonction
-// EntreÃ©s : Obligatoires pour l'Ã©vÃ¨nement
-// iItem   : la fonction sÃ©lectionnÃ©e
+// Entreés : Obligatoires pour l'évènement
+// iItem   : la fonction sélectionnée
 
 procedure TF_Administration.dbl_FonctionsLeftClickCell(Sender: TObject;
   iItem : TListItem; Selected: Boolean);
@@ -1496,7 +1491,7 @@ begin
 end;
 
 // Modification du bitmap en cours
-// Dataset : Obligatoire pour l'Ã©vÃ¨nement
+// Dataset : Obligatoire pour l'évènement
 procedure TF_Administration.adoq_FonctionsAfterScroll(DataSet: TDataSet);
 var li_i : Integer ;
 begin
@@ -1535,7 +1530,7 @@ begin
             dbe_Edition            .DataSource := dbl_Fonctions.DataSource;
             dbe_Edition            .DataField  := CST_FONC_Clep;
             dbi_ImageTemp          .DataField  := CST_FONC_Bmp ;
-            fb_ControlSetReadOnly ( dbe_Edition , True ); // LibellÃ© En lecture seule
+            fb_ControlSetReadOnly ( dbe_Edition , True ); // Libellé En lecture seule
             dxb_Image              .Visible    := True;
             dxb_ChargerImage       .Visible    := True;
             dxb_Image.Glyph.assign ( dbi_ImageTemp.Picture.Bitmap );
@@ -1545,16 +1540,16 @@ begin
   End ;
 end;
 
-// LibÃ©ration Ã  la fermeture
+// Libération à la fermeture
 procedure TF_Administration.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
   Action := caFree ;
 end;
 
-/// EvÃ¨nement Coller Fonction
+/// Evènement Coller Fonction
 // Fonctions au menu
-// EntrÃ©es  : Obligatoire pour crÃ©er l'Ã©vÃ¨nement
+// Entrées  : Obligatoire pour créer l'évènement
 procedure TF_Administration.dbg_MenuFonctionsDragDrop(Sender,
   Source: TObject; X, Y: Integer);
 var lb_Erreur : Boolean ;
@@ -1562,7 +1557,7 @@ begin
  // Existence ou non de la fonction
   if ( Source = dbl_Fonctions )
   and not fb_ExisteFonctionATable ( 2, lb_Erreur, True )
-  and not lb_Erreur // VÃ©rification supplÃ©mentaire de la non existence de la fonction
+  and not lb_Erreur // Vérification supplémentaire de la non existence de la fonction
    Then
    // Insertion de la fonction
     fb_InsereFonctionATable( 2, adoq_MenuFonctions.RecordCount + 1, lb_Erreur );
@@ -1572,7 +1567,7 @@ end;
 // Drop pour les fonctions du sous menu
 // Sender    : Le composant du drop
 // source    : Le composant du drag
-// X, Y      : CoordonnÃ©es souris
+// X, Y      : Coordonnées souris
 // State     : Etat du drop
 // Accept    : Variable d'acceptation du drop
 procedure TF_Administration.dbg_SousMenuFonctionsDragDrop(Sender,
@@ -1584,7 +1579,7 @@ begin
  // Existence ou non de la fonction
   if ( Source = dbl_Fonctions )
   and not fb_ExisteFonctionATable ( 3, lb_Erreur, True )
-  and not lb_Erreur // VÃ©rification supplÃ©mentaire de la non existence de la fonction
+  and not lb_Erreur // Vérification supplémentaire de la non existence de la fonction
    Then
    // Insertion de la fonction
     fb_InsereFonctionATable( 3, adoq_SousMenuFonctions.RecordCount + 1, lb_Erreur );
@@ -1608,7 +1603,7 @@ end;
 
 
 // Adaption de la recherche de fonctions au resize
-// Sender : Obligatoire pour l'Ã©vÃ¨nement
+// Sender : Obligatoire pour l'évènement
 procedure TF_Administration.pa_FonctionsTypeResize(Sender: TObject);
 begin
   com_FonctionsType.Top  := 0 ;
@@ -1617,8 +1612,8 @@ begin
   com_FonctionsType.Width := pa_FonctionsType.Width ;
 end;
 
-// EvÃ¨nement on change du filtre de recherche
-// Sender : Obligatoire pour l'Ã©vÃ¨nement
+// Evènement on change du filtre de recherche
+// Sender : Obligatoire pour l'évènement
 procedure TF_Administration.com_FonctionsTypeChange(Sender: TObject);
 begin
 // Fermeture pour filtrage
@@ -2247,8 +2242,8 @@ Begin
   adoq_SousMenuFonctions.Filtered := True ;
 End ;
 
-// Modification de la sÃ©lection des fonctions
-// Une fonction sÃ©lectionnÃ©e est une fonction dÃ©jÃ  utilisÃ©e
+// Modification de la sélection des fonctions
+// Une fonction sélectionnée est une fonction déjà utilisée
 procedure TF_Administration.p_SelectionneFonctions ();
 var li_i : Integer ;
 Begin
@@ -2256,7 +2251,7 @@ Begin
   and ( Sources [ 2 ].MyRecord <> Null )
    Then
     Exit ;
-// RequÃªte de recherche des fonctions utilisÃ©es
+// Requête de recherche des fonctions utilisées
   adoq_TreeUser.Close ;
   try
     p_OpenSQLQuery ( adoq_TreeUser, 'SELECT * FROM fc_fonctions_utilisees ( ''' + fs_StringDbQuote ( Sources [ 2 ].MyRecord ) + ''')'  );
@@ -2269,45 +2264,45 @@ Begin
       /// Scrute les fonctions
         for li_i := 0 to dbl_Fonctions.Items.Count - 1  do
          Begin
-         // Si la fonction est utilisÃ©e
+         // Si la fonction est utilisée
            if adoq_TreeUser.Locate ( CST_FONC_Clep, dbl_Fonctions.Items [ li_i ].SubItems.Strings [0], [] )
             Then
              Begin
                dbl_Fonctions.Items [ li_i ].Checked := True ;
-               // SÃ©lection de la bonne image cochÃ©e
+               // Sélection de la bonne image cochée
                if dbl_Fonctions.Items [ li_i ].Selected
-                Then dbl_Fonctions.Items [ li_i ].ImageIndex := 1 // Image de sÃ©lection en cours
-                Else dbl_Fonctions.Items [ li_i ].ImageIndex := 2 ; // Image de non sÃ©lection en cours
+                Then dbl_Fonctions.Items [ li_i ].ImageIndex := 1 // Image de sélection en cours
+                Else dbl_Fonctions.Items [ li_i ].ImageIndex := 2 ; // Image de non sélection en cours
              End
             Else
-         // Si la fonction n'est pas utilisÃ©e
+         // Si la fonction n'est pas utilisée
              Begin
                dbl_Fonctions.Items [ li_i ].Checked := False ;
-               // SÃ©lection de la bonne image non cochÃ©e
+               // Sélection de la bonne image non cochée
                if dbl_Fonctions.Items [ li_i ].Selected
-                Then dbl_Fonctions.Items [ li_i ].ImageIndex := 0 // Image de sÃ©lection en cours
-                Else dbl_Fonctions.Items [ li_i ].ImageIndex := 3 ; // Image de non sÃ©lection  en cours
+                Then dbl_Fonctions.Items [ li_i ].ImageIndex := 0 // Image de sélection en cours
+                Else dbl_Fonctions.Items [ li_i ].ImageIndex := 3 ; // Image de non sélection  en cours
              End ;
          End ;
       End
-     else        // Si rien met Ã  jour des fonctions non cochÃ©es
+     else        // Si rien met à jour des fonctions non cochées
       for li_i := 0 to dbl_Fonctions.Items.Count - 1  do
        Begin
-         // la fonction n'est pas utilisÃ©e
+         // la fonction n'est pas utilisée
          dbl_Fonctions.Items [ li_i ].Checked := False ;
-         // SÃ©lection de la bonne image non cochÃ©e
+         // Sélection de la bonne image non cochée
          if dbl_Fonctions.Items [ li_i ].Selected
-          Then dbl_Fonctions.Items [ li_i ].ImageIndex := 0 // Image de sÃ©lection en cours
-          Else dbl_Fonctions.Items [ li_i ].ImageIndex := 3 ; // Image de non sÃ©lection  en cours
+          Then dbl_Fonctions.Items [ li_i ].ImageIndex := 0 // Image de sélection en cours
+          Else dbl_Fonctions.Items [ li_i ].ImageIndex := 3 ; // Image de non sélection  en cours
        End ;
     dbl_Fonctions.Items.EndUpdate ;
-  // Mise Ã  jour des fonctions effectuÃ©e : mise Ã  jour du composant
+  // Mise à jour des fonctions effectuée : mise à jour du composant
     dbl_Fonctions.Repaint ;
   Except
   End;
 End ;
 
-// Modification de la non sÃ©lection vers sÃ©lection d'une fonction
+// Modification de la non sélection vers sélection d'une fonction
 procedure TF_Administration.p_SelectionneFonction ();
 Begin
 
@@ -2318,7 +2313,7 @@ Begin
    Then
     Begin
       dbl_Fonctions.Selected.Checked := True ;
-    // Image de sÃ©lection en cours cochÃ©e
+    // Image de sélection en cours cochée
       dbl_Fonctions.Selected.ImageIndex := 2 ;
       dbl_Fonctions.Repaint ;
     End ;
@@ -2375,7 +2370,7 @@ begin
   End ;
 end ;
 // Supprime l'enregistrement fonction de groupe en cours
-// Sender : Obligatoire pour crÃ©er l'Ã©vÃ¨nement
+// Sender : Obligatoire pour créer l'évènement
 procedure TF_Administration.nav_NavigateurFonctionsBtnDelete(
   Sender: TObject);
 var lws_TextSQL : WideString;
@@ -2392,7 +2387,7 @@ begin
         MessageDlg ( GS_PAS_CETTE_FONCTION , mtWarning, [mbOk], 0);
         Exit ;
       End ;
-    // Initialisation de la requÃªte
+    // Initialisation de la requête
     adoq_TreeUser.Close ;
     // Table fonctions sommaire
     if Sender = nav_NavigateurSommaireFonctions
@@ -2474,9 +2469,9 @@ var lb_Erreur : Boolean ;
 begin
   li_NumOrdreAInserer := p_RechercheNumOrdreMax ( adoq_SousMenuFonctions, CST_SMFC_Numordre, lb_Erreur, True );
   // Existence ou non de la fonction dans fonctions sommaire
-  if  not lb_Erreur // VÃ©rification supplÃ©mentaire de la non existence de la fonction
+  if  not lb_Erreur // Vérification supplémentaire de la non existence de la fonction
   and not fb_ExisteFonctionATable ( 3, lb_Erreur, True )
-  and not lb_Erreur // VÃ©rification supplÃ©mentaire de la non existence de la fonction
+  and not lb_Erreur // Vérification supplémentaire de la non existence de la fonction
    Then
    // Insertion de la fonction
     fb_InsereFonctionATable( 3, li_NumOrdreAInserer, lb_Erreur );
@@ -2491,9 +2486,9 @@ var lb_Erreur : Boolean ;
 begin
   li_NumOrdreAInserer := p_RechercheNumOrdreMax ( adoq_MenuFonctions, CST_MEFC_Numordre, lb_Erreur, True );
   // Existence ou non de la fonction dans fonctions sommaire
-  if  not lb_Erreur // VÃ©rification supplÃ©mentaire de la non existence de la fonction
+  if  not lb_Erreur // Vérification supplémentaire de la non existence de la fonction
   and not fb_ExisteFonctionATable ( 2, lb_Erreur, True )
-  and not lb_Erreur // VÃ©rification supplÃ©mentaire de la non existence de la fonction
+  and not lb_Erreur // Vérification supplémentaire de la non existence de la fonction
    Then
    // Insertion de la fonction
     fb_InsereFonctionATable( 2, li_NumOrdreAInserer, lb_Erreur );
@@ -2509,16 +2504,16 @@ var lb_Erreur : Boolean ;
 begin
   li_NumOrdreAInserer := p_RechercheNumOrdreMax ( adoq_SommaireFonctions, CST_SOFC_Numordre, lb_Erreur, True );
   // Existence ou non de la fonction dans fonctions sommaire
-  if  not lb_Erreur // VÃ©rification supplÃ©mentaire de la non existence de la fonction
+  if  not lb_Erreur // Vérification supplémentaire de la non existence de la fonction
   and not fb_ExisteFonctionATable ( 1, lb_Erreur, True )
-  and not lb_Erreur // VÃ©rification supplÃ©mentaire de la non existence de la fonction
+  and not lb_Erreur // Vérification supplémentaire de la non existence de la fonction
    Then
    // Insertion de la fonction
     fb_InsereFonctionATable( 1, li_NumOrdreAInserer, lb_Erreur );
   p_SelectionneFonction ;
 end;
 
-// Mise Ã  jour des champs avant insertion
+// Mise à jour des champs avant insertion
 // Dataset : La table des menus
 procedure TF_Administration.adoq_MenusBeforePost(DataSet: TDataSet);
 begin
@@ -2541,7 +2536,7 @@ begin
 //  fb_ValidePostDelete ( DataSet, CST_MENUS, lstl_CleMenu, nil, True );
 end;
 
-// Mise Ã  jour des champs avant insertion
+// Mise à jour des champs avant insertion
 // Dataset : La table des sous menus
 procedure TF_Administration.adoq_SousMenusBeforePost(DataSet: TDataSet);
 begin
@@ -2566,12 +2561,12 @@ begin
 
 end;
 
-// AprÃ¨s l'ouverture : tri
+// Après l'ouverture : tri
 // Dataset : LA table des sous menus
 procedure TF_Administration.adoq_SousMenusAfterOpen(DataSet: TDataSet);
 begin
 //  fb_ChangeEnregistrement( lvar_EnrSMenu, Dataset, CST_SOUM_Cle, False);
-  // Sort n'est pas une propriÃ©tÃ© visible Ã  la conception alors affectation
+  // Sort n'est pas une propriété visible à la conception alors affectation
   fb_SortADataset(adoq_SousMenus, CST_SOUM_Numordre, False );
   {$IFNDEF FPC}
   {$IFNDEF TNT}
@@ -2583,12 +2578,12 @@ begin
   {$ENDIF}
 
 end;
-// AprÃ¨s l'ouverture : tri
+// Après l'ouverture : tri
 // Dataset : LA table des menus
 procedure TF_Administration.adoq_MenusAfterOpen(DataSet: TDataSet);
 begin
 //  fb_ChangeEnregistrement( lvar_EnrMenu, Dataset, CST_MENU_Cle, False);
-  // Sort n'est pas une propriÃ©tÃ© visible Ã  la conception alors affectation
+  // Sort n'est pas une propriété visible à la conception alors affectation
   fb_SortADataset( adoq_Menus, CST_MENU_Numordre, False );
   {$IFNDEF FPC}
   {$IFNDEF TNT}
@@ -2600,7 +2595,7 @@ begin
   {$ENDIF}
 end;
 
-// Mise Ã  jour des xp boutons et du bookmark
+// Mise à jour des xp boutons et du bookmark
 // Dataset : La table Menu
 procedure TF_Administration.adoq_MenuFonctionsAfterScroll(
   DataSet: TDataSet);
@@ -2618,7 +2613,7 @@ begin
     End ;
 end;
 
-// Mise Ã  jour des xp boutons et du bookmark
+// Mise à jour des xp boutons et du bookmark
 // Dataset : La table Fonctions au sommaire
 procedure TF_Administration.adoq_SommaireFonctionsAfterScroll(
   DataSet: TDataSet);
@@ -2636,7 +2631,7 @@ begin
     End ;
 end;
 
-// Mise Ã  jour des xp boutons et du bookmark
+// Mise à jour des xp boutons et du bookmark
 // Dataset : La table Fonctions au sous menu
 procedure TF_Administration.adoq_SousMenuFonctionsAfterScroll(
   DataSet: TDataSet);
@@ -2657,7 +2652,7 @@ begin
 end;
 
 
-// EvÃ¨nement delete
+// Evènement delete
 // Efface un menu et ses sous menus
 // Sender : Le navigateur
 procedure TF_Administration.nav_NavigateurMenuBtnDelete(Sender: TObject);
@@ -2665,7 +2660,7 @@ begin
   p_EffaceEnregistrements (( Sender as TExtDBNavigator ).DataSource.DataSet );
 end;
 
-// EvÃ¨nement delete
+// Evènement delete
 // Efface un sous menu
 // Sender : Le navigateur
 procedure TF_Administration.nav_NavigateurSousMenuBtnDelete(
@@ -2675,8 +2670,8 @@ begin
 
 end;
 
-// EvÃ¨nement delete
-// Efface Ã  partir de la table en cours
+// Evènement delete
+// Efface à partir de la table en cours
 // Sender : Le navigateur
 procedure TF_Administration.nav_NavigationEnCoursBtnDelete(Sender: TObject);
 begin
@@ -2725,7 +2720,7 @@ begin
           dbe_Edition.DataField := '';
           dbe_Edition.DataSource := ds_SousMenus;
           dbe_Edition.DataField  := CST_SOUM_Clep;
-          fb_ControlSetReadOnly ( dbe_Edition , False ); // LibellÃ© En lecture seule
+          fb_ControlSetReadOnly ( dbe_Edition , False ); // Libellé En lecture seule
          // Edition de l'image
           dbi_ImageTemp.DataField := '';
           dbi_ImageTemp.DataSource := ds_SousMenus;
@@ -2765,13 +2760,13 @@ begin
          // Edition d'un menu
           nav_NavigationEnCours.Visible := True ;
 
-          // Mise Ã  jour de l'Ã©dition
+          // Mise à jour de l'édition
           nav_NavigationEnCours.DataSource := ds_Menus;
           // Edition du texte
           dbe_Edition.DataField := ''; // permet le changement deColumns[0].Datasource
           dbe_Edition.DataSource := ds_Menus;
           dbe_Edition.DataField  := CST_MENU_Clep;
-          fb_ControlSetReadOnly ( dbe_Edition , False ); // LibellÃ© En lecture seule
+          fb_ControlSetReadOnly ( dbe_Edition , False ); // Libellé En lecture seule
           // Edition de l'image
           dbi_ImageTemp.DataField := '';
           dbi_ImageTemp.DataSource := ds_Menus;
@@ -2782,7 +2777,7 @@ begin
    End ;
 end;
 
-// Mise Ã  jour des numÃ©ros d'ordre aprÃ¨s la suppression
+// Mise à jour des numéros d'ordre après la suppression
 // Dataset : La table des sous menus
 procedure TF_Administration.adoq_SousMenusAfterDelete(DataSet: TDataSet);
 begin
@@ -2794,7 +2789,7 @@ begin
   adoq_DatasetMAJNumerosOrdre ( Dataset, 2 );
 end;
 
-// Mise Ã  jour des numÃ©ros d'ordre aprÃ¨s la suppression
+// Mise à jour des numéros d'ordre après la suppression
 // Dataset : La table des menus
 procedure TF_Administration.adoq_MenusAfterDelete(DataSet: TDataSet);
 begin
@@ -2808,7 +2803,7 @@ begin
   adoq_DatasetMAJNumerosOrdre ( Dataset, 1 );
 end;
 
-// Les suppressions sont liÃ©es Ã  la table par cet Ã©vÃ¨nement
+// Les suppressions sont liées à la table par cet évènement
 // Dataset : La table du sommaire
 procedure TF_Administration.dbg_KeyUp(Sender: TObject;
   var Key: Word; Shift: TShiftState);
@@ -2853,8 +2848,8 @@ end;
 
 
 
-// PropriÃ©tÃ© Droits de l'utilisateur
-// ai_Value : Il y a DiffÃ©rents niveaux de droits
+// Propriété Droits de l'utilisateur
+// ai_Value : Il y a Différents niveaux de droits
 procedure TF_Administration.p_Set_NiveauDroits(const ai_Value: Integer);
 begin
   p_MontreTabSheet;
@@ -3113,7 +3108,7 @@ begin
 end ;
 
 // ajouter la modification
-// nav_Navigateur : Le navigateur qui sera modifiable avec les bookmarks pour dÃ©placer
+// nav_Navigateur : Le navigateur qui sera modifiable avec les bookmarks pour déplacer
 procedure TF_Administration.p_NavigateurModifiableBookmark ( const nav_Navigateur : TExtDBNavigator );
 begin
   nav_Navigateur.VisibleButtons := nav_Navigateur.VisibleButtons + [ nbEPost , nbECancel, nbEMovePrior , nbEMoveNext ];
@@ -3121,27 +3116,27 @@ begin
 end ;
 
 // ajouter la modification uniquement sur les bookmark
-// nav_Navigateur : Le navigateur avec les bookmarks pour dÃ©placer
+// nav_Navigateur : Le navigateur avec les bookmarks pour déplacer
 procedure TF_Administration.p_NavigateurBookmark ( const nav_Navigateur : TExtDBNavigator );
 begin
   nav_Navigateur.VisibleButtons := nav_Navigateur.VisibleButtons + [ nbEMovePrior , nbEMoveNext ];
 end;
 
-// ajouter la crÃ©ation et la suppression
+// ajouter la création et la suppression
 // nav_Navigateur : Le navigateur
 procedure TF_Administration.p_NavigateurCreation ( const nav_Navigateur : TExtDBNavigator );
 begin
   nav_Navigateur.VisibleButtons := nav_Navigateur.VisibleButtons + [ nbEInsert, nbEDelete];
 end;
 
-// enlever la crÃ©ation et la suppression
+// enlever la création et la suppression
 // nav_Navigateur : Le navigateur
 procedure TF_Administration.p_NavigateurPasCreation ( const nav_Navigateur : TExtDBNavigator );
 begin
   nav_Navigateur.VisibleButtons := nav_Navigateur.VisibleButtons - [ nbEInsert, nbEDelete];
 end;
 
-// enlever la crÃ©ation et pas la suppression
+// enlever la création et pas la suppression
 // nav_Navigateur : Le navigateur
 procedure TF_Administration.p_NavigateurSupprimeUniquement ( const nav_Navigateur : TExtDBNavigator );
 begin
@@ -3175,9 +3170,9 @@ begin
   // Initialisation
   Result    := False ; // Pas d'enregistrement
   try
-  //  ab_Erreur := True  ; // PAr dÃ©faut : erreur   : VÃ©rification du Resultat
+  //  ab_Erreur := True  ; // PAr défaut : erreur   : Vérification du Resultat
 
-    // Initialisation de la requÃªte
+    // Initialisation de la requête
     adoq_TreeUser.Close ;
     adoq_TreeUser.SQL.BeginUpdate ;
     adoq_TreeUser.SQL.Clear ;
@@ -3207,7 +3202,7 @@ begin
               Begin
                 MessageDlg ( GS_CHOISIR_MENU , mtWarning, [mbOk], 0);
                 Abort ;
-                adoq_TreeUser.SQL.EndUpdate ; // Mise Ã  jour faite
+                adoq_TreeUser.SQL.EndUpdate ; // Mise à jour faite
                 Exit ;
               End ;
             if  (    Sources [ 2 ].MyRecord = Null )
@@ -3224,19 +3219,19 @@ begin
           End ;
 
     End ;
-    adoq_TreeUser.SQL.EndUpdate ; // Mise Ã  jour faite
+    adoq_TreeUser.SQL.EndUpdate ; // Mise à jour faite
     adoq_TreeUser.Open ; // Ouverture
     if not adoq_TreeUser.IsEmpty // un enregistrement au moins
      Then
       Result := True ; // C'est ok
   except
-    p_NoConnexion ;    // Pas de connexion : VÃ©rification du RÃ©sultat
+    p_NoConnexion ;    // Pas de connexion : Vérification du Résultat
   End ;
 
 end;
  }
 // Existence d'un enregistrement dans une table sommaire, menu, sous menu
-// Alors non validation des donnÃ©es
+// Alors non validation des données
 {procedure TF_Administration.p_VerificationExistenceEnregistrement(
   const ai_NoTable: Integer);
 begin
@@ -3248,7 +3243,7 @@ begin
            Then
             Begin
               MessageDlg ( CST_SOMM_Clep_EN_DOUBLE + #13#10 + GS_CHANGER_ANNULER, mtWarning, [mbOk], 0);
-              // non validation des donnÃ©es
+              // non validation des données
               Abort ;
             End ;
         End ;
@@ -3259,7 +3254,7 @@ begin
            Then
             Begin
               MessageDlg ( CST_MENU_Clep_EN_DOUBLE + #13#10 + GS_CHANGER_ANNULER, mtWarning, [mbOk], 0);
-              // non validation des donnÃ©es
+              // non validation des données
               Abort ;
             End ;
         End ;
@@ -3270,14 +3265,14 @@ begin
            Then
             Begin
               MessageDlg ( CST_SOUM_Clep_EN_DOUBLE + #13#10 + GS_CHANGER_ANNULER, mtWarning, [mbOk], 0);
-              // non validation des donnÃ©es
+              // non validation des données
               Abort ;
             End ;
         End ;
   End ;
 end;
 }
-// Mise Ã  jour des xp boutons Ã  l'insertion
+// Mise à jour des xp boutons à l'insertion
 procedure TF_Administration.adoq_MenusAfterInsert(DataSet: TDataSet);
 begin
   if Sources [ 4 ].MyRecord <> Null Then
@@ -3285,7 +3280,7 @@ begin
   p_MAJXPBoutons ;
 end;
 
-// Mise Ã  jour des xp boutons Ã  l'insertion
+// Mise à jour des xp boutons à l'insertion
 procedure TF_Administration.adoq_SousMenusAfterInsert(DataSet: TDataSet);
 begin
   if Sources [ 4 ].MyRecord <> Null Then
@@ -3293,7 +3288,7 @@ begin
   p_MAJXPBoutons ;
 end;
 
-// mise Ã  jour de la barre sommaire Ã  l'insertion
+// mise à jour de la barre sommaire à l'insertion
 procedure TF_Administration.adoq_SommaireAfterInsert(DataSet: TDataSet);
 begin
   DataSet.FieldByName ( CST_SOMM_Niveau    ).Value := True ;
@@ -3304,16 +3299,16 @@ end;
 
 // Modification du sommaire en cours
 // Apelle la modification du menu et sous menu
-// as_Value : Valeur de la propriÃ©tÃ© Ã  changer ou non
+// as_Value : Valeur de la propriété à changer ou non
 procedure TF_Administration.adoq_SommaireAfterScroll(DataSet: TDataSet);
 begin
   // Modification du sommaire en cours
   adoq_SommaireFonctions.Filter := CST_SOFC__SOMM + ' = ''' + fs_stringDbQuote ( Sources [ 2 ].MyRecord ) + '''' ;
   adoq_SommaireFonctions.Filtered := True ;
-// ouverture de un query complÃ¨tement modifiÃ© : fonctions sommaire
+// ouverture de un query complètement modifié : fonctions sommaire
   adoq_Menus.Filter := 'MENU__SOMM=''' + fs_stringdbquote ( Sources [ 2 ].MyRecord ) + '''' ;
   adoq_Menus.Filtered := True ;
-  // CrÃ©ation des menus
+  // Création des menus
   p_SelectionneFonctions ();
 
   if  gb_PeutModifier
@@ -3331,7 +3326,7 @@ begin
       dbe_Edition.DataSource := dbg_Sommaire.DataSource;
       if dbg_Sommaire.Datasource.Dataset.FieldCount > 0 then
         dbe_Edition.DataField := dbg_Sommaire.Datasource.Dataset.Fields[0].FieldName;
-      fb_ControlSetReadOnly ( dbe_Edition , False ); // LibellÃ© En lecture seule
+      fb_ControlSetReadOnly ( dbe_Edition , False ); // Libellé En lecture seule
      // Edition d'un sommaire
     End ;
   lbl_Edition.Caption := GS_EDITION_SOMMAIRE ;
@@ -3357,14 +3352,14 @@ begin
 end;
 
 
-// Mise Ã  jour du mot de passe codÃ© Ã  l'entrÃ©e
+// Mise à jour du mot de passe codé à l'entrée
 procedure TF_Administration.dbe_MotPasseEnter(Sender: TObject);
 begin
 //  adoq_Utilisateurs.Edit ;
   dbe_MotPasse.SelectAll ;
 end;
 
-// Mise Ã  jour du mot de passe codÃ© Ã  la modification
+// Mise à jour du mot de passe codé à la modification
 procedure TF_Administration.dbe_MotPasseChange(Sender: TObject);
 begin
   if  adoq_Utilisateurs.State in [dsInsert,dsEdit] Then
@@ -3372,14 +3367,14 @@ begin
   gb_MotPasseEstValide  := False ;
 end;
 
-// RÃ©initialisation des valeurs du mot de passe aprÃ¨s un post
+// Réinitialisation des valeurs du mot de passe après un post
 procedure TF_Administration.adoq_UtilisateursAfterPost(DataSet: TDataSet);
 begin
   gb_MotPasseModifie := False ;
   SetFocusedControl ( dbe_Nom );
 end;
 
-// RÃ©initialisation des valeurs du mot de passe aprÃ¨s un cancel
+// Réinitialisation des valeurs du mot de passe après un cancel
 procedure TF_Administration.adoq_UtilisateursAfterCancel(
   DataSet: TDataSet);
 begin
@@ -3387,7 +3382,7 @@ begin
   SetFocusedControl ( dbe_Nom );
 end;
 
-// Mise Ã  jour des boutons et des colonnes aprÃ¨s une ouverture de la table fonctions du sommaire
+// Mise à jour des boutons et des colonnes après une ouverture de la table fonctions du sommaire
 procedure TF_Administration.adoq_SommaireFonctionsAfterOpen(
   DataSet: TDataSet);
 begin
@@ -3411,7 +3406,7 @@ begin
   {$ENDIF};
 end;
 
-// Mise Ã  jour des boutons et des colonnes aprÃ¨s une ouverture de la table fonctions du menu
+// Mise à jour des boutons et des colonnes après une ouverture de la table fonctions du menu
 procedure TF_Administration.adoq_MenuFonctionsAfterOpen(DataSet: TDataSet);
 begin
   if  gb_PeutModifier
@@ -3434,7 +3429,7 @@ begin
   {$ENDIF};
 end;
 
-// Mise Ã  jour des boutons et des colonnes aprÃ¨s une ouverture de la table fonctions du sous menu
+// Mise à jour des boutons et des colonnes après une ouverture de la table fonctions du sous menu
 procedure TF_Administration.adoq_SousMenuFonctionsAfterOpen(DataSet: TDataSet);
 begin
 //  adoq_SousMenuFonctions.Sort := 'SMFC_Numordre ASC' ;
@@ -3458,7 +3453,7 @@ begin
   {$ENDIF};
 end;
 
-// PrÃ©sentation Ã  l'ouverture du sommaire
+// Présentation à l'ouverture du sommaire
 procedure TF_Administration.adoq_SommaireAfterOpen(DataSet: TDataSet);
 begin
   {$IFNDEF FPC}
@@ -3472,22 +3467,22 @@ begin
   {$ENDIF}
 end;
 
-// Fonction trouvant le numÃ©ro d'ordre max
-// aDat_Dataset : Le dataset associÃ©
-// as_ChampNumOrdre : LE numÃ©ro d'ordre du dataset
+// Fonction trouvant le numéro d'ordre max
+// aDat_Dataset : Le dataset associé
+// as_ChampNumOrdre : LE numéro d'ordre du dataset
 // ab_erreur : Existe-t-il une erreur ?
 // Ab_Sort   : Trier le numero d'ordre
 function TF_Administration.p_RechercheNumOrdreMax(
   const aDat_Dataset: TDataset; const as_ChampNumOrdre: String;
   var ab_erreur: Boolean ; const ab_Sort : Boolean ): Integer ;
 begin
-  ab_erreur := True ;  // Erreur par dÃ©faut
+  ab_erreur := True ;  // Erreur par défaut
   gb_DesactiveRecherche := True ;
   // Si le dataset est vide
   if aDat_Dataset.IsEmpty
    Then
     Begin
-      // Le premier numÃ©ro d'ordre est donc 1
+      // Le premier numéro d'ordre est donc 1
       Result := 1 ;
       // Si le dataset est vide ce n'est pas une erreur
       ab_erreur := False ;
@@ -3507,7 +3502,7 @@ begin
     Begin
       // On trie
       fb_SortADataset( aDat_Dataset, as_ChampNumOrdre, False ); 
-        // On rÃ©cupÃ¨re le dernier champ : trie ascendant
+        // On récupère le dernier champ : trie ascendant
       aDat_Dataset.FindLast ;
       Result := aDat_Dataset.FindField( as_ChampNumOrdre ).AsInteger + 1 ;
 
@@ -3516,11 +3511,11 @@ begin
    End
   Else
     Begin
-        // On rÃ©cupÃ¨re le dernier champ : trie ascendant sur numÃ©ro d'ordre par dÃ©faut
+        // On récupère le dernier champ : trie ascendant sur numéro d'ordre par défaut
       aDat_Dataset.FindLast ;
       Result := aDat_Dataset.FindField( as_ChampNumOrdre ).AsInteger ;
 
-        // On teste les numÃ©ro d'ordres prÃ©cÃ©dent
+        // On teste les numéro d'ordres précédent
       while not ( aDat_Dataset.Bof ) do
        Begin
          If ( aDat_Dataset.FindField ( as_ChampNumOrdre ).AsInteger > Result )
@@ -3528,14 +3523,14 @@ begin
            Result := aDat_Dataset.FindField ( as_ChampNumOrdre ).AsInteger;
          aDat_Dataset.Prior ;
        End ;
-        // On renvoie le numÃ©ro d'ordre max + 1
+        // On renvoie le numéro d'ordre max + 1
      Result := Result + 1 ;
       // ce n'est pas une erreur
      ab_erreur := False ;
     End ;
 end;
 
-// Action d'insertion : On rÃ©cupÃ¨re le numÃ©ro d'ordre max
+// Action d'insertion : On récupère le numéro d'ordre max
 // Si on ne le trouve pas et si le dataset n'est pas vide : Erreur
 // Sender : LE navigateur
 procedure TF_Administration.nav_NavigateurMenuBtnInsert(Sender: TObject);
@@ -3551,7 +3546,7 @@ begin
     End ;
 end;
 
-// Action d'insertion : On rÃ©cupÃ¨re le numÃ©ro d'ordre max
+// Action d'insertion : On récupère le numéro d'ordre max
 // Si on ne le trouve pas et si le dataset n'est pas vide : Erreur
 // Sender : LE navigateur
 procedure TF_Administration.nav_NavigateurSousMenuBtnInsert(
@@ -3569,7 +3564,7 @@ begin
 
 end;
 
-// PrÃ©sentation Ã  l'ouverture de la table utilisateur
+// Présentation à l'ouverture de la table utilisateur
 procedure TF_Administration.adoq_UtilisateursAfterOpen(DataSet: TDataSet);
 begin
   gb_MotPasseModifie := False;
@@ -3581,14 +3576,14 @@ begin
   p_Connexion;
 end;
 
-// Bouton fermer en haut pour la conformitÃ©
+// Bouton fermer en haut pour la conformité
 procedure TF_Administration.bt_fermerClick(Sender: TObject);
 begin
   Close;
 end;
 
-// Touche enfoncÃ©e
-// Mise Ã  jour de U_McFormMain
+// Touche enfoncée
+// Mise à jour de U_McFormMain
 function TF_Administration.IsShortCut(var ao_Msg: {$IFDEF FPC}TLMKey{$ELSE}TWMKey{$ENDIF}): Boolean;
 begin
   // Pour la gestion des touches MAJ / Num lors du LOG
@@ -3619,7 +3614,7 @@ begin
   nav_Utilisateur.DataSource.DataSet.Post ;
 end;
 
-// Mise Ã  jour ou non  : valider ou non le tableau
+// Mise à jour ou non  : valider ou non le tableau
 procedure TF_Administration.ds_UtilisateursStateChange(Sender: TObject);
 begin
   if adoq_Utilisateurs.State = dsBrowse
@@ -3640,14 +3635,14 @@ begin
   nv_navigue.Enabled := gd_Utilisateurs.Enabled ;
 end;
 
-// Au insert : DÃ©valider le tableau et modfier le mot de passe
+// Au insert : Dévalider le tableau et modfier le mot de passe
 procedure TF_Administration.adoq_UtilisateursAfterInsert(DataSet: TDataSet);
 begin
   gd_Utilisateurs.Enabled := False;
   gb_MotPasseModifie := True;
 end;
 
-// Il faut renseigner l'Ã©vÃ¨nement insert pour que le insert fonctionne
+// Il faut renseigner l'évènement insert pour que le insert fonctionne
 procedure TF_Administration.nav_UtilisateurBtnInsert(Sender: TObject);
 begin
   adoq_Utilisateurs.Insert;
@@ -3673,7 +3668,7 @@ begin
   dbl_Fonctions.Color := clbtnFace;
 end;
 
-// Mise Ã  jour des numÃ©ros d'ordre aprÃ¨s la suppression
+// Mise à jour des numéros d'ordre après la suppression
 // Dataset : La table des fonctions du sommaire
 procedure TF_Administration.adoq_DatasetMAJNumerosOrdre(const adat_DataSet: TDataSet; const ai_NumTable: integer);
 var
@@ -3755,7 +3750,7 @@ begin
     fb_ChargeIcoBmp ( od_ChargerImage, (Sender as TExtDBImage).DataSource.DataSet, (Sender as TExtDBImage).DataSource.DataSet.FieldByName ( (Sender as TExtDBImage).DataField ), 16, True, nil )
   Else
     fb_ChargeIcoBmp ( od_ChargerImage, (Sender as TExtDBImage).DataSource.DataSet, (Sender as TExtDBImage).DataSource.DataSet.FieldByName ( (Sender as TExtDBImage).DataField ), 32, True, nil );
-  // Mise Ã  jour du glyph
+  // Mise à jour du glyph
  //  (Sender as TExtDBImage).Repaint;
 {  if OpenDialog.Execute then
     begin
