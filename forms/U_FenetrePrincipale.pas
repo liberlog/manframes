@@ -101,6 +101,7 @@ type
     dbt_aide: TJvXPButton;
     dbt_ident: TJvXPButton;
     dbt_quitter: TJvXPButton;
+    im_ListeDisabled: TImageList;
     mc_Customize: TExtMenuCustomize;
     mi_CustomizedMenu: TMenuItem;
     mtb_CustomizedMenu: TExtMenuToolBar;
@@ -174,6 +175,7 @@ type
     mu_langue: TMenuItem;
 
     procedure mi_CustomizedMenuClick(Sender: TObject);
+    procedure mtb_CustomizedMenuClickCustomize(Sender: TObject);
     procedure p_ChargeAide;
     procedure p_OnClickFonction(Sender: TObject);
     procedure p_OnClickMenuLang(Sender:TObject);
@@ -536,6 +538,12 @@ begin
   mu_voletPersonnalisechange( not mi_CustomizedMenu.Checked, mu_voletexplore.Checked );
 end;
 
+procedure TF_FenetrePrincipale.mtb_CustomizedMenuClickCustomize(Sender: TObject
+  );
+begin
+  mc_Customize.Click;
+end;
+
 ///////////////////////////////////////////////////////////////////////////////
 //  Pour gérer les click sur les boutons de fonctions créés dynamiquement
 ////////////////////////////////////////////////////////////////////////////////
@@ -771,6 +779,8 @@ begin
   Screen.Cursor := Self.Cursor;
   gb_FirstAcces := False;
   mc_Customize.LoadIni;
+  mtb_CustomizedMenu.Menu := nil;
+  mtb_CustomizedMenu.Menu := mu_MenuIni;
   {$IFNDEF FPC}
   F_Acces.Free;
   {$ENDIF}
