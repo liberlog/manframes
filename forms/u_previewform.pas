@@ -14,7 +14,8 @@ uses
  LResources,
 {$ENDIF}
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs,
-  ExtCtrls, u_buttons_appli, RichView;
+  ExtCtrls, u_buttons_appli, RichView, RVScroll, JvExControls, JvXPCore,
+  JvXPButtons;
 
 type
 
@@ -26,7 +27,6 @@ type
     pa_InterPrint: TPanel;
     Pa_Buttons: TPanel;
     rvi_Page: TRichView;
-    procedure RichMemo1Change(Sender: TObject);
   private
     { private declarations }
   public
@@ -39,11 +39,6 @@ var
 implementation
 
 { TF_Preview }
-
-procedure TF_Preview.RichMemo1Change(Sender: TObject);
-begin
-
-end;
 
 end.
 

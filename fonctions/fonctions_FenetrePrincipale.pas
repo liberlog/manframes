@@ -27,7 +27,7 @@ uses
   Windows, OleDB, JvComponent, StoHtmlHelp, JvScrollBox,
   JvExExtCtrls, JvSplitter, JvLED, U_ExtScrollBox,
   StdActns, JvExForms, JvExControls, Messages,
-  JvXPCore, ImgList, ExtTBTlwn, ExtDock, ExtTBTlbr,
+  JvXPCore, ImgList, 
   ToolWin,
 {$ENDIF}
 {$IFDEF VERSIONS}
@@ -346,14 +346,6 @@ end;
 ////////////////////////////////////////////////////////////////////////////////
 procedure p_ApresSauvegardeParamIni( const af_Form : TForm ; const ab_AccesAuto, ab_Reinit : Boolean );
 begin
-  {$IFNDEF FPC}
-  if gb_AccesAuto then
-    if gs_ModeConnexion = CST_MACHINE then
-      IniSaveToolbarPositions(af_Form, ExtractFilePath(Application.ExeName) + CST_Avant_Fichier + gs_computer  + '.INI', '')
-    else
-      IniSaveToolbarPositions(af_Form, ExtractFilePath(Application.ExeName) + CST_Avant_Fichier + gs_sessionuser  + '.INI', '');
-
-  {$ENDIF}
   if gb_Reinit then
     if gs_ModeConnexion = CST_MACHINE then
       DeleteFile(ExtractFilePath(Application.ExeName) + CST_Avant_Fichier + gs_computer  + '.INI')

@@ -1196,7 +1196,7 @@ object F_Administration: TF_Administration
                 Expanded = False
                 FieldName = 'CONN_Libelle'
                 Title.Alignment = taCenter
-                Title.Caption = 'Libell'#195#169
+                Title.Caption = 'Libell'#233
                 Width = 125
                 Visible = True
                 FieldTag = 0
@@ -1205,7 +1205,7 @@ object F_Administration: TF_Administration
                 Expanded = False
                 FieldName = 'CONN_Chaine'
                 Title.Alignment = taCenter
-                Title.Caption = 'Cha'#195#174'ne de connexion'
+                Title.Caption = 'Cha'#238'ne de connexion'
                 Width = 150
                 Visible = True
                 FieldTag = 0
@@ -1238,7 +1238,7 @@ object F_Administration: TF_Administration
                 Expanded = False
                 FieldName = 'CONN_Libelle'
                 Title.Alignment = taCenter
-                Title.Caption = 'Libell'#195#169
+                Title.Caption = 'Libell'#233
                 Width = 125
                 Visible = True
                 FieldTag = 0
@@ -1247,7 +1247,7 @@ object F_Administration: TF_Administration
                 Expanded = False
                 FieldName = 'CONN_Chaine'
                 Title.Alignment = taCenter
-                Title.Caption = 'Cha'#195#174'ne de connexion'
+                Title.Caption = 'Cha'#238'ne de connexion'
                 Width = 150
                 Visible = True
                 FieldTag = 0
@@ -1521,7 +1521,7 @@ object F_Administration: TF_Administration
               Width = 130
               Height = 23
               AutoSize = False
-              Caption = 'Cha'#195#174'ne de connexion'
+              Caption = 'Cha'#238'ne de connexion'
               Color = clBtnFace
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clBlack
@@ -1539,7 +1539,7 @@ object F_Administration: TF_Administration
               Width = 39
               Height = 23
               AutoSize = False
-              Caption = 'Libell'#195#169
+              Caption = 'Libell'#233
               Color = clBtnFace
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clBlack
@@ -1628,7 +1628,7 @@ object F_Administration: TF_Administration
               Width = 297
               Height = 24
               Hint = 'Code de connexion'
-              Color = clMoneyGreen
+              Color = clInfoBk
               DataField = 'CONN_Clep'
               Font.Charset = DEFAULT_CHARSET
               Font.Color = 13500416
@@ -1763,7 +1763,7 @@ object F_Administration: TF_Administration
               Width = 52
               Height = 23
               AutoSize = False
-              Caption = 'Privil'#195#168'ge'
+              Caption = 'Privil'#232'ge'
               Color = clBtnFace
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clBlack
@@ -2210,7 +2210,7 @@ object F_Administration: TF_Administration
         end
       end
       object ts_infos: TTabSheet
-        Caption = 'Informations g'#195#169'n'#195#169'rales'
+        Caption = 'Informations g'#233'n'#233'rales'
         ImageIndex = 3
         object p_Entreprise: TPanel
           Left = 0
@@ -2226,7 +2226,7 @@ object F_Administration: TF_Administration
             Width = 91
             Height = 23
             AutoSize = False
-            Caption = 'Libell'#195#169' de login'
+            Caption = 'Libell'#233' de login'
             Color = clBtnFace
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
@@ -2239,12 +2239,12 @@ object F_Administration: TF_Administration
           end
           object lb_nomapp: TFWLabel
             Tag = 1006
-            Left = 110
+            Left = 96
             Top = 44
-            Width = 132
+            Width = 146
             Height = 23
             AutoSize = False
-            Caption = 'Libell'#195#169' de l'#39'application'
+            Caption = 'Libell'#233' de l'#39'application'
             Color = clBtnFace
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
@@ -2298,7 +2298,7 @@ object F_Administration: TF_Administration
             Width = 90
             Height = 23
             AutoSize = False
-            Caption = 'Image d'#39'acc'#195#168's'
+            Caption = 'Image d'#39'acc'#232's'
             Color = clBtnFace
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
@@ -2316,7 +2316,7 @@ object F_Administration: TF_Administration
             Width = 95
             Height = 23
             AutoSize = False
-            Caption = 'Image '#195#160' propos'
+            Caption = 'Image '#224' propos'
             Color = clBtnFace
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
@@ -2486,7 +2486,7 @@ object F_Administration: TF_Administration
       Top = 0
       Height = 25
       Hint = 'Aper'#195#167'u  (Impression / exportation)'
-      Caption = 'Aper'#195#167'u'
+      Caption = 'Aper'#231'u'
       Enabled = False
       TabOrder = 0
       Align = alRight
@@ -2499,8 +2499,8 @@ object F_Administration: TF_Administration
     end
   end
   object im_ListeImages: TImageList
-    Left = 200
-    Top = 344
+    Left = 32
+    Top = 296
   end
   object od_ChargerImage: TOpenDialog
     DefaultExt = '.bmp'
@@ -2510,8 +2510,8 @@ object F_Administration: TF_Administration
     Top = 248
   end
   object iml_Menus: TImageList
-    Left = 224
-    Top = 344
+    Left = 56
+    Top = 296
   end
   object OpenDialog: TOpenDialog
     DefaultExt = '.bmp'

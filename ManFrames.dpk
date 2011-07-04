@@ -71,8 +71,19 @@ requires
   rxctl,
   dxPack2D10,
   JvCmpD10R,
-  ExtToolbarTools,
-  RVFree_D6;
+  RVFree_D6,
+  VampyreImagingPackage,
+  ZComponent,
+  ZParseSql,
+  ZCore,
+  ZDbc,
+  ZPlain,
+  dmenutoolbar,
+  TntUnicodeVcl_R90,
+  dsnap,
+  dcldklang10,
+  dklang10,
+  TntUnicodeVcl_D90;
 
 contains
   fonctions_aide in 'fonctions\fonctions_aide.pas',
@@ -89,6 +100,9 @@ contains
   u_searchcomponents in 'composants\u_searchcomponents.pas',
   fonctions_tableauframework in 'fonctions\fonctions_tableauframework.pas',
   unite_variables in 'fonctions\unite_variables.pas',
-  u_buttons_manage in 'composants\u_buttons_manage.pas';
+  u_buttons_manage in 'composants\u_buttons_manage.pas',
+  u_previewform in 'forms\u_previewform.pas',
+  fonctions_manbase in 'fonctions\fonctions_manbase.pas',
+  u_propform in 'composants\u_propform.pas';
 
 end.

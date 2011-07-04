@@ -24,7 +24,7 @@ uses Forms, JvXPBar, DB, JvXPContainer,
 {$IFDEF FPC}
    LCLIntf, LCLType, ComCtrls,
 {$ELSE}
-   Windows, ExtTbTlbr, ToolWin,
+   Windows, ToolWin,
 {$ENDIF}
   {$IFDEF ADO}
   ADODB,
@@ -1844,12 +1844,10 @@ Begin
           lSep_ToolBarSepare.Parent := aBar_ToolBarParent ; // Parent séparateur : Toolbar
           lbtn_ToolBarButton.Parent := lPan_ToolBarPanel  ; // Parent bouton : Panel
 
-          {$IFDEF FPC}
           lPan_ToolBarPanel .Align :=alLeft;
           lSep_ToolBarSepare.Align :=alLeft;
           lSep_ToolBarSepare.Width := 3 ;
-          lSep_ToolBarSepare.Caption := '';
-          {$ENDIF}
+          p_SetComponentProperty ( lSep_ToolBarSepare, 'Caption', '' );
           //Gestion des raccourcis d'aide
           lPan_ToolBarPanel .HelpType    := aBar_ToolBarParent.HelpType ;
           lPan_ToolBarPanel .HelpKeyword := aBar_ToolBarParent.HelpKeyword ;
@@ -1866,7 +1864,7 @@ Begin
            // Aligne en haut
           aBar_ToolBarParent.Realign ;
           lPan_ToolBarPanel.TabOrder   := aPan_PanelSepareFin.TabOrder - 1 ;
-          lPan_ToolBarPanel .Left := lSep_OldToolBarSepare.Left + lSep_OldToolBarSepare.Width + 1;
+          lPan_ToolBarPanel .Left := lSep_OldToolBarSepare.Left + lSep_OldToolBarSepare.Width ;
 //          if ( aPan_PanelSepareFin <> gPan_PanelSepareFin ) Then
 //            ShowMessage ( IntToStr ( aBar_ToolBarParent.OrderIndex [ lPan_ToolBarPanel ]) +' '  + IntTOStr ( aBar_ToolBarParent.OrderIndex [ aPan_PanelSepareFin ]));
           lPan_ToolBarPanel.Width      := ai_TailleUnPanel ;
@@ -1875,7 +1873,7 @@ Begin
             // affectation du compteur de nom
 
     //      lSep_ToolBarSepare.Align    := alClient ;
-          lSep_ToolBarSepare.Left := lPan_ToolBarPanel.Left + lPan_ToolBarPanel.Width + 1 ;
+          lSep_ToolBarSepare.Left := lPan_ToolBarPanel.Left + lPan_ToolBarPanel.Width ;
           lSep_OldToolBarSepare := lSep_ToolBarSepare;
                        // affectation du libellé du menu
           lbtn_ToolBarButton.Layout   := blGlyphRight ;

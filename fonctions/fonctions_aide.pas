@@ -21,7 +21,7 @@ function fcon_IsMouseHelpControl ( const aper_Control : TPersistent ): TControl;
 
 implementation
 
-uses DBCtrls, JvXPButtons, JvXpBar, ExtTBTlbr, ExtCtrls, Menus ,
+uses DBCtrls, JvXPButtons, JvXpBar, ExtCtrls, Menus ,
   TypInfo;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -99,7 +99,7 @@ begin
   if ( aper_Control is TControl )
   and (      ( aper_Control is TDBNavigator ) or ( aper_Control is TNavButton )
           or ( aper_Control is TJvXPButton      ) or ( aper_Control is TJvXpBar      )
-          or ( aper_Control is TPanel          ) or ( aper_Control is TExtToolbar    )
+          or ( aper_Control is TPanel          ) or ( aper_Control is TToolbar    )
           or ( aper_Control is TCustomForm     ) or ( aper_Control is TMenuItem     ) ) Then
     Result := aper_Control as TControl ;
   if ( aper_Control is TJvXpBarItem   ) Then

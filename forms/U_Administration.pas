@@ -51,7 +51,6 @@ uses
 {$ELSE}
   Windows, Variants, Mask, RXDBCtrl, Messages,
   JvExComCtrls, JvListView, JvExControls, JvXPCore,
-  ExtTBTls, ExtDock, ExtTBTlwn, ExtTBTlbr,
 {$ENDIF}
 {$IFDEF DELPHI_9_UP}
    WideStrings,
@@ -2062,7 +2061,6 @@ begin
     End;
   {$ENDIF}
   gcco_Connexion := fcom_CloneConnexion ( gcco_ConnexionCopy, Self );
-  {$IFDEF FPC}
   Sources.Clear;
   with Sources.Add do
     Begin
@@ -2155,7 +2153,6 @@ begin
     end ;
   DataCloseMessage := True ;
   DataPropsOff:=True;
-  {$ENDIF}
 
   Sources [ 0 ].Datasource := ds_Utilisateurs;
   Sources [ 1 ].Datasource := ds_connexion;

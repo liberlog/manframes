@@ -25,19 +25,19 @@ unit U_FenetrePrincipale;
 interface
 
 uses
-{$IFDEF EADO}
-  ADODB,
-{$ENDIF}
 {$IFDEF FPC}
-  LCLIntf, LCLType, SQLDB, PCheck,
+   LCLIntf, LCLType, SQLDB, PCheck,
 {$ELSE}
   Windows, OleDB, JvComponent, StoHtmlHelp, JvScrollBox,
+  ImgList,
   JvExExtCtrls, JvSplitter, JvLED, U_ExtScrollBox,
-  StdActns, JvExForms, JvExControls, Messages,
-  JvXPCore, ImgList, ExtTBTlwn, ExtDock, ExtTBTlbr,
+  StdActns, JvExForms, JvExControls, JvXPCore, Messages,
 {$ENDIF}
 {$IFDEF VERSIONS}
-  fonctions_version, 
+  fonctions_version,
+{$ENDIF}
+{$IFDEF EADO}
+  ADODB,
 {$ENDIF}
 {$IFDEF TNT}
   TntDBCtrls, TntStdCtrls, DKLang,
@@ -45,16 +45,17 @@ uses
   TntMenus, TntExtCtrls, TntStdActns,
   TntActnList,
 {$ENDIF}
-  U_Donnees,
-  Controls, Graphics, Classes, SysUtils,
+  u_donnees,
+  Controls, Graphics, Classes, SysUtils, StrUtils,
   ExtCtrls, ActnList, Menus,
   JvXPContainer, ComCtrls, JvXPButtons,
   IniFiles, Dialogs, Printers,
   JvXPBar, Forms,  U_FormMainIni, fonctions_init,
-  fonctions_Objets_Dynamiques, fonctions_Objets_Data, fonctions_images,
-  u_buttons_appli, fonctions_string,
-  U_OnFormInfoIni, u_extmenutoolbar,
-  u_extmenucustomize ;
+  fonctions_Objets_Dynamiques, fonctions_Objets_Data,
+  u_buttons_appli, fonctions_images, fonctions_string,
+  U_OnFormInfoIni, DBCtrls, menutbar,
+  u_extmenutoolbar, ToolWin, 
+  u_extmenucustomize;
 
 {$IFDEF VERSIONS}
 const
@@ -62,7 +63,8 @@ const
        			                 FileUnit : 'U_FenetrePrincipale' ;
        			                 Owner : 'Matthieu Giroux' ;
        			                 Comment : 'Fenêtre principale utilisée pour la gestion automatisée à partir du fichier INI, avec des menus composés à partir des données.' + #13#10 + 'Elle dépend du composant Fenêtre principale qui lui n''est pas lié à l''application.' ;
-      			                 BugsStory : 'Version 3.1.0.2 : Adding Customized Menu.' + #13#10 +
+      			                 BugsStory : 'Version 3.1.0.3 : No ExtToolbar.' + #13#10 +
+                                                     'Version 3.1.0.2 : Adding Customized Menu.' + #13#10 +
                                                      'Version 3.1.0.1 : No ExtToolBar on Lazarus.' + #13#10 +
                                                      'Version 3.1.0.0 : Passage en générique' + #13#10
                                                    + '3.0.5.3 : Désactivation du timer au destroy.' + #13#10
@@ -90,7 +92,7 @@ const
 			                	   + '3.0.0.1 : Bug AutoScroll sur le TScrollBox.' + #13#10
 			                	   + '3.0.0.0 : Gestion de l''INI par application.';
 			                 UnitType : CST_TYPE_UNITE_FICHE ;
-			                 Major : 3 ; Minor : 1 ; Release : 0 ; Build : 2 );
+			                 Major : 3 ; Minor : 1 ; Release : 0 ; Build : 3 );
 {$ENDIF}
 
 type
@@ -134,8 +136,6 @@ type
     pa_1: {$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF};
     pa_2: {$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF};
     pa_3: {$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF};
-    pa_5: {$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF};
-    tbsep_4: TPanel;
     {$IFDEF MDI}
     WindowCascade: {$IFDEF TNT}TTntWindowCascade{$ELSE}TWindowCascade{$ENDIF};
     WindowTileHorizontal: {$IFDEF TNT}TTntWindowTileHorizontal{$ELSE}TWindowTileHorizontal{$ENDIF};
@@ -147,7 +147,6 @@ type
     Timer: TTimer;
     SvgFormInfoIni: TOnFormInfoIni;
     im_Liste: TImageList;
-    tbar_volet: TToolbar;
     tbsep_1: TPanel;
     tbsep_2: TPanel;
     tbsep_3: TPanel;
@@ -161,10 +160,12 @@ type
     im_appli: TImage;
     im_acces: TImage;
     im_about: TImage;
-    scb_Volet: TScrollBox;
     mu_langue: TMenuItem;
     pa_4: TTntPanel;
     dbt_quitter: TJvXPButton;
+    pa_5: TTntPanel;
+    tbar_volet: TToolBar;
+    scb_Volet: TScrollBox;
 
     procedure mi_CustomizedMenuClick(Sender: TObject);
     procedure mtb_CustomizedMenuClickCustomize(Sender: TObject);
@@ -579,14 +580,6 @@ begin
   // Identification par la fenêtre de Login uniquement au démarrage de l'application
   if gb_FirstAcces then
     begin
-      // Initialisation de la toolbar mauvaise si dans le create et si maximised
-{$IFNDEF FPC}
-      if gs_ModeConnexion = CST_MACHINE then
-        IniLoadToolbarPositions(Self, ExtractFilePath(Application.ExeName) + CST_Avant_Fichier + gs_computer  + '.INI', '')
-      else
-        IniLoadToolbarPositions(Self, ExtractFilePath(Application.ExeName) + CST_Avant_Fichier + gs_sessionuser  + '.INI', '');
-{$ENDIF}
-
       // Init. du menu barre de fonction checked ou pas
       mu_barreoutils.Checked := tbar_outils.Visible;
 
@@ -952,14 +945,6 @@ end;
 
 procedure TF_FenetrePrincipale.p_ApresSauvegardeParamIni;
 begin
-  {$IFNDEF FPC}
-  if gb_AccesAuto then
-    if gs_ModeConnexion = CST_MACHINE then
-      IniSaveToolbarPositions(Self, ExtractFilePath(Application.ExeName) + CST_Avant_Fichier + gs_computer  + '.INI', '')
-    else
-      IniSaveToolbarPositions(Self, ExtractFilePath(Application.ExeName) + CST_Avant_Fichier + gs_sessionuser  + '.INI', '');
-
-  {$ENDIF}
   if gb_Reinit then
     if gs_ModeConnexion = CST_MACHINE then
       DeleteFile(ExtractFilePath(Application.ExeName) + CST_Avant_Fichier + gs_computer  + '.INI')

@@ -29,10 +29,11 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
     Visible = False
   end
   object spl_volet: TJvSplitter
-    Left = 197
+    Left = 227
     Top = 29
     Width = 5
     Height = 465
+    ExplicitLeft = 197
     ExplicitTop = 45
     ExplicitHeight = 439
   end
@@ -110,20 +111,21 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
     object pa_2: TTntPanel
       Left = 60
       Top = 0
-      Width = 530
+      Width = 573
       Height = 22
+      Align = alClient
       BevelOuter = bvNone
       TabOrder = 1
     end
     object tbsep_2: TPanel
-      Left = 590
+      Left = 633
       Top = 0
       Width = 3
       Height = 22
       TabOrder = 5
     end
     object pa_3: TTntPanel
-      Left = 593
+      Left = 636
       Top = 0
       Width = 57
       Height = 22
@@ -153,14 +155,14 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
       end
     end
     object tbsep_3: TPanel
-      Left = 650
+      Left = 693
       Top = 0
       Width = 3
       Height = 22
       TabOrder = 3
     end
     object pa_4: TTntPanel
-      Left = 653
+      Left = 696
       Top = 0
       Width = 57
       Height = 22
@@ -232,29 +234,49 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
     ParentBiDiMode = False
     OnDrawPanel = br_statusbarDrawPanel
   end
-  object pa_5: TTntPanel
+  object mtb_CustomizedMenu: TExtMenuToolBar
     Left = 0
+    Top = 29
+    Width = 30
+    Height = 465
+    Align = alLeft
+    AutoSize = False
+    Caption = 'mtb_CustomizedMenu'
+    Color = cl3DLight
+    DisabledImages = im_ListeDisabled
+    HotImages = im_Liste
+    List = False
+    Menu = mu_MenuIni
+    ParentColor = False
+    ShowCaptions = False
+    TabOrder = 2
+    Visible = False
+    OnClickCustomize = mtb_CustomizedMenuClickCustomize
+  end
+  object pa_5: TTntPanel
+    Left = 30
     Top = 29
     Width = 197
     Height = 465
     Align = alLeft
     BevelOuter = bvNone
     DockSite = True
-    TabOrder = 2
-    OnResize = pa_5Resize
+    TabOrder = 3
     object tbar_volet: TToolBar
       Left = 0
       Top = 0
       Width = 197
-      Height = 29
-      Caption = 'Volet d'#39'acc'#195#402#194#168's'
+      Height = 465
+      Align = alClient
+      ButtonHeight = 436
+      Caption = 'Volet d'#39'acc'#232's'
       TabOrder = 0
       object scb_Volet: TScrollBox
         Left = 0
         Top = 0
         Width = 197
-        Height = 22
-        Hint = 'Cliquez pour acc'#195#402#194#169'der aux fonctions'
+        Height = 436
+        Hint = 'Cliquez pour acc'#233'der aux fonctions'
         HelpContext = 1440
         Align = alClient
         BorderStyle = bsNone
@@ -1074,25 +1096,25 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
     Images = im_Liste
     Left = 256
     Top = 266
-    object mu_file: TMenuitem
+    object mu_file: TMenuItem
       Caption = '&Application'
       HelpContext = 1420
       Hint = 'Fermeture des fen'#234'tres ou de l'#39'application'
-      object mu_identifier: TMenuitem
+      object mu_identifier: TMenuItem
         Caption = 'S'#39'&identifier'
         Hint = 'Ouvrir la fen'#234'tre d'#39'identification'
         OnClick = dbt_identClick
       end
-      object mu_ouvrir: TMenuitem
+      object mu_ouvrir: TMenuItem
         Caption = '&Ouvrir'
         HelpContext = 1420
         Hint = 'Ouvrir une fonction'
         Visible = False
       end
-      object mu_sep1: TMenuitem
+      object mu_sep1: TMenuItem
         Caption = '-'
       end
-      object mu_quitter: TMenuitem
+      object mu_quitter: TMenuItem
         Caption = '&Quitter'
         HelpContext = 1420
         Hint = 'Quitter|Quitter l'#39'application'
@@ -1100,77 +1122,76 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
         OnClick = dbt_quitterClick
       end
     end
-    object mu_fenetre: TMenuitem
+    object mu_fenetre: TMenuItem
       Caption = 'Fe&n'#234'tre'
       Hint = 'Commandes relatives aux fen'#234'tres'
-      object mu_Reinitiliserpresentation: TMenuitem
+      object mu_Reinitiliserpresentation: TMenuItem
         Caption = 'R'#233'initialiser la pr'#233'sentation'
         HelpContext = 1420
         OnClick = mu_ReinitiliserpresentationClick
       end
-      object mu_sep3: TMenuitem
+      object mu_sep3: TMenuItem
         Caption = '-'
       end
-      object mu_cascade: TMenuitem
+      object mu_cascade: TMenuItem
         Action = WindowCascade
         HelpContext = 1420
       end
-      object mu_mosaiqueh: TMenuitem
+      object mu_mosaiqueh: TMenuItem
         Action = WindowTileHorizontal
         HelpContext = 1420
       end
-      object mu_mosaiquev: TMenuitem
+      object mu_mosaiquev: TMenuItem
         Action = WindowTileVertical
         HelpContext = 1420
       end
-      object mu_reduire: TMenuitem
+      object mu_reduire: TMenuItem
         Action = WindowMinimizeAll
         HelpContext = 1420
       end
-      object mu_organiser: TMenuitem
+      object mu_organiser: TMenuItem
         Action = WindowArrangeAll
         HelpContext = 1420
       end
     end
-    object mu_affichage: TMenuitem
+    object mu_affichage: TMenuItem
       Caption = 'Affichage'
-      object mu_barreoutils: TMenuitem
+      object mu_barreoutils: TMenuItem
         Caption = 'Barre d'#39'acc'#232's'
         HelpContext = 1420
         OnClick = mu_barreoutilsClick
       end
-      object mu_voletexplore: TMenuitem
+      object mu_voletexplore: TMenuItem
         Caption = 'Volet d'#39'acc'#232's'
         HelpContext = 1420
         OnClick = mu_voletexploreClick
       end
-      object mi_CustomizedMenu: TMenuitem
-        Caption = 'Volet personnalisé'
+      object mi_CustomizedMenu: TMenuItem
+        Caption = 'Volet personnalis'#195#169
         OnClick = mi_CustomizedMenuClick
       end
     end
-    object mu_langue: TMenuitem
+    object mu_langue: TMenuItem
       Caption = 'Langage'
     end
-    object mu_aide: TMenuitem
+    object mu_aide: TMenuItem
       Caption = '&Aide'
       Hint = 'Rubriques d'#39'aide'
-      object mu_ouvriraide: TMenuitem
+      object mu_ouvriraide: TMenuItem
         Caption = '&Ouvrir l'#39'aide'
         HelpContext = 1420
         Hint = 'Rubriques d'#39'aide'
         OnClick = dbt_aideClick
       end
-      object mu_sep2: TMenuitem
+      object mu_sep2: TMenuItem
         Caption = '-'
       end
-      object mu_apropos: TMenuitem
+      object mu_apropos: TMenuItem
         Caption = '&A propos...'
         HelpContext = 1420
         Hint = 
           'A propos|Afficher des informations sur le programme, le num'#233'ro d' +
           'e version et le copyright'
-        OnClick = mu_aproposClick
       end
     end
   end
@@ -1220,40 +1241,20 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
     Left = 256
     Top = 168
   end
-  object mtb_CustomizedMenu: TExtMenuToolBar
-    Left = 197
-    Height = 453
-    Top = 50
-    Width = 30
-    Align = alLeft
-    AutoSize = False
-    Caption = 'mtb_CustomizedMenu'
-    Color = cl3DLight
-    DisabledImages = im_ListeDisabled
-    HotImages = im_Liste
-    Images = im_Liste
-    List = False
-    ParentColor = False
-    ShowCaptions = False
-    TabOrder = 5
-    Visible = False
-    Menu = mu_MenuIni
-    OnClickCustomize = mtb_CustomizedMenuClickCustomize
-  end
   object mc_Customize: TExtMenuCustomize
     AutoIni = False
     MenuIni = mu_MenuIni
     MainMenu = mu_MainMenu
-    left = 480
-    top = 264
+    Left = 480
+    Top = 264
   end
   object im_ListeDisabled: TImageList
-    left = 360
-    top = 216
+    Left = 360
+    Top = 216
   end
   object mu_MenuIni: TTntMainMenu
     Images = im_Liste
-    left = 360
-    top = 266
+    Left = 360
+    Top = 266
   end
 end

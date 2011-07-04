@@ -27,8 +27,7 @@ uses Forms, JvXPBar, JvXPContainer,
 {$IFDEF FPC}
    LCLIntf, LCLType, ComCtrls, gettext, Translations,
 {$ELSE}
-   Windows, ExtTBTls, ExtDock, ExtTBTlwn, ExtTBTlbr,
-   ToolWin,
+   Windows, ToolWin,
 {$ENDIF}
 
   Controls, Classes, JvXPButtons, ExtCtrls,
@@ -67,7 +66,7 @@ const // Evènements gérés
   CST_u_languagevars  = 'u_languagevars' ;
   CST_unite_messages  = 'unite_messages' ;
   CST_unite_variables = 'unite_variables' ;
-        CST_EVT_STANDARD           = 'OnCLick' ;
+  CST_EVT_STANDARD    = 'OnCLick' ;
   // Nom par défaut des composants
   CST_XPBAR_NOM_DEBUT  = 'xpb_Menu' ;
   CST_MENU_NOM_DEBUT   = 'men_Menu' ;
@@ -88,22 +87,23 @@ const // Evènements gérés
   gver_fonctions_Objets_Dynamiques : T_Version = ( Component : 'Gestion des objets dynamiques' ; FileUnit : 'fonctions_Objets_Dynamiques' ;
               			                 Owner : 'Matthieu Giroux' ;
               			                 Comment : 'Gestion des objets dynamiques du composant Fenêtre principale.' + #13#10 + 'Il comprend une création de menus' ;
-              			                 BugsStory : 'Version 1.3.0.1 : No ExtToolBar on Lazarus.' + #13#10 +
-                                                             'Version 1.3.0.0 : Création fonction_objets_data' + #13#10 +
-                                                             'Version 1.2.0.0 : Passage en générique' + #13#10 +
-                                                             'Version 1.1.2.0 : raccourcis d''aide répétés.' + #13#10 +
-                                                             'Version 1.1.1.1 : Ne pas utiliser HandleAllocated mais Handle <> 0.' + #13#10 +
-			                	 	     'Version 1.1.1.0 : Sauvegarde de la visibilité des barres de menus.' + #13#10 +
-			                	             'Version 1.1.0.0 : Passage en Jedi 3, Utilisation de la JvXPBar.' + #13#10 +
-			                	 	     'Version 1.0.1.3 : Mises à jour sur la destruction.' + #13#10 +
-			                	 	     'Version 1.0.1.2 : Handle à 0 après FreeImage.' + #13#10 +
-			                	             'Version 1.0.1.1 : Suppression du RealeaseHandle après FreeImage.' + #13#10 +
-	                	        		     'Version 1.0.1.0 : Toutes les fonctions peuvent être appelées.' + #13#10 +
-                                                             'Version 1.0.0.2 : Gestion des caractères accentuées.' + #13#10 +
-			                	             'Version 1.0.0.1 : Meilleure gestion des images, problèmes de rafraichissement.' + #13#10 +
-			                	             'Version 1.0.0.0 : La création est utilisée par Fenêtre Principale.';
+              			                 BugsStory : 'Version 1.3.0.2 : No ExtToolBar.' + #13#10 +
+                                                 'Version 1.3.0.1 : No ExtToolBar on Lazarus.' + #13#10 +
+                                                 'Version 1.3.0.0 : Création fonction_objets_data' + #13#10 +
+                                                 'Version 1.2.0.0 : Passage en générique' + #13#10 +
+                                                 'Version 1.1.2.0 : raccourcis d''aide répétés.' + #13#10 +
+                                                 'Version 1.1.1.1 : Ne pas utiliser HandleAllocated mais Handle <> 0.' + #13#10 +
+                                                 'Version 1.1.1.0 : Sauvegarde de la visibilité des barres de menus.' + #13#10 +
+                                                 'Version 1.1.0.0 : Passage en Jedi 3, Utilisation de la JvXPBar.' + #13#10 +
+                                                 'Version 1.0.1.3 : Mises à jour sur la destruction.' + #13#10 +
+                                                 'Version 1.0.1.2 : Handle à 0 après FreeImage.' + #13#10 +
+                                                 'Version 1.0.1.1 : Suppression du RealeaseHandle après FreeImage.' + #13#10 +
+                                                 'Version 1.0.1.0 : Toutes les fonctions peuvent être appelées.' + #13#10 +
+                                                 'Version 1.0.0.2 : Gestion des caractères accentuées.' + #13#10 +
+                                                 'Version 1.0.0.1 : Meilleure gestion des images, problèmes de rafraichissement.' + #13#10 +
+                                                 'Version 1.0.0.0 : La création est utilisée par Fenêtre Principale.';
               			                 UnitType : 1 ;
-              			                 Major : 1 ; Minor : 3 ; Release : 0 ; Build : 1 );
+              			                 Major : 1 ; Minor : 3 ; Release : 0 ; Build : 2 );
 {$ENDIF}
 
 
@@ -801,10 +801,6 @@ Begin
      Then
        Begin
         lcon_control := aBar_ToolBarParent.Controls [ li_i ];
-        {$IFDEF FPC}
-//        lcon_control.Parent := nil ;
-//        aBar_ToolBarParent.VerifyControls;
-        {$ENDIF}
         lcon_control.Free ;
        end;
 End ;
