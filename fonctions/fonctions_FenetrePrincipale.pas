@@ -185,7 +185,7 @@ begin
 end;
 
 
-procedure F_FormResize(const af_Form : TCustomForm ; const tbar_outils: {$IFDEF FPC}TToolbar{$ELSE}{$IFDEF FPC}TCustomControl{$ELSE}TToolWindow{$ENDIF}{$ENDIF};const pa_2 : {$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF}; const tbsep_2 : TPanel; const br_statusbar : TStatusBar ; const im_led: {$IFDEF FPC}TPCheck{$ELSE}TJvLED{$ENDIF});
+procedure F_FormResize(const af_Form : TCustomForm ; const tbar_outils: {$IFDEF FPC}TCustomControl{$ELSE}TToolWindow{$ENDIF};const pa_2 : {$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF}; const tbsep_2 : TPanel; const br_statusbar : TStatusBar ; const im_led: {$IFDEF FPC}TPCheck{$ELSE}TJvLED{$ENDIF});
 begin
   // On retaille la toolbar
   pa_2.Width := af_Form.Width
@@ -238,7 +238,7 @@ end;
 ////////////////////////////////////////////////////////////////////////////////
 //  Gestion de la visibilité des accès aux fonctions
 ////////////////////////////////////////////////////////////////////////////////
-procedure mu_barreoutilsClick(const mu_barreoutils: TMenuItem;const tbar_outils: {$IFDEF FPC}TToolbar{$ELSE}{$IFDEF FPC}TCustomControl{$ELSE}TToolWindow{$ENDIF}{$ENDIF});
+procedure mu_barreoutilsClick(const mu_barreoutils: TMenuItem;const tbar_outils: {$IFDEF FPC}TCustomControl{$ELSE}TToolWindow{$ENDIF});
 begin
   mu_barreoutils.Checked := not mu_barreoutils.Checked;
   tbar_outils.Visible := mu_barreoutils.Checked;

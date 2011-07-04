@@ -29,7 +29,7 @@ uses
    LCLIntf, LCLType, SQLDB, PCheck,
 {$ELSE}
   Windows, OleDB, JvComponent, StoHtmlHelp, JvScrollBox,
-  ImgList,
+  ImgList, ToolWin, menutbar, StrUtils,
   JvExExtCtrls, JvSplitter, JvLED, U_ExtScrollBox,
   StdActns, JvExForms, JvExControls, JvXPCore, Messages,
 {$ENDIF}
@@ -45,16 +45,16 @@ uses
   TntMenus, TntExtCtrls, TntStdActns,
   TntActnList,
 {$ENDIF}
-  u_donnees,
-  Controls, Graphics, Classes, SysUtils, StrUtils,
+  U_Donnees,
+  Controls, Graphics, Classes, SysUtils,
   ExtCtrls, ActnList, Menus,
   JvXPContainer, ComCtrls, JvXPButtons,
   IniFiles, Dialogs, Printers,
   JvXPBar, Forms,  U_FormMainIni, fonctions_init,
   fonctions_Objets_Dynamiques, fonctions_Objets_Data,
   u_buttons_appli, fonctions_images, fonctions_string,
-  U_OnFormInfoIni, DBCtrls, menutbar,
-  u_extmenutoolbar, ToolWin, 
+  U_OnFormInfoIni, DBCtrls,
+  u_extmenutoolbar,
   u_extmenucustomize;
 
 {$IFDEF VERSIONS}
@@ -136,6 +136,8 @@ type
     pa_1: {$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF};
     pa_2: {$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF};
     pa_3: {$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF};
+    pa_4: {$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF};
+    pa_5: {$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF};
     {$IFDEF MDI}
     WindowCascade: {$IFDEF TNT}TTntWindowCascade{$ELSE}TWindowCascade{$ENDIF};
     WindowTileHorizontal: {$IFDEF TNT}TTntWindowTileHorizontal{$ELSE}TWindowTileHorizontal{$ENDIF};
@@ -161,9 +163,7 @@ type
     im_acces: TImage;
     im_about: TImage;
     mu_langue: TMenuItem;
-    pa_4: TTntPanel;
     dbt_quitter: TJvXPButton;
-    pa_5: TTntPanel;
     tbar_volet: TToolBar;
     scb_Volet: TScrollBox;
 
@@ -1060,4 +1060,4 @@ initialization
   p_ConcatVersion ( gVer_F_FenetrePrincipale );
 {$ENDIF}
 end.
-
+

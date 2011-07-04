@@ -12,9 +12,11 @@ interface
 uses
 {$IFDEF FPC}
  LResources,
+{$ELSE}
+ JvExControls,
 {$ENDIF}
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs,
-  ExtCtrls, u_buttons_appli, RichView, RVScroll, JvExControls, JvXPCore,
+  ExtCtrls, u_buttons_appli, RichView, RVScroll, JvXPCore,
   JvXPButtons;
 
 type
