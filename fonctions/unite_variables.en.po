@@ -44,8 +44,8 @@ msgstr ""
 #: unite_variables.gs_change_pas_sommaire
 #, fuzzy
 #| msgid ""
-#| "er le libell#233 de ce sommaire :\n"
-#| "atoire.\n"
+#| "r le libell#233 de ce sommaire :\n"
+#| "toire.\n"
 msgid ""
 "Vous ne pouvez pas changer le libellé de ce sommaire :\n"
 " C'est un sommaire obligatoire.\n"
@@ -166,8 +166,8 @@ msgstr ""
 #: unite_variables.gs_erreur_modification_maj
 #, fuzzy
 #| msgid ""
-#| "cet enregistrement. \n"
-#| "ne autre fonction.\n"
+#| "et enregistrement. \n"
+#| "e autre fonction.\n"
 msgid ""
 "Impossible de supprimer cet enregistrement. \n"
 "Il est utilisé dans une autre fonction.\n"
