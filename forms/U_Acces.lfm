@@ -9,7 +9,7 @@ object F_Acces: TF_Acces
   FormStyle = fsStayOnTop
   OnCreate = FormCreate
   Position = poMainFormCenter
-  LCLVersion = '0.9.28.2'
+  LCLVersion = '0.9.30'
   object pa_1: TPanel
     Left = 0
     Height = 240

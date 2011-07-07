@@ -31,17 +31,18 @@ uses
 {$IFDEF VERSIONS}
 const
   gver_F_Acces : T_Version = ( Component : 'Fenêtre d''identification' ;
-                           FileUnit : 'U_Acces' ;
-       			 Owner : 'Matthieu Giroux' ;
-       			 Comment : 'Répertorie les composants.' ;
-       			 BugsStory   : 'Version 1.3.0.0 : Passage en LAZARUS' + #13#10
-                                 + 'Version 1.2.0.0 : Passage en non ADO' + #13#10
-                                 + 'Version 1.1.0.1 : Utilisation de JEDI' + #13#10
-		        	 + 'Version 1.1.0.0 : Passage en Jedi 3' + #13#10
-		        	 + 'Version 1.0.1.0 : Gestion utilisateur par défaut ( voir U_FenetrePrincipale )' + #13#10
-          	        	 + 'Version 1.0.0.0 : Gestion accès multiple.';
-          		 UnitType : 2 ;
-          		 Major : 1 ; Minor : 3 ; Release : 0 ; Build : 0 );
+                               FileUnit : 'U_Acces' ;
+       			       Owner : 'Matthieu Giroux' ;
+       			       Comment : 'Répertorie les composants.' ;
+       			       BugsStory : 'Version 1.3.0.1 : Making comments.' + #13#10
+                                         + 'Version 1.3.0.0 : Passage en LAZARUS' + #13#10
+                                         + 'Version 1.2.0.0 : Passage en non ADO' + #13#10
+                                         + 'Version 1.1.0.1 : Utilisation de JEDI' + #13#10
+		        	         + 'Version 1.1.0.0 : Passage en Jedi 3' + #13#10
+		        	         + 'Version 1.0.1.0 : Gestion utilisateur par défaut ( voir U_FenetrePrincipale )' + #13#10
+          	        	         + 'Version 1.0.0.0 : Gestion accès multiple.';
+          		       UnitType : 2 ;
+          		       Major : 1 ; Minor : 3 ; Release : 0 ; Build : 1 );
 
 {$ENDIF}
 
@@ -103,6 +104,8 @@ uses fonctions_images,
 {$R *.dfm}
 {$ENDIF}
 
+// Event TF_Acces.btn_cancelClick
+// On Cancel Click
 procedure TF_Acces.btn_cancelClick(Sender: TObject);
 begin
   gs_Resto := gs_NomAppli;
@@ -114,6 +117,8 @@ begin
 {$ENDIF}
 end;
 
+// Event TF_Acces.btn_okMouseUp
+// verifying the password on ok click
 procedure TF_Acces.btn_okMouseUp(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 var ls_mdp : string;
@@ -250,7 +255,8 @@ begin
     end;
 
 end;
-
+// constructor TF_Acces.Create
+// Setting the form icon
 constructor TF_Acces.Create ( AOwner : TComponent );
 var lico_temp: TIcon;
     lbmp_temp: TBitmap;
@@ -288,24 +294,31 @@ begin
   End ;
 end;
 
+// destructor TF_Acces.Destroy
+// setting form variable to nil For auto creating form
 destructor TF_Acces.Destroy;
 begin
   inherited Destroy;
   F_Acces := nil;
 end;
 
+// Event TF_Acces.FormKeyDown
+// Auto going to ok on return
 procedure TF_Acces.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
   if Key = VK_RETURN then btn_okMouseUp(self, mbLeft, [], 0, 0 );
 end;
 
+// function TF_Acces.IsShortCut
+// keeping the shortcut keys
 function TF_Acces.IsShortCut(var ao_Msg: {$IFDEF FPC}TLMKey{$ELSE}TWMKey{$ENDIF}): Boolean;
 begin
   // Pour la gestion des touches MAJ / Num lors du LOG
   Result := inherited IsShortCut(ao_Msg);
   FMainForm.p_MiseAJourMajNumScroll;
 end;
-
+// Event TF_Acces.cbx_userChange
+// On User Change setting the linked bases
 procedure TF_Acces.cbx_userChange(Sender: TObject);
 begin
   try
@@ -330,11 +343,15 @@ begin
 
 end;
 
+// Event TF_Acces.FormClose
+// Hiding on close : Destroying in P_ConnectData
 procedure TF_Acces.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   Action := caHide;
 end;
 
+// Event TF_Acces.FormCreate
+// Setting the datasource
 procedure TF_Acces.FormCreate(Sender: TObject);
 begin
   cbx_User.{$IFDEF FPC}ListSource{$ELSE}LookupSource{$ENDIF} := M_Donnees.ds_User;
@@ -343,8 +360,6 @@ begin
     M_Donnees.q_user.Open;
   finally
   End;
-
-
 end;
 
 initialization

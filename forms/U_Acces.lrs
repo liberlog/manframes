@@ -1,11 +1,11 @@
-{ Ceci est un fichier ressource généré automatiquement par Lazarus }
+{ This is an automatically generated lazarus resource file }
 
 LazarusResources.Add('TF_Acces','FORMDATA',[
   'TPF0'#8'TF_Acces'#7'F_Acces'#4'Left'#3'~'#1#6'Height'#3#240#0#3'Top'#3#157#1
   +#5'Width'#3']'#1#7'Caption'#6#7'F_Acces'#12'ClientHeight'#3#240#0#11'ClientW'
   +'idth'#3']'#1#9'FormStyle'#7#11'fsStayOnTop'#8'OnCreate'#7#10'FormCreate'#8
-  +'Position'#7#16'poMainFormCenter'#10'LCLVersion'#6#8'0.9.28.2'#0#6'TPanel'#4
-  +'pa_1'#4'Left'#2#0#6'Height'#3#240#0#3'Top'#2#0#5'Width'#3']'#1#5'Align'#7#8
+  +'Position'#7#16'poMainFormCenter'#10'LCLVersion'#6#6'0.9.30'#0#6'TPanel'#4'p'
+  +'a_1'#4'Left'#2#0#6'Height'#3#240#0#3'Top'#2#0#5'Width'#3']'#1#5'Align'#7#8
   +'alClient'#12'ClientHeight'#3#240#0#11'ClientWidth'#3']'#1#8'TabOrder'#2#0#0
   +#8'TFWLabel'#7'lb_user'#4'Left'#2#15#6'Height'#2#18#3'Top'#2'@'#5'Width'#2'E'
   +#8'AutoSize'#8#7'Caption'#6#11'Utilisateur'#10'Font.Color'#7#7'clBlack'#11'P'
