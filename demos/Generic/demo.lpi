@@ -46,7 +46,7 @@
         <PackageName Value="LCL"/>
       </Item5>
     </RequiredPackages>
-    <Units Count="30">
+    <Units Count="31">
       <Unit0>
         <Filename Value="demo.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -226,10 +226,11 @@
       <Unit20>
         <Filename Value="../../forms/U_Acces.pas"/>
         <UnitName Value="U_Acces"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="6"/>
         <WindowIndex Value="0"/>
         <TopLine Value="204"/>
-        <CursorPos X="1" Y="227"/>
+        <CursorPos X="148" Y="215"/>
         <UsageCount Value="10"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -259,7 +260,6 @@
       <Unit23>
         <Filename Value="../../fonctions/fonctions_Objets_Data.pas"/>
         <UnitName Value="fonctions_Objets_Data"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="8"/>
         <WindowIndex Value="0"/>
         <TopLine Value="72"/>
@@ -271,7 +271,7 @@
       <Unit24>
         <Filename Value="../../../XMLFrames/forms/u_multidonnees.pas"/>
         <UnitName Value="u_multidonnees"/>
-        <EditorIndex Value="9"/>
+        <EditorIndex Value="10"/>
         <WindowIndex Value="0"/>
         <TopLine Value="99"/>
         <CursorPos X="21" Y="122"/>
@@ -322,79 +322,90 @@
         <UsageCount Value="10"/>
         <Loaded Value="True"/>
       </Unit29>
+      <Unit30>
+        <Filename Value="../../lazmanframes.pas"/>
+        <UnitName Value="lazmanframes"/>
+        <EditorIndex Value="9"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="32" Y="20"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit30>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="../../../Extended/composants/u_extmenutoolbar.pas"/>
-        <Caret Line="119" Column="31" TopLine="112"/>
+        <Caret Line="126" Column="28" TopLine="112"/>
       </Position1>
       <Position2>
         <Filename Value="../../forms/U_FenetrePrincipale.pas"/>
         <Caret Line="272" Column="1" TopLine="249"/>
       </Position2>
       <Position3>
-        <Filename Value="../../forms/U_Acces.pas"/>
-        <Caret Line="227" Column="1" TopLine="204"/>
+        <Filename Value="../../../Extended/composants/u_extmenutoolbar.pas"/>
+        <Caret Line="152" Column="1" TopLine="114"/>
       </Position3>
       <Position4>
-        <Filename Value="../../../Extended/composants/u_extmenutoolbar.pas"/>
-        <Caret Line="126" Column="28" TopLine="112"/>
+        <Filename Value="../../forms/U_Acces.pas"/>
+        <Caret Line="227" Column="1" TopLine="204"/>
       </Position4>
       <Position5>
-        <Filename Value="../../forms/U_FenetrePrincipale.pas"/>
-        <Caret Line="272" Column="1" TopLine="249"/>
+        <Filename Value="../../../Extended/composants/u_extmenutoolbar.pas"/>
+        <Caret Line="152" Column="1" TopLine="114"/>
       </Position5>
       <Position6>
         <Filename Value="../../../Extended/composants/u_extmenutoolbar.pas"/>
-        <Caret Line="152" Column="1" TopLine="114"/>
+        <Caret Line="156" Column="1" TopLine="118"/>
       </Position6>
       <Position7>
-        <Filename Value="../../forms/U_Acces.pas"/>
-        <Caret Line="227" Column="1" TopLine="204"/>
+        <Filename Value="../../../Extended/composants/u_extmenutoolbar.pas"/>
+        <Caret Line="157" Column="1" TopLine="119"/>
       </Position7>
       <Position8>
-        <Filename Value="../../../Extended/composants/u_extmenutoolbar.pas"/>
-        <Caret Line="152" Column="1" TopLine="114"/>
+        <Filename Value="../../forms/U_FenetrePrincipale.pas"/>
+        <Caret Line="539" Column="1" TopLine="516"/>
       </Position8>
       <Position9>
-        <Filename Value="../../../Extended/composants/u_extmenutoolbar.pas"/>
-        <Caret Line="156" Column="1" TopLine="118"/>
+        <Filename Value="../../forms/U_FenetrePrincipale.pas"/>
+        <Caret Line="540" Column="1" TopLine="516"/>
       </Position9>
       <Position10>
         <Filename Value="../../../Extended/composants/u_extmenutoolbar.pas"/>
-        <Caret Line="157" Column="1" TopLine="119"/>
+        <Caret Line="69" Column="1" TopLine="48"/>
       </Position10>
       <Position11>
-        <Filename Value="../../forms/U_FenetrePrincipale.pas"/>
-        <Caret Line="539" Column="1" TopLine="516"/>
+        <Filename Value="../../../Extended/composants/u_extmenutoolbar.pas"/>
+        <Caret Line="72" Column="1" TopLine="48"/>
       </Position11>
       <Position12>
-        <Filename Value="../../forms/U_FenetrePrincipale.pas"/>
-        <Caret Line="540" Column="1" TopLine="516"/>
+        <Filename Value="/usr/lib/lazarus/0.9.30/lcl/include/control.inc"/>
+        <Caret Line="2289" Column="1" TopLine="2266"/>
       </Position12>
       <Position13>
-        <Filename Value="../../../Extended/composants/u_extmenutoolbar.pas"/>
-        <Caret Line="69" Column="1" TopLine="48"/>
+        <Filename Value="/usr/lib/lazarus/0.9.30/lcl/include/toolbutton.inc"/>
+        <Caret Line="765" Column="1" TopLine="742"/>
       </Position13>
       <Position14>
         <Filename Value="../../../Extended/composants/u_extmenutoolbar.pas"/>
-        <Caret Line="72" Column="1" TopLine="48"/>
+        <Caret Line="142" Column="96" TopLine="113"/>
       </Position14>
       <Position15>
-        <Filename Value="/usr/lib/lazarus/0.9.30/lcl/include/control.inc"/>
-        <Caret Line="2289" Column="1" TopLine="2266"/>
+        <Filename Value="../../forms/U_FenetrePrincipale.pas"/>
+        <Caret Line="272" Column="1" TopLine="249"/>
       </Position15>
       <Position16>
-        <Filename Value="/usr/lib/lazarus/0.9.30/lcl/include/toolbutton.inc"/>
-        <Caret Line="765" Column="1" TopLine="742"/>
+        <Filename Value="../../../Extended/composants/u_extmenutoolbar.pas"/>
+        <Caret Line="126" Column="1" TopLine="113"/>
       </Position16>
       <Position17>
         <Filename Value="../../../Extended/composants/u_extmenutoolbar.pas"/>
-        <Caret Line="142" Column="96" TopLine="113"/>
+        <Caret Line="149" Column="1" TopLine="113"/>
       </Position17>
       <Position18>
-        <Filename Value="../../forms/U_FenetrePrincipale.pas"/>
-        <Caret Line="272" Column="1" TopLine="249"/>
+        <Filename Value="../../forms/U_Acces.pas"/>
+        <Caret Line="227" Column="1" TopLine="204"/>
       </Position18>
       <Position19>
         <Filename Value="../../../Extended/composants/u_extmenutoolbar.pas"/>
@@ -402,27 +413,27 @@
       </Position19>
       <Position20>
         <Filename Value="../../../Extended/composants/u_extmenutoolbar.pas"/>
-        <Caret Line="149" Column="1" TopLine="113"/>
+        <Caret Line="45" Column="34" TopLine="17"/>
       </Position20>
       <Position21>
-        <Filename Value="../../forms/U_Acces.pas"/>
-        <Caret Line="227" Column="1" TopLine="204"/>
+        <Filename Value="../../../Extended/composants/u_extmenutoolbar.pas"/>
+        <Caret Line="117" Column="93" TopLine="110"/>
       </Position21>
       <Position22>
         <Filename Value="../../../Extended/composants/u_extmenutoolbar.pas"/>
-        <Caret Line="126" Column="1" TopLine="113"/>
+        <Caret Line="131" Column="85" TopLine="125"/>
       </Position22>
       <Position23>
-        <Filename Value="../../../Extended/composants/u_extmenutoolbar.pas"/>
-        <Caret Line="45" Column="34" TopLine="17"/>
+        <Filename Value="../../forms/U_FenetrePrincipale.pas"/>
+        <Caret Line="272" Column="1" TopLine="249"/>
       </Position23>
       <Position24>
-        <Filename Value="../../../Extended/composants/u_extmenutoolbar.pas"/>
-        <Caret Line="117" Column="93" TopLine="110"/>
+        <Filename Value="../../forms/U_Acces.pas"/>
+        <Caret Line="227" Column="1" TopLine="204"/>
       </Position24>
       <Position25>
         <Filename Value="../../../Extended/composants/u_extmenutoolbar.pas"/>
-        <Caret Line="131" Column="85" TopLine="125"/>
+        <Caret Line="123" Column="14" TopLine="118"/>
       </Position25>
       <Position26>
         <Filename Value="../../forms/U_FenetrePrincipale.pas"/>
@@ -433,16 +444,16 @@
         <Caret Line="227" Column="1" TopLine="204"/>
       </Position27>
       <Position28>
-        <Filename Value="../../../Extended/composants/u_extmenutoolbar.pas"/>
-        <Caret Line="123" Column="14" TopLine="118"/>
+        <Filename Value="../../lazmanframes.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position28>
       <Position29>
-        <Filename Value="../../forms/U_FenetrePrincipale.pas"/>
-        <Caret Line="272" Column="1" TopLine="249"/>
+        <Filename Value="../../lazmanframes.pas"/>
+        <Caret Line="20" Column="32" TopLine="1"/>
       </Position29>
       <Position30>
-        <Filename Value="../../forms/U_Acces.pas"/>
-        <Caret Line="227" Column="1" TopLine="204"/>
+        <Filename Value="../../forms/U_FenetrePrincipale.pas"/>
+        <Caret Line="272" Column="1" TopLine="249"/>
       </Position30>
     </JumpHistory>
   </ProjectOptions>
