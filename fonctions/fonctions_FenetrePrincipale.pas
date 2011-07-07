@@ -44,6 +44,7 @@ uses
   ExtCtrls, ActnList, Menus,
   JvXPContainer, ComCtrls, JvXPButtons,
   IniFiles, Dialogs, Printers,
+  u_extmenucustomize, u_extmenutoolbar,
   JvXPBar, Forms,  U_FormMainIni, fonctions_init,
   fonctions_Objets_Dynamiques,
   u_buttons_appli, fonctions_string,
@@ -55,14 +56,15 @@ const
        			                 FileUnit : 'fonctions_FenetrePrincipale' ;
        			                 Owner : 'Matthieu Giroux' ;
        			                 Comment : 'Fenêtre principale utilisée pour la gestion automatisée à partir du fichier INI, avec des menus composés à partir des données.' + #13#10 + 'Elle dépend du composant Fenêtre principale qui lui n''est pas lié à l''application.' ;
-      			                 BugsStory : 'Version 1.0.0.0 : Tested.' + #13#10
+      			                 BugsStory : 'Version 1.0.0.1 : p_volet* functions Tested.' + #13#10
+                                                   + 'Version 1.0.0.0 : Tested.' + #13#10
                                                    + 'Version 0.0.0.1 : Centralising.' + #13#10 ;
 			                 UnitType : CST_TYPE_UNITE_FONCTIONS ;
-			                 Major : 1 ; Minor : 0 ; Release : 0 ; Build : 0 );
+			                 Major : 1 ; Minor : 0 ; Release : 0 ; Build : 1 );
 {$ENDIF}
 
 procedure DoCloseFenetrePrincipale ( const af_Form : TCustomForm ) ;
-procedure F_FormResize(const af_Form : TCustomForm ; const tbar_outils: {$IFDEF FPC}TCustomControl{$ELSE}TToolWindow{$ENDIF};const pa_2 : {$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF}; const tbsep_2 : TPanel; const br_statusbar : TStatusBar ; const im_led: {$IFDEF FPC}TPCheck{$ELSE}TJvLED{$ENDIF});
+procedure F_FormResize(const af_Form : TCustomForm ; const tbar_outils: {$IFDEF FPC}TCustomControl{$ELSE}TToolWindow{$ENDIF};const pa_2 : TPanel; const tbsep_2 : TPanel; const br_statusbar : TStatusBar ; const im_led: {$IFDEF FPC}TPCheck{$ELSE}TJvLED{$ENDIF});
 function fb_Fermeture ( const af_FormMainini : TF_FormMainIni ) : Boolean ;
 procedure p_SetALengthSB( const ao_SP: TStatusPanel);
 procedure p_LibStb ( const br_statusbar : TStatusBar );
@@ -75,13 +77,24 @@ procedure F_FenetrePrincipaleTimer(const br_statusbar : Tstatusbar);
 procedure p_statusbarDrawPanel(const StatusBar: TStatusBar;
    			                	      const Panel: TStatusPanel;
    			                	      const Rect: TRect);
-procedure p_tbar_voletDockChanged(const pa_5:{$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF};const tbar_volet:{$IFDEF FPC}TCustomControl{$ELSE}TToolWindow{$ENDIF};const tbar_outils: {$IFDEF FPC}TToolbar{$ELSE}{$IFDEF FPC}TCustomControl{$ELSE}TToolWindow{$ENDIF}{$ENDIF};const spl_volet: {$IFDEF FPC}TSplitter{$ELSE}TJvSplitter{$ENDIF});
+procedure p_tbar_voletDockChanged(const pa_5:TPanel;const tbar_volet:{$IFDEF FPC}TCustomControl{$ELSE}TToolWindow{$ENDIF};const tbar_outils: {$IFDEF FPC}TToolbar{$ELSE}{$IFDEF FPC}TCustomControl{$ELSE}TToolWindow{$ENDIF}{$ENDIF};const spl_volet: {$IFDEF FPC}TSplitter{$ELSE}TJvSplitter{$ENDIF});
 procedure p_FormConnectee(const im_led: {$IFDEF FPC}TPCheck{$ELSE}TJvLED{$ENDIF}; const br_statusbar : Tstatusbar );
 procedure p_FormPbConnexion(const im_led: {$IFDEF FPC}TPCheck{$ELSE}TJvLED{$ENDIF}; const br_statusbar : Tstatusbar );
 procedure p_FormSortieMajNumScroll( const br_statusbar : Tstatusbar ;const ab_MajEnfoncee,
                         			                	    ab_NumEnfoncee,
                         			                	    ab_ScrollEnfoncee: boolean);
 procedure p_ApresSauvegardeParamIni( const af_Form : TForm ; const ab_AccesAuto, ab_Reinit : Boolean );
+procedure p_CustomizedMenuClickCustomize( const mc_Customize : TExtMenuCustomize ; const mtb_CustomizedMenu : TExtMenuToolBar; const mu_MenuIni : TMenu );
+procedure p_voletchange (const ab_visible : Boolean;
+                         const tbar_volet : TToolBar;
+                         const mi_voletexplore, mi_CustomizedMenu : TMenuItem ;
+                         const spl_volet : {$IFDEF FPC}TSplitter{$ELSE}TJvSplitter{$ENDIF} ;
+                         const mtb_CustomizedMenu : TExtMenuToolBar );
+procedure p_voletPersonnalisechange( const ab_visible : Boolean;
+                                     const tbar_volet : TToolBar;
+                                     const mi_voletexplore, mi_CustomizedMenu : TMenuItem ;
+                                     const spl_volet : {$IFDEF FPC}TSplitter{$ELSE}TJvSplitter{$ENDIF} ;
+                                     const mtb_CustomizedMenu : TExtMenuToolBar );
 
 var
   gb_AbortConnexion : Boolean = False;
@@ -185,7 +198,7 @@ begin
 end;
 
 
-procedure F_FormResize(const af_Form : TCustomForm ; const tbar_outils: {$IFDEF FPC}TCustomControl{$ELSE}TToolWindow{$ENDIF};const pa_2 : {$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF}; const tbsep_2 : TPanel; const br_statusbar : TStatusBar ; const im_led: {$IFDEF FPC}TPCheck{$ELSE}TJvLED{$ENDIF});
+procedure F_FormResize(const af_Form : TCustomForm ; const tbar_outils: {$IFDEF FPC}TCustomControl{$ELSE}TToolWindow{$ENDIF};const pa_2 : TPanel; const tbsep_2 : TPanel; const br_statusbar : TStatusBar ; const im_led: {$IFDEF FPC}TPCheck{$ELSE}TJvLED{$ENDIF});
 begin
   // On retaille la toolbar
   pa_2.Width := af_Form.Width
@@ -218,6 +231,50 @@ begin
       F_SplashForm.Show;   // Affichage de la fiche
    End ;
 end;
+
+procedure p_CustomizedMenuClickCustomize( const mc_Customize : TExtMenuCustomize ; const mtb_CustomizedMenu : TExtMenuToolBar; const mu_MenuIni : TMenu );
+begin
+  mc_Customize.Click;
+  mtb_CustomizedMenu.Menu := nil;
+  mtb_CustomizedMenu.Menu := mu_MenuIni;
+  mc_Customize.SaveIni ( gs_user );
+end;
+
+procedure p_voletchange (const ab_visible : Boolean;
+                         const tbar_volet : TToolBar;
+                         const mi_voletexplore, mi_CustomizedMenu : TMenuItem ;
+                         const spl_volet : {$IFDEF FPC}TSplitter{$ELSE}TJvSplitter{$ENDIF} ;
+                         const mtb_CustomizedMenu : TExtMenuToolBar );
+begin
+  if not assigned ( mi_voletexplore   )
+  or not assigned ( tbar_volet        ) Then
+    Exit;
+  mi_voletexplore.Checked := ab_visible;
+  tbar_volet .Visible := ab_visible;
+  spl_volet .Visible := ab_visible or mi_CustomizedMenu.Checked;
+  if ab_visible Then
+    Begin
+      p_voletPersonnalisechange(False, nil, mi_voletexplore, mi_CustomizedMenu, spl_volet, mtb_CustomizedMenu );
+    end;
+end;
+
+procedure p_voletPersonnalisechange( const ab_visible : Boolean;
+                                     const tbar_volet : TToolBar;
+                                     const mi_voletexplore, mi_CustomizedMenu : TMenuItem ;
+                                     const spl_volet : {$IFDEF FPC}TSplitter{$ELSE}TJvSplitter{$ENDIF} ;
+                                     const mtb_CustomizedMenu : TExtMenuToolBar );
+begin
+  if not assigned ( mi_CustomizedMenu )
+  or not assigned ( spl_volet         ) Then
+    Exit;
+  mi_CustomizedMenu .Checked := ab_visible;
+  mtb_CustomizedMenu.Visible := ab_visible;
+  spl_volet .Visible := ab_visible or mi_voletexplore.Checked;
+  if ab_visible Then
+    p_voletchange(False, tbar_volet, mi_voletexplore, mi_CustomizedMenu, spl_volet, nil );
+end;
+
+
 
 
 procedure p_SetLedColor(const im_led: {$IFDEF FPC}TPCheck{$ELSE}TJvLED{$ENDIF}; const ab_Status : Boolean );
@@ -280,7 +337,7 @@ end;
 ////////////////////////////////////////////////////////////////////////////////
 //  Gestion du splitter
 ////////////////////////////////////////////////////////////////////////////////
-procedure p_tbar_voletDockChanged(const pa_5:{$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF};const tbar_volet:{$IFDEF FPC}TCustomControl{$ELSE}TToolWindow{$ENDIF};const tbar_outils: {$IFDEF FPC}TToolbar{$ELSE}{$IFDEF FPC}TCustomControl{$ELSE}TToolWindow{$ENDIF}{$ENDIF};const spl_volet: {$IFDEF FPC}TSplitter{$ELSE}TJvSplitter{$ENDIF});
+procedure p_tbar_voletDockChanged(const pa_5:TPanel;const tbar_volet:{$IFDEF FPC}TCustomControl{$ELSE}TToolWindow{$ENDIF};const tbar_outils: {$IFDEF FPC}TToolbar{$ELSE}{$IFDEF FPC}TCustomControl{$ELSE}TToolWindow{$ENDIF}{$ENDIF};const spl_volet: {$IFDEF FPC}TSplitter{$ELSE}TJvSplitter{$ENDIF});
 begin
 
   if pa_5.Visible then

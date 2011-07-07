@@ -63,7 +63,8 @@ const
        			                 FileUnit : 'U_FenetrePrincipale' ;
        			                 Owner : 'Matthieu Giroux' ;
        			                 Comment : 'Fenêtre principale utilisée pour la gestion automatisée à partir du fichier INI, avec des menus composés à partir des données.' + #13#10 + 'Elle dépend du composant Fenêtre principale qui lui n''est pas lié à l''application.' ;
-      			                 BugsStory : 'Version 3.1.0.3 : No ExtToolbar.' + #13#10 +
+      			                 BugsStory : 'Version 3.1.0.4 : Adding and modifying customized menu Toolbar.' + #13#10 +
+                                                     'Version 3.1.0.3 : No ExtToolbar.' + #13#10 +
                                                      'Version 3.1.0.2 : Adding Customized Menu.' + #13#10 +
                                                      'Version 3.1.0.1 : No ExtToolBar on Lazarus.' + #13#10 +
                                                      'Version 3.1.0.0 : Passage en générique' + #13#10
@@ -92,7 +93,7 @@ const
 			                	   + '3.0.0.1 : Bug AutoScroll sur le TScrollBox.' + #13#10
 			                	   + '3.0.0.0 : Gestion de l''INI par application.';
 			                 UnitType : CST_TYPE_UNITE_FICHE ;
-			                 Major : 3 ; Minor : 1 ; Release : 0 ; Build : 3 );
+			                 Major : 3 ; Minor : 1 ; Release : 0 ; Build : 4 );
 {$ENDIF}
 
 type
@@ -106,6 +107,7 @@ type
     mc_Customize: TExtMenuCustomize;
     mi_CustomizedMenu: TMenuItem;
     mtb_CustomizedMenu: TExtMenuToolBar;
+    mu_apropos: TMenuItem;
     mu_MenuIni: {$IFDEF TNT}TTntMainMenu{$ELSE}TMainMenu{$ENDIF};
     {$IFDEF VERSIONS}
     mu_apropos: TMenuItem;
@@ -133,11 +135,12 @@ type
     mu_Reinitiliserpresentation: TMenuItem;
 
     ActionList: {$IFDEF TNT}TTntActionList{$ELSE}TActionList{$ENDIF};
-    pa_1: {$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF};
-    pa_2: {$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF};
-    pa_3: {$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF};
-    pa_4: {$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF};
-    pa_5: {$IFDEF TNT}TTntPanel{$ELSE}TPanel{$ENDIF};
+    pa_1: TPanel;
+    pa_2: TPanel;
+    pa_3: TPanel;
+    pa_4: TPanel;
+    scb_Volet: TScrollBox;
+    tbsep_4: TPanel;
     {$IFDEF MDI}
     WindowCascade: {$IFDEF TNT}TTntWindowCascade{$ELSE}TWindowCascade{$ENDIF};
     WindowTileHorizontal: {$IFDEF TNT}TTntWindowTileHorizontal{$ELSE}TWindowTileHorizontal{$ENDIF};
@@ -165,7 +168,6 @@ type
     mu_langue: TMenuItem;
     dbt_quitter: TJvXPButton;
     tbar_volet: TToolBar;
-    scb_Volet: TScrollBox;
 
     procedure mi_CustomizedMenuClick(Sender: TObject);
     procedure mtb_CustomizedMenuClickCustomize(Sender: TObject);
@@ -198,7 +200,6 @@ type
     procedure tbar_voletClose(Sender: TObject);
     procedure tbar_outilsClose(Sender: TObject);
 
-    procedure tbar_voletDockChanged(Sender: TObject);
     procedure tbar_voletCloseQuery(Sender: TObject; var CanClose: Boolean);
     function CloseQuery: Boolean; override;
     procedure mu_ReinitiliserpresentationClick(Sender: TObject);
@@ -209,8 +210,8 @@ type
 {$IFDEF CLR}
     procedure InitializeControls;
 {$ENDIF}
-    procedure mu_voletchange(const ab_visible, ab_OtherVisible: Boolean);
-    procedure mu_voletPersonnalisechange(const ab_visible, ab_OtherVisible: Boolean);
+    procedure mu_voletchange(const ab_visible: Boolean);
+    procedure mu_voletPersonnalisechange(const ab_visible: Boolean);
 {$IFNDEF FPC}
     procedure WMHelp (var Message: TWMHelp); message WM_HELP;
 {$ENDIF}
@@ -270,6 +271,8 @@ Constructor TF_FenetrePrincipale.Create(AOwner: TComponent);
 var
   lbmp_Bitmap : TBitmap ;
 begin
+  mi_CustomizedMenu := nil;
+  mu_voletexplore   := nil;
   Connector  := M_Donnees.Acces;
   Connection := M_Donnees.Connection;
 {$IFDEF CLR}
@@ -527,16 +530,13 @@ end;
 
 procedure TF_FenetrePrincipale.mi_CustomizedMenuClick(Sender: TObject);
 begin
-  mu_voletPersonnalisechange( not mi_CustomizedMenu.Checked, mu_voletexplore.Checked );
+  mu_voletPersonnalisechange( not mi_CustomizedMenu.Checked );
 end;
 
 procedure TF_FenetrePrincipale.mtb_CustomizedMenuClickCustomize(Sender: TObject
   );
 begin
-  mc_Customize.Click;
-  mtb_CustomizedMenu.Menu := nil;
-  mtb_CustomizedMenu.Menu := mu_MenuIni;
-  mc_Customize.SaveIni ( gs_user );
+  p_CustomizedMenuClickCustomize(mc_Customize, mtb_CustomizedMenu, mu_MenuIni );
 end;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -769,6 +769,7 @@ begin
     mc_Customize.LoadIni;
   mtb_CustomizedMenu.Menu := nil;
   mtb_CustomizedMenu.Menu := mu_MenuIni;
+  mu_voletchange(mu_voletexplore.Checked);
   {$IFNDEF FPC}
   F_Acces.Free;
   {$ENDIF}
@@ -796,27 +797,15 @@ begin
 end;
 
 
-procedure TF_FenetrePrincipale.mu_voletchange(const ab_visible, ab_OtherVisible  : Boolean);
+procedure TF_FenetrePrincipale.mu_voletchange(const ab_visible  : Boolean);
 begin
-  DisableAlign ;
-  mu_voletexplore.Checked := ab_visible;
-  pa_5      .Visible := ab_visible;
-  spl_volet .Visible := ab_visible;
-  if ab_visible Then
-    Begin
-      mu_voletPersonnalisechange(False,ab_visible);
-    end;
-  spl_volet.Left := pa_5.Width;
-  EnableAlign ;
+  p_voletchange(ab_visible, tbar_volet, mu_voletexplore, mi_CustomizedMenu, spl_volet, mtb_CustomizedMenu );
 end;
 
 procedure TF_FenetrePrincipale.mu_voletPersonnalisechange(
-  const ab_visible, ab_OtherVisible : Boolean);
+  const ab_visible : Boolean);
 begin
-  mi_CustomizedMenu .Checked := ab_visible;
-  mtb_CustomizedMenu.Visible := ab_visible;
-  if ab_visible Then
-    mu_voletchange(False, True);
+  p_voletPersonnalisechange(ab_visible, tbar_volet, mu_voletexplore, mi_CustomizedMenu, spl_volet, mtb_CustomizedMenu );
 end;
 
 
@@ -831,7 +820,7 @@ end;
 
 procedure TF_FenetrePrincipale.mu_voletexploreClick(Sender: TObject);
 begin
-  mu_voletchange( not mu_voletexplore.Checked, False );
+  mu_voletchange( not mu_voletexplore.Checked );
 end;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -848,8 +837,8 @@ procedure TF_FenetrePrincipale.SvgFormInfoIniIniLoad(
   const AInifile: TCustomInifile; var Continue: Boolean);
 begin
   tbar_outils    .Visible := AInifile.ReadBool ( Name, 'tbar_outils.Visible', tbar_outils.Visible );
-  mu_voletchange ( AInifile.ReadBool ( Name,  'tbar_volet.Visible', mu_voletexplore.Checked ), False);
-  mu_voletPersonnalisechange ( AInifile.ReadBool ( Name,  'tbar_voletcustom.Visible', mi_CustomizedMenu.Checked ), False);
+  mu_voletchange ( AInifile.ReadBool ( Name,  'tbar_volet.Visible', mu_voletexplore.Checked ) and mu_voletexplore.Enabled);
+  mu_voletPersonnalisechange ( AInifile.ReadBool ( Name,  'tbar_voletcustom.Visible', mi_CustomizedMenu.Checked ));
 
 end;
 
@@ -891,7 +880,6 @@ begin
   DisableAlign ;
   try
     mu_voletexplore.Checked := False;
-    pa_5.Width := 0;
     spl_volet.Hide;
   finally
     EnableAlign ;
@@ -901,17 +889,6 @@ end;
 procedure TF_FenetrePrincipale.tbar_outilsClose(Sender: TObject);
 begin
   mu_barreoutils.Checked := False;
-end;
-
-
-////////////////////////////////////////////////////////////////////////////////
-//  Gestion du splitter
-////////////////////////////////////////////////////////////////////////////////
-procedure TF_FenetrePrincipale.tbar_voletDockChanged(Sender: TObject);
-begin
-
-  p_tbar_voletDockChanged( pa_5, tbar_volet, tbar_outils, spl_volet);
-
 end;
 
 
