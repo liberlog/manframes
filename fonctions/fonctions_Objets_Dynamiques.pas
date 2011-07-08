@@ -168,10 +168,12 @@ procedure p_ModifieXPBar  ( const aF_FormParent       : TCustomForm        ;
                             const abmp_Picture        ,
                                   abmp_DefaultPicture : TBitmap     ;
                             const ab_AjouteEvenement  : Boolean     );
-{$IFNDEF TNT}
+{$IFDEF FPC}
 procedure p_RegisterALanguage ( const as_littlelang, as_longlang : String );
 function fi_findLanguage  ( const as_littlelang, as_longlang : String ): Longint; overload;
 function fi_findLanguage  ( const as_littlelang : String ): Longint; overload;
+function GetUserLanguage: string;
+function GetUserLongLanguage: string;
 {$ENDIF}
 function fdxi_AddItemXPBar  ( const aF_FormParent       : TCustomForm        ;
                         			const adx_WinXpBar        : TJvXpBar ;
@@ -198,8 +200,6 @@ function fmen_AjouteFonctionMenu  ( const aF_FormParent        : TForm     ;
                         			    const aIma_ImagesMenus     : TImageList  ;
                         			    const ai_FinCompteurImages : Integer     ):TMenuItem;
 function GetSystemCharset : String ;
-function GetUserLanguage: string;
-function GetUserLongLanguage: string;
 {$IFDEF TNT}
 function GetUserInfo ( const ai_LOCALEINFO : Integer ): string;
 function GetLanguageCode ( ALANGID : LCID ) : string;
@@ -246,7 +246,7 @@ begin
 //    cbLanguage.ItemIndex := 0;
 end;
 
-{$IFNDEF TNT}
+{$IFDEF FPC}
 procedure ChangeUnitLanguage( const as_Unit : String ; const ar_Language : TALanguage );
 Begin
   Translations.TranslateUnitResourceStrings(as_Unit, fs_getSoftDir () + CST_LNG_DIRECTORY + as_Unit +'.%s.po', ar_Language.LongLang, ar_Language.LittleLang);
@@ -314,10 +314,12 @@ begin
   GetLanguageIDs( Result, ls_Language );  //LOCALE_SNATIVELANGNAME
 End;
 {$ELSE}
-function GetUserLanguage: string;
-begin
-  Result := GetUserInfo ( LOCALE_SISO639LANGNAME );  //LOCALE_SNATIVELANGNAME
-End;
+  {$IFDEF TNT}
+  function GetUserLanguage: string;
+  begin
+    Result := GetUserInfo ( LOCALE_SISO639LANGNAME );  //LOCALE_SNATIVELANGNAME
+  End;
+  {$ENDIF}
 {$ENDIF}
 {$IFDEF FPC}
 function GetUserLongLanguage: string;
@@ -326,36 +328,37 @@ begin
   GetLanguageIDs( ls_language, Result );  //LOCALE_SNATIVELANGNAME
 End;
 {$ELSE}
-function GetUserLongLanguage: string;
-begin
-  Result := GetUserInfo ( LOCALE_SNATIVELANGNAME );
-End;
-procedure p_RegisterLanguages ( const ame_menuLang : TMenuItem );
-var
-  SR: TSearchRec;
-  ls_Dir : String ;
-  IsFound : Boolean;
-Begin
-  ls_Dir := fs_getSoftDir + CST_LNG_DIRECTORY;
-  try
-    IsFound := FindFirst(ls_Dir + '*', faAnyFile, SR) = 0 ;
-    while IsFound do
-     begin
-      if FileExists ( ls_Dir + SR.Name )
-       then
-        Begin
-          LangManager.RegisterLangFile(ls_Dir + SR.Name);
-        End ;
-      IsFound := FindNext(SR) = 0;
-    end;
-    FindClose(SR);
-  Except
-    ShowMessage ( 'Error on registering lng Language files.' );
-    FindClose(SR);
-  End ;
-  CreateLanguagesController ( ame_menuLang );
-end;
-
+  {$IFDEF TNT}
+  function GetUserLongLanguage: string;
+  begin
+    Result := GetUserInfo ( LOCALE_SNATIVELANGNAME );
+  End;
+  procedure p_RegisterLanguages ( const ame_menuLang : TMenuItem );
+  var
+    SR: TSearchRec;
+    ls_Dir : String ;
+    IsFound : Boolean;
+  Begin
+    ls_Dir := fs_getSoftDir + CST_LNG_DIRECTORY;
+    try
+      IsFound := FindFirst(ls_Dir + '*', faAnyFile, SR) = 0 ;
+      while IsFound do
+       begin
+        if FileExists ( ls_Dir + SR.Name )
+         then
+          Begin
+            LangManager.RegisterLangFile(ls_Dir + SR.Name);
+          End ;
+        IsFound := FindNext(SR) = 0;
+      end;
+      FindClose(SR);
+    Except
+      ShowMessage ( 'Error on registering lng Language files.' );
+      FindClose(SR);
+    End ;
+    CreateLanguagesController ( ame_menuLang );
+  end;
+  {$ENDIF}
 {$ENDIF}
 
 {$IFDEF FPC}
