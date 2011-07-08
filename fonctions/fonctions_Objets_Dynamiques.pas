@@ -107,6 +107,11 @@ const // Evènements gérés
 {$ENDIF}
 
 
+procedure p_setImageToMenuAndXPButton ( const abmp_Bitmap: TBitmap;
+                                        const axb_Button  : TJvXPButton ;
+                                        const amen_Menu   : TMenuItem ;
+                                        const aiml_Images : TImageList );
+
 
 procedure p_AjouteFonctionMenu  ( const aF_FormParent        : TForm     ;
                         			    const aMen_MenuParent     : TMenuItem ;
@@ -611,11 +616,11 @@ Begin
    Then
     Begin
       lbmp_Tempo.Assign ( aBmp_Picture );
-      Result.ImageIndex := fi_AjouteBmpAImages ( lbmp_Tempo           ,
-                        			                	        	ab_AjouteBitmap      ,
-                        			                	        	ab_ImageDefaut       ,
-                        			                	        	aIma_ImagesMenus     ,
-                        			                	        	ai_FinCompteurImages );
+      Result.ImageIndex := fi_AjouteBmpAImages (lbmp_Tempo           ,
+                        			ab_AjouteBitmap      ,
+                        			ab_ImageDefaut       ,
+                        			aIma_ImagesMenus     ,
+                        			ai_FinCompteurImages );
     End ;
   if  ( aMen_MenuParent = aMen_MenuParent   )
   and ( as_FonctionType = CST_FCT_TYPE_MENU )
@@ -1077,7 +1082,24 @@ Begin
 
 End ;
 
-
+// procedure p_setImageToMenuAndXPButton
+// Set the xpbutton and menu from prefix
+procedure p_setImageToMenuAndXPButton ( const abmp_Bitmap: TBitmap;
+                                        const axb_Button  : TJvXPButton ;
+                                        const amen_Menu   : TMenuItem ;
+                                        const aiml_Images : TImageList );
+Begin
+  p_ChangeTailleBitmap(abmp_Bitmap,32);
+  abmp_Bitmap.TransparentColor:=clBlack;
+  abmp_Bitmap.Transparent:=True;
+  axb_Button.Glyph.Assign(abmp_Bitmap);
+  p_ChangeTailleBitmap(abmp_Bitmap,16);
+  amen_Menu.ImageIndex := fi_AjouteBmpAImages ( abmp_Bitmap  ,
+                    			        True         ,
+                    			        False        ,
+                    			        aiml_Images  ,
+                    			        0 );
+end;
 
 
 

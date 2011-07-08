@@ -103,7 +103,10 @@ type
   TF_FenetrePrincipale = class(TF_FormMainIni)
     dbt_aide: TJvXPButton;
     dbt_ident: TJvXPButton;
+    im_acces: TImage;
+    im_aide: TImage;
     im_ListeDisabled: TImageList;
+    im_quit: TImage;
     mc_Customize: TExtMenuCustomize;
     mi_CustomizedMenu: TMenuItem;
     mtb_CustomizedMenu: TExtMenuToolBar;
@@ -163,7 +166,6 @@ type
     mu_identifier: TMenuItem;
     spl_volet: {$IFDEF FPC}TSplitter{$ELSE}TJvSplitter{$ENDIF};
     im_appli: TImage;
-    im_acces: TImage;
     im_about: TImage;
     mu_langue: TMenuItem;
     dbt_quitter: TJvXPButton;
@@ -311,7 +313,13 @@ begin
   // Initialisation
   p_initialisationBoutons(Self, scb_volet, mu_voletexplore, M_Donnees.q_TreeUser,
                           nil, tbar_outils, tbsep_1, pa_2, CST_LARGEUR_PANEL,
-                          nil, mu_ouvrir, im_Liste, im_Liste.Count);
+                          nil, mu_ouvrir, im_Liste,
+                          im_acces.Picture,
+                          im_aide .Picture,
+                          im_quit .Picture,
+                          mu_identifier, dbt_ident,
+                          mu_ouvriraide, dbt_aide,
+                          mu_quitter   , dbt_quitter);
 {$IFDEF FPC}
   AutoIniDB   := True ;
   AutoIni     := True ;
@@ -846,8 +854,8 @@ procedure TF_FenetrePrincipale.SvgFormInfoIniIniWrite(
   const AInifile: TCustomInifile; var Continue: Boolean);
 begin
   AInifile.WriteBool ( Name,  'tbar_volet.Visible', mu_voletexplore.Checked );
-  AInifile.WriteBool ( Name,  'tbar_voletcustom.Visible', mi_CustomizedMenu.Checked );
   AInifile.WriteBool ( Name,  'tbar_outils.Visible', mu_barreoutils.Checked );
+  AInifile.WriteBool ( Name,  'tbar_voletcustom.Visible', mi_CustomizedMenu.Checked );
 
 end;
 

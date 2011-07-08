@@ -186,7 +186,15 @@ procedure p_initialisationBoutons ( const aF_FormParent           : TForm       
               			      const aBmp_DefaultPicture     : TBitmap      ;
                                     const aMen_MenuParent         : TMenuItem    ;
                                     const aIma_ImagesMenus        : TImageList   ;
-                                    const ai_FinCompteurImages    : Integer      );
+                                    const aPic_DefaultAcces       ,
+                                          aPic_DefaultAide        ,
+                                          aPic_DefaultQuit        : TPicture     ;
+                                    const aMen_MenuIdent          : TMenuItem    ;
+                                    const axb_ident               : TJvXPButton  ;
+                                    const aMen_MenuAide           : TMenuItem    ;
+                                    const axb_Aide                : TJvXPButton  ;
+                                    const aMen_MenuQuitter        : TMenuItem    ;
+                                    const axb_Quitter             : TJvXPButton  );
 
 
 procedure  p_DetruitLeSommaire ;
@@ -524,7 +532,15 @@ procedure p_initialisationBoutons ( const aF_FormParent           : TForm       
                                     const aBmp_DefaultPicture     : TBitmap      ;
                                     const aMen_MenuParent         : TMenuItem    ;
                                     const aIma_ImagesMenus        : TImageList   ;
-                                    const ai_FinCompteurImages    : Integer      );
+                                    const aPic_DefaultAcces       ,
+                                          aPic_DefaultAide        ,
+                                          aPic_DefaultQuit        : TPicture     ;
+                                    const aMen_MenuIdent          : TMenuItem    ;
+                                    const axb_ident               : TJvXPButton  ;
+                                    const aMen_MenuAide           : TMenuItem    ;
+                                    const axb_Aide                : TJvXPButton  ;
+                                    const aMen_MenuQuitter        : TMenuItem    ;
+                                    const axb_Quitter             : TJvXPButton  );
 
 Begin
   gF_FormParent           := aF_FormParent           ;
@@ -540,8 +556,11 @@ Begin
   gMen_MenuParent         := aMen_MenuParent         ;
   gMen_MenuVolet          := aMen_MenuVolet          ;
   gIma_ImagesMenus        := aIma_ImagesMenus        ;
-  gi_FinCompteurImages    := ai_FinCompteurImages    ;
   gIma_ImagesXPBars       := TImageList.Create ( aF_FormParent );
+  p_setImageToMenuAndXPButton ( aPic_DefaultAcces.Bitmap, axb_ident  , aMen_MenuIdent  , aIma_ImagesMenus );
+  p_setImageToMenuAndXPButton ( aPic_DefaultAide .Bitmap, axb_Aide   , aMen_MenuAide   , aIma_ImagesMenus );
+  p_setImageToMenuAndXPButton ( aPic_DefaultQuit .Bitmap, axb_Quitter, aMen_MenuQuitter, aIma_ImagesMenus );
+  gi_FinCompteurImages    := aIma_ImagesMenus.Count - 1    ;
 
 End ;
 {
