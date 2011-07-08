@@ -1,4 +1,4 @@
-unit U_Acces;
+﻿unit U_Acces;
 
 {$I ..\compilers.inc}
 {$I ..\extends.inc}
@@ -22,27 +22,27 @@ uses
   fonctions_version,
 {$ENDIF}
   U_Donnees, RxLookup, U_FenetrePrincipale,
-  Classes, Graphics, Forms, Controls, StdCtrls, Buttons, ExtCtrls,
+  Classes, Graphics, Forms, Controls, StdCtrls, Buttons,
   Dialogs, SysUtils, DBCtrls, fonctions_string,
-  U_FormMainIni,
-  u_framework_dbcomponents, U_OnFormInfoIni, u_buttons_appli, JvXPButtons,
-  u_framework_components ;
+  U_FormMainIni, JvXPButtons, ExtCtrls,
+  u_framework_dbcomponents, U_OnFormInfoIni, u_buttons_appli,
+  u_framework_components, TntStdCtrls ;
 
 {$IFDEF VERSIONS}
 const
   gver_F_Acces : T_Version = ( Component : 'Fenêtre d''identification' ;
                                FileUnit : 'U_Acces' ;
-       			       Owner : 'Matthieu Giroux' ;
-       			       Comment : 'Répertorie les composants.' ;
-       			       BugsStory : 'Version 1.3.0.1 : Making comments.' + #13#10
+                               Owner : 'Matthieu Giroux' ;
+                               Comment : 'Répertorie les composants.' ;
+                               BugsStory : 'Version 1.3.0.1 : Making comments.' + #13#10
                                          + 'Version 1.3.0.0 : Passage en LAZARUS' + #13#10
                                          + 'Version 1.2.0.0 : Passage en non ADO' + #13#10
                                          + 'Version 1.1.0.1 : Utilisation de JEDI' + #13#10
-		        	         + 'Version 1.1.0.0 : Passage en Jedi 3' + #13#10
-		        	         + 'Version 1.0.1.0 : Gestion utilisateur par défaut ( voir U_FenetrePrincipale )' + #13#10
-          	        	         + 'Version 1.0.0.0 : Gestion accès multiple.';
-          		       UnitType : 2 ;
-          		       Major : 1 ; Minor : 3 ; Release : 0 ; Build : 1 );
+                                         + 'Version 1.1.0.0 : Passage en Jedi 3' + #13#10
+                                         + 'Version 1.0.1.0 : Gestion utilisateur par défaut ( voir U_FenetrePrincipale )' + #13#10
+                                         + 'Version 1.0.0.0 : Gestion accès multiple.';
+                               UnitType : 2 ;
+                               Major : 1 ; Minor : 3 ; Release : 0 ; Build : 1 );
 
 {$ENDIF}
 

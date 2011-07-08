@@ -124,7 +124,6 @@ object F_Acces: TF_Acces
       Top = 192
       Width = 96
       Height = 32
-      Caption = 'Annuler'
       TabOrder = 2
       OnClick = btn_cancelClick
     end

@@ -1,4 +1,4 @@
-{.$DEFINE CLR}
+ï»¿{.$DEFINE CLR}
 // ************************************************************************ //
 // Dfm2Pas: WARNING!
 // -----------------
@@ -59,37 +59,37 @@ uses
 
 {$IFDEF VERSIONS}
 const
-    gVer_F_FenetrePrincipale : T_Version = ( Component : 'Fenêtre principale troisième version' ;
+    gVer_F_FenetrePrincipale : T_Version = ( Component : 'FenÃªtre principale troisiÃ¨me version' ;
        			                 FileUnit : 'U_FenetrePrincipale' ;
        			                 Owner : 'Matthieu Giroux' ;
-       			                 Comment : 'Fenêtre principale utilisée pour la gestion automatisée à partir du fichier INI, avec des menus composés à partir des données.' + #13#10 + 'Elle dépend du composant Fenêtre principale qui lui n''est pas lié à l''application.' ;
+       			                 Comment : 'FenÃªtre principale utilisÃ©e pour la gestion automatisÃ©e Ã  partir du fichier INI, avec des menus composÃ©s Ã  partir des donnÃ©es.' + #13#10 + 'Elle dÃ©pend du composant FenÃªtre principale qui lui n''est pas liÃ© Ã  l''application.' ;
       			                 BugsStory : 'Version 3.1.0.4 : Adding and modifying customized menu Toolbar.' + #13#10 +
                                                      'Version 3.1.0.3 : No ExtToolbar.' + #13#10 +
                                                      'Version 3.1.0.2 : Adding Customized Menu.' + #13#10 +
                                                      'Version 3.1.0.1 : No ExtToolBar on Lazarus.' + #13#10 +
-                                                     'Version 3.1.0.0 : Passage en générique' + #13#10
-                                                   + '3.0.5.3 : Désactivation du timer au destroy.' + #13#10
-                                                   + '3.0.5.2 : p_FreeChildForms à la fermeture de l''appli.' + #13#10
-                        			   + '3.0.5.1 : Plus de mise à jour de l''ini ici mais dans FormMainIni.' + #13#10
-                        			   + '3.0.5.0 : Raccourcis d''aide, bug utilisateur effacé dans la barre des tâches.' + #13#10
-                        			   + '3.0.4.4 : Mise en conformité de maj et num dans la barre de status.' + #13#10
-			                	   + '3.0.4.3 : Bug pas d''icône application enlevé' + #13#10
+                                                     'Version 3.1.0.0 : Passage en gÃ©nÃ©rique' + #13#10
+                                                   + '3.0.5.3 : DÃ©sactivation du timer au destroy.' + #13#10
+                                                   + '3.0.5.2 : p_FreeChildForms Ã  la fermeture de l''appli.' + #13#10
+                        			   + '3.0.5.1 : Plus de mise Ã  jour de l''ini ici mais dans FormMainIni.' + #13#10
+                        			   + '3.0.5.0 : Raccourcis d''aide, bug utilisateur effacÃ© dans la barre des tÃ¢ches.' + #13#10
+                        			   + '3.0.4.4 : Mise en conformitÃ© de maj et num dans la barre de status.' + #13#10
+			                	   + '3.0.4.3 : Bug pas d''icÃ´ne application enlevÃ©' + #13#10
 			                	   + '3.0.4.2 : Bug splitter visible' + #13#10
 			                	   + '3.0.4.1 : Bug volet non visible' + #13#10
-			                	   + '3.0.4.0 : Sauvegarde de la visibilité des barres de menus' + #13#10
-			                	   + '3.0.3.0 : Présentation par défaut de la fiche active' + #13#10
+			                	   + '3.0.4.0 : Sauvegarde de la visibilitÃ© des barres de menus' + #13#10
+			                	   + '3.0.3.0 : PrÃ©sentation par dÃ©faut de la fiche active' + #13#10
 			                	   + '3.0.2.1 : Moins de retaillage' + #13#10
-			                	   + '3.0.2.0 : Utilisateur connecté dans l''ini ( voir U_Acces )' + #13#10
+			                	   + '3.0.2.0 : Utilisateur connectÃ© dans l''ini ( voir U_Acces )' + #13#10
 			                	   + '3.0.1.1 : Bug p_CloseMDI' + #13#10
-			                	   + '3.0.1.0 : Mode représentant et variable globale gb_Siege' + #13#10
-			                	   + '3.0.0.9 : Problème InitializeControls en conception' + #13#10
-			                	   + '3.0.0.8 : Réutilisation p_CloseMDI pour ne pas détruire la SplashForm' + #13#10
+			                	   + '3.0.1.0 : Mode reprÃ©sentant et variable globale gb_Siege' + #13#10
+			                	   + '3.0.0.9 : ProblÃ¨me InitializeControls en conception' + #13#10
+			                	   + '3.0.0.8 : RÃ©utilisation p_CloseMDI pour ne pas dÃ©truire la SplashForm' + #13#10
 			                	   + '3.0.0.7 : Bug Splahsform' + #13#10
-			                	   + '3.0.0.6 : Création d''un try except sur l''affectation d''une couleur sur la jvtransled (Avant MAJ Jedi).' + #13#10
-			                	   + '3.0.0.5 : Mises à jour sur la destruction.' + #13#10
-			                	   + '3.0.0.4 : Handle à 0 après un FreeImage et un Tbitmap.create.' + #13#10
-			                	   + '3.0.0.3 : Bug Tracking à False et mise à place de la TMCScrollbox.' + #13#10
-			                	   + '3.0.0.2 : Bug Tracking à True et mise en place d''un JvSCrollBox, seulement Tracking à False est dépendant de Windows dans les deux ScrollBox.' + #13#10
+			                	   + '3.0.0.6 : CrÃ©ation d''un try except sur l''affectation d''une couleur sur la jvtransled (Avant MAJ Jedi).' + #13#10
+			                	   + '3.0.0.5 : Mises Ã  jour sur la destruction.' + #13#10
+			                	   + '3.0.0.4 : Handle Ã  0 aprÃ¨s un FreeImage et un Tbitmap.create.' + #13#10
+			                	   + '3.0.0.3 : Bug Tracking Ã  False et mise Ã  place de la TMCScrollbox.' + #13#10
+			                	   + '3.0.0.2 : Bug Tracking Ã  True et mise en place d''un JvSCrollBox, seulement Tracking Ã  False est dÃ©pendant de Windows dans les deux ScrollBox.' + #13#10
 			                	   + '3.0.0.1 : Bug AutoScroll sur le TScrollBox.' + #13#10
 			                	   + '3.0.0.0 : Gestion de l''INI par application.';
 			                 UnitType : CST_TYPE_UNITE_FICHE ;
@@ -104,46 +104,22 @@ type
     dbt_aide: TJvXPButton;
     dbt_ident: TJvXPButton;
     im_acces: TImage;
-    im_aide: TImage;
-    im_ListeDisabled: TImageList;
-    im_quit: TImage;
-    mc_Customize: TExtMenuCustomize;
-    mi_CustomizedMenu: TMenuItem;
     mtb_CustomizedMenu: TExtMenuToolBar;
-    mu_apropos: TMenuItem;
     mu_MenuIni: {$IFDEF TNT}TTntMainMenu{$ELSE}TMainMenu{$ENDIF};
-    {$IFDEF VERSIONS}
-    mu_apropos: TMenuItem;
-    {$ENDIF}
-
-
     mu_MainMenu: {$IFDEF TNT}TTntMainMenu{$ELSE}TMainMenu{$ENDIF};
-    mu_file: TMenuItem;
-    mu_ouvrir: TMenuItem;
-    mu_sep1: TMenuItem;
-    mu_quitter: TMenuItem;
-    mu_fenetre: TMenuItem;
     {$IFNDEF FPC}
-    mu_cascade: TMenuItem;
-    mu_mosaiqueh: TMenuItem;
-    mu_mosaiquev: TMenuItem;
-    mu_organiser: TMenuItem;
+    mu_cascade: {$IFDEF TNT}TTntMenuItem{$ELSE}TMenuItem{$ENDIF};
+    mu_mosaiqueh: {$IFDEF TNT}TTntMenuItem{$ELSE}TMenuItem{$ENDIF};
+    mu_mosaiquev: {$IFDEF TNT}TTntMenuItem{$ELSE}TMenuItem{$ENDIF};
+    mu_organiser: {$IFDEF TNT}TTntMenuItem{$ELSE}TMenuItem{$ENDIF};
+    mu_Reinitiliserpresentation: {$IFDEF TNT}TTntMenuItem{$ELSE}TMenuItem{$ENDIF};
     {$ENDIF}
-    mu_affichage: TMenuItem;
-    mu_barreoutils: TMenuItem;
-    mu_voletexplore: TMenuItem;
-    mu_aide: TMenuItem;
-    mu_ouvriraide: TMenuItem;
-    mu_sep2: TMenuItem;
-    mu_Reinitiliserpresentation: TMenuItem;
 
     ActionList: {$IFDEF TNT}TTntActionList{$ELSE}TActionList{$ENDIF};
     pa_1: TPanel;
     pa_2: TPanel;
     pa_3: TPanel;
     pa_4: TPanel;
-    scb_Volet: TScrollBox;
-    tbsep_4: TPanel;
     {$IFDEF MDI}
     WindowCascade: {$IFDEF TNT}TTntWindowCascade{$ELSE}TWindowCascade{$ENDIF};
     WindowTileHorizontal: {$IFDEF TNT}TTntWindowTileHorizontal{$ELSE}TWindowTileHorizontal{$ENDIF};
@@ -154,7 +130,6 @@ type
 
     Timer: TTimer;
     SvgFormInfoIni: TOnFormInfoIni;
-    im_Liste: TImageList;
     tbsep_1: TPanel;
     tbsep_2: TPanel;
     tbsep_3: TPanel;
@@ -163,13 +138,32 @@ type
     br_statusbar: TStatusBar;
 
     im_led: {$IFDEF FPC}TPCheck{$ELSE}TJvLED{$ENDIF};
-    mu_identifier: TMenuItem;
     spl_volet: {$IFDEF FPC}TSplitter{$ELSE}TJvSplitter{$ENDIF};
     im_appli: TImage;
     im_about: TImage;
-    mu_langue: TMenuItem;
     dbt_quitter: TJvXPButton;
+    im_aide: TImage;
+    im_quit: TImage;
+    im_Liste : TImageList;
+    im_ListeDisabled: TImageList;
+    mc_Customize: TExtMenuCustomize;
+    mu_quitter: {$IFDEF TNT}TTntMenuItem{$ELSE}TMenuItem{$ENDIF};
+    mu_sep1: {$IFDEF TNT}TTntMenuItem{$ELSE}TMenuItem{$ENDIF};
+    mu_ouvrir: {$IFDEF TNT}TTntMenuItem{$ELSE}TMenuItem{$ENDIF};
+    mu_identifier: {$IFDEF TNT}TTntMenuItem{$ELSE}TMenuItem{$ENDIF};
+    mu_aide: {$IFDEF TNT}TTntMenuItem{$ELSE}TMenuItem{$ENDIF};
+    mu_langue: {$IFDEF TNT}TTntMenuItem{$ELSE}TMenuItem{$ENDIF};
+    mu_affichage: {$IFDEF TNT}TTntMenuItem{$ELSE}TMenuItem{$ENDIF};
+    mu_fenetre: {$IFDEF TNT}TTntMenuItem{$ELSE}TMenuItem{$ENDIF};
+    mu_file: {$IFDEF TNT}TTntMenuItem{$ELSE}TMenuItem{$ENDIF};
+    mu_apropos: {$IFDEF TNT}TTntMenuItem{$ELSE}TMenuItem{$ENDIF};
+    mu_sep2: {$IFDEF TNT}TTntMenuItem{$ELSE}TMenuItem{$ENDIF};
+    mu_ouvriraide: {$IFDEF TNT}TTntMenuItem{$ELSE}TMenuItem{$ENDIF};
+    mi_CustomizedMenu: {$IFDEF TNT}TTntMenuItem{$ELSE}TMenuItem{$ENDIF};
+    mu_voletexplore: {$IFDEF TNT}TTntMenuItem{$ELSE}TMenuItem{$ENDIF};
+    mu_barreoutils: {$IFDEF TNT}TTntMenuItem{$ELSE}TMenuItem{$ENDIF};
     tbar_volet: TToolBar;
+    scb_Volet: TScrollBox;
 
     procedure mi_CustomizedMenuClick(Sender: TObject);
     procedure mtb_CustomizedMenuClickCustomize(Sender: TObject);
@@ -207,7 +201,7 @@ type
     procedure mu_ReinitiliserpresentationClick(Sender: TObject);
 
   private
-    { Déclarations privées }
+    { DÃ©clarations privÃ©es }
     lb_MsgDeconnexion : Boolean ;
 {$IFDEF CLR}
     procedure InitializeControls;
@@ -220,8 +214,8 @@ type
     procedure p_SetLedColor(const ab_Status: Boolean);
   public
     procedure p_ConnectToData ();
-    { Déclarations publiques }
-    // Procédures qui sont appelées automatiquement pour l'initialisation et la sauvegarde
+    { DÃ©clarations publiques }
+    // ProcÃ©dures qui sont appelÃ©es automatiquement pour l'initialisation et la sauvegarde
     Constructor Create(AOwner: TComponent); override;
     Destructor  Destroy; override;
     procedure   p_PbConnexion; override;
@@ -263,7 +257,7 @@ uses
 
 
 ////////////////////////////////////////////////////////////////////////////////
-//  Fonctions et procédures générales
+//  Fonctions et procÃ©dures gÃ©nÃ©rales
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //  Recherche du nom de l'executable pour aller
@@ -280,7 +274,7 @@ begin
 {$IFDEF CLR}
   if not ( csDesigning in ComponentState ) Then
     Try
-      // On arrive pour la première fois sur la forme
+      // On arrive pour la premiÃ¨re fois sur la forme
       gb_FirstAcces := True;
 
       // Recherche du nom de l'application
@@ -328,10 +322,12 @@ begin
 {$IFDEF TNT}
   p_RegisterLanguages ( mu_langue );
 {$ELSE}
+  {$IFDEF FPC}
   p_RegisterALanguage ( 'en', 'English' );
-  p_RegisterALanguage ( 'fr', 'Français' );
-  p_RegisterALanguage ( 'en', 'Español' );
+  p_RegisterALanguage ( 'fr', 'FranÃ§ais' );
+  p_RegisterALanguage ( 'en', 'EspaÃ±ol' );
   CreateLanguagesController ( mu_langue );
+  {$ENDIF}
 {$ENDIF}
 
   gs_DefaultUser := gmif_MainFormIniInit.Readstring ( INISEC_PAR, INISEC_UTI, '' );
@@ -341,7 +337,7 @@ begin
   // Lecture des infos des composants du fichier INI
   SvgFormInfoIni.ExecuteLecture(True);
 
-    // Initialisation de l'aide et des libellés de la barre de status
+    // Initialisation de l'aide et des libellÃ©s de la barre de status
   p_ChargeAide;
   p_LibStb ( br_statusbar );
 
@@ -487,14 +483,14 @@ begin
   {$ENDIF}
   lbmp_Bitmap.Free ;
 
-  // Initialisation de la LED de connexion à la base...
+  // Initialisation de la LED de connexion Ã  la base...
 //  im_led.
   im_led.Parent := br_statusbar;
   im_led.Show;
 end;
 
 ////////////////////////////////////////////////////////////////////////////////
-//  Destruction de la Led de connexion car mal géré dans l'objet !!!
+//  Destruction de la Led de connexion car mal gÃ©rÃ© dans l'objet !!!
 ////////////////////////////////////////////////////////////////////////////////
 Destructor TF_FenetrePrincipale.Destroy;
 begin
@@ -548,7 +544,7 @@ begin
 end;
 
 ///////////////////////////////////////////////////////////////////////////////
-//  Pour gérer les click sur les boutons de fonctions créés dynamiquement
+//  Pour gÃ©rer les click sur les boutons de fonctions crÃ©Ã©s dynamiquement
 ////////////////////////////////////////////////////////////////////////////////
 procedure TF_FenetrePrincipale.p_OnClickFonction(Sender: TObject);
 begin
@@ -581,11 +577,11 @@ begin
 end;
 
 ////////////////////////////////////////////////////////////////////////////////
-//  Méthodes liées à la forme
+//  MÃ©thodes liÃ©es Ã  la forme
 ////////////////////////////////////////////////////////////////////////////////
 procedure TF_FenetrePrincipale.F_FormMainIniActivate(Sender: TObject);
 begin
-  // Identification par la fenêtre de Login uniquement au démarrage de l'application
+  // Identification par la fenÃªtre de Login uniquement au dÃ©marrage de l'application
   if gb_FirstAcces then
     begin
       // Init. du menu barre de fonction checked ou pas
@@ -617,12 +613,12 @@ begin
   if lb_MsgDeconnexion
   and ( MessageDlg ( GS_DECONNECTER, mtConfirmation, [ mbYes, mbNo ], 0 ) = mrNo ) Then
     Exit ;
-  // (Ré)initialisation de l'application
+  // (RÃ©)initialisation de l'application
   Screen.Cursor := crSQLWait;
   p_FreeChildForms;
   p_DetruitTout ( True );
-  if not gb_FirstAcces then p_SauveIni; // On libère le fichier INI sauf à la 1ère ouverture
-  gi_NbSeparateurs := 3; // Le nombre initial de séparateur dans la barre d'outils
+  if not gb_FirstAcces then p_SauveIni; // On libÃ¨re le fichier INI sauf Ã  la 1Ã¨re ouverture
+  gi_NbSeparateurs := 3; // Le nombre initial de sÃ©parateur dans la barre d'outils
   F_FormMainIniResize(Self);
   pa_2.Refresh;
 
@@ -645,7 +641,7 @@ begin
       Exit;
     End;
 
-  // Connexion à la base d'accès aux utilisateurs et sommaires
+  // Connexion Ã  la base d'accÃ¨s aux utilisateurs et sommaires
   if assigned ( Connector ) then
     try
       p_setComponentBoolProperty ( Connector, 'Connected', True );
@@ -659,7 +655,7 @@ begin
         End;
     end;
 
-  // On fait apparaître la fenêtre de login
+  // On fait apparaÃ®tre la fenÃªtre de login
   if ( F_Acces = nil ) Then
     Application.CreateForm(TF_Acces, F_Acces);
 
@@ -669,24 +665,24 @@ begin
   {$ENDIF}
 end;
 
-// Connexion aux données de l'application
+// Connexion aux donnÃ©es de l'application
 procedure TF_FenetrePrincipale.p_ConnectToData ();
 var ls_ConnectString: String;
 begin
-  F_SplashForm.Free; // Libération de la mémoire
+  F_SplashForm.Free; // LibÃ©ration de la mÃ©moire
   F_SplashForm := nil;
 
   Screen.Cursor := crSQLWait;
   if ( gs_User <> ''  ) Then
     gs_DefaultUser := gs_User ;
 
-  // On recharge le fichier INI sauf si c'est déjà fait (lors de la création de l'appli)
+  // On recharge le fichier INI sauf si c'est dÃ©jÃ  fait (lors de la crÃ©ation de l'appli)
   if not gb_FirstAcces then f_GetIniFile;
 
   Self.Caption := gs_NomAppli + ' - ' + gs_User + ' - ' + gs_Resto ;
   ls_ConnectString := '';
 
-  if gb_AccesAuto then // Si on a validé un utilisateur dans la fenêtre de login
+  if gb_AccesAuto then // Si on a validÃ© un utilisateur dans la fenÃªtre de login
     Begin
       lb_MsgDeconnexion := True ;
 {$IFDEF EADO}
@@ -702,7 +698,7 @@ begin
 
       gs_serveur := fs_ArgConnectString(ls_ConnectString, 'Data Source') ;
       gs_base    := fs_ArgConnectString(ls_ConnectString, 'Initial Catalog');
-      // On recherche le sommaire correspondant à l'utilisateur connecté
+      // On recherche le sommaire correspondant Ã  l'utilisateur connectÃ©
 {$IFDEF CSV}
       M_Donnees.q_TreeUser.FileName := fs_getSoftData + gs_SoftUsers + gs_DataExtension;
       M_Donnees.q_TreeUser.Filter   := gs_SoftUserKey + '=' + gs_User;
@@ -725,7 +721,7 @@ begin
         gi_NbSeparateurs := gi_NbSeparateurs + fi_CreeSommaireBlank ();
         F_FormMainIniResize(Self);
 
-        // On se déconnecte de la base d'accès et connexion à la base de travail
+        // On se dÃ©connecte de la base d'accÃ¨s et connexion Ã  la base de travail
         if assigned ( Connector ) then
           p_setComponentBoolProperty ( Connector, 'Connected', False );
   {$IFDEF EADO}
@@ -818,7 +814,7 @@ end;
 
 
 ////////////////////////////////////////////////////////////////////////////////
-//  Gestion de la visibilité des accès aux fonctions
+//  Gestion de la visibilitÃ© des accÃ¨s aux fonctions
 ////////////////////////////////////////////////////////////////////////////////
 procedure TF_FenetrePrincipale.mu_barreoutilsClick(Sender: TObject);
 begin
@@ -832,7 +828,7 @@ begin
 end;
 
 ////////////////////////////////////////////////////////////////////////////////
-//  Boîte de dialogue à propos
+//  BoÃ®te de dialogue Ã  propos
 ////////////////////////////////////////////////////////////////////////////////
 {$IFDEF VERSIONS}
 procedure TF_FenetrePrincipale.mu_aproposClick(Sender: TObject);
@@ -861,7 +857,7 @@ end;
 
 
 ////////////////////////////////////////////////////////////////////////////////
-//  Rafraîchissement de la date et de l'heure sur la barre de statut
+//  RafraÃ®chissement de la date et de l'heure sur la barre de statut
 ////////////////////////////////////////////////////////////////////////////////
 procedure TF_FenetrePrincipale.TimerTimer(Sender: TObject);
 begin
@@ -901,10 +897,10 @@ end;
 
 
 ////////////////////////////////////////////////////////////////////////////////
-//  Gestion des procédures virtuelles
+//  Gestion des procÃ©dures virtuelles
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-//  En cas de problème sur la base de données
+//  En cas de problÃ¨me sur la base de donnÃ©es
 ////////////////////////////////////////////////////////////////////////////////
 procedure TF_FenetrePrincipale.p_PbConnexion;
 begin
@@ -940,8 +936,8 @@ end;
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// procédure qui transfert les données local de l'édition
-// vers les données globales utilisées par le preview
+// procÃ©dure qui transfert les donnÃ©es local de l'Ã©dition
+// vers les donnÃ©es globales utilisÃ©es par le preview
 ////////////////////////////////////////////////////////////////////////////////
 procedure TF_FenetrePrincipale.p_editionTransfertVariable(as_nom, as_titre,
   as_chemin: String; ats_edition_nom_params, ats_edition_params,
@@ -954,7 +950,7 @@ begin
   gs_edition_titre  := as_titre;
   gs_edition_chemin := as_chemin;
 
-  // si les paramètres sont vides on quitte la procédure
+  // si les paramÃ¨tres sont vides on quitte la procÃ©dure
   if ats_edition_params_values = nil then exit;
 
   gs_edition_nom_params.Free;
@@ -982,7 +978,7 @@ end;
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// procédure br_statusbarDrawPanel
+// procÃ©dure br_statusbarDrawPanel
 //  Gestion de MAJ & Num si inactifs (ie. que l'on utilise le canevas)
 ////////////////////////////////////////////////////////////////////////////////
 procedure TF_FenetrePrincipale.br_statusbarDrawPanel(StatusBar: TStatusBar;
@@ -1000,8 +996,8 @@ begin
 end;
 
 //////////////////////////////////////////////////////////////////////////
-// Procédure virtuelle : p_WriteDescendantIni
-// Description : écriture de l'ini dans U_FenetrePrincipale à partir de U_FormMainIni
+// ProcÃ©dure virtuelle : p_WriteDescendantIni
+// Description : Ã©criture de l'ini dans U_FenetrePrincipale Ã  partir de U_FormMainIni
 //////////////////////////////////////////////////////////////////////////
 procedure TF_FenetrePrincipale.p_WriteDescendantIni(
   const amif_Init: TIniFile);
@@ -1015,8 +1011,8 @@ begin
 end;
 
 //////////////////////////////////////////////////////////////////////////
-// Procédure virtuelle : p_WriteDescendantIni
-// Description : écriture de l'ini dans U_FenetrePrincipale à partir de U_FormMainIni
+// ProcÃ©dure virtuelle : p_WriteDescendantIni
+// Description : Ã©criture de l'ini dans U_FenetrePrincipale Ã  partir de U_FormMainIni
 //////////////////////////////////////////////////////////////////////////
 procedure TF_FenetrePrincipale.p_ReadDescendantIni(
   const amif_Init: TIniFile);
@@ -1027,9 +1023,9 @@ begin
 end;
 
 ////////////////////////////////////////////////////////////////////////////////
-// Evènement : mu_ReinitiliserpresentationClick
-// Description :  Réinitialise la présentation de la fiche active à partir du menu fenêtre
-// Paramètres  : Sender : Le MenuItem mei_Reinitiliserpresentation
+// EvÃ¨nement : mu_ReinitiliserpresentationClick
+// Description :  RÃ©initialise la prÃ©sentation de la fiche active Ã  partir du menu fenÃªtre
+// ParamÃ¨tres  : Sender : Le MenuItem mei_Reinitiliserpresentation
 ////////////////////////////////////////////////////////////////////////////////
 procedure TF_FenetrePrincipale.mu_ReinitiliserpresentationClick(
   Sender: TObject);
