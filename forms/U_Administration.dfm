@@ -1628,7 +1628,7 @@ object F_Administration: TF_Administration
               Width = 297
               Height = 24
               Hint = 'Code de connexion'
-              Color = clInfoBk
+              Color = clMoneyGreen
               DataField = 'CONN_Clep'
               Font.Charset = DEFAULT_CHARSET
               Font.Color = 13500416

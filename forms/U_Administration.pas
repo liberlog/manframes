@@ -69,7 +69,8 @@ uses
   u_extdbgrid,
   U_ExtDBNavigator, Graphics,
   JvXPButtons, u_framework_components,
-  u_framework_dbcomponents, u_buttons_appli, ImgList, ToolWin;
+  u_framework_dbcomponents, u_buttons_appli, ImgList, ToolWin, TntDBCtrls,
+  TntExtCtrls, TntDBGrids, TntStdCtrls;
 
 {$IFDEF VERSIONS}
 const
@@ -2565,13 +2566,11 @@ begin
 //  fb_ChangeEnregistrement( lvar_EnrSMenu, Dataset, CST_SOUM_Cle, False);
   // Sort n'est pas une propriété visible à la conception alors affectation
   fb_SortADataset(adoq_SousMenus, CST_SOUM_Numordre, False );
-  {$IFNDEF FPC}
-  {$IFNDEF TNT}
+  {$IFDEF EXRX}
   if  gb_PeutModifier
   and gb_AccesSommaires
    Then dbg_SousMenu.UseRowColors := False
    Else dbg_SousMenu.UseRowColors := True ;
-  {$ENDIF}
   {$ENDIF}
 
 end;
@@ -2582,13 +2581,11 @@ begin
 //  fb_ChangeEnregistrement( lvar_EnrMenu, Dataset, CST_MENU_Cle, False);
   // Sort n'est pas une propriété visible à la conception alors affectation
   fb_SortADataset( adoq_Menus, CST_MENU_Numordre, False );
-  {$IFNDEF FPC}
-  {$IFNDEF TNT}
+  {$IFDEF EXRX}
   if  gb_PeutModifier
   and gb_AccesSommaires
    Then dbg_Menu.UseRowColors := False
    Else dbg_Menu.UseRowColors := True ;
-  {$ENDIF}
   {$ENDIF}
 end;
 
@@ -3387,19 +3384,15 @@ begin
   and gb_AccesSommaires
    Then
     Begin
-  {$IFNDEF FPC}
-  {$IFNDEF TNT}
+  {$IFDEF EXRX}
       dbg_SommaireFonctions.UseRowColors := False ;
-  {$ENDIF}
   {$ENDIF}
       dbg_SommaireFonctions.Columns [ 0 ].Color := clInfoBk ;
       dbg_SommaireFonctions.Columns [ 1 ].Color := clMoneyGreen ;
     End
-  {$IFNDEF FPC}
-  {$IFNDEF TNT}
+  {$IFDEF EXRX}
    Else
     dbg_SommaireFonctions.UseRowColors := True
-  {$ENDIF}
   {$ENDIF};
 end;
 
@@ -3410,19 +3403,15 @@ begin
   and gb_AccesSommaires
    Then
     Begin
-  {$IFNDEF FPC}
-  {$IFNDEF TNT}
+  {$IFDEF EXRX}
       dbg_MenuFonctions.UseRowColors := False ;
-  {$ENDIF}
   {$ENDIF}
       dbg_MenuFonctions.Columns [ 0 ].Color := clInfoBk ;
       dbg_MenuFonctions.Columns [ 1 ].Color := clMoneyGreen ;
     End
-  {$IFNDEF FPC}
-  {$IFNDEF TNT}
+  {$IFDEF EXRX}
    Else
     dbg_MenuFonctions.UseRowColors := True
-  {$ENDIF}
   {$ENDIF};
 end;
 
@@ -3434,33 +3423,26 @@ begin
   and gb_AccesSommaires
    Then
     Begin
-  {$IFNDEF FPC}
-  {$IFNDEF TNT}
+  {$IFDEF EXRX}
       dbg_SousMenuFonctions.UseRowColors := False ;
-  {$ENDIF}
   {$ENDIF}
       dbg_SousMenuFonctions.Columns [ 0 ].Color := clInfoBk ;
       dbg_SousMenuFonctions.Columns [ 1 ].Color := clMoneyGreen ;
     End
-  {$IFNDEF FPC}
-  {$IFNDEF TNT}
+  {$IFDEF EXRX}
    Else
     dbg_SousMenuFonctions.UseRowColors := True
-  {$ENDIF}
   {$ENDIF};
 end;
 
 // Présentation à l'ouverture du sommaire
 procedure TF_Administration.adoq_SommaireAfterOpen(DataSet: TDataSet);
 begin
-  {$IFNDEF FPC}
-  {$IFNDEF TNT}
+  {$IFDEF EXRX}
   if  gb_PeutModifier
   and gb_AccesSommaires
    Then dbg_Sommaire.UseRowColors := False
    Else dbg_Sommaire.UseRowColors := True ;
-
-  {$ENDIF}
   {$ENDIF}
 end;
 

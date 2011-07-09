@@ -8,8 +8,7 @@ uses
   Windows,
   U_CustomFrameWork,
   ADODB,
-  U_Donnees,
-  U_ConstMessage in 'U_ConstMessage.pas';
+  U_Donnees;
 
 {$IMPORTEDDATA ON}
 
@@ -55,7 +54,7 @@ begin
 		gb_DicoUseFormField    := True ;
 		gb_DicoGroupementMontreCaption := False ;
 		Application.CreateForm(TM_Donnees, M_Donnees);
-		Application.CreateForm(TF_FenetrePrincipale, F_FenetrePrincipale);
+  Application.CreateForm(TF_FenetrePrincipale, F_FenetrePrincipale);
   finally
 	end;
 

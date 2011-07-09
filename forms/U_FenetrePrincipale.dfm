@@ -28,12 +28,13 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
     Visible = False
   end
   object spl_volet: TJvSplitter
-    Left = 196
-    Top = 29
+    Left = 225
+    Top = 45
     Width = 5
-    Height = 485
+    Height = 469
     ExplicitLeft = 207
     ExplicitTop = 40
+    ExplicitHeight = 485
   end
   object im_appli: TImage
     Left = 248
@@ -79,10 +80,14 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
     Left = 0
     Top = 0
     Width = 757
-    Height = 29
+    Height = 45
     Hint = 'Cliquer sur un bouton pour acc'#195#402#194#169'der '#195#402#194#160' une fonction'
     HelpContext = 1430
-    Caption = 'Barre d'#39'acc'#195#402#194#168's'
+    ButtonHeight = 45
+    Caption = 'Barre d'#39'acc'#232's'
+    Color = clBtnFace
+    GradientDrawingOptions = [gdoHotTrack]
+    ParentColor = False
     ParentShowHint = False
     ShowHint = True
     TabOrder = 0
@@ -90,7 +95,7 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
       Left = 0
       Top = 0
       Width = 57
-      Height = 22
+      Height = 45
       BevelOuter = bvNone
       TabOrder = 0
       object dbt_ident: TJvXPButton
@@ -119,14 +124,14 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
       Left = 57
       Top = 0
       Width = 3
-      Height = 22
+      Height = 45
       TabOrder = 4
     end
     object pa_2: TPanel
       Left = 60
       Top = 0
       Width = 573
-      Height = 22
+      Height = 45
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 1
@@ -135,14 +140,14 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
       Left = 633
       Top = 0
       Width = 3
-      Height = 22
+      Height = 45
       TabOrder = 5
     end
     object pa_3: TPanel
       Left = 636
       Top = 0
       Width = 57
-      Height = 22
+      Height = 45
       Align = alRight
       BevelOuter = bvNone
       TabOrder = 2
@@ -172,14 +177,14 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
       Left = 693
       Top = 0
       Width = 3
-      Height = 22
+      Height = 45
       TabOrder = 3
     end
     object pa_4: TPanel
       Left = 696
       Top = 0
       Width = 57
-      Height = 22
+      Height = 45
       Align = alRight
       BevelOuter = bvNone
       TabOrder = 6
@@ -250,15 +255,20 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
   end
   object mtb_CustomizedMenu: TExtMenuToolBar
     Left = 0
-    Top = 29
+    Top = 45
     Width = 30
-    Height = 485
+    Height = 469
     Align = alLeft
     AutoSize = False
+    ButtonHeight = 38
+    ButtonWidth = 39
     Caption = 'mtb_CustomizedMenu'
     Color = cl3DLight
+    DisabledImages = im_ListeDisabled
     HotImages = im_Liste
+    Images = im_Liste
     List = False
+    Menu = mu_MenuIni
     ParentColor = False
     ShowCaptions = False
     TabOrder = 2
@@ -267,11 +277,11 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
   end
   object tbar_volet: TToolBar
     Left = 30
-    Top = 29
-    Width = 166
-    Height = 485
+    Top = 45
+    Width = 195
+    Height = 469
     Align = alLeft
-    ButtonHeight = 436
+    ButtonHeight = 473
     Caption = 'Volet d'#39'acc'#232's'
     Color = clMoneyGreen
     ParentColor = False
@@ -280,7 +290,7 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
       Left = 0
       Top = 0
       Width = 197
-      Height = 436
+      Height = 473
       Hint = 'Cliquez pour acc'#233'der aux fonctions'
       HelpContext = 1440
       Align = alClient
@@ -1254,8 +1264,6 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
     Top = 216
   end
   object im_ListeDisabled: TImageList
-    Height = 32
-    Width = 32
     Left = 408
     Top = 216
   end
@@ -1266,6 +1274,7 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
     Top = 264
   end
   object mu_MenuIni: TMainMenu
+    Images = im_Liste
     Left = 336
     Top = 264
   end

@@ -196,7 +196,6 @@ type
     procedure tbar_voletClose(Sender: TObject);
     procedure tbar_outilsClose(Sender: TObject);
 
-    procedure tbar_voletCloseQuery(Sender: TObject; var CanClose: Boolean);
     function CloseQuery: Boolean; override;
     procedure mu_ReinitiliserpresentationClick(Sender: TObject);
 
@@ -869,25 +868,14 @@ end;
 //  Gestion de MAJ & Num si inactifs (ie. que l'on utilise le canevas)
 ////////////////////////////////////////////////////////////////////////////////
 
-procedure TF_FenetrePrincipale.tbar_voletCloseQuery(Sender: TObject;
-  var CanClose: Boolean);
-begin
-  DisableAlign ;
-
-end;
 
 ////////////////////////////////////////////////////////////////////////////////
 //  Gestion de la femeture des barres de fonctions par la petite croix
 ////////////////////////////////////////////////////////////////////////////////
 procedure TF_FenetrePrincipale.tbar_voletClose(Sender: TObject);
 begin
-  DisableAlign ;
-  try
-    mu_voletexplore.Checked := False;
-    spl_volet.Hide;
-  finally
-    EnableAlign ;
-  end;
+  mu_voletexplore.Checked := False;
+  spl_volet.Hide;
 end;
 
 procedure TF_FenetrePrincipale.tbar_outilsClose(Sender: TObject);
