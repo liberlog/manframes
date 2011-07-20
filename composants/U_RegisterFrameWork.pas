@@ -18,7 +18,7 @@ uses
 {$ELSE}
   Windows,  DBreg, DesignIntf, DesignEditors,
 {$ENDIF}
-  Forms, Classes, u_fillcombobutton ;
+  Forms, Classes ;
 
 type
   TDataFieldDBGridLookupProperty = class({$IFDEF FPC}TFieldProperty{$ELSE}TDataFieldProperty{$ENDIF})
@@ -59,10 +59,12 @@ implementation
 
 uses DB, TypInfo,
   U_FormDico,
+  lresources,
   u_customframework,
   u_propform,
   U_RegVersion,
   u_buttons_manage,
+  u_fillcombobutton,
   unite_messages;
 
 { TNavigatorsProperty }
@@ -181,6 +183,9 @@ begin // Enregistre le nouvel expert de projet
 end;
 
 initialization
+{$IFDEF FPC}
+  {$I u_fillcombobutton.lrs}
+{$ENDIF}
 finalization
 //  UnregisterClass ( TF_McFormDico );
 end.
