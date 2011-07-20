@@ -1,4 +1,4 @@
-unit u_fillcombobutton;
+﻿unit u_fillcombobutton;
 
 {$IFDEF FPC}
 {$mode Delphi}{$H+}
@@ -41,6 +41,7 @@ type
       FOnSet : TNotifyEvent;
      protected
       FFormModal : TCustomForm ;
+      FOK : Boolean;
       procedure p_setFWDBLookupCombo ( const AFWDBLookupCombo : TFWDBLookupCombo );
       procedure SetFormEvents; virtual;
       procedure CreateForm(const aico_Icon: TIcon); virtual;
@@ -52,7 +53,7 @@ type
       procedure Click; override;
       procedure AutoPlace; virtual;
      published
-      procedure GridDblClick ( Sender : TObject ); virtual;
+      procedure OnGridDblClick ( Sender : TObject ); virtual;
       procedure OnCloseModalForm ( Sender: TObject; var AAction: TCloseAction ); virtual;
       property Combo : TFWDBLookupCombo read FFWDBLookupCombo write p_setFWDBLookupCombo ;
       property FormSource : Integer read FFormSource write FFormSource default 0;
@@ -66,7 +67,7 @@ type
 implementation
 
 uses fonctions_images, U_FormMainIni, fonctions_proprietes, fonctions_db,
-     unite_variables;
+     unite_variables, unite_messages;
 
 { TFWFillCombo }
 
@@ -84,13 +85,15 @@ var lst_OldFilter : String;
     lb_OldFiltered : Boolean;
 begin
   Result := -1 ;
+  FOK := False;
   CloseForm;
   FFormModal := nil;
   CreateFormWithIcon ( aBmp_Icon );
   if assigned ( FFormModal ) Then
    Begin
-    FFormModal.AutoSize := True;
-    FFormModal.Position:= poMainFormCenter;
+    p_SetComponentBoolProperty ( FFormModal, 'AutoSize', True );
+    FFormModal.Hide;
+    p_SetComponentProperty     ( FFormModal, 'Position', poMainFormCenter );
     SetFormEvents;
      if ( FFilter <> '' )
      and ( FFormModal is TF_CustomFrameWork ) Then
@@ -116,11 +119,12 @@ begin
           Then
            p_UpdateBatch ( {$IFDEF FPC}ListSource{$ELSE}LookupSource{$ENDIF}.DataSet );
          if assigned ( Field )
-         and ( Result = mrOk )
+         and ( FOK )
          and ( FFormModal is TF_CustomFrameWork ) Then
           with ( FFormModal as TF_CustomFrameWork ).Sources [ FFormSource ] do
            if not Datasource.DataSet.IsEmpty Then
             Begin
+              Result := mrOk;
               Field.DataSet.Edit;
               Field.Value := Datasource.DataSet.FieldByName ( Key ).Value;
             end;
@@ -146,13 +150,13 @@ var
 Begin
   lmet_Event.Data := Self;
   lmet_Event.Code := MethodAddress('OnCloseModalForm');
-  FOldCloseAction := FFormModal.OnClose;
-  FFormModal.OnClose := TCloseEvent ( lmet_Event );
+  FOldCloseAction := TCloseEvent ( fmet_getComponentMethodProperty (  FFormModal, CST_FORM_ONCLOSE ));
+  p_SetComponentMethodProperty ( FFormModal, CST_FORM_ONCLOSE, lmet_Event );
+  lmet_Event.Code := MethodAddress('OnGridDblClick');
   if ( FFormSource >= 0 )
   and ( FFormModal is TF_CustomFrameWork ) Then
     with FFormModal as TF_CustomFrameWork do
       Begin
-        lmet_Event.Code := MethodAddress('GridDblClick');
         FOldGridDblClick:= TNotifyEvent ( fmet_getComponentMethodProperty ( Sources [ FFormSource ].Grid, 'OnDblClick' ));
         p_SetComponentMethodProperty(Sources [ FFormSource ].Grid, 'OnDblClick', lmet_Event );
       end
@@ -227,14 +231,12 @@ begin
   Height := Combo.Height;
 end;
 
-procedure TFWFillCombo.GridDblClick(Sender: TObject);
+procedure TFWFillCombo.OnGridDblClick(Sender: TObject);
 begin
   if assigned ( FOldGridDblClick ) Then
     FOldGridDblClick ( Sender );
-  FFormModal.ModalResult:=mrOk;
-  {$IFNDEF FPC}
-  FFormModal.Close;
-  {$ENDIF}
+  FOK := True;
+  FFormModal.Close ;
 end;
 
 procedure TFWFillCombo.onCloseModalForm(Sender: TObject; var AAction: TCloseAction);

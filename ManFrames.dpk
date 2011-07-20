@@ -103,6 +103,7 @@ contains
   u_buttons_manage in 'composants\u_buttons_manage.pas',
   u_previewform in 'forms\u_previewform.pas',
   fonctions_manbase in 'fonctions\fonctions_manbase.pas',
-  u_propform in 'composants\u_propform.pas';
+  u_propform in 'composants\u_propform.pas',
+  u_fillcombobutton in 'composants\u_fillcombobutton.pas';
 
 end.

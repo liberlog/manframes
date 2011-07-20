@@ -92,6 +92,7 @@ contains
   fonctions_Objets_Data in 'fonctions\fonctions_Objets_Data.pas',
   fonctions_Objets_Dynamiques in 'fonctions\fonctions_Objets_Dynamiques.pas',
   U_Administration in 'forms\U_Administration.pas',
-  fonctions_FenetrePrincipale in 'fonctions\fonctions_FenetrePrincipale.pas';
+  fonctions_FenetrePrincipale in 'fonctions\fonctions_FenetrePrincipale.pas',
+  u_manfillcombobutton in 'composants\u_manfillcombobutton.pas';
 
 end.

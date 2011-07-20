@@ -266,7 +266,6 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
     Color = cl3DLight
     DisabledImages = im_ListeDisabled
     HotImages = im_Liste
-    Images = im_Liste
     List = False
     Menu = mu_MenuIni
     ParentColor = False
@@ -281,19 +280,20 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
     Width = 195
     Height = 469
     Align = alLeft
-    ButtonHeight = 473
+    BevelOuter = bvNone
     Caption = 'Volet d'#39'acc'#232's'
     Color = clMoneyGreen
-    ParentColor = False
     TabOrder = 3
     object scb_Volet: TScrollBox
       Left = 0
       Top = 0
-      Width = 197
-      Height = 473
+      Width = 195
+      Height = 469
       Hint = 'Cliquez pour acc'#233'der aux fonctions'
       HelpContext = 1440
       Align = alClient
+      BevelInner = bvNone
+      BevelOuter = bvNone
       BorderStyle = bsNone
       Constraints.MinHeight = 10
       Constraints.MinWidth = 10
@@ -303,6 +303,10 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
       ParentShowHint = False
       ShowHint = True
       TabOrder = 0
+      ExplicitLeft = 1
+      ExplicitTop = 1
+      ExplicitWidth = 193
+      ExplicitHeight = 467
     end
   end
   object im_Liste: TImageList

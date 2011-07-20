@@ -59,7 +59,9 @@ implementation
 
 uses DB, TypInfo,
   U_FormDico,
+  {$IFDEF FPC}
   lresources,
+  {$ENDIF}
   u_customframework,
   u_propform,
   U_RegVersion,
