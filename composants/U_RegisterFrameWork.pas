@@ -18,7 +18,7 @@ uses
 {$ELSE}
   Windows,  DBreg, DesignIntf, DesignEditors,
 {$ENDIF}
-  Forms, Classes ;
+  Forms, Classes, u_fillcombobutton ;
 
 type
   TDataFieldDBGridLookupProperty = class({$IFDEF FPC}TFieldProperty{$ELSE}TDataFieldProperty{$ENDIF})
@@ -63,7 +63,7 @@ uses DB, TypInfo,
   u_propform,
   U_RegVersion,
   u_buttons_manage,
-  u_fillcombobutton;
+  unite_messages;
 
 { TNavigatorsProperty }
 
@@ -168,7 +168,7 @@ begin // Enregistre le nouvel expert de projet
    RegisterCustomModule ( TF_FormDico, TCustomModule );
    RegisterCustomModule ( TF_PropForm, TCustomModule );
 {$ENDIF}
-   RegisterComponents('ExtDB', [TManPreview, TFWFillCombo]);
+   RegisterComponents(CST_PALETTE_COMPOSANTS_DB, [TManPreview, TFWFillCombo]);
    RegisterPropertyEditor(TypeInfo(string), TF_CustomFrameWork, 'Version', TVersionProperty);
    {$IFDEF FPC}
    RegisterPropertyEditor(TypeInfo(string), TManPreview, 'LeonardiRTF', {$IFDEF FPC}TFileNamePropertyEditor{$ELSE}{$ENDIF});
