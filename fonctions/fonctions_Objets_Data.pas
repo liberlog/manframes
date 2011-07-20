@@ -2165,9 +2165,9 @@ begin
          p_BitmapVersIco(lbmp_Icon, lico_Icon);
        if  ( Application.MainForm is TF_FormMainIni )
         Then
-         ( Application.MainForm as TF_FormMainIni ).fb_CreateChild(       gT_TableauFonctions [ ai_FonctionEnCours ].Nom,
-                                                                                  'T' + gT_TableauFonctions [ ai_FonctionEnCours ].Nom,
-                                                                                   lfs_newFormStyle , ab_Ajuster , lico_Icon );
+         ( Application.MainForm as TF_FormMainIni ).fb_CreateChild ( gT_TableauFonctions [ ai_FonctionEnCours ].Nom,
+                                                                    'T' + gT_TableauFonctions [ ai_FonctionEnCours ].Nom,
+                                                                     lfs_newFormStyle , ab_Ajuster , lico_Icon );
         if assigned ( lico_Icon ) Then
           with lico_Icon do
             if Handle <> 0 Then

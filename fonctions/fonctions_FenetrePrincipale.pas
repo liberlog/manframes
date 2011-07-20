@@ -86,12 +86,12 @@ procedure p_FormSortieMajNumScroll( const br_statusbar : Tstatusbar ;const ab_Ma
 procedure p_ApresSauvegardeParamIni( const af_Form : TForm ; const ab_AccesAuto, ab_Reinit : Boolean );
 procedure p_CustomizedMenuClickCustomize( const mc_Customize : TExtMenuCustomize ; const mtb_CustomizedMenu : TExtMenuToolBar; const mu_MenuIni : TMenu );
 procedure p_voletchange (const ab_visible : Boolean;
-                         const tbar_volet : TToolBar;
+                         const tbar_volet : TCustomControl;
                          const mi_voletexplore, mi_CustomizedMenu : TMenuItem ;
                          const spl_volet : {$IFDEF FPC}TSplitter{$ELSE}TJvSplitter{$ENDIF} ;
                          const mtb_CustomizedMenu : TExtMenuToolBar );
 procedure p_voletPersonnalisechange( const ab_visible : Boolean;
-                                     const tbar_volet : TToolBar;
+                                     const tbar_volet : TCustomControl;
                                      const mi_voletexplore, mi_CustomizedMenu : TMenuItem ;
                                      const spl_volet : {$IFDEF FPC}TSplitter{$ELSE}TJvSplitter{$ENDIF} ;
                                      const mtb_CustomizedMenu : TExtMenuToolBar );
@@ -241,7 +241,7 @@ begin
 end;
 
 procedure p_voletchange (const ab_visible : Boolean;
-                         const tbar_volet : TToolBar;
+                         const tbar_volet : TCustomControl;
                          const mi_voletexplore, mi_CustomizedMenu : TMenuItem ;
                          const spl_volet : {$IFDEF FPC}TSplitter{$ELSE}TJvSplitter{$ENDIF} ;
                          const mtb_CustomizedMenu : TExtMenuToolBar );
@@ -259,7 +259,7 @@ begin
 end;
 
 procedure p_voletPersonnalisechange( const ab_visible : Boolean;
-                                     const tbar_volet : TToolBar;
+                                     const tbar_volet : TCustomControl;
                                      const mi_voletexplore, mi_CustomizedMenu : TMenuItem ;
                                      const spl_volet : {$IFDEF FPC}TSplitter{$ELSE}TJvSplitter{$ENDIF} ;
                                      const mtb_CustomizedMenu : TExtMenuToolBar );

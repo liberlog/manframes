@@ -69,8 +69,7 @@ uses
   u_extdbgrid,
   U_ExtDBNavigator, Graphics,
   JvXPButtons, u_framework_components,
-  u_framework_dbcomponents, u_buttons_appli, ImgList, ToolWin, TntDBCtrls,
-  TntExtCtrls, TntDBGrids, TntStdCtrls;
+  u_framework_dbcomponents, u_buttons_appli, ImgList, ToolWin;
 
 {$IFDEF VERSIONS}
 const
@@ -3886,4 +3885,4 @@ end;
 initialization
   p_ConcatVersion ( gver_F_Administration );
 {$ENDIF}
-end.
+end.

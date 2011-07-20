@@ -23,7 +23,7 @@
     <Description Value="Child Form data management and relationships"/>
     <License Value="LGPL"/>
     <Version Minor="9" Release="3" Build="1"/>
-    <Files Count="14">
+    <Files Count="15">
       <Item1>
         <Filename Value="fonctions/fonctions_tableauframework.pas"/>
         <UnitName Value="fonctions_tableauframework"/>
@@ -83,6 +83,10 @@
         <Filename Value="composants/u_buttons_manage.pas"/>
         <UnitName Value="u_buttons_manage"/>
       </Item14>
+      <Item15>
+        <Filename Value="composants/u_fillcombobutton.pas"/>
+        <UnitName Value="u_fillcombobutton"/>
+      </Item15>
     </Files>
     <i18n>
       <EnableI18N Value="True"/>

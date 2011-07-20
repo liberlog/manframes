@@ -26,7 +26,7 @@ uses
   Dialogs, SysUtils, DBCtrls, fonctions_string,
   U_FormMainIni, JvXPButtons, ExtCtrls,
   u_framework_dbcomponents, U_OnFormInfoIni, u_buttons_appli,
-  u_framework_components, TntStdCtrls ;
+  u_framework_components ;
 
 {$IFDEF VERSIONS}
 const

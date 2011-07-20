@@ -63,7 +63,8 @@ const
        			                 FileUnit : 'U_FenetrePrincipale' ;
        			                 Owner : 'Matthieu Giroux' ;
        			                 Comment : 'Fenêtre principale utilisée pour la gestion automatisée à partir du fichier INI, avec des menus composés à partir des données.' + #13#10 + 'Elle dépend du composant Fenêtre principale qui lui n''est pas lié à l''application.' ;
-      			                 BugsStory : 'Version 3.1.0.4 : Adding and modifying customized menu Toolbar.' + #13#10 +
+      			                 BugsStory : 'Version 3.1.0.5 : A Left Toolbar to Panel.' + #13#10
+                                                   + 'Version 3.1.0.4 : Adding and modifying customized menu Toolbar.' + #13#10 +
                                                      'Version 3.1.0.3 : No ExtToolbar.' + #13#10 +
                                                      'Version 3.1.0.2 : Adding Customized Menu.' + #13#10 +
                                                      'Version 3.1.0.1 : No ExtToolBar on Lazarus.' + #13#10 +
@@ -93,7 +94,7 @@ const
 			                	   + '3.0.0.1 : Bug AutoScroll sur le TScrollBox.' + #13#10
 			                	   + '3.0.0.0 : Gestion de l''INI par application.';
 			                 UnitType : CST_TYPE_UNITE_FICHE ;
-			                 Major : 3 ; Minor : 1 ; Release : 0 ; Build : 4 );
+			                 Major : 3 ; Minor : 1 ; Release : 0 ; Build : 5 );
 {$ENDIF}
 
 type
@@ -162,7 +163,7 @@ type
     mi_CustomizedMenu: {$IFDEF TNT}TTntMenuItem{$ELSE}TMenuItem{$ENDIF};
     mu_voletexplore: {$IFDEF TNT}TTntMenuItem{$ELSE}TMenuItem{$ENDIF};
     mu_barreoutils: {$IFDEF TNT}TTntMenuItem{$ELSE}TMenuItem{$ENDIF};
-    tbar_volet: TToolBar;
+    tbar_volet: TPanel;
     scb_Volet: TScrollBox;
 
     procedure mi_CustomizedMenuClick(Sender: TObject);

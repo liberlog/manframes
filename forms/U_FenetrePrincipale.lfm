@@ -253,21 +253,24 @@ inherited F_FenetrePrincipale: TF_FenetrePrincipale
     Menu = mu_MenuIni
     OnClickCustomize = mtb_CustomizedMenuClickCustomize
   end
-  object tbar_volet: TToolBar[7]
+  object tbar_volet: TPanel[7]
     Left = 30
     Height = 453
     Top = 50
     Width = 197
     Align = alLeft
+    BevelOuter = bvNone
+    ClientHeight = 453
+    ClientWidth = 197
     Color = cl3DLight
     ParentColor = False
     TabOrder = 5
     object scb_Volet: TScrollBox
-      Left = 1
-      Height = 451
+      Left = 0
+      Height = 453
       Hint = 'Cliquez pour accéder aux fonctions'
-      Top = 2
-      Width = 196
+      Top = 0
+      Width = 197
       HelpContext = 1440
       Align = alClient
       BorderStyle = bsNone

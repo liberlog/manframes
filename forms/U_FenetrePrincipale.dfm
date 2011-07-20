@@ -275,7 +275,7 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
     Visible = False
     OnClickCustomize = mtb_CustomizedMenuClickCustomize
   end
-  object tbar_volet: TToolBar
+  object tbar_volet: TPanel
     Left = 30
     Top = 45
     Width = 195
