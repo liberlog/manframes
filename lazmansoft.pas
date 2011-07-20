@@ -8,7 +8,7 @@ interface
 
 uses
     fonctions_Objets_Dynamiques, fonctions_FenetrePrincipale, U_Splash, 
-  u_fillcombobutton, LazarusPackageIntf;
+  LazarusPackageIntf;
 
 implementation
 

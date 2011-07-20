@@ -90,6 +90,8 @@ const
       CST_CONN_Agir           = 'AGIR' ;
 //      CST_SOMM_Manager        = 'Manager' ;
       CST_FONC_V_1_Admin      = 'V-1-Admin' ;
+      CST_DATASET_FILTER      = 'Filter' ;
+      CST_DATASET_FILTERED    = 'Filtered' ;
 
 
 var

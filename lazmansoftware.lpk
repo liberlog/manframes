@@ -25,7 +25,7 @@
     <Description Value="Full management software RAD Framework"/>
     <License Value="LGPL"/>
     <Version Minor="9" Release="3"/>
-    <Files Count="10">
+    <Files Count="11">
       <Item1>
         <Filename Value="forms/U_Acces.lfm"/>
         <Type Value="LFM"/>
@@ -66,6 +66,10 @@
         <Filename Value="fonctions/fonctions_Objets_Data.pas"/>
         <UnitName Value="fonctions_Objets_Data"/>
       </Item10>
+      <Item11>
+        <Filename Value="composants/u_manfillcombobutton.pas"/>
+        <UnitName Value="u_manfillcombobutton"/>
+      </Item11>
     </Files>
     <i18n>
       <EnableI18N Value="True"/>

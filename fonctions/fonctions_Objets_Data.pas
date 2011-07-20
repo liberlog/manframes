@@ -138,9 +138,6 @@ procedure p_Detruit_TableauFonctions ;
 // lico_Icone  : l'icône à nil
 procedure p_ChercheIconeFonction ( const ai_Fonction           : Integer ; var lico_Icone : TBitmap  ; const  ab_ModeAdmin : Boolean         ) ; overload ;
 
-// Fonction à mettre dans l'évènement p_OnClickFonction de la form principale
-// aobj_Sender : L'objet cliqué pour exécuter sa fonction
-function fb_ExecuteFonction ( const ai_FonctionEnCours : Integer ; const ab_Ajuster : Boolean ):Boolean;
 
 procedure p_AjouteItemXPBar ( const aF_FormParent       : TCustomForm        ;
                         			const adx_WinXpBar        : TJvXpBar ;
@@ -308,9 +305,13 @@ function fb_CreeMenu (              const aF_FormParent           : TForm       
                                     var   ab_UtiliseSousMenu      : Boolean      ): Boolean ;
 function fb_CreeLesMenus : Boolean ;
 
-procedure p_ExecuteFonction ( const as_Fonction                  : String    ; const ab_Ajuster : Boolean        ); overload;
-procedure p_ExecuteFonction ( const ai_FonctionEnCours : Integer ; const ab_Ajuster : Boolean ); overload;
-procedure p_ExecuteFonction ( aobj_Sender                  : TObject            ); overload;
+function ffor_ExecuteRegisteredFonction ( const ai_FonctionEnCours : Integer ;
+                                          const ab_Ajuster : Boolean ):TCustomForm;
+function ffor_ExecuteFonction ( const as_Fonction : String    ;
+                              const ab_Ajuster  : Boolean        ) : TCustomForm; overload;
+function ffor_ExecuteFonction ( const ai_FonctionEnCours : Integer ;
+                              const ab_Ajuster : Boolean ):TCustomForm; overload;
+procedure p_ExecuteFonction ( aobj_Sender                  : TObject            );
 
 
 
@@ -330,29 +331,31 @@ begin
 
   // Se place sur la fonction
   li_FonctionEnCours := fi_ChercheFonction ( aobj_Sender );
-  p_ExecuteFonction ( li_FonctionEnCours, True );
+  ffor_ExecuteFonction ( li_FonctionEnCours, True );
 End ;
 
 // Fonction qui exécute une fonction à partir d'une clé de fonction
 // as_Fonction : la clé de la fonction
-procedure p_ExecuteFonction ( const as_Fonction                  : String    ; const ab_Ajuster : Boolean        );
+function ffor_ExecuteFonction ( const as_Fonction : String    ;
+                              const ab_Ajuster  : Boolean        ) : TCustomForm;
 var li_FonctionEnCours: Integer ;
 begin
 
   // Se place sur la fonction
   li_FonctionEnCours := fi_ChercheFonction ( as_Fonction );
-  p_ExecuteFonction ( li_FonctionEnCours, ab_Ajuster );
+  Result := ffor_ExecuteFonction ( li_FonctionEnCours, ab_Ajuster );
 End ;
 // Fonction qui exécute une fonction à partir d'un numéro de fonction
 // ai_FonctionEnCours : le numéro de la fonction
-procedure p_ExecuteFonction ( const ai_FonctionEnCours : Integer ; const ab_Ajuster : Boolean );
+function ffor_ExecuteFonction ( const ai_FonctionEnCours : Integer ; const ab_Ajuster : Boolean ): TCustomForm;
 var lico_Icon        : TIcon ;
     lbmp_Icon        : TBitmap ;
 begin
 
   lico_Icon := Nil ;
   // si la fonction n'est pas trouvé
-  if fb_ExecuteFonction ( ai_FonctionEnCours, ab_Ajuster )
+  Result :=  ffor_ExecuteRegisteredFonction ( ai_FonctionEnCours, ab_Ajuster );
+  if assigned ( Result )
   or ( ai_FonctionEnCours < low  ( gT_TableauFonctions ) )
   or ( ai_FonctionEnCours > high ( gT_TableauFonctions ) )
    Then
@@ -386,7 +389,8 @@ begin
 {$ENDIF}
             if ( gT_TableauFonctions [ ai_FonctionEnCours ].Types = CST_FCT_TYPE_ADMIN ) Then
               Begin
-                 ( Application.MainForm as TF_FormMainIni ).fb_CreateChild ( TF_Administration, TCustomForm ( F_Administration ), fsNormal, False, lico_Icon );
+                 Result := ( Application.MainForm as TF_FormMainIni ).ffor_CreateChild ( TF_Administration, fsNormal, False, lico_Icon );
+                 F_Administration := Result as TF_Administration;
               End ;
             if Application.MainForm is TF_FenetrePrincipale Then
               Begin
@@ -2133,12 +2137,12 @@ End ;
 
 // Fonction qui exécute une fonction à partir d'un numéro de fonction
 // ai_FonctionEnCours : le numéro de la fonction
-function fb_ExecuteFonction ( const ai_FonctionEnCours : Integer ; const ab_Ajuster : Boolean ):Boolean;
+function ffor_ExecuteRegisteredFonction ( const ai_FonctionEnCours : Integer ; const ab_Ajuster : Boolean ):TCustomForm;
 var lfs_newFormStyle : TFormStyle ;
     lico_Icon        : TIcon ;
     lbmp_Icon        : TBitmap ;
 begin
-  Result := False;
+  Result := nil;
   lico_Icon := Nil ;
   // si la fonction n'est pas trouvé
   if ( ai_FonctionEnCours < low  ( gT_TableauFonctions ))
@@ -2152,7 +2156,6 @@ begin
    if  ( Uppercase ( gT_TableauFonctions [ ai_FonctionEnCours ].Types ) = CST_FCT_TYPE_FICHE )
     Then
      Begin
-       Result := True;
      // Initialisation de l'ouverture de fiche
        if Uppercase ( gT_TableauFonctions [ ai_FonctionEnCours ].Mode ) = CST_FCT_MODE_DESSUS
          Then lfs_newFormStyle := fsStayOnTop
@@ -2165,7 +2168,7 @@ begin
          p_BitmapVersIco(lbmp_Icon, lico_Icon);
        if  ( Application.MainForm is TF_FormMainIni )
         Then
-         ( Application.MainForm as TF_FormMainIni ).fb_CreateChild ( gT_TableauFonctions [ ai_FonctionEnCours ].Nom,
+         Result := ( Application.MainForm as TF_FormMainIni ).fp_CreateChild ( gT_TableauFonctions [ ai_FonctionEnCours ].Nom,
                                                                     'T' + gT_TableauFonctions [ ai_FonctionEnCours ].Nom,
                                                                      lfs_newFormStyle , ab_Ajuster , lico_Icon );
         if assigned ( lico_Icon ) Then
