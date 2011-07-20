@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<CONFIG>
+  <Package Version="3">
+    <Name Value="lazregmanframes"/>
+    <CompilerOptions>
+      <Version Value="9"/>
+      <SearchPaths>
+        <OtherUnitFiles Value="composants"/>
+        <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)/"/>
+      </SearchPaths>
+      <Other>
+        <CompilerPath Value="$(CompPath)"/>
+      </Other>
+    </CompilerOptions>
+    <Files Count="4">
+      <Item1>
+        <Filename Value="composants/U_RegisterFrameWork.pas"/>
+        <HasRegisterProc Value="True"/>
+        <UnitName Value="U_RegisterFrameWork"/>
+      </Item1>
+      <Item2>
+        <Filename Value="composants/U_RegisterGroupView.pas"/>
+        <HasRegisterProc Value="True"/>
+        <UnitName Value="U_RegisterGroupView"/>
+      </Item2>
+      <Item3>
+        <Filename Value="composants/U_RegisterIni.pas"/>
+        <HasRegisterProc Value="True"/>
+        <UnitName Value="U_RegisterIni"/>
+      </Item3>
+      <Item4>
+        <Filename Value="composants/U_RegVersion.pas"/>
+        <UnitName Value="U_RegVersion"/>
+      </Item4>
+    </Files>
+    <Type Value="RunAndDesignTime"/>
+    <RequiredPkgs Count="2">
+      <Item1>
+        <PackageName Value="lazmanframes"/>
+      </Item1>
+      <Item2>
+        <PackageName Value="FCL"/>
+        <MinVersion Major="1" Valid="True"/>
+      </Item2>
+    </RequiredPkgs>
+    <UsageOptions>
+      <UnitPath Value="$(PkgOutDir)"/>
+    </UsageOptions>
+    <PublishOptions>
+      <Version Value="2"/>
+    </PublishOptions>
+  </Package>
+</CONFIG>
