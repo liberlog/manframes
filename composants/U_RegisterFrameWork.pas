@@ -172,7 +172,7 @@ begin // Enregistre le nouvel expert de projet
    RegisterCustomModule ( TF_FormDico, TCustomModule );
    RegisterCustomModule ( TF_PropForm, TCustomModule );
 {$ENDIF}
-   RegisterComponents(CST_PALETTE_COMPOSANTS_DB, [TManPreview, TFWFillCombo]);
+   RegisterComponents(CST_PALETTE_COMPOSANTS_DB, [TManPreview, TExtFillCombo]);
    RegisterPropertyEditor(TypeInfo(string), TF_CustomFrameWork, 'Version', TVersionProperty);
    {$IFDEF FPC}
    RegisterPropertyEditor(TypeInfo(string), TManPreview, 'LeonardiRTF', {$IFDEF FPC}TFileNamePropertyEditor{$ELSE}{$ENDIF});

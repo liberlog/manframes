@@ -26,7 +26,7 @@ const
 
 { TFWFillCombo }
 type
-  TManFillCombo = class ( TFWFillCombo )
+  TManFillCombo = class ( TExtFillCombo )
      private
       FFormCode : String;
      protected

@@ -20,16 +20,17 @@ const
     gVer_FWFillCombo : T_Version = ( Component : 'Bouton personnalisé de remplissage de combo box' ;
                                        FileUnit : 'u_fillcombobutton' ;
                                        Owner : 'Matthieu Giroux' ;
-                                       Comment : 'Composant bouton de remplissage de lien 1-N.' ;
+                                       Comment : 'Button of Filling Combo for 1-N link.' + #13#10
+                                               + 'Need to have U_FormMainIni as MainForm, u_customframework as Modal Form.' ;
                                        BugsStory : '0.8.0.1 : Some tests.' + #13#10
                                                  + '0.8.0.0 : Not Finished.';
                                        UnitType : 3 ;
                                        Major : 0 ; Minor : 8 ; Release : 0 ; Build : 1 );
 {$ENDIF}
 
-{ TFWFillCombo }
+{ TExtFillCombo }
 type
-  TFWFillCombo = class ( TJvXPButton, IFWButton )
+  TExtFillCombo = class ( TJvXPButton, IFWButton )
      private
       FFWDBLookupCombo : TFWDBLookupCombo;
       FFormSource : Integer;
@@ -69,9 +70,9 @@ implementation
 uses fonctions_images, U_FormMainIni, fonctions_proprietes, fonctions_db,
      unite_variables, unite_messages;
 
-{ TFWFillCombo }
+{ TExtFillCombo }
 
-constructor TFWFillCombo.Create(AOwner: TComponent);
+constructor TExtFillCombo.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   Caption := '...' ;
@@ -80,7 +81,7 @@ begin
   Width := CST_FILL_COMBO_WIDTH;
 end;
 
-function TFWFillCombo.Execute(const aBmp_Icon: TBitmap) : Integer;
+function TExtFillCombo.Execute(const aBmp_Icon: TBitmap) : Integer;
 var lst_OldFilter : String;
     lb_OldFiltered : Boolean;
 begin
@@ -136,15 +137,17 @@ begin
 
 end;
 
-procedure TFWFillCombo.p_setFWDBLookupCombo(
+procedure TExtFillCombo.p_setFWDBLookupCombo(
   const AFWDBLookupCombo: TFWDBLookupCombo);
 begin
   FFWDBLookupCombo := AFWDBLookupCombo;
-  if ( csDesigning in ComponentState ) Then
+  if ( csDesigning in ComponentState )
+  and assigned ( FFWDBLookupCombo )
+  and ( Parent = FFWDBLookupCombo.Parent ) Then
     AutoPlace;
 end;
 
-procedure  TFWFillCombo.SetFormEvents;
+procedure  TExtFillCombo.SetFormEvents;
 var
     lmet_Event: TMethod;
 Begin
@@ -165,7 +168,7 @@ Begin
 
 end;
 
-procedure TFWFillCombo.CreateForm(const aico_Icon: TIcon);
+procedure TExtFillCombo.CreateForm(const aico_Icon: TIcon);
 var lfs_newFormStyle : TFormStyle ;
 begin
   FFormModal := nil;
@@ -187,14 +190,14 @@ begin
 
 end;
 
-procedure TFWFillCombo.CloseForm;
+procedure TExtFillCombo.CloseForm;
 begin
   if  ( Application.MainForm is TF_FormMainIni )
    Then
     ( Application.MainForm as TF_FormMainIni ).p_CloseForm ( FFormRegisteredName );
 end;
 
-procedure TFWFillCombo.CreateFormWithIcon(
+procedure TExtFillCombo.CreateFormWithIcon(
   const aBmp_Icon: TBitmap);
 var lico_Icon : TIcon ;
 begin
@@ -212,7 +215,7 @@ begin
         End ;
 end;
 
-procedure TFWFillCombo.Click;
+procedure TExtFillCombo.Click;
 begin
   if assigned ( OnClick ) Then
    inherited Click
@@ -222,7 +225,7 @@ begin
     end;
 end;
 
-procedure TFWFillCombo.AutoPlace;
+procedure TExtFillCombo.AutoPlace;
 begin
   if not Assigned ( Combo ) Then
     Exit;
@@ -231,7 +234,7 @@ begin
   Height := Combo.Height;
 end;
 
-procedure TFWFillCombo.OnGridDblClick(Sender: TObject);
+procedure TExtFillCombo.OnGridDblClick(Sender: TObject);
 begin
   if assigned ( FOldGridDblClick ) Then
     FOldGridDblClick ( Sender );
@@ -239,7 +242,7 @@ begin
   FFormModal.Close ;
 end;
 
-procedure TFWFillCombo.onCloseModalForm(Sender: TObject; var AAction: TCloseAction);
+procedure TExtFillCombo.onCloseModalForm(Sender: TObject; var AAction: TCloseAction);
 begin
   if assigned ( FOldCloseAction ) Then
     FOldCloseAction ( Sender, AAction );
