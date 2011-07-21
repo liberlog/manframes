@@ -22,11 +22,12 @@ const
                                        Owner : 'Matthieu Giroux' ;
                                        Comment : 'Button of Filling Combo for 1-N link.' + #13#10
                                                + 'Need to have U_FormMainIni as MainForm, u_customframework as Modal Form.' ;
-                                       BugsStory : '0.9.0.0 : Testing on LAZARUS.' + #13#10
+                                       BugsStory : '0.9.0.1 : Optimising.' + #13#10
+                                                 + '0.9.0.0 : Testing on LAZARUS.' + #13#10
                                                  + '0.8.0.1 : Some tests.' + #13#10
                                                  + '0.8.0.0 : Not Finished.';
                                        UnitType : 3 ;
-                                       Major : 0 ; Minor : 9 ; Release : 0 ; Build : 0 );
+                                       Major : 0 ; Minor : 9 ; Release : 0 ; Build : 1 );
 {$ENDIF}
 
 { TExtFillCombo }
@@ -201,18 +202,19 @@ begin
 end;
 
 function TExtFillCombo.CloseForm : Boolean;
-var li_i : Integer;
+var lfor_FormToClose : TCustomForm;
 begin
   Result := True;
+  lfor_FormToClose := nil;
   if  ( Application.MainForm is TF_FormMainIni )
    Then
-    li_i := ( Application.MainForm as TF_FormMainIni ).fi_FindForm ( FFormRegisteredName );
-  if ( li_i < 0 ) Then
+    lfor_FormToClose := ( Application.MainForm as TF_FormMainIni ).ffor_FindForm ( FFormRegisteredName );
+  if ( lfor_FormToClose = nil ) Then
     Exit;
-  if ( fsModal in ( Application.Components [ li_i ] as TCustomForm ).FormState ) Then
+  if ( fsModal in lfor_FormToClose.FormState ) Then
     Result := False
    Else
-    Application.Components [ li_i ].Free;
+    lfor_FormToClose.Free;
 end;
 
 procedure TExtFillCombo.CreateFormWithIcon(
