@@ -118,7 +118,10 @@ begin
        Begin
          if assigned ( {$IFDEF FPC}ListSource{$ELSE}LookupSource{$ENDIF} )
           Then
-           p_UpdateBatch ( {$IFDEF FPC}ListSource{$ELSE}LookupSource{$ENDIF}.DataSet );
+            Begin
+             p_UpdateBatch ( {$IFDEF FPC}ListSource{$ELSE}LookupSource{$ENDIF}.DataSet );
+             Refresh;
+            end;
          if assigned ( Field )
          and ( FOK )
          and ( FFormModal is TF_CustomFrameWork ) Then
@@ -141,9 +144,7 @@ procedure TExtFillCombo.p_setFWDBLookupCombo(
   const AFWDBLookupCombo: TFWDBLookupCombo);
 begin
   FFWDBLookupCombo := AFWDBLookupCombo;
-  if ( csDesigning in ComponentState )
-  and assigned ( FFWDBLookupCombo )
-  and ( Parent = FFWDBLookupCombo.Parent ) Then
+  if ( csDesigning in ComponentState ) Then
     AutoPlace;
 end;
 
@@ -227,7 +228,8 @@ end;
 
 procedure TExtFillCombo.AutoPlace;
 begin
-  if not Assigned ( Combo ) Then
+  if not Assigned ( FFWDBLookupCombo )
+  or ( Parent <> FFWDBLookupCombo.Parent ) Then
     Exit;
   Left := Combo.Left + Combo.Width + CST_FILL_SPACE_WITH_COMBO;
   Top  := Combo.Top;

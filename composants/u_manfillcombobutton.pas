@@ -50,7 +50,7 @@ procedure TManFillCombo.CreateForm(const aico_Icon: TIcon);
 begin
   FFormModal := ffor_ExecuteFonction ( FFormCode, False );
   if not assigned ( FFormModal ) Then
-    FFormModal := inherited ( aico_Icon );
+    inherited CreateForm ( aico_Icon );
 
 end;
 
