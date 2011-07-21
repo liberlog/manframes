@@ -22,10 +22,11 @@ const
                                        Owner : 'Matthieu Giroux' ;
                                        Comment : 'Button of Filling Combo for 1-N link.' + #13#10
                                                + 'Need to have U_FormMainIni as MainForm, u_customframework as Modal Form.' ;
-                                       BugsStory : '0.8.0.1 : Some tests.' + #13#10
+                                       BugsStory : '0.9.0.0 : Testing on LAZARUS.' + #13#10
+                                                 + '0.8.0.1 : Some tests.' + #13#10
                                                  + '0.8.0.0 : Not Finished.';
                                        UnitType : 3 ;
-                                       Major : 0 ; Minor : 8 ; Release : 0 ; Build : 1 );
+                                       Major : 0 ; Minor : 9 ; Release : 0 ; Build : 0 );
 {$ENDIF}
 
 { TExtFillCombo }
@@ -46,7 +47,8 @@ type
       procedure p_setFWDBLookupCombo ( const AFWDBLookupCombo : TFWDBLookupCombo );
       procedure SetFormEvents; virtual;
       procedure CreateForm(const aico_Icon: TIcon); virtual;
-      procedure CloseForm; virtual;
+      function  CloseForm : Boolean; virtual;
+      function  AfterModalHidden : Integer; virtual;
      public
       constructor Create ( AOwner : TComponent ) ; override;
       function  Execute ( const aBmp_Icon : TBitmap = nil ):Integer; virtual;
@@ -81,13 +83,42 @@ begin
   Width := CST_FILL_COMBO_WIDTH;
 end;
 
+function TExtFillCombo.AfterModalHidden : Integer;
+begin
+  Result := mrCancel;
+  if assigned ( FFWDBLookupCombo ) Then
+    with FFWDBLookupCombo do
+     Begin
+       if assigned ( {$IFDEF FPC}ListSource{$ELSE}LookupSource{$ENDIF} )
+        Then
+          Begin
+           p_UpdateBatch ( {$IFDEF FPC}ListSource{$ELSE}LookupSource{$ENDIF}.DataSet );
+           Refresh;
+          end;
+       if assigned ( Field )
+       and ( FOK )
+       and ( FFormModal is TF_CustomFrameWork ) Then
+        with ( FFormModal as TF_CustomFrameWork ).Sources [ FFormSource ] do
+         if not Datasource.DataSet.IsEmpty Then
+          Begin
+            Result := mrOk;
+            Field.DataSet.Edit;
+            Field.Value := Datasource.DataSet.FieldByName ( Key ).Value;
+          end;
+     end;
+  if assigned ( FOnSet ) Then
+   FOnSet ( Self );
+  FFormModal.Free;
+end;
+
 function TExtFillCombo.Execute(const aBmp_Icon: TBitmap) : Integer;
 var lst_OldFilter : String;
     lb_OldFiltered : Boolean;
 begin
   Result := -1 ;
   FOK := False;
-  CloseForm;
+  if not CloseForm Then
+   Exit;
   FFormModal := nil;
   CreateFormWithIcon ( aBmp_Icon );
   if assigned ( FFormModal ) Then
@@ -100,42 +131,20 @@ begin
      and ( FFormModal is TF_CustomFrameWork ) Then
       with ( FFormModal as TF_CustomFrameWork ).Sources [ FFormSource ] do
        Begin
-         lst_OldFilter := fs_getComponentProperty(Datasource.DataSet, CST_DATASET_FILTER);
-         lb_OldFiltered     := fb_getComponentBoolProperty(Datasource.DataSet, CST_DATASET_FILTERED);
+         lst_OldFilter  := fs_getComponentProperty(Datasource.DataSet, CST_DATASET_FILTER);
+         lb_OldFiltered := fb_getComponentBoolProperty(Datasource.DataSet, CST_DATASET_FILTERED);
          p_SetComponentProperty ( Datasource.DataSet, CST_DATASET_FILTER, FFilter );
          p_SetComponentBoolProperty ( Datasource.DataSet, CST_DATASET_FILTERED, True );
        end;
-    Result := FFormModal.ShowModal;
-    if ( FFilter <> '' )
-    and ( FFormModal is TF_CustomFrameWork ) Then
-      with ( FFormModal as TF_CustomFrameWork ).Sources [ FFormSource ] do
-       Begin
-         p_SetComponentProperty ( Datasource.DataSet, CST_DATASET_FILTER, lst_OldFilter );
-         p_SetComponentBoolProperty ( Datasource.DataSet, CST_DATASET_FILTERED, lb_OldFiltered );
-       end;
-    if assigned ( FFWDBLookupCombo ) Then
-      with FFWDBLookupCombo do
-       Begin
-         if assigned ( {$IFDEF FPC}ListSource{$ELSE}LookupSource{$ENDIF} )
-          Then
-            Begin
-             p_UpdateBatch ( {$IFDEF FPC}ListSource{$ELSE}LookupSource{$ENDIF}.DataSet );
-             Refresh;
-            end;
-         if assigned ( Field )
-         and ( FOK )
-         and ( FFormModal is TF_CustomFrameWork ) Then
-          with ( FFormModal as TF_CustomFrameWork ).Sources [ FFormSource ] do
-           if not Datasource.DataSet.IsEmpty Then
-            Begin
-              Result := mrOk;
-              Field.DataSet.Edit;
-              Field.Value := Datasource.DataSet.FieldByName ( Key ).Value;
-            end;
-       end;
-    if assigned ( FOnSet ) Then
-     FOnSet ( Self );
-    FFormModal.Free;
+    FFormModal.ShowModal;
+     if ( FFilter <> '' )
+     and ( FFormModal is TF_CustomFrameWork ) Then
+       with ( FFormModal as TF_CustomFrameWork ).Sources [ FFormSource ] do
+        Begin
+          p_SetComponentProperty ( Datasource.DataSet, CST_DATASET_FILTER, lst_OldFilter );
+          p_SetComponentBoolProperty ( Datasource.DataSet, CST_DATASET_FILTERED, lb_OldFiltered );
+        end;
+    Result := AfterModalHidden;
    end;
 
 end;
@@ -191,11 +200,19 @@ begin
 
 end;
 
-procedure TExtFillCombo.CloseForm;
+function TExtFillCombo.CloseForm : Boolean;
+var li_i : Integer;
 begin
+  Result := True;
   if  ( Application.MainForm is TF_FormMainIni )
    Then
-    ( Application.MainForm as TF_FormMainIni ).p_CloseForm ( FFormRegisteredName );
+    li_i := ( Application.MainForm as TF_FormMainIni ).fi_FindForm ( FFormRegisteredName );
+  if ( li_i < 0 ) Then
+    Exit;
+  if ( fsModal in ( Application.Components [ li_i ] as TCustomForm ).FormState ) Then
+    Result := False
+   Else
+    Application.Components [ li_i ].Free;
 end;
 
 procedure TExtFillCombo.CreateFormWithIcon(
