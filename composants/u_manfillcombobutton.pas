@@ -19,9 +19,10 @@ const
                                        FileUnit : 'u_manfillcombobutton' ;
                                        Owner : 'Matthieu Giroux' ;
                                        Comment : 'Composant bouton de remplissage de lien 1-N avec lien de fonction enregistrée.' ;
-                                       BugsStory : '0.8.0.0 : Not Finished.';
+                                       BugsStory : '1.0.0.0 : CreateForm can inherit.' + #13#10
+                                                 + '0.8.0.0 : Not Finished.';
                                        UnitType : 3 ;
-                                       Major : 0 ; Minor : 8 ; Release : 0 ; Build : 0 );
+                                       Major : 1 ; Minor : 0 ; Release : 0 ; Build : 0 );
 {$ENDIF}
 
 { TFWFillCombo }
@@ -41,9 +42,15 @@ uses fonctions_Objets_Data;
 
 { TFWFillCombo }
 
+// procedure TManFillCombo.CreateForm
+// Creating the registered  form
+// aico_Icon : parameter not used because not needed
+
 procedure TManFillCombo.CreateForm(const aico_Icon: TIcon);
 begin
   FFormModal := ffor_ExecuteFonction ( FFormCode, False );
+  if not assigned ( FFormModal ) Then
+    FFormModal := inherited ( aico_Icon );
 
 end;
 
