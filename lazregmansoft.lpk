@@ -6,12 +6,13 @@
       <Version Value="9"/>
       <SearchPaths>
         <OtherUnitFiles Value="composants"/>
-        <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)/"/>
+        <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
       <Other>
         <CompilerPath Value="$(CompPath)"/>
       </Other>
     </CompilerOptions>
+    <Version Major="1"/>
     <Files Count="1">
       <Item1>
         <Filename Value="composants/u_regmansoftware.pas"/>
