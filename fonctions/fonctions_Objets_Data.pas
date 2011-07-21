@@ -1857,7 +1857,7 @@ Begin
            // Affectation des valeurs
            // création d''un panel d'un bouton d'un séparateur
           lPan_ToolBarPanel   := TPanel       .Create ( aF_FormParent ); // Nouveau panel
-          lbtn_ToolBarButton  := TJvXPButton   .Create ( aF_FormParent  );  // Nouveau bouton
+          lbtn_ToolBarButton  := TJvXPButton  .Create ( aF_FormParent  );  // Nouveau bouton
           lSep_ToolBarSepare  := fcom_CloneObject (aSep_ToolBarSepareDebut, aSep_ToolBarSepareDebut.Owner ) as TControl;// Nouveau séparateur
 
           lPan_ToolBarPanel .Parent := aBar_ToolBarParent ; // Parent Barre  : Toolbar

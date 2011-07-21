@@ -282,7 +282,6 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
     Align = alLeft
     BevelOuter = bvNone
     Caption = 'Volet d'#39'acc'#232's'
-    Color = clMoneyGreen
     TabOrder = 3
     object scb_Volet: TScrollBox
       Left = 0
@@ -303,10 +302,6 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
       ParentShowHint = False
       ShowHint = True
       TabOrder = 0
-      ExplicitLeft = 1
-      ExplicitTop = 1
-      ExplicitWidth = 193
-      ExplicitHeight = 467
     end
   end
   object im_Liste: TImageList
