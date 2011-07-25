@@ -1,7 +1,7 @@
 ﻿unit fonctions_tableauframework;
 
-{$I ..\extends.inc}
 {$I ..\Compilers.inc}
+{$I ..\extends.inc}
 {$IFDEF FPC}
 {$mode Delphi}
 {$ENDIF}

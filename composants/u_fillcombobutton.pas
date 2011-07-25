@@ -1,5 +1,7 @@
 ﻿unit u_fillcombobutton;
 
+{$I ..\Compilers.inc}
+{$I ..\extends.inc}
 {$IFDEF FPC}
 {$mode Delphi}{$H+}
 {$ENDIF}
@@ -90,10 +92,10 @@ begin
   if assigned ( FFWDBLookupCombo ) Then
     with FFWDBLookupCombo do
      Begin
-       if assigned ( {$IFDEF FPC}ListSource{$ELSE}LookupSource{$ENDIF} )
+       if assigned ( {$IFNDEF RXJV}ListSource{$ELSE}LookupSource{$ENDIF} )
         Then
           Begin
-           p_UpdateBatch ( {$IFDEF FPC}ListSource{$ELSE}LookupSource{$ENDIF}.DataSet );
+           p_UpdateBatch ( {$IFNDEF RXJV}ListSource{$ELSE}LookupSource{$ENDIF}.DataSet );
            Refresh;
           end;
        if assigned ( Field )
