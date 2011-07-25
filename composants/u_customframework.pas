@@ -6472,8 +6472,8 @@ begin
                 begin
                   inc ( li_Compteur );
                   if li_Compteur = 1
-                   Then ls_Message :=                     CaptionName + FieldName
-                   Else ls_Message := ls_Message + ', ' + CaptionName + FieldName ;
+                   Then ls_Message :=                     CaptionName
+                   Else ls_Message := ls_Message + ', ' + CaptionName ;
                 end;
           end;
 
