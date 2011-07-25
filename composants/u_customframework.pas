@@ -47,7 +47,7 @@ uses
   RxLookup,
 {$ENDIF}
 {$IFDEF VIRTUALTREES}
-  virtualtrees,
+  VirtualTrees,
 {$ENDIF}
 {$IFDEF TNT}
    TntForms, TntExtCtrls,
@@ -3269,6 +3269,12 @@ end;
 procedure TF_CustomFrameWork.p_DataWorkBeforePost(DataSet: TDataSet);
 var li_i : Integer ;
 begin
+  // Need to validate multiple dataset editions
+  for li_i := 0 to gFWSources.Count - 1 do
+    with gFWSources.items [ li_i ] do
+     if assigned ( ds_DataSourcesWork.DataSet )
+     and ( ds_DataSourcesWork.DataSet.State in [ dsInsert,dsEdit ]) Then
+      fb_ValidePostDeleteWork ( ds_DataSourcesWork.DataSet, gFWSources.items [ li_i ], False );
   for li_i := 0 to gFWSources.Count - 1 do
     with gFWSources.items [ li_i ] do
     if  ( ds_DataSourcesWork.DataSet = Dataset ) Then
@@ -3286,7 +3292,6 @@ begin
           End ;
            // ancien évènement
             // gestion du focus sur le contrôle
-        fb_ValidePostDeleteWork ( Dataset, gFWSources.items [ li_i ], False );
         Break ;
       End ;
 end;
@@ -3467,6 +3472,7 @@ begin
                 and ( Source < gFWSources.Count )
                 and ( Source >= 0 )
                 and Assigned ( gFWSources [ source ].ds_DataSourcesWork.DataSet )
+                and not ( gFWSources [ source ].ds_DataSourcesWork.DataSet.State in [dsInsert,dsEdit])
                  Then
                  gFWSources [ source ].ds_DataSourcesWork.DataSet.Insert;
               End;
@@ -6447,16 +6453,29 @@ begin
         ls_Message  := '' ;
         for li_i := 0 to FieldsDefs.Count - 1   do
          with FieldsDefs [ li_i ] do
-          if ColObl
-          and assigned ( adat_Dataset.FindField ( FieldName ))
-          and ( Trim   ( adat_Dataset.FindField ( FieldName ).AsString ) = '')
-             Then
-              begin
-                inc ( li_Compteur );
-                if li_Compteur = 1
-                 Then ls_Message :=                     CaptionName + FieldName
-                 Else ls_Message := ls_Message + ', ' + CaptionName + FieldName ;
-              end;
+          Begin
+            if  ColCree
+            and ( AffiCol < 0 )
+            and ( FieldName = Key )
+            and ( adat_Dataset.FindField ( FieldName ) is TNumericField )
+            and ( Trim   ( adat_Dataset.FindField ( FieldName ).AsString ) = '')
+               Then
+                begin
+                  fb_InsereCompteur(adat_Dataset,KeyList,Key,Table,1,SizeOf(Int64));
+                  Continue;
+                end;
+
+            if ColObl
+            and assigned ( adat_Dataset.FindField ( FieldName ))
+            and ( Trim   ( adat_Dataset.FindField ( FieldName ).AsString ) = '')
+               Then
+                begin
+                  inc ( li_Compteur );
+                  if li_Compteur = 1
+                   Then ls_Message :=                     CaptionName + FieldName
+                   Else ls_Message := ls_Message + ', ' + CaptionName + FieldName ;
+                end;
+          end;
 
      if li_Compteur > 0
       Then

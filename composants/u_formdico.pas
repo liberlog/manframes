@@ -266,6 +266,7 @@ begin
                 ColObl      := Fields[11].AsBoolean
                else
                 ColObl      := Fields[11].AsInteger > 0;
+              ColCree:=False;
               Next;
             end;
         End;

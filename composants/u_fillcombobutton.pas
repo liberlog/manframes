@@ -92,10 +92,10 @@ begin
   if assigned ( FFWDBLookupCombo ) Then
     with FFWDBLookupCombo do
      Begin
-       if assigned ( {$IFNDEF RXJV}ListSource{$ELSE}LookupSource{$ENDIF} )
+       if assigned ( {$IFNDEF RXJVCOMBO}ListSource{$ELSE}LookupSource{$ENDIF} )
         Then
           Begin
-           p_UpdateBatch ( {$IFNDEF RXJV}ListSource{$ELSE}LookupSource{$ENDIF}.DataSet );
+           p_UpdateBatch ( {$IFNDEF RXJVCOMBO}ListSource{$ELSE}LookupSource{$ENDIF}.DataSet );
            Refresh;
           end;
        if assigned ( Field )
@@ -248,11 +248,16 @@ begin
 end;
 
 procedure TExtFillCombo.AutoPlace;
+var li_Width : Integer ;
 begin
   if not Assigned ( FFWDBLookupCombo )
   or ( Parent <> FFWDBLookupCombo.Parent ) Then
     Exit;
-  Left := Combo.Left + Combo.Width + CST_FILL_SPACE_WITH_COMBO;
+  li_Width:= flin_getComponentProperty(Combo, 'ButtonWidth');
+  if li_Width < 0 Then
+    li_Width := 0 ;
+  inc ( li_Width, Combo.Width );
+  Left := Combo.Left + li_Width + CST_FILL_SPACE_WITH_COMBO;
   Top  := Combo.Top;
   Height := Combo.Height;
 end;
