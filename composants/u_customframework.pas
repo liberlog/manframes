@@ -6458,7 +6458,7 @@ begin
             and ( AffiCol < 0 )
             and ( FieldName = Key )
             and ( adat_Dataset.FindField ( FieldName ) is TNumericField )
-            and ( Trim   ( adat_Dataset.FindField ( FieldName ).AsString ) = '')
+            and ( adat_Dataset.FindField ( FieldName ).IsNull )
                Then
                 begin
                   fb_InsereCompteur(adat_Dataset,KeyList,Key,Table,1,SizeOf(Int64));
