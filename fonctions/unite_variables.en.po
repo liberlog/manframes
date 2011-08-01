@@ -44,7 +44,7 @@ msgstr ""
 #: unite_variables.gs_change_pas_sommaire
 #, fuzzy
 #| msgid ""
-#| "#233 de ce sommaire :\n"
+#| "33 de ce sommaire :\n"
 #| "n\n"
 msgid ""
 "Vous ne pouvez pas changer le libellé de ce sommaire :\n"
@@ -166,8 +166,8 @@ msgstr ""
 #: unite_variables.gs_erreur_modification_maj
 #, fuzzy
 #| msgid ""
-#| "rement. \n"
-#| "ction.\n"
+#| "ment. \n"
+#| "ion.\n"
 msgid ""
 "Impossible de supprimer cet enregistrement. \n"
 "Il est utilisé dans une autre fonction.\n"
@@ -453,10 +453,24 @@ msgid ""
 "Effectuer une saisie ou annuler.\n"
 msgstr ""
 
+#: unite_variables.gs_zones_uniques
+msgid ""
+"Les zones suivantes sont uniques : @ARG .\n"
+"\n"
+"Modifier ces champs, réessayer, ou annuler.\n"
+msgstr ""
+
 #: unite_variables.gs_zone_obligatoire
 msgid ""
 "La zone @ARG ne peut pas être vide.\n"
 "\n"
 "Effectuer une saisie ou annuler.\n"
+msgstr ""
+
+#: unite_variables.gs_zone_unique
+msgid ""
+"La zone @ARG est unique.\n"
+"\n"
+"Modifier ce champ, réessayer, ou annuler.\n"
 msgstr ""
 

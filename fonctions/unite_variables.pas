@@ -172,6 +172,10 @@ resourcestring
                         	+ 'Effectuer une saisie ou annuler.';
   GS_ZONES_OBLIGATOIRES = 'Les zones suivantes ne peuvent pas être vides : @ARG .' + #13 + #13
                         		+ 'Effectuer une saisie ou annuler.';
+  GS_ZONE_UNIQUE = 'La zone @ARG est unique.' + #13 + #13
+                        	+ 'Modifier ce champ, réessayer, ou annuler.';
+  GS_ZONES_UNIQUES = 'Les zones suivantes sont uniques : @ARG .' + #13 + #13
+                        		+ 'Modifier ces champs, réessayer, ou annuler.';
   GS_FORM_TABLE_NON_RENSEIGNEE = 'Le composant @ARG et la fiche @ARG doivent sélectionner une table dans le dictionnaire.' ;
   GS_FORM_SELECTION_ADO_DATASET = 'Le composant @ARG en tant que composant ADO et la fiche @ARG doivent sélectionner une table.' ;
   GS_FORM_ERREUR_CHARGE_COLONNES = 'Erreur au chargement des colonnes de @ARG...' ;

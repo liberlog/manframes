@@ -34,7 +34,7 @@ type
     i_NumTag : Integer ;
     i_AffiCol, i_AffiRech, i_AffiSort, i_Aide : Integer ;
     s_LookupTable, s_LookupKey, s_LookupDisplay: String;
-    b_ColObl, b_ColCreate : Boolean;
+    b_ColObl, b_ColCreate, b_ColUnique : Boolean;
   public
     property NomTable : String read s_NomTable write s_NomTable;
     property FieldName : String read s_FieldName write s_FieldName;
@@ -50,6 +50,7 @@ type
     property LookupDisplay : String read s_LookupDisplay write s_LookupDisplay;
     property ColObl : Boolean read b_ColObl write b_ColObl;
     property ColCree : Boolean read b_ColCreate write b_ColCreate;
+    property ColUnique : Boolean read b_ColUnique write b_ColUnique;
   End;
   TFWFieldColumnClass = class of TFWFieldColumn;
 

@@ -535,6 +535,7 @@ type
     dblcbx_edition : TSearchCombo; // Recherche sur un RxDBLookupCombo par défaut
     lb_KeyDown  : Boolean ;
 //    lwin_ControlRecherche : TWinControl ;
+    procedure p_VerifyColumnBeforeValidate(const afwc_Source: TFWSource; const adat_Dataset : TDataset ); virtual;
     procedure p_ScruteComposantsFiche (); virtual;
     function fb_False : Boolean; virtual;
     {$IFDEF RX}
@@ -1819,7 +1820,7 @@ Begin
 End;
 procedure TF_CustomFrameWork.p_ChargeDatasourcePrinc;
 var
-    lt_Arg : Array [0..2] of {$IFDEF FPC}ShortString {$ELSE}string{$ENDIF} ;
+    lt_Arg : Array [0..2] of String ;
 Begin
   if ( gFWSources.Count > CST_FRAMEWORK_DATASOURCE_PRINC )
   and assigned ( gFWSources [CST_FRAMEWORK_DATASOURCE_PRINC].ddl_DataLink         )
@@ -1877,7 +1878,7 @@ End;
 procedure TF_CustomFrameWork.p_AffecteEvenementsWorkDatasources ( );
 var li_i, li_j : Integer;
     li_CompteCol : Integer;
-    lt_Arg : Array [0..2] of {$IFDEF FPC}ShortString {$ELSE}string{$ENDIF} ;
+    lt_Arg : Array [0..2] of String ;
     lmet_MethodeDistribueeSearch: TMethod;
 Begin
   lmet_MethodeDistribueeSearch.Data := Self;
@@ -3274,26 +3275,7 @@ begin
     with gFWSources.items [ li_i ] do
      if assigned ( ds_DataSourcesWork.DataSet )
      and ( ds_DataSourcesWork.DataSet.State in [ dsInsert,dsEdit ]) Then
-      fb_ValidePostDeleteWork ( ds_DataSourcesWork.DataSet, gFWSources.items [ li_i ], False );
-  for li_i := 0 to gFWSources.Count - 1 do
-    with gFWSources.items [ li_i ] do
-    if  ( ds_DataSourcesWork.DataSet = Dataset ) Then
-      Begin
-        if ( assigned ( e_BeforePost ))
-         then
-          try
-            e_BeforePost ( Dataset );
-          Except
-            on e: Exception do
-              Begin
-                fcla_GereException ( e, Dataset );
-                Abort ;
-              End ;
-          End ;
-           // ancien évènement
-            // gestion du focus sur le contrôle
-        Break ;
-      End ;
+       fb_ValidePostDeleteWork ( ds_DataSourcesWork.DataSet, gFWSources.items [ li_i ], False );
 end;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -3806,7 +3788,7 @@ End;
 procedure TF_CustomFrameWork.DoShow;
 var
   li_i  : Integer ;
-  lt_Arg : Array [0..0] of {$IFDEF FPC}ShortString {$ELSE}string{$ENDIF} ;
+  lt_Arg : Array [0..0] of String ;
 begin
   if ( csDesigning in ComponentState )
    Then
@@ -6398,12 +6380,9 @@ function TF_CustomFrameWork.fb_ValidePostDelete (  const adat_Dataset: TDataSet;
                                 const astl_Cle : TStringlist ;
                                 const ae_BeforePost : TDataSetNotifyEvent;
                                 const ab_Efface            : Boolean ): Boolean ;
-var li_i ,
-    li_Dataset   ,
-    li_Compteur  : integer;
-    lt_Arg       : Array [ 0..0] of {$IFDEF FPC}ShortString {$ELSE}string{$ENDIF} ;
-    ls_Message   : String ;
-    lfwc_Column  : TFWSource ;
+var li_Dataset,
+    li_i         : Integer;
+    lfwc_Source  : TFWSource ;
 
 begin
   ge_EvenementCleUtilise :=  DataOnUsedKey ;
@@ -6439,7 +6418,7 @@ begin
         End ;
   if li_Dataset = -1 then
     Exit;
-  lfwc_Column := Sources [ li_Dataset ];
+  lfwc_Source := Sources [ li_Dataset ];
 ///////
   Result := fb_RechercheCle ( adat_Dataset, as_Table, astl_Cle, ab_Efface );
   if ( adat_Dataset.State in [ dsInsert, dsEdit ]   )
@@ -6447,35 +6426,75 @@ begin
 {$IFDEF DELPHI_9_UP}or assigned ( gwst_SQLWork ) {$ENDIF DELPHI_9_UP}
         )
    Then
-    with lfwc_Column do
-      Begin
-        li_Compteur := 0 ;
-        ls_Message  := '' ;
-        for li_i := 0 to FieldsDefs.Count - 1   do
-         with FieldsDefs [ li_i ] do
-          Begin
-            if  ColCree
-            and ( AffiCol < 0 )
-            and ( FieldName = Key )
-            and ( adat_Dataset.FindField ( FieldName ) is TNumericField )
-            and ( adat_Dataset.FindField ( FieldName ).IsNull )
-               Then
-                begin
-                  fb_InsereCompteur(adat_Dataset,KeyList,Key,Table,1,SizeOf(Int64));
-                  Continue;
-                end;
+    p_VerifyColumnBeforeValidate ( lfwc_Source, adat_Dataset );
+   // ancien évènement
+    if Assigned ( ae_BeforePost ) then
+     try
+      ae_BeforePost(adat_Dataset);
+     Except
+       on e: Exception do
+         Begin
+           fcla_GereException ( e, adat_Dataset );
+           Abort ;
+         End ;
+     End ;
+  gb_RafraichitForm := True ;
+end;
 
-            if ColObl
-            and assigned ( adat_Dataset.FindField ( FieldName ))
-            and ( Trim   ( adat_Dataset.FindField ( FieldName ).AsString ) = '')
-               Then
-                begin
-                  inc ( li_Compteur );
-                  if li_Compteur = 1
-                   Then ls_Message :=                     CaptionName
-                   Else ls_Message := ls_Message + ', ' + CaptionName ;
+
+procedure TF_CustomFrameWork.p_VerifyColumnBeforeValidate(const afwc_Source: TFWSource ; const adat_Dataset : TDataset );
+var li_i ,
+    li_Compteur  , li_Compteur2  : integer;
+    lt_Arg       : Array [ 0..0] of string ;
+    ls_Message , ls_Message2  : String ;
+Begin
+  with afwc_Source do
+    Begin
+      li_Compteur  := 0 ;
+      li_Compteur2 := 0 ;
+      ls_Message  := '' ;
+      ls_Message2 := '';
+      for li_i := 0 to FieldsDefs.Count - 1   do
+       with FieldsDefs [ li_i ] do
+        Begin
+          if  ColCree
+          and ( AffiCol < 0 )
+          and ( FieldName = Key )
+          and ( adat_Dataset.FindField ( FieldName ) is TNumericField )
+          and ( adat_Dataset.FindField ( FieldName ).IsNull )
+             Then
+              begin
+                fb_InsereCompteurNumerique(adat_Dataset, ds_recherche.DataSet, KeyList,Key,Table,1,SizeOf(Int64),False);
+                Continue;
+              end;
+          if  ColUnique
+          and ( adat_Dataset.State = dsInsert )
+          and ( AffiCol > 0 )
+          and not ( adat_Dataset.FindField ( FieldName ).IsNull )
+          and ( adat_Dataset.FindField ( FieldName ).DisplayName <> adat_Dataset.FindField ( FieldName ).AsString )
+           Then
+            begin
+              if fb_FieldRecordExists ( adat_Dataset, ds_recherche.DataSet, Table, FieldName, gb_DBMessageOnError ) Then
+                Begin
+                  inc ( li_Compteur2 );
+                  if li_Compteur2 = 1
+                   Then ls_Message2 :=                      CaptionName
+                   Else ls_Message2 := ls_Message2 + ', ' + CaptionName ;
                 end;
-          end;
+              Continue;
+            end;
+
+          if ColObl
+          and assigned ( adat_Dataset.FindField ( FieldName ))
+          and ( Trim   ( adat_Dataset.FindField ( FieldName ).AsString ) = '')
+             Then
+              begin
+                inc ( li_Compteur );
+                if li_Compteur = 1
+                 Then ls_Message :=                     CaptionName
+                 Else ls_Message := ls_Message + ', ' + CaptionName ;
+              end;
+        end;
 
      if li_Compteur > 0
       Then
@@ -6491,21 +6510,17 @@ begin
            End ;
           Abort;
          End ;
-      End ;
-   // ancien évènement
-  try
-    if Assigned ( ae_BeforePost ) then
-      ae_BeforePost(adat_Dataset);
-  Except
-    on e: Exception do
-      Begin
-        fcla_GereException ( e, adat_Dataset );
-        Abort ;
-      End ;
-  End ;
-  gb_RafraichitForm := True ;
-end;
-
+      if li_Compteur2 > 0
+      Then
+       Begin
+         lt_Arg [0] := ls_Message2 ;
+         if li_Compteur2 = 1
+           Then  MessageDlg ( {$IFDEF FPC}GS_SAISIR_ANNULER,{$ENDIF} fs_RemplaceMsg ( GS_ZONE_UNIQUE  , lt_Arg ), mtWarning, [mbOk], 0)
+           Else  MessageDlg ( {$IFDEF FPC}GS_SAISIR_ANNULER,{$ENDIF} fs_RemplaceMsg ( GS_ZONES_UNIQUES, lt_Arg ), mtWarning, [mbOk], 0);
+         Abort;
+       End ;
+    End ;
+End;
 // function fb_ValidePostDeleteWork
 // Verifying before post and delete
 function TF_CustomFrameWork.fb_ValidePostDeleteWork(const adat_Dataset: TDataSet;
