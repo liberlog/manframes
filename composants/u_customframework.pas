@@ -3142,22 +3142,22 @@ begin
 End ;
 
 procedure TF_CustomFrameWork.p_DatasourceWorksStateChange (Sender: TObject);
-var li_i      ,
-    li_Trouve : Integer ;
+var li_i      : Integer ;
+    lfws_Source : TFWSource; 
 begin
-  li_Trouve := -1 ;
+  lfws_Source := nil ;
   for li_i := 0 to gFWSources.Count - 1 do
-    if Sender = gFWSources.items [ li_i ].ddl_DataLink Then
+    if Sender = gFWSources.items [ li_i ].ddl_DataLink.DataSource Then
       Begin
-        li_Trouve := li_i ;
+        lfws_Source  := gFWSources.items [ li_i ] ;
         Break ;
       End ;
-  if ( li_Trouve < 0 ) Then
+  if ( lfws_Source = nil ) Then
     Exit ;
   try
-    if assigned ( gFWSources [ li_Trouve ].e_StateChange )
+    if assigned ( lfws_Source.e_StateChange )
      Then
-      gFWSources [ li_Trouve ].e_StateChange ( Sender );
+      lfws_Source.e_StateChange ( Sender );
   Except
     On E: Exception do
       fcla_GereException ( e, gFWSources [ li_Trouve ].ddl_DataLink.DataSource );
@@ -3166,7 +3166,7 @@ begin
   if not Visible Then
     Exit ;
     // on est en saisie sans fiche de saisie on en consultation
-  with gFWSources [ li_Trouve ] do
+  with lfws_Source do
     if  assigned ( ddl_DataLink         )
     and assigned ( ddl_DataLink.DataSet )
     and ddl_DataLink.DataSet.Active Then
