@@ -3160,7 +3160,7 @@ begin
       lfws_Source.e_StateChange ( Sender );
   Except
     On E: Exception do
-      fcla_GereException ( e, gFWSources [ li_Trouve ].ddl_DataLink.DataSource );
+      fcla_GereException ( e, lfws_Source.ddl_DataLink.DataSource );
   End ;
 
   if not Visible Then
