@@ -3147,7 +3147,8 @@ var li_i      : Integer ;
 begin
   lfws_Source := nil ;
   for li_i := 0 to gFWSources.Count - 1 do
-    if Sender = gFWSources.items [ li_i ].ddl_DataLink.DataSource Then
+   if assigned ( gFWSources.items [ li_i ].ddl_DataLink )
+   and ( Sender = gFWSources.items [ li_i ].ddl_DataLink.DataSource ) Then
       Begin
         lfws_Source  := gFWSources.items [ li_i ] ;
         Break ;
