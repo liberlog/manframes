@@ -174,7 +174,6 @@ function fi_findLanguage  ( const as_littlelang, as_longlang : String ): Longint
 function fi_findLanguage  ( const as_littlelang : String ): Longint; overload;
 function GetUserLanguage: string;
 function GetUserLongLanguage: string;
-procedure p_RegisterLanguages;
 {$ENDIF}
 function fdxi_AddItemXPBar  ( const aF_FormParent       : TCustomForm        ;
                         			const adx_WinXpBar        : TJvXpBar ;
@@ -369,13 +368,6 @@ End;
 {$ENDIF}
 
 {$IFDEF FPC}
-procedure p_RegisterLanguages;
-var ls_softDir : String ;
- Begin
-  ls_softDir := fs_getSoftDir ;
-// to be continued
-end;
-
 function fi_findLanguage  ( const as_littlelang, as_longlang : String ): Longint;
 var li_i : LongInt ;
 Begin
