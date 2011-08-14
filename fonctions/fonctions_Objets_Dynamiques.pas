@@ -248,8 +248,12 @@ end;
 
 {$IFDEF FPC}
 procedure ChangeUnitLanguage( const as_Unit : String ; const ar_Language : TALanguage );
+var ls_LangFileBegin : String;
 Begin
-  Translations.TranslateUnitResourceStrings(as_Unit, fs_getSoftDir () + CST_LNG_DIRECTORY + as_Unit +'.%s.po', ar_Language.LongLang, ar_Language.LittleLang);
+  ls_LangFileBegin := fs_getSoftDir () + CST_LNG_DIRECTORY + as_Unit;
+  if FileExists(ls_LangFileBegin + Format('.%s.po',[ar_Language.LittleLang]))
+   Then Translations.TranslateUnitResourceStrings(as_Unit, ls_LangFileBegin + '.%s.po', ar_Language.LongLang, ar_Language.LittleLang)
+   Else Translations.TranslateUnitResourceStrings(as_Unit, ls_LangFileBegin + '.po', ar_Language.LongLang, ar_Language.LittleLang);
 
 end;
 {$ENDIF}
@@ -267,11 +271,13 @@ begin
   lr_Language := ga_SoftwareLanguages [iIndex];
   ChangeUnitLanguage( CST_sdb_consts, lr_Language );
   ChangeUnitLanguage( CST_ldd_consts, lr_Language );
+  ChangeUnitLanguage( CST_lclstrconsts, lr_Language );
   ChangeUnitLanguage( CST_lazdatadeskstr, lr_Language );
   ChangeUnitLanguage( CST_u_languagevars, lr_Language );
   ChangeUnitLanguage( CST_lr_const, lr_Language );
   ChangeUnitLanguage( CST_unite_messages, lr_Language );
   ChangeUnitLanguage( CST_unite_variables, lr_Language );
+ // Translations.TranslateResourceStrings(as_Unit, fs_getSoftDir () + CST_LNG_DIRECTORY +'SoftLang.%s.po', ar_Language.LongLang, ar_Language.LittleLang);
   {$ENDIF}
   {$ENDIF}
 

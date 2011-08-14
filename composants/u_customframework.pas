@@ -6392,8 +6392,7 @@ function TF_CustomFrameWork.fb_ValidePostDelete (  const adat_Dataset: TDataSet;
                                 const astl_Cle : TStringlist ;
                                 const ae_BeforePost : TDataSetNotifyEvent;
                                 const ab_Efface            : Boolean ): Boolean ;
-var li_Dataset,
-    li_i         : Integer;
+var li_i         : Integer;
     lfwc_Source  : TFWSource ;
 
 begin
@@ -6419,18 +6418,17 @@ begin
          Then  Abort;
         Exit ;
       End ;}
-  li_Dataset    := -1 ;
+  lfwc_Source    := nil ;
   for li_i := 0 to gfwSources.Count - 1 do
     with gfwSources [ li_i ] do
       if assigned ( ds_DataSourcesWork )
       and ( adat_Dataset = ds_DataSourcesWork.DataSet ) Then
         Begin
-          li_Dataset    := li_i ;
+          lfwc_Source := Sources [ li_i ];
           Break;
         End ;
-  if li_Dataset = -1 then
+  if lfwc_Source  = nil then
     Exit;
-  lfwc_Source := Sources [ li_Dataset ];
 ///////
   Result := fb_RechercheCle ( adat_Dataset, as_Table, astl_Cle, ab_Efface );
   if ( adat_Dataset.State in [ dsInsert, dsEdit ]   )
@@ -6476,7 +6474,7 @@ Begin
           and ( adat_Dataset.FindField ( FieldName ).IsNull )
              Then
               begin
-                fb_InsereCompteurNumerique(adat_Dataset, ds_recherche.DataSet, KeyList,Key,Table,1,SizeOf(Int64),False);
+                fb_InsereCompteurNumerique(adat_Dataset, gds_Query1.DataSet, KeyList,Key,Table,1,SizeOf(Int64),False);
                 Continue;
               end;
           if  ColUnique
@@ -6486,7 +6484,7 @@ Begin
           and ( adat_Dataset.FindField ( FieldName ).DisplayName <> adat_Dataset.FindField ( FieldName ).AsString )
            Then
             begin
-              if fb_FieldRecordExists ( adat_Dataset, ds_recherche.DataSet, Table, FieldName, gb_DBMessageOnError ) Then
+              if fb_FieldRecordExists ( adat_Dataset, gds_Query1.DataSet, Table, FieldName, gb_DBMessageOnError ) Then
                 Begin
                   inc ( li_Compteur2 );
                   if li_Compteur2 = 1
