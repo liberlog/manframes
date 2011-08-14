@@ -126,14 +126,14 @@ type
 
   TFWSourceChild = class(TCollectionItem)
   private
-    FSource : Integer ;
+    FSource : TFWSource ;
     s_FieldsChilds : String ;
     stl_FieldsChilds  : TStringList ;
   public
     constructor Create(Collection: TCollection);override;
     destructor Destroy ; override;
   published
-    property Source : Integer  read FSource write FSource ;
+    property Source : TFWSource  read FSource write FSource ;
     property LookupFields : string read s_FieldsChilds write s_FieldsChilds;
   end;
   TFWSourceChildClass = class of TFWSourceChild;
@@ -1148,7 +1148,7 @@ constructor TFWSourceChild.Create(Collection: TCollection);
 begin
   inherited Create(Collection);
   stl_FieldsChilds := nil ;
-  Source := -1;
+  Source := nil;
 end;
 
 destructor TFWSourceChild.Destroy;
@@ -1912,9 +1912,8 @@ Begin
           for li_j := 0 to Linked.Count - 1 do
            with Linked.Items [ li_j ] do
              Begin
-               If ( Source <> li_i )
-               and ( Source < gFWSources.Count )
-               and ( Source >= 0 )
+               If ( Source <> gFWSources.items [ li_i ] )
+               and ( Source <> nil )
                and ( LookupFields <> '' )
                 Then
                  p_ChampsVersListe(stl_FieldsChilds,s_FieldsChilds, gc_FieldDelimiter);
@@ -3248,12 +3247,11 @@ begin
         for li_j := 0 to FLinked.Count - 1 do
           with FLinked [ li_j ] do
             Begin
-              if  ( Source <> li_i )
-              and ( Source < gFWSources.Count )
-              and ( Source >= 0 )
-              and Assigned ( gFWSources [ source ].ds_DataSourcesWork.DataSet )
+              if  ( Source <> gFWSources.items [ li_i ] )
+              and ( Source <> nil )
+              and Assigned ( source.ds_DataSourcesWork.DataSet )
                Then
-                with gFWSources [ source ].ds_DataSourcesWork.DataSet do
+                with source.ds_DataSourcesWork.DataSet do
                  if not ( State in [dsInsert, dsEdit]) Then
                   Edit;
             End;
@@ -3287,12 +3285,24 @@ end;
 procedure TF_CustomFrameWork.p_DataWorkAfterPost(DataSet: TDataSet);
 var li_i, li_j : Integer ;
 begin
-  p_VerifieModifications ;
   for li_i := 0 to gFWSources.Count - 1 do
     with gFWSources.items [ li_i ] do
       if assigned ( ddl_DataLink )
       and ( ddl_DataLink.DataSet = Dataset ) Then
         Begin
+
+          for li_j := 0 to FLinked.Count - 1 do
+            with FLinked [ li_j ] do
+              Begin
+                if  ( Source <> gFWSources.items [ li_i ] )
+                and ( Source <> nil )
+                and Assigned ( source.ds_DataSourcesWork.DataSet )
+                 Then
+                  with source.ds_DataSourcesWork.DataSet do
+                   if State in [ dsInsert, dsEdit ] Then
+                     Post;
+              End;
+          p_VerifieModifications;
           if ( assigned ( e_AfterPost ))
            then
             try
@@ -3304,18 +3314,6 @@ begin
                   Abort ;
                 End ;
             End ;
-          for li_j := 0 to FLinked.Count - 1 do
-            with FLinked [ li_j ] do
-              Begin
-                if  ( Source <> li_i )
-                and ( Source < gFWSources.Count )
-                and ( Source >= 0 )
-                and Assigned ( gFWSources [ source ].ds_DataSourcesWork.DataSet )
-                 Then
-                  with gFWSources [ source ].ds_DataSourcesWork.DataSet do
-                   if State in [ dsInsert, dsEdit ] Then
-                     Post;
-              End;
           Break ;
         End ;
 end;
@@ -3355,17 +3353,32 @@ end;
 // DataSet : LE Dataset édité
 ////////////////////////////////////////////////////////////////////////////////
 procedure TF_CustomFrameWork.p_DataWorkAfterCancel(DataSet: TDataSet);
-var li_i : Integer ;
+var li_i, li_j : Integer ;
 begin
-  p_VerifieModifications;
   for li_i := 0 to gFWSources.Count - 1 do
     if assigned ( gFWSources.items [ li_i ].ddl_DataLink )
     and ( gFWSources.items [ li_i ].ddl_DataLink.DataSet = Dataset ) Then
+     with gFWSources.items [ li_i ] do
       Begin
-        if ( assigned ( gFWSources.items [ li_i ].e_AfterCancel ))
+        if not Visible Then
+          Exit ;
+        for li_j := 0 to FLinked.Count - 1 do
+          with FLinked [ li_j ] do
+            Begin
+              if  ( Source <> gFWSources.items [ li_i ] )
+              and ( Source <> nil )
+              and Assigned ( source.ds_DataSourcesWork.DataSet )
+               Then
+                with source.ds_DataSourcesWork.DataSet do
+                 if ( State in [dsInsert, dsEdit]) Then
+                  Cancel;
+            End;
+        p_VerifieModifications;
+            // gestion du focus sur le contrôle
+        if ( assigned ( e_AfterCancel ))
          then
           try
-            gFWSources.items [ li_i ].e_AfterCancel ( Dataset );
+            e_AfterCancel ( Dataset );
           Except
             on e: Exception do
               Begin
@@ -3407,11 +3420,10 @@ begin
         for li_j := 0 to FLinked.Count - 1 do
           with FLinked [ li_j ] do
             Begin
-              if  ( Source <> li_i )
-              and ( Source < gFWSources.Count )
-              and ( Source >= 0 )
-              and Assigned ( gFWSources [ source ].ds_DataSourcesWork.DataSet ) Then
-               with gFWSources [ source ].ds_DataSourcesWork.DataSet do
+              if  ( Source <> gFWSources.items [ li_i ] )
+              and ( Source <> nil )
+              and Assigned ( source.ds_DataSourcesWork.DataSet ) Then
+               with source.ds_DataSourcesWork.DataSet do
                 if State in [ dsInsert,dsEdit] Then Cancel;
             End;
            // ancien évènement
@@ -3451,13 +3463,13 @@ begin
           for li_j := 0 to FLinked.Count - 1 do
             with FLinked [ li_j ] do
               Begin
-                if  ( Source <> li_i )
-                and ( Source < gFWSources.Count )
-                and ( Source >= 0 )
-                and Assigned ( gFWSources [ source ].ds_DataSourcesWork.DataSet )
-                and not ( gFWSources [ source ].ds_DataSourcesWork.DataSet.State in [dsInsert,dsEdit])
+              if  ( Source <> gFWSources.items [ li_i ] )
+              and ( Source <> nil )
+              and Assigned ( source.ds_DataSourcesWork.DataSet ) Then
+               with source.ds_DataSourcesWork.DataSet do
+                if not ( State in [dsInsert,dsEdit])
                  Then
-                 gFWSources [ source ].ds_DataSourcesWork.DataSet.Insert;
+                  Insert;
               End;
         End;
 End;
@@ -3707,13 +3719,12 @@ Begin
        with gFWSource.FLinked [ li_j ] do
            if  assigned ( stl_FieldsChilds )
            and ( stl_FieldsChilds.Count > 0 )
-           and ( Source < Sources.Count )
-           and ( Source >= 0 )
-           and Assigned ( gFWSources [ source ].ds_DataSourcesWork.DataSet )
+           and ( Source <> nil )
+           and Assigned ( source.ds_DataSourcesWork.DataSet )
             Then
-              if gFWSources [ source ].ds_DataSourcesWork.DataSet.Active
+              if source.ds_DataSourcesWork.DataSet.Active
                Then
-                 fb_SourceLookupFiltrage ( gFWSource, gFWSources [ source ], stl_FieldsChilds );
+                 fb_SourceLookupFiltrage ( gFWSource, source, stl_FieldsChilds );
 End ;
 
 function TF_CustomFrameWork.fb_RafraichitFiltre ( const lt_DatasourceWork : TFWSource ) : Boolean ;
@@ -4938,7 +4949,7 @@ Begin
   Result := False ;
   if  assigned ( ads_Datasource         )
   and assigned ( ads_Datasource.DataSet )
-  and (( ads_Datasource.DataSet.State = dsEdit ) or ( ads_Datasource.DataSet.State = dsInsert )) Then
+  and ( ads_Datasource.DataSet.State in [dsEdit, dsInsert ]) Then
     Begin
       Result := True ;
     End ;
@@ -4950,14 +4961,14 @@ begin
 end;
 
 // Vérifie si la fiche est toujours en modifications
-procedure TF_CustomFrameWork.p_VerifieModifications;
+procedure TF_CustomFrameWork.p_VerifieModifications ;
 var li_i : Integer ;
 begin
   gb_SauverModifications := True ;
 
   // les datasources de la fiches sont-ils en modification ?
   for li_i := 0 to gFWSources.Count - 1 do
-    if fb_DatasourceModifie ( gFWSources [li_i].ds_DataSourcesWork )
+    if  fb_DatasourceModifie ( gFWSources [li_i].ds_DataSourcesWork )
      Then
      // oui on quitte
       Exit ;
