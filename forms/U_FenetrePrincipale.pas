@@ -252,7 +252,7 @@ uses
   unite_variables, unite_messages,
   U_Acces, fonctions_dbcomponents,
   fonctions_FenetrePrincipale,
-  fonctions_proprietes ;
+  fonctions_proprietes, fonctions_languages ;
 
 
 

@@ -46,26 +46,8 @@ uses Forms, JvXPBar, JvXPContainer,
 
 var
       gb_ExisteFonctionMenu   : Boolean      ;   // Existe-t-il une fonction d'accès au menu
-{$IFDEF TNT}
-      Languages : TDKLanguageController= nil;
-{$ELSE}
-type TALanguage = Record
-                   LittleLang : String;
-                   LongLang   : String;
-                  end;
-     TTheLanguages = array of TALanguage ;
-var ga_SoftwareLanguages : TTheLanguages;
-{$ENDIF}
 
 const // Evènements gérés
-  CST_sdb_consts      = 'sdb_consts';
-  CST_ldd_consts      = 'ldd_consts';
-  CST_lclstrconsts    = 'lclstrconsts';
-  CST_lazdatadeskstr  = 'lazdatadeskstr';
-  CSt_lr_const        = 'lr_const' ;
-  CST_u_languagevars  = 'u_languagevars' ;
-  CST_unite_messages  = 'unite_messages' ;
-  CST_unite_variables = 'unite_variables' ;
   CST_EVT_STANDARD    = 'OnCLick' ;
   // Nom par défaut des composants
   CST_XPBAR_NOM_DEBUT  = 'xpb_Menu' ;
@@ -82,7 +64,6 @@ const // Evènements gérés
   CST_LANG_MENU_ITEM = 'LangMenuItem';
   CST_FONCTION_CLICK  = 'p_OnClickFonction' ;
   CST_FONCTION_LANG   = 'p_OnClickMenuLang' ;
-  CST_LNG_DIRECTORY = 'LangFiles' +DirectorySeparator ;
 {$IFDEF VERSIONS}
   gver_fonctions_Objets_Dynamiques : T_Version = ( Component : 'Gestion des objets dynamiques' ; FileUnit : 'fonctions_Objets_Dynamiques' ;
               			                 Owner : 'Matthieu Giroux' ;
@@ -168,13 +149,6 @@ procedure p_ModifieXPBar  ( const aF_FormParent       : TCustomForm        ;
                             const abmp_Picture        ,
                                   abmp_DefaultPicture : TBitmap     ;
                             const ab_AjouteEvenement  : Boolean     );
-{$IFDEF FPC}
-procedure p_RegisterALanguage ( const as_littlelang, as_longlang : String );
-function fi_findLanguage  ( const as_littlelang, as_longlang : String ): Longint; overload;
-function fi_findLanguage  ( const as_littlelang : String ): Longint; overload;
-function GetUserLanguage: string;
-function GetUserLongLanguage: string;
-{$ENDIF}
 function fdxi_AddItemXPBar  ( const aF_FormParent       : TCustomForm        ;
                         			const adx_WinXpBar        : TJvXpBar ;
                         			const as_Fonction         ,
@@ -199,14 +173,7 @@ function fmen_AjouteFonctionMenu  ( const aF_FormParent        : TForm     ;
                         			          ab_ImageDefaut       : Boolean     ;
                         			    const aIma_ImagesMenus     : TImageList  ;
                         			    const ai_FinCompteurImages : Integer     ):TMenuItem;
-function GetSystemCharset : String ;
-{$IFDEF TNT}
-function GetUserInfo ( const ai_LOCALEINFO : Integer ): string;
-function GetLanguageCode ( ALANGID : LCID ) : string;
-procedure p_RegisterLanguages ( const ame_menuLang : TMenuItem );
-{$ENDIF}
 procedure CreateLanguagesController ( const Items : TMenuItem );
-procedure ChangeLanguage( iIndex : integer);
 
 implementation
 
@@ -215,7 +182,9 @@ uses U_FormMainIni, SysUtils, TypInfo, Dialogs,
 {$IFDEF TNT}
      TntSysUtils, TntSystem,
 {$ENDIF}
-     unite_variables, Variants, fonctions_proprietes ;
+     unite_variables, Variants, fonctions_proprietes,
+     fonctions_languages;
+
 
 procedure CreateLanguagesController ( const Items : TMenuItem );
 var i: Integer;
@@ -245,166 +214,6 @@ begin
    // Index=0 always means the default language
 //    cbLanguage.ItemIndex := 0;
 end;
-
-{$IFDEF FPC}
-procedure ChangeUnitLanguage( const as_Unit : String ; const ar_Language : TALanguage );
-var ls_LangFileBegin : String;
-Begin
-  ls_LangFileBegin := fs_getSoftDir () + CST_LNG_DIRECTORY + as_Unit;
-  if FileExists(ls_LangFileBegin + Format('.%s.po',[ar_Language.LittleLang]))
-   Then Translations.TranslateUnitResourceStrings(as_Unit, ls_LangFileBegin + '.%s.po', ar_Language.LongLang, ar_Language.LittleLang)
-   Else Translations.TranslateUnitResourceStrings(as_Unit, ls_LangFileBegin + '.po');
-
-end;
-{$ENDIF}
-
-procedure ChangeLanguage( iIndex : integer);
-{$IFNDEF TNT}
-var lr_Language : TALanguage ;
-{$ENDIF}
-begin
-  if iIndex<0 then iIndex := 0; // When there's no valid selection in cbLanguage we use the default language (Index=0)
-  {$IFDEF TNT}
-  LangManager.LanguageID := LangManager.LanguageIDs[iIndex];
-  {$ELSE}
-  {$IFDEF FPC}
-  lr_Language := ga_SoftwareLanguages [iIndex];
-  ChangeUnitLanguage( CST_sdb_consts, lr_Language );
-  ChangeUnitLanguage( CST_ldd_consts, lr_Language );
-  ChangeUnitLanguage( CST_lclstrconsts, lr_Language );
-  ChangeUnitLanguage( CST_lazdatadeskstr, lr_Language );
-  ChangeUnitLanguage( CST_u_languagevars, lr_Language );
-  ChangeUnitLanguage( CST_lr_const, lr_Language );
-  ChangeUnitLanguage( CST_unite_messages, lr_Language );
-  ChangeUnitLanguage( CST_unite_variables, lr_Language );
- // Translations.TranslateResourceStrings(as_Unit, fs_getSoftDir () + CST_LNG_DIRECTORY +'SoftLang.%s.po', ar_Language.LongLang, ar_Language.LittleLang);
-  {$ENDIF}
-  {$ENDIF}
-
-end;
-
-{$IFDEF TNT}
-function GetLanguageCode ( ALANGID : LCID ) : string;
-var
-  Buffer: array [0..255] of Char;
-begin
-  if GetLocaleInfo(ALANGID, LOCALE_SISO639LANGNAME, @Buffer, SizeOf(Buffer)) > 0 then
-    Result := LowerCase(Buffer);
-end;
-
-function GetUserInfo ( const ai_LOCALEINFO : Integer ): string;
-var
-  sz: Integer;
-begin
-  // Le premier appel nous sert uniquement à déterminer la longueur de la chaîne
-  sz:= GetLocaleInfo(LOCALE_USER_DEFAULT, ai_LOCALEINFO, nil, 0);
-
-  // Nous modifions la chaîne de résultat pour qu'elle puisse
-  // contenir le texte complet.
-  SetLength(result, sz - 1); // - 1 car la longueur contient le zéro terminal
-
-  // Le deuxième appel nous retourne le nom de la langue dans la langue
-  GetLocaleInfo(LOCALE_USER_DEFAULT, ai_LOCALEINFO,
-    Pchar(result), sz);
-End;
-{$ENDIF}
-function GetSystemCharset : String ;
-Begin
-  Result := 'ISO_8859_1' ;
-End;
-
-{$IFDEF FPC}
-function GetUserLanguage: string;
-var ls_Language : String;
-begin
-  GetLanguageIDs( Result, ls_Language );  //LOCALE_SNATIVELANGNAME
-End;
-{$ELSE}
-  {$IFDEF TNT}
-  function GetUserLanguage: string;
-  begin
-    Result := GetUserInfo ( LOCALE_SISO639LANGNAME );  //LOCALE_SNATIVELANGNAME
-  End;
-  {$ENDIF}
-{$ENDIF}
-{$IFDEF FPC}
-function GetUserLongLanguage: string;
-var ls_Language : String;
-begin
-  GetLanguageIDs( ls_language, Result );  //LOCALE_SNATIVELANGNAME
-End;
-{$ELSE}
-  {$IFDEF TNT}
-  function GetUserLongLanguage: string;
-  begin
-    Result := GetUserInfo ( LOCALE_SNATIVELANGNAME );
-  End;
-  procedure p_RegisterLanguages ( const ame_menuLang : TMenuItem );
-  var
-    SR: TSearchRec;
-    ls_Dir : String ;
-    IsFound : Boolean;
-  Begin
-    ls_Dir := fs_getSoftDir + CST_LNG_DIRECTORY;
-    try
-      IsFound := FindFirst(ls_Dir + '*', faAnyFile, SR) = 0 ;
-      while IsFound do
-       begin
-        if FileExists ( ls_Dir + SR.Name )
-         then
-          Begin
-            LangManager.RegisterLangFile(ls_Dir + SR.Name);
-          End ;
-        IsFound := FindNext(SR) = 0;
-      end;
-      FindClose(SR);
-    Except
-      ShowMessage ( 'Error on registering lng Language files.' );
-      FindClose(SR);
-    End ;
-    CreateLanguagesController ( ame_menuLang );
-  end;
-  {$ENDIF}
-{$ENDIF}
-
-{$IFDEF FPC}
-function fi_findLanguage  ( const as_littlelang, as_longlang : String ): Longint;
-var li_i : LongInt ;
-Begin
-  Result := -1;
-  for li_i := 0 to high ( ga_SoftwareLanguages ) do
-    with ga_SoftwareLanguages [ li_i ] do
-      if  ( LittleLang = as_littlelang )
-      and ( LongLang   = as_longlang   ) Then
-        Result := li_i ;
-end;
-
-function fi_findLanguage  ( const as_littlelang : String ): Longint;
-var li_i : LongInt ;
-Begin
-  Result := -1;
-  for li_i := 0 to high ( ga_SoftwareLanguages ) do
-    with ga_SoftwareLanguages [ li_i ] do
-      if  ( LittleLang = as_littlelang ) Then
-        Result := li_i ;
-end;
-
-procedure p_RegisterALanguage ( const as_littlelang, as_longlang : String );
-var li_lang : Longint ;
-Begin
-  li_lang := fi_findLanguage  ( as_littlelang, as_longlang );
-  if li_lang = -1 Then
-    Begin
-      SetLength(ga_SoftwareLanguages,high ( ga_SoftwareLanguages ) + 2 );
-      with ga_SoftwareLanguages [ high ( ga_SoftwareLanguages ) ] do
-        Begin
-           LittleLang := as_littlelang;
-           LongLang   := as_longlang;
-        end;
-    end;
-end;
-{$ENDIF}
-
 
 // Change les boutons du navigateur bookmark en boutons de déplacements d'enregistrement
 // anav_Navigateur : Le navigateur à modifier
