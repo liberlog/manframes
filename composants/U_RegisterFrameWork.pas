@@ -65,7 +65,6 @@ uses DB, TypInfo,
   u_customframework,
   u_propform,
   U_RegVersion,
-  u_buttons_manage,
   u_fillcombobutton,
   unite_messages;
 
@@ -172,7 +171,7 @@ begin // Enregistre le nouvel expert de projet
    RegisterCustomModule ( TF_FormDico, TCustomModule );
    RegisterCustomModule ( TF_PropForm, TCustomModule );
 {$ENDIF}
-   RegisterComponents(CST_PALETTE_COMPOSANTS_DB, [TManPreview, TExtFillCombo]);
+   RegisterComponents(CST_PALETTE_COMPOSANTS_DB, [TExtFillCombo]);
    RegisterPropertyEditor(TypeInfo(string), TF_CustomFrameWork, 'Version', TVersionProperty);
    {$IFDEF FPC}
    RegisterPropertyEditor(TypeInfo(string), TManPreview, 'LeonardiRTF', {$IFDEF FPC}TFileNamePropertyEditor{$ELSE}{$ENDIF});
