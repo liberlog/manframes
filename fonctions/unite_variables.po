@@ -44,8 +44,8 @@ msgstr ""
 #: unite_variables.gs_change_pas_sommaire
 #, fuzzy
 #| msgid ""
-#| "ce sommaire :\n"
-#| "n\n"
+#| "e sommaire :\n"
+#| "\n"
 msgid ""
 "Vous ne pouvez pas changer le libellé de ce sommaire :\n"
 " C'est un sommaire obligatoire.\n"
@@ -166,8 +166,8 @@ msgstr ""
 #: unite_variables.gs_erreur_modification_maj
 #, fuzzy
 #| msgid ""
-#| "\n"
-#| "\n"
+#| "Impossible de supprimer cet enregistrement. \n"
+#| "Il est utilisé dans une autre fonction.\n"
 msgid ""
 "Impossible de supprimer cet enregistrement. \n"
 "Il est utilisé dans une autre fonction.\n"
@@ -447,6 +447,11 @@ msgid "Valider les modifications"
 msgstr "Validate"
 
 #: unite_variables.gs_zones_obligatoires
+#, fuzzy
+#| msgid ""
+#| "Les zones suivantes ne peuvent pas être vides : @ARG .\n"
+#| "\n"
+#| "Effectuer une saisie ou annuler.\n"
 msgid ""
 "Les zones suivantes ne peuvent pas être vides : @ARG .\n"
 "\n"
@@ -464,6 +469,11 @@ msgid ""
 msgstr ""
 
 #: unite_variables.gs_zone_obligatoire
+#, fuzzy
+#| msgid ""
+#| "La zone @ARG ne peut pas être vide.\n"
+#| "\n"
+#| "Effectuer une saisie ou annuler.\n"
 msgid ""
 "La zone @ARG ne peut pas être vide.\n"
 "\n"
@@ -473,6 +483,11 @@ msgstr ""
 "Modify it or cancel your changes.\n"
 
 #: unite_variables.gs_zone_unique
+#, fuzzy
+#| msgid ""
+#| "La zone @ARG est unique.\n"
+#| "\n"
+#| "Modifier ce champ, réessayer, ou annuler.\n"
 msgid ""
 "La zone @ARG est unique.\n"
 "\n"

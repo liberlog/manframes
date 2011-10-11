@@ -23,7 +23,7 @@
     <Description Value="Child Form data management and relationships"/>
     <License Value="LGPL"/>
     <Version Minor="9" Release="3" Build="9"/>
-    <Files Count="11">
+    <Files Count="9">
       <Item1>
         <Filename Value="fonctions/fonctions_tableauframework.pas"/>
         <UnitName Value="fonctions_tableauframework"/>
@@ -57,30 +57,23 @@
         <UnitName Value="u_propform"/>
       </Item8>
       <Item9>
-        <Filename Value="forms/u_previewform.pas"/>
-        <UnitName Value="u_previewform"/>
-      </Item9>
-      <Item10>
-        <Filename Value="composants/u_buttons_manage.pas"/>
-        <UnitName Value="u_buttons_manage"/>
-      </Item10>
-      <Item11>
         <Filename Value="composants/u_fillcombobutton.pas"/>
         <UnitName Value="u_fillcombobutton"/>
-      </Item11>
+      </Item9>
     </Files>
     <i18n>
       <EnableI18N Value="True"/>
       <OutDir Value="fonctions"/>
     </i18n>
     <Type Value="RunAndDesignTime"/>
-    <RequiredPkgs Count="10">
+    <RequiredPkgs Count="9">
       <Item1>
         <PackageName Value="lazmanbase"/>
         <MaxVersion Major="1" Release="1" Build="6"/>
       </Item1>
       <Item2>
-        <PackageName Value="lazrichview"/>
+        <PackageName Value="FCL"/>
+        <MinVersion Major="1" Valid="True"/>
       </Item2>
       <Item3>
         <PackageName Value="rxnew"/>
@@ -104,10 +97,6 @@
       <Item9>
         <PackageName Value="JvXPBarLaz"/>
       </Item9>
-      <Item10>
-        <PackageName Value="FCL"/>
-        <MinVersion Major="1" Valid="True"/>
-      </Item10>
     </RequiredPkgs>
     <UsageOptions>
       <UnitPath Value="$(PkgOutDir)"/>
