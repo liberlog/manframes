@@ -2,7 +2,6 @@
 <CONFIG>
   <Package Version="3">
     <Name Value="lazmanbase"/>
-    <AutoUpdate Value="Manually"/>
     <CompilerOptions>
       <Version Value="9"/>
       <SearchPaths>

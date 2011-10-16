@@ -3,7 +3,6 @@
   <Package Version="3">
     <Name Value="lazmanframes"/>
     <Author Value="Matthieu GIROUX"/>
-    <AutoUpdate Value="Manually"/>
     <CompilerOptions>
       <Version Value="9"/>
       <SearchPaths>
@@ -22,7 +21,7 @@
     </CompilerOptions>
     <Description Value="Child Form data management and relationships"/>
     <License Value="LGPL"/>
-    <Version Minor="9" Release="3" Build="9"/>
+    <Version Minor="9" Release="4"/>
     <Files Count="9">
       <Item1>
         <Filename Value="fonctions/fonctions_tableauframework.pas"/>
@@ -106,4 +105,4 @@
       <IgnoreBinaries Value="False"/>
     </PublishOptions>
   </Package>
-</CONFIG>
+</CONFIG>
