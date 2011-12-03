@@ -42,7 +42,7 @@ msgstr ""
 #: unite_variables.gs_change_pas_sommaire
 #, fuzzy
 #| msgid ""
-#| "mmaire :\n"
+#| "re :\n"
 #| "\n"
 msgid ""
 "Vous ne pouvez pas changer le libellé de ce sommaire :\n"
@@ -182,7 +182,7 @@ msgstr "Erreur au chargement @ARG."
 #: unite_variables.gs_erreur_connexion
 #, fuzzy
 #| msgid ""
-#| "donn#233es.\n"
+#| "#233es.\n"
 #| "\n"
 msgid ""
 "Un problème est survenu pour la connexion aux données.\n"
@@ -194,8 +194,8 @@ msgstr ""
 #: unite_variables.gs_erreur_modification_maj
 #, fuzzy
 #| msgid ""
-#| "ssible de supprimer cet enregistrement. \n"
-#| "st utilisé dans une autre fonction.\n"
+#| "le de supprimer cet enregistrement. \n"
+#| "tilisé dans une autre fonction.\n"
 msgid ""
 "Impossible de supprimer cet enregistrement. \n"
 "Il est utilisé dans une autre fonction.\n"
@@ -279,9 +279,9 @@ msgstr "Inclure"
 #: unite_variables.gs_groupe_mauvais_boutons
 #, fuzzy
 #| msgid ""
-#| "les deux listes. \n"
-#| "apport #224 leur liste,\n"
-#| "233s par rapport #224 la table. \n"
+#| "deux listes. \n"
+#| "rt #224 leur liste,\n"
+#| " par rapport #224 la table. \n"
 msgid ""
 "Les boutons de transfert doivent s'inverser dans les deux listes. \n"
 "Les boutons de transfert sont identifiés par rapport à leur liste,\n"
@@ -308,7 +308,7 @@ msgstr "Tout inclure"
 #: unite_variables.gs_groupe_vider
 #, fuzzy
 #| msgid ""
-#| "'est pas vide.\n"
+#| " pas vide.\n"
 #| "n\n"
 msgid ""
 "Le panier utilisé pour les réaffectations n'est pas vide.\n"
@@ -393,8 +393,8 @@ msgstr "Le libell#233 du menu ne peut pas #234tre vide."
 #: unite_variables.gs_mettre_a_jour_fiche
 #, fuzzy
 #| msgid ""
-#| "registrement a été effacé ou modifié par un autre utilisateur.\n"
-#| "fiche va être mise à jour.\n"
+#| "strement a été effacé ou modifié par un autre utilisateur.\n"
+#| "e va être mise à jour.\n"
 msgid ""
 "L'enregistrement a été effacé ou modifié par un autre utilisateur.\n"
 "\n"
@@ -535,8 +535,8 @@ msgstr "Les champs Utilisateur, Sommaire, Privil#232ge ne peuvent pas #234tre vi
 #: unite_variables.gs_valeurs_utilisees
 #, fuzzy
 #| msgid ""
-#| "valeurs @ARG sont déjà utilisées.\n"
-#| "sir des valeurs différentes, annuler ou réeffectuer la validation si une valeur n'est pas modifiable.\n"
+#| "urs @ARG sont déjà utilisées.\n"
+#| "des valeurs différentes, annuler ou réeffectuer la validation si une valeur n'est pas modifiable.\n"
 msgid ""
 "Les valeurs @ARG sont déjà utilisées.\n"
 "\n"
@@ -549,8 +549,8 @@ msgstr ""
 #: unite_variables.gs_valeur_utilisee
 #, fuzzy
 #| msgid ""
-#| "aleur @ARG est déjà utilisée.\n"
-#| "sir une valeur différente, annuler ou réeffectuer la validation si une valeur n'est pas modifiable.\n"
+#| "r @ARG est déjà utilisée.\n"
+#| "une valeur différente, annuler ou réeffectuer la validation si une valeur n'est pas modifiable.\n"
 msgid ""
 "La valeur @ARG est déjà utilisée.\n"
 "\n"
@@ -567,8 +567,8 @@ msgstr "Valider les modifications"
 #: unite_variables.gs_zones_obligatoires
 #, fuzzy
 #| msgid ""
-#| "zones suivantes ne peuvent pas être vides : @ARG .\n"
-#| "ectuer une saisie ou annuler.\n"
+#| "s suivantes ne peuvent pas être vides : @ARG .\n"
+#| "er une saisie ou annuler.\n"
 msgid ""
 "Les zones suivantes ne peuvent pas être vides : @ARG .\n"
 "\n"
@@ -588,8 +588,8 @@ msgstr ""
 #: unite_variables.gs_zone_obligatoire
 #, fuzzy
 #| msgid ""
-#| "one @ARG ne peut pas être vide.\n"
-#| "ectuer une saisie ou annuler.\n"
+#| "@ARG ne peut pas être vide.\n"
+#| "er une saisie ou annuler.\n"
 msgid ""
 "La zone @ARG ne peut pas être vide.\n"
 "\n"

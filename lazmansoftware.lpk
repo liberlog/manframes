@@ -24,7 +24,7 @@
     </CompilerOptions>
     <Description Value="Full management software RAD Framework"/>
     <License Value="LGPL"/>
-    <Version Minor="9" Release="3" Build="2"/>
+    <Version Minor="9" Release="4" Build="1"/>
     <Files Count="11">
       <Item1>
         <Filename Value="forms/U_Acces.lfm"/>
