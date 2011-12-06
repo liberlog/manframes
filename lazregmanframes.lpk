@@ -13,26 +13,21 @@
       </Other>
     </CompilerOptions>
     <Version Major="1"/>
-    <Files Count="4">
+    <Files Count="3">
       <Item1>
         <Filename Value="composants/U_RegisterFrameWork.pas"/>
         <HasRegisterProc Value="True"/>
         <UnitName Value="U_RegisterFrameWork"/>
       </Item1>
       <Item2>
-        <Filename Value="composants/U_RegisterGroupView.pas"/>
-        <HasRegisterProc Value="True"/>
-        <UnitName Value="U_RegisterGroupView"/>
-      </Item2>
-      <Item3>
         <Filename Value="composants/U_RegisterIni.pas"/>
         <HasRegisterProc Value="True"/>
         <UnitName Value="U_RegisterIni"/>
-      </Item3>
-      <Item4>
+      </Item2>
+      <Item3>
         <Filename Value="composants/U_RegVersion.pas"/>
         <UnitName Value="U_RegVersion"/>
-      </Item4>
+      </Item3>
     </Files>
     <Type Value="RunAndDesignTime"/>
     <RequiredPkgs Count="2">

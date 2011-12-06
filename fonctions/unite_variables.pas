@@ -146,18 +146,8 @@ resourcestring
                         	 + 'Réessayez d''ouvrir la fiche.' ;
   GS_ERREUR_RESEAU = 'Erreur réseau.' + #13#10
                         + 'Vérifier la connexion réseau.' ;
-  GS_GROUP_INCLUDE_LIST = 'Liste d''inclusion';
-  GS_GROUP_EXCLUDE_LIST = 'Liste d''exclusion';
+
                         //GS_CHANGEMENTS_SAUVER = 'Des changements ont été effectués.' + #13#10 +' Le trie nécessite alors une sauvegarde.'  + #13#10 + 'Voulez-vous enregistrer les changements effectués ?' ;
-  GS_GROUPE_MAUVAIS_BOUTONS = 'Les boutons de transfert doivent s''inverser dans les deux listes. ' + #13#10
-                        	+ 'Les boutons de transfert sont identifiés par rapport à leur liste,' + #13#10
-                        	+ ' à l''inverse des numéros d''images identifiés par rapport à la table. ' ;
-      // Doit-on enregistrer ou abandonner
-  GS_GROUPE_ABANDON = 'Veuillez enregistrer ou abandonner avant de continuer.' ;
-      // Vidage du panier : oui ou non
-  GS_GROUPE_VIDER   = 'Le panier utilisé pour les réaffectations n''est pas vide.' + #13#10
-                         + 'Voulez-vous abandonner ces réaffectations ?' ;
-  GS_PAS_GROUPES    = 'DatasourceOwnerTable ou DatasourceOwnerKey non trouvés.' ;
        /////////////////////
       // Aide du message //
      /////////////////////
@@ -192,11 +182,7 @@ resourcestring
 
   GS_INSERER_ENREGISTREMENT = 'Insérer un enregistrement' ;
   GS_VALIDER_MODIFICATIONS  = 'Valider les modifications' ;
-  GS_GROUPE_INCLURE         = 'Inclure' ;
-  GS_GROUPE_EXCLURE         = 'Exclure' ;
-  GS_GROUPE_TOUT_INCLURE    = 'Tout inclure' ;
-  GS_GROUPE_TOUT_EXCLURE    = 'Tout exclure' ;
-  GS_GROUPE_RETOUR_ORIGINE  = 'Restaurer les données initiales' ;
+
 
   GS_INI_NAME_FUSION1     = 'Fusion1' ;
   GS_INI_NAME_FUSION2     = 'Fusion2' ;

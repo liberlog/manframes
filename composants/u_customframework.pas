@@ -70,6 +70,7 @@ uses
   TntStdCtrls ,
 {$ENDIF}
   fonctions_erreurs,
+  U_GroupView,
   SyncObjs, fonctions_init,
   u_framework_components ;
 
@@ -341,7 +342,7 @@ type
 
   { TF_CustomFrameWork }
 
-  TF_CustomFrameWork = class({$IFDEF SFORM}TSuperForm{$ELSE}{$IFDEF TNT}TTntForm{$ELSE}TForm{$ENDIF}{$ENDIF})
+  TF_CustomFrameWork = class({$IFDEF SFORM}TSuperForm{$ELSE}{$IFDEF TNT}TTntForm{$ELSE}TForm{$ENDIF}{$ENDIF}, IFWFormVerify)
   private
     gb_PasUtiliserProps        : Boolean;
     gds_Query1           : TDataSource ;
