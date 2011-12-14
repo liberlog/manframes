@@ -62,7 +62,7 @@ uses
   fonctions_tableauframework, u_searchcomponents,
   U_FormMainIni, Buttons, Forms, DBCtrls, Grids,
   DBGrids, ComCtrls, StdCtrls, SysUtils, U_ExtDBNavigator,
-  TypInfo, Variants, U_GroupView, fonctions_manbase,
+  TypInfo, Variants, fonctions_manbase,
 {$IFDEF VERSIONS}
   fonctions_version,
 {$ENDIF}
@@ -3862,6 +3862,7 @@ begin
                 While assigned ( ge_FetchEvent ) and ( ge_FetchEvent.WaitFor ( 70 ) = wrSignaled ) and not gb_DatasourceActif do
                   Begin
                     Application.ProcessMessages ;
+                    Sleep ( 100 );
                   End ;
                 ge_FetchEvent.Free ;
                 ge_FetchEvent := Nil ;

@@ -44,8 +44,8 @@ msgstr ""
 #: unite_variables.gs_change_pas_sommaire
 #, fuzzy
 #| msgid ""
-#| "re :\n"
-#| "\n"
+#| ":\n"
+#| "n\n"
 msgid ""
 "Vous ne pouvez pas changer le libellé de ce sommaire :\n"
 " C'est un sommaire obligatoire.\n"
@@ -166,8 +166,8 @@ msgstr ""
 #: unite_variables.gs_erreur_modification_maj
 #, fuzzy
 #| msgid ""
-#| "le de supprimer cet enregistrement. \n"
-#| "tilisé dans une autre fonction.\n"
+#| "de supprimer cet enregistrement. \n"
+#| "isé dans une autre fonction.\n"
 msgid ""
 "Impossible de supprimer cet enregistrement. \n"
 "Il est utilisé dans une autre fonction.\n"
@@ -218,51 +218,6 @@ msgstr ""
 #: unite_variables.gs_form_table_non_renseignee
 msgid "Le composant @ARG et la fiche @ARG doivent sélectionner une table dans le dictionnaire."
 msgstr ""
-
-#: unite_variables.gs_groupe_abandon
-msgid "Veuillez enregistrer ou abandonner avant de continuer."
-msgstr ""
-
-#: unite_variables.gs_groupe_exclure
-msgid "Exclure"
-msgstr "Exclude"
-
-#: unite_variables.gs_groupe_inclure
-msgid "Inclure"
-msgstr "Include"
-
-#: unite_variables.gs_groupe_mauvais_boutons
-msgid ""
-"Les boutons de transfert doivent s'inverser dans les deux listes. \n"
-"Les boutons de transfert sont identifiés par rapport à leur liste,\n"
-" à l'inverse des numéros d'images identifiés par rapport à la table. \n"
-msgstr ""
-
-#: unite_variables.gs_groupe_retour_origine
-msgid "Restaurer les données initiales"
-msgstr ""
-
-#: unite_variables.gs_groupe_tout_exclure
-msgid "Tout exclure"
-msgstr "Exclude all"
-
-#: unite_variables.gs_groupe_tout_inclure
-msgid "Tout inclure"
-msgstr "Include all"
-
-#: unite_variables.gs_groupe_vider
-msgid ""
-"Le panier utilisé pour les réaffectations n'est pas vide.\n"
-"Voulez-vous abandonner ces réaffectations ?\n"
-msgstr ""
-
-#: unite_variables.gs_group_exclude_list
-msgid "Liste d'exclusion"
-msgstr "Exclude list"
-
-#: unite_variables.gs_group_include_list
-msgid "Liste d'inclusion"
-msgstr "Include list"
 
 #: unite_variables.gs_ini_file_fusion
 msgid "FUSION.TMP"
@@ -386,10 +341,6 @@ msgid ""
 " C'est un sommaire obligatoire.\n"
 msgstr ""
 
-#: unite_variables.gs_pas_groupes
-msgid "DatasourceOwnerTable ou DatasourceOwnerKey non trouvés."
-msgstr ""
-
 #: unite_variables.gs_pas_mot_passe
 msgid "Pas de mot de passe : Abandon de la sauvegarde."
 msgstr ""
@@ -449,8 +400,8 @@ msgstr "Validate"
 #: unite_variables.gs_zones_obligatoires
 #, fuzzy
 #| msgid ""
-#| "s suivantes ne peuvent pas être vides : @ARG .\n"
-#| "er une saisie ou annuler.\n"
+#| "uivantes ne peuvent pas être vides : @ARG .\n"
+#| "une saisie ou annuler.\n"
 msgid ""
 "Les zones suivantes ne peuvent pas être vides : @ARG .\n"
 "\n"
@@ -470,8 +421,8 @@ msgstr ""
 #: unite_variables.gs_zone_obligatoire
 #, fuzzy
 #| msgid ""
-#| "@ARG ne peut pas être vide.\n"
-#| "er une saisie ou annuler.\n"
+#| "G ne peut pas être vide.\n"
+#| "une saisie ou annuler.\n"
 msgid ""
 "La zone @ARG ne peut pas être vide.\n"
 "\n"
@@ -483,8 +434,8 @@ msgstr ""
 #: unite_variables.gs_zone_unique
 #, fuzzy
 #| msgid ""
-#| "@ARG est unique.\n"
-#| "r ce champ, réessayer, ou annuler.\n"
+#| "G est unique.\n"
+#| "e champ, réessayer, ou annuler.\n"
 msgid ""
 "La zone @ARG est unique.\n"
 "\n"
