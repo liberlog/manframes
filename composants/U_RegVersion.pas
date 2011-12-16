@@ -10,7 +10,7 @@ Rédigé par Matthieu Giroux le 1/12/2003
 
 interface
 
-{$I ..\Compilers.inc}
+{$I ..\DLCompilers.inc}
 
 uses
 {$IFDEF FPC}

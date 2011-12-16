@@ -1,7 +1,7 @@
 ﻿unit u_searchcomponents;
 
 {$I ..\extends.inc}
-{$I ..\Compilers.inc}
+{$I ..\DLCompilers.inc}
 {$IFDEF FPC}
 {$mode Delphi}
 {$ENDIF}

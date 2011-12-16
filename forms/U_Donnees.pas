@@ -13,7 +13,7 @@ unit U_Donnees;
 {$MODE Delphi}
 {$ENDIF}
 
-{$I ..\compilers.inc}
+{$I ..\DLCompilers.inc}
 {$I ..\extends.inc}
 
 interface

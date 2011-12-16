@@ -11,7 +11,7 @@
 
 unit U_FenetrePrincipale;
 
-{$I ..\Compilers.inc}
+{$I ..\DLCompilers.inc}
 {$I ..\extends.inc}
 
 
@@ -252,6 +252,7 @@ uses
   unite_variables, unite_messages,
   U_Acces, fonctions_dbcomponents,
   fonctions_FenetrePrincipale,
+  fonctions_system,
   fonctions_proprietes, fonctions_languages ;
 
 
@@ -342,8 +343,8 @@ begin
   p_LibStb ( br_statusbar );
 
   // Initialisation des variables
-  gs_computer      := f_IniFWReadComputerName;
-  gs_sessionuser   := f_IniFWReadUtilisateurSession;
+  gs_computer      := fs_GetComputerName;
+  gs_sessionuser   := fs_GetUserSession;
   lbmp_Bitmap := TBitmap.Create ;
   lbmp_Bitmap.Handle := 0 ;
 
@@ -1030,4 +1031,4 @@ initialization
   p_ConcatVersion ( gVer_F_FenetrePrincipale );
 {$ENDIF}
 end.
-
+

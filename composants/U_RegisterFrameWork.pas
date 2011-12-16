@@ -8,7 +8,7 @@ TF_FormMainIniExpert : Expert enregistrant le module dans les nouveaux projets
 Rédigé par Matthieu Giroux le 1/12/2003
 }
 
-{$I ..\Compilers.inc}
+{$I ..\DLCompilers.inc}
 
 interface
 

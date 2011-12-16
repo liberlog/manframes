@@ -3,7 +3,7 @@ unit fonctions_Objets_Dynamiques;
 interface
 
 {$I ..\extends.inc}
-{$I ..\Compilers.inc}
+{$I ..\DLCompilers.inc}
 {$IFDEF DELPHI}
    {$R *.res}
 {$ENDIF}

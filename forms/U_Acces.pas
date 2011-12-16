@@ -1,6 +1,6 @@
 ﻿unit U_Acces;
 
-{$I ..\compilers.inc}
+{$I ..\DLCompilers.inc}
 {$I ..\extends.inc}
 
 interface

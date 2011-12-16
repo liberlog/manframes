@@ -1,6 +1,6 @@
 unit U_Administration;
            
-{$I ..\Compilers.inc}
+{$I ..\DLCompilers.inc}
 {$I ..\extends.inc}
 
 

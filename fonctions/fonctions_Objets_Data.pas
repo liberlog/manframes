@@ -3,7 +3,7 @@ unit fonctions_Objets_Data;
 interface
 
 {$I ..\extends.inc}
-{$I ..\Compilers.inc}
+{$I ..\DLCompilers.inc}
 
 {
 
