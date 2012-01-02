@@ -2,20 +2,19 @@
   This source is only used to compile and install the package.
  }
 
-unit lazregmansoft; 
+unit lazmanbase; 
 
 interface
 
 uses
-  u_regmansoftware, LazarusPackageIntf;
+  fonctions_manbase, LazarusPackageIntf;
 
 implementation
 
 procedure Register; 
 begin
-  RegisterUnit('u_regmansoftware', @u_regmansoftware.Register); 
 end; 
 
 initialization
-  RegisterPackage('lazregmansoft', @Register); 
+  RegisterPackage('lazmanbase', @Register); 
 end.

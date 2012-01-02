@@ -8,7 +8,7 @@ interface
 
 uses
     U_Acces, U_Donnees, U_Administration, U_FenetrePrincipale, U_MotPasse, 
-  fonctions_Objets_Data, u_manfillcombobutton, LazarusPackageIntf;
+  fonctions_Objets_Data, LazarusPackageIntf;
 
 implementation
 

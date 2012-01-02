@@ -171,7 +171,7 @@ begin // Enregistre le nouvel expert de projet
    RegisterCustomModule ( TF_FormDico, TCustomModule );
    RegisterCustomModule ( TF_PropForm, TCustomModule );
 {$ENDIF}
-   RegisterComponents(CST_PALETTE_COMPOSANTS_DB, [TExtFillCombo]);
+   RegisterComponents('ManFrames', [TExtFillCombo]);
    RegisterPropertyEditor(TypeInfo(string), TF_CustomFrameWork, 'Version', TVersionProperty);
    {$IFDEF FPC}
 //   RegisterPropertyEditor(TypeInfo(string), TManPreview, 'LeonardiRTF', {$IFDEF FPC}TFileNamePropertyEditor{$ELSE}{$ENDIF});
@@ -187,7 +187,5 @@ initialization
 {$IFDEF FPC}
   {$I u_fillcombobutton.lrs}
 {$ENDIF}
-finalization
-//  UnregisterClass ( TF_McFormDico );
 end.
 
