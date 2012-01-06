@@ -680,9 +680,9 @@ type
          const ach_DebutLettrage, ach_FinLettrage : Char ) : Boolean ; overload;
     function fb_MessageDelete ( const anav_Objet: TCustomPanel;
         const ae_MessageEvent     : TNotifyEvent ) : Boolean ;
-    procedure p_DesactiveGrille ( const adbgd_DataGrid : TCustomGrid ; const anv_navigator, anv_SaisieRecherche : TCustomPanel ); overload;
-    procedure p_DesactiveGrille ; overload;
-    procedure p_VerifieModifications ;
+    procedure Modifying ( const adbgd_DataGrid : TCustomGrid ; const anv_navigator, anv_SaisieRecherche : TCustomPanel ); overload;
+    procedure Modifying ; overload;
+    procedure VerifyModifying ;
     function IsShortCut ( var ao_Msg: {$IFDEF FPC} TLMKey {$ELSE} TWMKey {$ENDIF} ) : Boolean; override;
     constructor Create(Sender: TComponent); override;
     destructor  Destroy; override;
@@ -3175,14 +3175,14 @@ begin
          // active la grille
         Begin
           p_ActiveGrille ( gd_Grid , nav_Navigator, nav_Saisie );
-          p_VerifieModifications ;
+          VerifyModifying ;
         End
         // on est en saisie sur une fiche de saisie
        else
         if (( ddl_DataLink.DataSet.State in [dsEdit, dsInsert] )) Then
          // Désactive la grille
         Begin
-          p_DesactiveGrille ( gd_Grid , nav_Navigator, nav_Saisie );
+          Modifying ( gd_Grid , nav_Navigator, nav_Saisie );
         End ;
 End ;
 ////////////////////////////////////////////////////////////////////////////////
@@ -3303,7 +3303,7 @@ begin
                    if State in [ dsInsert, dsEdit ] Then
                      Post;
               End;
-          p_VerifieModifications;
+          VerifyModifying;
           if ( assigned ( e_AfterPost ))
            then
             try
@@ -3374,7 +3374,7 @@ begin
                  if ( State in [dsInsert, dsEdit]) Then
                   Cancel;
             End;
-        p_VerifieModifications;
+        VerifyModifying;
             // gestion du focus sur le contrôle
         if ( assigned ( e_AfterCancel ))
          then
@@ -3452,7 +3452,7 @@ begin
       and ( ddl_DataLink.DataSet = Dataset ) Then
         Begin
           if  Visible Then
-            p_DesactiveGrille ( gFWSources.items [ li_i ].gd_Grid, gFWSources.items [ li_i ].nav_Navigator, nil );
+            Modifying ( gFWSources.items [ li_i ].gd_Grid, gFWSources.items [ li_i ].nav_Navigator, nil );
           try
           if ( assigned ( e_AfterInsert ))
            then
@@ -4617,7 +4617,7 @@ begin
 end;
 
 // Rend la grille inactive (ie. MAJ ou insertion des données)
-procedure TF_CustomFrameWork.p_DesactiveGrille ( const adbgd_DataGrid : TCustomGrid ; const anv_navigator, anv_SaisieRecherche : TCustomPanel );
+procedure TF_CustomFrameWork.Modifying ( const adbgd_DataGrid : TCustomGrid ; const anv_navigator, anv_SaisieRecherche : TCustomPanel );
 {
 var
   acon_control : TControl ;}
@@ -4656,13 +4656,13 @@ begin
 end;
 
 // Rend les grilles inactives (ie. MAJ ou insertion des données)
-procedure TF_CustomFrameWork.p_DesactiveGrille;
+procedure TF_CustomFrameWork.Modifying;
 var li_i : Integer ;
 Begin
   for li_i := 0 to gFWSources.Count - 1 do
     if assigned ( gFWSources.items [ li_i ].gd_Grid ) Then
       with gFWSources.items [ li_i ] do
-        p_DesactiveGrille ( gd_Grid, nav_Navigator, nav_Saisie );
+        Modifying ( gd_Grid, nav_Navigator, nav_Saisie );
 End;
 ///////////////////////////////////////////////////////////////////////////////
 // Procédure surchargée : DoHide
@@ -4963,7 +4963,7 @@ begin
 end;
 
 // Vérifie si la fiche est toujours en modifications
-procedure TF_CustomFrameWork.p_VerifieModifications ;
+procedure TF_CustomFrameWork.VerifyModifying ;
 var li_i : Integer ;
 begin
   gb_SauverModifications := True ;
