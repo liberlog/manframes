@@ -48,40 +48,31 @@
       <OutDir Value="fonctions"/>
     </i18n>
     <Type Value="RunAndDesignTime"/>
-    <RequiredPkgs Count="11">
+    <RequiredPkgs Count="8">
       <Item1>
         <PackageName Value="virtualtreeview_package"/>
       </Item1>
       <Item2>
-        <PackageName Value="SDFLaz"/>
+        <PackageName Value="LCL"/>
       </Item2>
       <Item3>
-        <PackageName Value="LCL"/>
+        <PackageName Value="lazmanframes"/>
       </Item3>
       <Item4>
-        <PackageName Value="lazmanframes"/>
+        <PackageName Value="lazextcomponents"/>
       </Item4>
       <Item5>
-        <PackageName Value="lazextcomponents"/>
+        <PackageName Value="JvXPBarLaz"/>
       </Item5>
       <Item6>
-        <PackageName Value="zcomponent"/>
+        <PackageName Value="lazfonctions"/>
       </Item6>
       <Item7>
-        <PackageName Value="JvXPBarLaz"/>
+        <PackageName Value="rxnew"/>
       </Item7>
       <Item8>
-        <PackageName Value="lazfonctions"/>
-      </Item8>
-      <Item9>
-        <PackageName Value="zcore"/>
-      </Item9>
-      <Item10>
-        <PackageName Value="rxnew"/>
-      </Item10>
-      <Item11>
         <PackageName Value="FCL"/>
-      </Item11>
+      </Item8>
     </RequiredPkgs>
     <PublishOptions>
       <Version Value="2"/>
