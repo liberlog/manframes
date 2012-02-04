@@ -164,8 +164,8 @@ msgstr ""
 #: unite_variables.gs_erreur_modification_maj
 #, fuzzy
 #| msgid ""
-#| "ible de supprimer cet enregistrement. \n"
-#| " utilisé dans une autre fonction.\n"
+#| "ble de supprimer cet enregistrement. \n"
+#| "utilisé dans une autre fonction.\n"
 msgid ""
 "Impossible de supprimer cet enregistrement. \n"
 "Il est utilisé dans une autre fonction.\n"
@@ -398,8 +398,8 @@ msgstr "Validate"
 #: unite_variables.gs_zones_obligatoires
 #, fuzzy
 #| msgid ""
-#| "nes suivantes ne peuvent pas être vides : @ARG .\n"
-#| "tuer une saisie ou annuler.\n"
+#| "es suivantes ne peuvent pas être vides : @ARG .\n"
+#| "uer une saisie ou annuler.\n"
 msgid ""
 "Les zones suivantes ne peuvent pas être vides : @ARG .\n"
 "\n"
@@ -419,8 +419,8 @@ msgstr ""
 #: unite_variables.gs_zone_obligatoire
 #, fuzzy
 #| msgid ""
-#| "e @ARG ne peut pas être vide.\n"
-#| "tuer une saisie ou annuler.\n"
+#| " @ARG ne peut pas être vide.\n"
+#| "uer une saisie ou annuler.\n"
 msgid ""
 "La zone @ARG ne peut pas être vide.\n"
 "\n"
@@ -432,8 +432,8 @@ msgstr ""
 #: unite_variables.gs_zone_unique
 #, fuzzy
 #| msgid ""
-#| "e @ARG est unique.\n"
-#| "ier ce champ, réessayer, ou annuler.\n"
+#| " @ARG est unique.\n"
+#| "er ce champ, réessayer, ou annuler.\n"
 msgid ""
 "La zone @ARG est unique.\n"
 "\n"
