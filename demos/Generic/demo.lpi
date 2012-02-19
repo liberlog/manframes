@@ -46,7 +46,7 @@
         <PackageName Value="LCL"/>
       </Item5>
     </RequiredPackages>
-    <Units Count="41">
+    <Units Count="42">
       <Unit0>
         <Filename Value="demo.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -55,7 +55,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="2"/>
         <CursorPos X="43" Y="31"/>
-        <UsageCount Value="120"/>
+        <UsageCount Value="121"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit0>
@@ -212,13 +212,12 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="U_FenetrePrincipale"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="245"/>
-        <CursorPos X="67" Y="266"/>
+        <TopLine Value="46"/>
+        <CursorPos X="78" Y="66"/>
         <UsageCount Value="12"/>
         <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit19>
       <Unit20>
@@ -229,11 +228,10 @@
         <UnitName Value="U_Acces"/>
         <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="73"/>
-        <CursorPos X="29" Y="104"/>
+        <TopLine Value="13"/>
+        <CursorPos X="79" Y="46"/>
         <UsageCount Value="11"/>
         <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit20>
       <Unit21>
@@ -250,13 +248,10 @@
       <Unit22>
         <Filename Value="../../forms/u_administration.pas"/>
         <UnitName Value="U_Administration"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="760"/>
-        <CursorPos X="131" Y="770"/>
+        <TopLine Value="76"/>
+        <CursorPos X="83" Y="92"/>
         <UsageCount Value="10"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit22>
       <Unit23>
@@ -414,8 +409,19 @@
         <UsageCount Value="10"/>
         <Loaded Value="True"/>
       </Unit40>
+      <Unit41>
+        <Filename Value="../../../Extended/fonctions/fonctions_init.pas"/>
+        <UnitName Value="fonctions_init"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="3"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="276"/>
+        <CursorPos X="1" Y="298"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit41>
     </Units>
-    <JumpHistory Count="6" HistoryIndex="5">
+    <JumpHistory Count="7" HistoryIndex="6">
       <Position1>
         <Filename Value="../../lazmanframes.pas"/>
         <Caret Line="20" Column="32" TopLine="1"/>
@@ -437,9 +443,13 @@
         <Caret Line="345" Column="129" TopLine="330"/>
       </Position5>
       <Position6>
-        <Filename Value="../../forms/u_administration.pas"/>
-        <Caret Line="72" Column="62" TopLine="47"/>
+        <Filename Value="../../forms/u_acces.pas"/>
+        <Caret Line="104" Column="29" TopLine="73"/>
       </Position6>
+      <Position7>
+        <Filename Value="../../forms/u_fenetreprincipale.pas"/>
+        <Caret Line="66" Column="64" TopLine="46"/>
+      </Position7>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
