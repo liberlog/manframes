@@ -19,12 +19,12 @@ LazarusResources.Add('TF_Acces','FORMDATA',[
   +'Label1'#4'Left'#2#15#6'Height'#2#18#3'Top'#3#136#0#5'Width'#2''''#8'AutoSiz'
   +'e'#8#7'Caption'#6#6'Acc'#195#168's'#10'Font.Color'#7#7'clBlack'#11'ParentCo'
   +'lor'#8#10'ParentFont'#8#10'ColorFocus'#7#8'clMaroon'#0#0#5'TEdit'#6'tx_mdp'
-  +#4'Left'#2'x'#6'Height'#2#27#3'Top'#2'['#5'Width'#3#199#0#8'EchoMode'#7#10'e'
+  +#4'Left'#2'x'#6'Height'#2#26#3'Top'#2'['#5'Width'#3#199#0#8'EchoMode'#7#10'e'
   +'mPassword'#9'MaxLength'#2'2'#12'PasswordChar'#6#1'*'#8'TabOrder'#2#0#0#0#16
-  +'TFWDBLookupCombo'#13'cbx_Connexion'#4'Left'#2'x'#6'Height'#2#29#3'Top'#3#128
+  +'TFWDBLookupCombo'#13'cbx_Connexion'#4'Left'#2'x'#6'Height'#2#28#3'Top'#3#128
   +#0#5'Width'#3#199#0#5'Color'#7#12'clMoneyGreen'#8'KeyField'#6#9'CONN_Clep'#9
   +'ListField'#6#9'CONN_Clep'#14'ListFieldIndex'#2#0#11'LookupCache'#8#8'TabOrd'
-  +'er'#2#4#0#0#16'TFWDBLookupCombo'#8'cbx_User'#4'Left'#2'x'#6'Height'#2#29#3
+  +'er'#2#4#0#0#16'TFWDBLookupCombo'#8'cbx_User'#4'Left'#2'x'#6'Height'#2#28#3
   +'Top'#2'8'#5'Width'#3#199#0#5'Color'#7#12'clMoneyGreen'#8'KeyField'#6#9'UTIL'
   +'_Clep'#9'ListField'#6#9'UTIL_Clep'#14'ListFieldIndex'#2#0#11'LookupCache'#8
   +#8'OnChange'#7#14'cbx_userChange'#8'TabOrder'#2#1#0#0#9'TFWCancel'#10'btn_ca'

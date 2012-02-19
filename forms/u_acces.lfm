@@ -69,7 +69,7 @@ object F_Acces: TF_Acces
     end
     object tx_mdp: TEdit
       Left = 120
-      Height = 27
+      Height = 26
       Top = 91
       Width = 199
       EchoMode = emPassword
@@ -79,7 +79,7 @@ object F_Acces: TF_Acces
     end
     object cbx_Connexion: TFWDBLookupCombo
       Left = 120
-      Height = 29
+      Height = 28
       Top = 128
       Width = 199
       Color = clMoneyGreen
@@ -91,7 +91,7 @@ object F_Acces: TF_Acces
     end
     object cbx_User: TFWDBLookupCombo
       Left = 120
-      Height = 29
+      Height = 28
       Top = 56
       Width = 199
       Color = clMoneyGreen

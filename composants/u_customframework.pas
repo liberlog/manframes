@@ -1,4 +1,4 @@
-﻿Unit u_customframework;
+Unit u_customframework;
  // Unité de TF_FormFrameWork
 
  // Le module crée des propriétés servant à récupérer des informations dans la table dico
@@ -80,7 +80,8 @@ uses
                                       FileUnit : 'U_CustomFrameWork' ;
                                       Owner : 'Matthieu Giroux' ;
                                       Comment : 'Fiche personnalisée avec méthodes génériques et gestion de données.' ;
-                                      BugsStory : '1.1.0.2 : Add procedure to add group view.' + #13#10
+                                      BugsStory : '1.1.0.3 : UTF 8.' + #13#10
+                                                + '1.1.0.2 : Add procedure to add group view.' + #13#10
                                                 + '1.1.0.1 : Renaming Columns to Sources and creating Linked Sources.' + #13#10
                                                 + '1.1.0.0 : Creating fonctions_manbase and manbase package.' + #13#10
                                                 + '1.0.0.2 : Parent Panel bug, begining with 1.' + #13#10
@@ -92,7 +93,7 @@ uses
                                                 + '0.1.1.1 : Gestion mieux centralisée sur Datasource, Datasource2,etc.' + #13#10
                                                 + '0.1.0.1 : Version non testée' + #13#10 ;
                                        UnitType : 3 ;
-                                       Major : 1 ; Minor : 1 ; Release : 0; Build : 2 );
+                                       Major : 1 ; Minor : 1 ; Release : 0; Build : 3 );
 
 {$ENDIF}
 

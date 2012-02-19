@@ -1,4 +1,4 @@
-﻿unit U_Acces;
+unit U_Acces;
 
 {$I ..\DLCompilers.inc}
 {$I ..\extends.inc}
@@ -34,7 +34,8 @@ const
                                FileUnit : 'U_Acces' ;
                                Owner : 'Matthieu Giroux' ;
                                Comment : 'Répertorie les composants.' ;
-                               BugsStory : 'Version 1.3.0.1 : Making comments.' + #13#10
+                               BugsStory : 'Version 1.3.0.2 : UTF 8.' + #13#10
+                                         + 'Version 1.3.0.1 : Making comments.' + #13#10
                                          + 'Version 1.3.0.0 : Passage en LAZARUS' + #13#10
                                          + 'Version 1.2.0.0 : Passage en non ADO' + #13#10
                                          + 'Version 1.1.0.1 : Utilisation de JEDI' + #13#10
@@ -42,7 +43,7 @@ const
                                          + 'Version 1.0.1.0 : Gestion utilisateur par défaut ( voir U_FenetrePrincipale )' + #13#10
                                          + 'Version 1.0.0.0 : Gestion accès multiple.';
                                UnitType : 2 ;
-                               Major : 1 ; Minor : 3 ; Release : 0 ; Build : 1 );
+                               Major : 1 ; Minor : 3 ; Release : 0 ; Build : 2 );
 
 {$ENDIF}
 
@@ -100,7 +101,9 @@ uses fonctions_images,
 {$ENDIF}
   unite_variables, fonctions_db, fonctions_dbcomponents ;
 
-{$IFNDEF FPC}
+{$IFDEF FPC}
+{$R *.lfm}
+{$ELSE}
 {$R *.dfm}
 {$ENDIF}
 
@@ -363,9 +366,6 @@ begin
 end;
 
 initialization
-{$IFDEF FPC}
-  {$i U_Acces.lrs}
-{$ENDIF}
 {$IFDEF VERSIONS}
   p_ConcatVersion ( gver_F_Acces );
 {$ENDIF}

@@ -1,4 +1,4 @@
-﻿unit fonctions_tableauframework;
+unit fonctions_tableauframework;
 
 {$I ..\DLCompilers.inc}
 {$I ..\extends.inc}
@@ -55,10 +55,11 @@ const
                                     FileUnit : 'fonctions_tableauframework' ;
                                              Owner : 'Matthieu Giroux' ;
                                     Comment : 'Gestion du tableau de comportement.' ;
-                                    BugsStory : '0.1.1.0 : Gestion mieux centralisée sur Datasource, Datasource2,etc. non testée' + #13#10
+                                    BugsStory : '0.1.1.1 : UTF 8' + #13#10
+                                              + '0.1.1.0 : Gestion mieux centralisée sur Datasource, Datasource2,etc. non testée' + #13#10
                                               + '0.1.0.1 : Version non testée' + #13#10 ;
                                      UnitType : 1 ;
-                                     Major : 0 ; Minor : 1 ; Release : 1 ; Build : 0 );
+                                     Major : 0 ; Minor : 1 ; Release : 1 ; Build : 1 );
 {$ENDIF}
 function  fb_IsRechCtrlPoss(Sender: TComponent): Boolean;
 function fb_IsCheckCtrlPoss(Sender: TComponent): Boolean;

@@ -31,7 +31,7 @@
         <UnitName Value="fonctions_Objets_Dynamiques"/>
       </Item1>
       <Item2>
-        <Filename Value="fonctions/fonctions_FenetrePrincipale.pas"/>
+        <Filename Value="fonctions/fonctions_fenetreprincipale.pas"/>
         <UnitName Value="fonctions_FenetrePrincipale"/>
       </Item2>
       <Item3>

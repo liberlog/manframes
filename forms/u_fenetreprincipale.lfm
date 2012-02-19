@@ -1,14 +1,14 @@
 inherited F_FenetrePrincipale: TF_FenetrePrincipale
-  Left = 448
+  Left = 568
   Height = 578
-  Top = 236
+  Top = 251
   Width = 783
   HelpContext = 1400
   ActiveControl = spl_volet
   Align = alClient
   AutoSize = True
   Caption = 'Exemple'
-  ClientHeight = 559
+  ClientHeight = 550
   ClientWidth = 783
   Color = 13565951
   DockSite = True
@@ -48,7 +48,7 @@ inherited F_FenetrePrincipale: TF_FenetrePrincipale
   end
   object spl_volet: TSplitter[3]
     Left = 227
-    Height = 487
+    Height = 478
     Top = 50
     Width = 5
   end
@@ -193,7 +193,7 @@ inherited F_FenetrePrincipale: TF_FenetrePrincipale
   object br_statusbar: TStatusBar[5]
     Left = 0
     Height = 22
-    Top = 537
+    Top = 528
     Width = 783
     AutoHint = True
     Panels = <    
@@ -235,7 +235,7 @@ inherited F_FenetrePrincipale: TF_FenetrePrincipale
   end
   object mtb_CustomizedMenu: TExtMenuToolBar[6]
     Left = 0
-    Height = 487
+    Height = 478
     Top = 50
     Width = 30
     Align = alLeft
@@ -255,19 +255,19 @@ inherited F_FenetrePrincipale: TF_FenetrePrincipale
   end
   object tbar_volet: TPanel[7]
     Left = 30
-    Height = 487
+    Height = 478
     Top = 50
     Width = 197
     Align = alLeft
     BevelOuter = bvNone
-    ClientHeight = 487
+    ClientHeight = 478
     ClientWidth = 197
     Color = cl3DLight
     ParentColor = False
     TabOrder = 5
     object scb_Volet: TScrollBox
       Left = 0
-      Height = 487
+      Height = 478
       Hint = 'Cliquez pour accéder aux fonctions'
       Top = 0
       Width = 197

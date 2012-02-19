@@ -25,47 +25,39 @@
     <Description Value="Full management software RAD Framework"/>
     <License Value="LGPL"/>
     <Version Minor="9" Release="4" Build="2"/>
-    <Files Count="10">
+    <Files Count="8">
       <Item1>
-        <Filename Value="forms/U_Acces.lfm"/>
-        <Type Value="LFM"/>
+        <Filename Value="forms/u_acces.pas"/>
+        <UnitName Value="U_Acces"/>
       </Item1>
       <Item2>
-        <Filename Value="forms/U_Acces.lrs"/>
-        <Type Value="LRS"/>
-      </Item2>
-      <Item3>
-        <Filename Value="forms/U_Acces.pas"/>
-        <UnitName Value="U_Acces"/>
-      </Item3>
-      <Item4>
         <Filename Value="forms/U_Donnees.pas"/>
         <UnitName Value="U_Donnees"/>
+      </Item2>
+      <Item3>
+        <Filename Value="forms/u_administration.pas"/>
+        <UnitName Value="U_Administration"/>
+      </Item3>
+      <Item4>
+        <Filename Value="forms/u_fenetreprincipale.pas"/>
+        <UnitName Value="U_FenetrePrincipale"/>
       </Item4>
       <Item5>
-        <Filename Value="forms/U_Administration.pas"/>
-        <UnitName Value="U_Administration"/>
-      </Item5>
-      <Item6>
-        <Filename Value="forms/U_FenetrePrincipale.pas"/>
-        <UnitName Value="U_FenetrePrincipale"/>
-      </Item6>
-      <Item7>
         <Filename Value="forms/U_MotPasse.lfm"/>
         <Type Value="LFM"/>
-      </Item7>
-      <Item8>
+      </Item5>
+      <Item6>
         <Filename Value="forms/U_MotPasse.lrs"/>
         <Type Value="LRS"/>
-      </Item8>
-      <Item9>
+      </Item6>
+      <Item7>
         <Filename Value="forms/U_MotPasse.pas"/>
         <UnitName Value="U_MotPasse"/>
-      </Item9>
-      <Item10>
+      </Item7>
+      <Item8>
         <Filename Value="fonctions/fonctions_Objets_Data.pas"/>
         <UnitName Value="fonctions_Objets_Data"/>
-      </Item10>
+      </Item8>
     </Files>
     <i18n>
       <EnableI18N Value="True"/>

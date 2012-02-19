@@ -1,4 +1,4 @@
-﻿unit u_fillcombobutton;
+unit u_fillcombobutton;
 
 {$I ..\DLCompilers.inc}
 {$I ..\extends.inc}
@@ -25,12 +25,13 @@ const
                                        Owner : 'Matthieu Giroux' ;
                                        Comment : 'Button of Filling Combo for 1-N link.' + #13#10
                                                + 'Need to have U_FormMainIni as MainForm, u_customframework as Modal Form.' ;
-                                       BugsStory : '0.9.0.1 : Optimising.' + #13#10
+                                       BugsStory : '0.9.0.2 : UTF 8.' + #13#10
+                                                 + '0.9.0.1 : Optimising.' + #13#10
                                                  + '0.9.0.0 : Testing on LAZARUS.' + #13#10
                                                  + '0.8.0.1 : Some tests.' + #13#10
                                                  + '0.8.0.0 : Not Finished.';
                                        UnitType : 3 ;
-                                       Major : 0 ; Minor : 9 ; Release : 0 ; Build : 1 );
+                                       Major : 0 ; Minor : 9 ; Release : 0 ; Build : 2 );
 {$ENDIF}
 
 { TExtFillCombo }
