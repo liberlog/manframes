@@ -319,7 +319,7 @@ implementation
 
 uses U_FormMainIni, fonctions_string, SysUtils, TypInfo, Dialogs,
      U_Administration, fonctions_images , fonctions_init, U_FenetrePrincipale,
-     fonctions_dbcomponents,
+     fonctions_dbcomponents, fonctions_db,
      unite_variables, Variants, fonctions_proprietes, 
      fonctions_Objets_Dynamiques ;
 

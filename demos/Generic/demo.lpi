@@ -257,10 +257,13 @@
       <Unit23>
         <Filename Value="../../fonctions/fonctions_Objets_Data.pas"/>
         <UnitName Value="fonctions_Objets_Data"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="4"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="522"/>
-        <CursorPos X="3" Y="546"/>
+        <TopLine Value="289"/>
+        <CursorPos X="30" Y="322"/>
         <UsageCount Value="10"/>
+        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit23>
       <Unit24>
@@ -312,7 +315,7 @@
       <Unit30>
         <Filename Value="../../lazmanframes.pas"/>
         <UnitName Value="lazmanframes"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="5"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="136" Y="14"/>
@@ -354,7 +357,6 @@
         <TopLine Value="102"/>
         <CursorPos X="10" Y="116"/>
         <UsageCount Value="11"/>
-        <LoadedDesigner Value="True"/>
       </Unit34>
       <Unit35>
         <Filename Value="../../fonctions/fonctions_FenetrePrincipale.pas"/>
@@ -402,26 +404,27 @@
       <Unit40>
         <Filename Value="../../../Extended/fonctions/fonctions_version.pas"/>
         <UnitName Value="fonctions_version"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="6"/>
         <WindowIndex Value="0"/>
         <TopLine Value="49"/>
         <CursorPos X="92" Y="74"/>
         <UsageCount Value="10"/>
         <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit40>
       <Unit41>
         <Filename Value="../../../Extended/fonctions/fonctions_init.pas"/>
         <UnitName Value="fonctions_init"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="3"/>
         <WindowIndex Value="0"/>
         <TopLine Value="276"/>
         <CursorPos X="1" Y="298"/>
         <UsageCount Value="10"/>
         <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit41>
     </Units>
-    <JumpHistory Count="7" HistoryIndex="6">
+    <JumpHistory Count="9" HistoryIndex="8">
       <Position1>
         <Filename Value="../../lazmanframes.pas"/>
         <Caret Line="20" Column="32" TopLine="1"/>
@@ -450,6 +453,14 @@
         <Filename Value="../../forms/u_fenetreprincipale.pas"/>
         <Caret Line="66" Column="64" TopLine="46"/>
       </Position7>
+      <Position8>
+        <Filename Value="../../fonctions/fonctions_Objets_Data.pas"/>
+        <Caret Line="546" Column="3" TopLine="522"/>
+      </Position8>
+      <Position9>
+        <Filename Value="../../fonctions/fonctions_Objets_Data.pas"/>
+        <Caret Line="639" Column="91" TopLine="605"/>
+      </Position9>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
