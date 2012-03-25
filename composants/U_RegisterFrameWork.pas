@@ -66,7 +66,8 @@ uses DB, TypInfo,
   u_propform,
   U_RegVersion,
   u_fillcombobutton,
-  unite_messages;
+  unite_messages,
+  u_multidata;
 
 { TNavigatorsProperty }
 
@@ -165,21 +166,23 @@ begin // Enregistre le nouvel expert de projet
   // Procédures à garder pour peut-être plus tard ( utilisation actuelle d'unités dépréciées)
 // Un register libère automatiquement la variable à la suppression
 {$IFDEF FPC}
-   RegisterNoIcon([TF_FormDico]);
-   RegisterNoIcon([TF_PropForm]);
+  RegisterNoIcon([TF_FormDico]);
+  RegisterNoIcon([TF_PropForm]);
+  RegisterNoIcon([TMDataSources]);
 {$ELSE}
-   RegisterCustomModule ( TF_FormDico, TCustomModule );
-   RegisterCustomModule ( TF_PropForm, TCustomModule );
+  RegisterCustomModule ( TF_FormDico, TCustomModule );
+  RegisterCustomModule ( TF_PropForm, TCustomModule );
+  RegisterCustomModule ( TMDataSources, TCustomModule );
 {$ENDIF}
-   RegisterComponents('ManFrames', [TExtFillCombo]);
-   RegisterPropertyEditor(TypeInfo(string), TF_CustomFrameWork, 'Version', TVersionProperty);
+  RegisterComponents('ManFrames', [TExtFillCombo]);
+  RegisterPropertyEditor(TypeInfo(string), TF_CustomFrameWork, 'Version', TVersionProperty);
    {$IFDEF FPC}
 //   RegisterPropertyEditor(TypeInfo(string), TManPreview, 'LeonardiRTF', {$IFDEF FPC}TFileNamePropertyEditor{$ELSE}{$ENDIF});
    {$ENDIF}
-   RegisterPropertyEditor(TypeInfo(string), TFWSource, 'Key', {$IFDEF FPC}TFieldProperty{$ELSE}TDataFieldProperty{$ENDIF});
+  RegisterPropertyEditor(TypeInfo(string), TFWSource, 'Key', {$IFDEF FPC}TFieldProperty{$ELSE}TDataFieldProperty{$ENDIF});
 
-   RegisterPropertyEditor(TypeInfo(string), TFWSource, 'Navigator', TNavigatorsProperty);
-   RegisterPropertyEditor(TypeInfo(string), TFWSource, 'NavEdit', TNavigatorsProperty);
+  RegisterPropertyEditor(TypeInfo(string), TFWSource, 'Navigator', TNavigatorsProperty);
+  RegisterPropertyEditor(TypeInfo(string), TFWSource, 'NavEdit', TNavigatorsProperty);
 
 end;
 
