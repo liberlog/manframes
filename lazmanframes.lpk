@@ -22,7 +22,7 @@
     <Description Value="Child Form data management and relationships"/>
     <License Value="LGPL"/>
     <Version Minor="9" Release="4" Build="8"/>
-    <Files Count="9">
+    <Files Count="8">
       <Item1>
         <Filename Value="fonctions/fonctions_tableauframework.pas"/>
         <UnitName Value="fonctions_tableauframework"/>
@@ -55,10 +55,6 @@
         <Filename Value="forms/u_multidonnees.pas"/>
         <UnitName Value="u_multidonnees"/>
       </Item8>
-      <Item9>
-        <Filename Value="fonctions/fonctions_autocomponents.pas"/>
-        <UnitName Value="fonctions_autocomponents"/>
-      </Item9>
     </Files>
     <i18n>
       <EnableI18N Value="True"/>

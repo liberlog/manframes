@@ -164,8 +164,8 @@ msgstr ""
 #: unite_variables.gs_erreur_modification_maj
 #, fuzzy
 #| msgid ""
-#| "er cet enregistrement. \n"
-#| "une autre fonction.\n"
+#| " cet enregistrement. \n"
+#| "e autre fonction.\n"
 msgid ""
 "Impossible de supprimer cet enregistrement. \n"
 "Il est utilisé dans une autre fonction.\n"
