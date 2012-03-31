@@ -29,12 +29,11 @@ uses
 {$IFDEF EADO}
   ADODB,
 {$ENDIF}
-{$IFDEF IBX}
-  IBQuery, IB, IBDatabase,
-{$ENDIF}
+  {$IFDEF IBX}
+    IBQuery, IB, IBDatabase,
+  {$ENDIF}
 {$IFDEF ZEOS}
-  ZConnection,
-  ZDataset,
+  ZConnection, ZDataset,
 {$ENDIF}
 {$IFDEF VERSIONS}
   fonctions_version,
@@ -271,7 +270,7 @@ end;
 
 procedure TMDataSources.p_SetSources(const ASources: TDSSources);
 begin
-  FConnections.Assign( Sources );
+  FConnections.Assign( ASources );
 
 end;
 

@@ -241,6 +241,8 @@ begin
    Else anav_Navigateur.Hints.Strings [ 12 ] := 'Déplacer l''enregistrement vers le bas' ;
    }
 end;
+
+
 // Récupère l'icône du bouton de la fonction et le renvoie
 // En entrée : le bouton en objet
 // En sortie : L'icône récupéré

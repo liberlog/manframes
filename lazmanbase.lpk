@@ -21,21 +21,34 @@
       </Other>
     </CompilerOptions>
     <Version Major="1" Release="1" Build="6"/>
-    <Files Count="1">
+    <Files Count="2">
       <Item1>
         <Filename Value="fonctions/fonctions_manbase.pas"/>
         <UnitName Value="fonctions_manbase"/>
       </Item1>
+      <Item2>
+        <Filename Value="composants/u_multidata.pas"/>
+        <UnitName Value="u_multidata"/>
+      </Item2>
     </Files>
     <i18n>
       <OutDir Value="fonctions"/>
     </i18n>
     <Type Value="RunAndDesignTime"/>
-    <RequiredPkgs Count="1">
+    <RequiredPkgs Count="4">
       <Item1>
+        <PackageName Value="ZComponent"/>
+      </Item1>
+      <Item2>
+        <PackageName Value="lazextcomponents"/>
+      </Item2>
+      <Item3>
+        <PackageName Value="lazfonctions"/>
+      </Item3>
+      <Item4>
         <PackageName Value="FCL"/>
         <MinVersion Major="1" Valid="True"/>
-      </Item1>
+      </Item4>
     </RequiredPkgs>
     <UsageOptions>
       <UnitPath Value="$(PkgOutDir)"/>

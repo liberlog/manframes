@@ -72,7 +72,8 @@ uses
   fonctions_erreurs,
   U_GroupView,
   SyncObjs, fonctions_init,
-  u_framework_components ;
+  u_framework_components,
+  u_multidata;
 
 {$IFDEF VERSIONS}
   const
@@ -194,8 +195,13 @@ type
      var_Enregistrement : Variant ;
      e_NavClick    : EExtNavClick ;
      e_FocusChange : TDataChangeEvent;
+     ga_Counters : Array of TFWCounter;
+     ga_CsvDefs : Array of TFWCsvDef;
+     gr_Connection : TDSSource;
 
     FStored: Boolean;
+    function GetCounter(Index: Integer): TFWCounter;
+    function GetCsvDef(Index: Integer): TFWCsvDef;
     procedure p_SetDataSource ( const a_Value: TDataSource );
     function  fds_GetDataSource  : TDataSource ;
     procedure p_SetDBNavigatorEditor (  const a_Value: TExtDBNavigator );
@@ -214,6 +220,10 @@ type
     function fs_getLookupField  : String;
     function  fe_getDataScroll : TDatasetNotifyEvent;
     procedure p_SetDataScroll(const Value: TDatasetNotifyEvent);
+    function fli_GetHighCsvDefs: Longint ;
+    procedure SetCounter(Index: Integer; const AValue: TFWCounter);
+    procedure SetCsvDef(Index: Integer; const AValue: TFWCsvDef);
+    procedure p_setConnection(const AValue: TDSSource);
   protected
     ds_DataSourcesWork : TDataSource;
     FFieldsDefs : TFWFieldColumns;
@@ -224,6 +234,8 @@ type
     procedure p_WorkDataScroll;
     constructor Create(Collection: TCollection);override;
     destructor Destroy;override;
+    procedure AddCounter(const AFieldName : String; const AMinInt, AMaxInt : Int64; const AMinString, AMaxString : String );
+    property HighCsvDefs : Longint read fli_GetHighCsvDefs ;
     property BeforePost  : TDatasetNotifyEvent read e_BeforePost  write e_BeforePost  ;
     property BeforeDelete  : TDatasetNotifyEvent read e_BeforeDelete  write e_BeforeDelete  ;
     property BeforeCancel  : TDatasetNotifyEvent read e_BeforeCancel  write e_BeforeCancel  ;
@@ -245,7 +257,10 @@ type
     // Datasource principal en recherche uniquement
     property DatasourceSearch : TDataSource read ds_recherche write ds_recherche;
     property FieldsDefs : TFWFieldColumns read FFieldsDefs;
+    property Counters [Index: Integer] : TFWCounter read GetCounter write SetCounter ;
+    property CSVDefs  [Index: Integer] : TFWCsvDef read GetCsvDef write SetCsvDef ;
   published
+    property Connection : TDSSource read gr_Connection write p_setConnection;
     // Table du Datasource de travail
     property Table : string read fs_getDataTable write p_setDataTable;
     // Table du Datasource de travail
@@ -345,6 +360,7 @@ type
 
   TF_CustomFrameWork = class({$IFDEF SFORM}TSuperForm{$ELSE}{$IFDEF TNT}TTntForm{$ELSE}TForm{$ENDIF}{$ENDIF}, IFWFormVerify)
   private
+    gs_connection : String;
     gb_PasUtiliserProps        : Boolean;
     gds_Query1           : TDataSource ;
     gdat_Query1          : TDataset ;
@@ -449,8 +465,8 @@ type
     {.$IFDEF EXRX}
     //ge_OldDataGridResize: TAutoWidthEvent ;
     {.$ENDIF}
-    procedure p_ChargeEvenementsDatasourcePrinc;
     procedure p_AffecteEvenementsNavigators ( const acpa_Component : TCustomPanel );
+    procedure p_ChargeEvenementsDatasourcePrinc;
     procedure p_setEnregistrement(const aFWColumn: TFWSource);
     procedure p_SetLabels(const a_Value: Boolean);
     procedure p_SetSearch ( const a_Value : TDatasource );
@@ -518,6 +534,7 @@ type
     {$ENDIF}
 
    protected
+    gi_MainFieldsHeight : Longint ;
     gstl_SQLWork :  TStrings;
     {$IFDEF DELPHI_9_UP}
     gwst_SQLWork :  TWideStrings ;
@@ -537,6 +554,8 @@ type
     dblcbx_edition : TSearchCombo; // Recherche sur un RxDBLookupCombo par défaut
     lb_KeyDown  : Boolean ;
 //    lwin_ControlRecherche : TWinControl ;
+    function ffws_CreateSource(const as_Table: String;
+      const av_Connection: Variant): TFWSource;
     procedure p_VerifyColumnBeforeValidate(const afwc_Source: TFWSource; const adat_Dataset : TDataset ); virtual;
     procedure p_ScruteComposantsFiche (); virtual;
     function fb_False : Boolean; virtual;
@@ -700,6 +719,7 @@ type
     property Shown    : Boolean read gb_EnableDoShow ;
     property AsynchronousFetches : Boolean read gb_Fetching ;
     property AsynchronousWait   : TEvent read ge_FetchEvent ;
+    property ConnectionName : String read gs_connection write gs_connection;
 
     function fb_PeutMettreAjourDatasource ( const ads_Datasource : TDatasource): Boolean; virtual;
     function fb_PeutAfficherChamp ( const as_Champ, as_Table : String ) : Boolean ; virtual;
@@ -765,6 +785,7 @@ var gb_doublebuffer : Boolean = True ;
     gb_DicoGroupementMontreCaption : Boolean = True ;
 
 function  fi_ParentEstPanel( const aFWColumns : TFWSources ; const acon_Control: TControl): Integer;
+function fs_getFileNameOfTableColumn ( const afws_Source    : TFWSource ): String;
 function  fdat_GetDataset ( const aFWColumns : TFWSources ; const aobj_Sender : Tobject ): TDataset;
 function  fi_GetDataWork ( const aFWColumns : TFWSources ; const aobj_Sender : TControl ;var ai_Delete : Integer ):Integer;
 function  fi_GetDataWorkFromDataSet ( const aFWColumns : TFWSources ; const adat_DataSet : TDataset ):Integer;
@@ -793,12 +814,20 @@ uses fonctions_string,
      JvToolEdit , JvDbControls,
   {$ENDIF}
      fonctions_db, fonctions_dbcomponents, u_extcomponent,
-     u_extdbgrid,
+     u_extdbgrid, u_multidonnees, fonctions_autocomponents,
      fonctions_numedit, unite_variables,
+     u_buttons_appli, fonctions_languages,
      U_ExtColorCombos, ActnList, unite_messages,
      fonctions_proprietes, fonctions_variant ;
 
 {Fonctions et procédures}
+
+// Function fs_getFileNameOfTableColumn
+// return the XML file name from the table column name
+function fs_getFileNameOfTableColumn ( const afws_Source    : TFWSource ): String;
+begin
+  Result := afws_Source.Connection.dataURL + afws_Source.Table + gs_DataExtension ;
+end;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1199,7 +1228,63 @@ begin
     End;
 end;
 
-{ TFWSource }
+{ GetCounter function
+  getting the counter of the array
+  Index : Number of counter}
+function TFWSource.GetCounter(Index: Integer): TFWCounter;
+begin
+  if  ( Index >= 0 )
+  and ( Index <= high ( ga_Counters ))
+   then
+    Result := ga_Counters [ Index ] ;
+end;
+
+
+// SetCounter procedure
+// setting a more counter definition
+// Index: index of counter in the array
+// Value : New Index definition
+procedure TFWSource.SetCounter(Index: Integer; const AValue: TFWCounter);
+begin
+  if ( Index > high ( ga_Counters ))
+   then
+     SetLength ( ga_Counters, Index + 1 );
+  with ga_Counters [ Index ] do
+    Begin
+      FieldName :=  AValue.FieldName ;
+      MinInt    :=  AValue.MinInt ;
+      MaxInt    :=  AValue.MaxInt ;
+      MinString :=  AValue.MinString ;
+      MaxString :=  AValue.MaxString ;
+    End;
+end;
+
+
+// procedure p_setConnection
+// Setting XML Column Form connection
+// AValue : The data module connection
+procedure TFWSource.p_setConnection(const AValue: TDSSource);
+begin
+  p_setMiniConnectionTo ( AValue, gr_Connection );
+end;
+////////////////////////////////////////////////////////////////////////////////
+// procedure SetCsvDef
+// CSV Management
+////////////////////////////////////////////////////////////////////////////////
+procedure TFWSource.SetCsvDef(Index: Integer; const AValue: TFWCsvDef);
+begin
+  if ( Index > high ( ga_CsvDefs ))
+   then
+     SetLength ( ga_CsvDefs, Index + 1 );
+  with ga_CsvDefs [ Index ] do
+    Begin
+      Min    :=  AValue.Min ;
+      Max    :=  AValue.Max ;
+    End;
+
+end;
+
+
 //////////////////////////////////////////////////////////////////////////////
 // Destructeur : Destroy
 // Descriptif : Gestion de la destruction d'une colonne de la fiche
@@ -1210,6 +1295,31 @@ Begin
   ddl_DataLink.Free;
   inherited;
 End;
+
+{ AddCounter Procedure
+  Creating a counter and adding it to array
+   AFieldName: FieldName
+   AMinInt : begining integer
+   AMaxInt : ending integer
+   AMinString : If counter is string Minimum value
+   AMaxString : If counter is string Maximum value
+}
+
+procedure TFWSource.AddCounter(const AFieldName: String; const AMinInt,
+  AMaxInt: Int64; const AMinString, AMaxString: String);
+begin
+  SetLength ( ga_Counters, high ( ga_Counters ) + 2 );
+  with ga_Counters [ high ( ga_Counters ) ] do
+    Begin
+      FieldName :=  AFieldName ;
+      MinInt    :=  AMinInt ;
+      MaxInt    :=  AMaxInt ;
+      MinString :=  AMinString ;
+      MaxString :=  AMaxString ;
+
+    End;
+
+end;
 
 function TFWSource.fds_GetDataSource: TDataSource;
 begin
@@ -1239,6 +1349,20 @@ begin
   and ( fs_getComponentProperty (ddl_DataLink.Dataset, 'TableName' ) <> '' )
    Then
     s_Table := fs_getComponentProperty (ddl_DataLink.Dataset, 'TableName' ) ;
+end;
+
+////////////////////////////////////////////////////////////////////////////////
+// function GetCsvDef
+// Getting a more CSV definition
+////////////////////////////////////////////////////////////////////////////////
+
+function TFWSource.GetCsvDef(Index: Integer): TFWCsvDef;
+begin
+  if  ( Index >= 0 )
+  and ( Index <= high ( ga_CsvDefs ))
+   then
+    Result := ga_CsvDefs [ Index ] ;
+
 end;
 
 // Affectation du composant
@@ -1278,6 +1402,13 @@ end;
 procedure TFWSource.p_SetDataScroll(const Value: TDatasetNotifyEvent);
 begin
   e_scroll := Value;
+end;
+
+{ fli_GetHighCsvDefs function
+  getting the high frontier of CSV definition array}
+function TFWSource.fli_GetHighCsvDefs: Longint;
+begin
+  Result := high ( ga_CsvDefs );
 end;
 
 constructor TFWSource.Create(Collection: TCollection);
@@ -1820,6 +1951,7 @@ Begin
      End;
 {$ENDIF}
 End;
+
 procedure TF_CustomFrameWork.p_ChargeDatasourcePrinc;
 var
     lt_Arg : Array [0..2] of String ;
@@ -1877,6 +2009,28 @@ Begin
   KeyPreview := True;
 End;
 
+
+function TF_CustomFrameWork.ffws_CreateSource(const as_Table: String ; const av_Connection: Variant): TFWSource;
+var lds_Connection : TDSSource;
+begin
+  if av_Connection = Null Then
+       lds_Connection:=DMModuleSources.fds_FindConnection( gs_Connection, True )
+  Else lds_Connection:=DMModuleSources.fds_FindConnection( av_Connection, True );
+  with lds_Connection do
+    Begin
+      Result := Sources.Add as TFWSource;
+      Result.gr_Connection := lds_Connection;
+      Result.Datasource := fds_CreateDataSourceAndTable ( as_Table, dataURL + IntToStr ( lds_Connection.Index ), IntToStr ( Sources.Count - 1 ), DatasetType, QueryCopy, Self);
+      Result.Table := as_Table;
+      if DatasetType = dtCSV Then
+        Begin
+          p_setComponentProperty ( Result.Datasource.dataset, 'Filename', fs_getFileNameOfTableColumn ( Result ));
+        End;
+    End;
+End;
+
+// procedure TF_CustomFrameWork.p_AffecteEvenementsWorkDatasources
+// Renseignements des évènements des datasources
 procedure TF_CustomFrameWork.p_AffecteEvenementsWorkDatasources ( );
 var li_i, li_j : Integer;
     li_CompteCol : Integer;
@@ -6642,6 +6796,8 @@ begin
       ads_DataSource := Datasource ;
     End;
 End;
+
+
 
 procedure TF_CustomFrameWork.p_assignColumnsDatasourceOwner ( const afw_Column : TFWSource ; const ads_DataSource : TDatasource ; const ai_NumArray : Integer ; const acom_Component : TComponent );
 var lds_DataSource : TDatasource;
