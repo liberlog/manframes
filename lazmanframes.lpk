@@ -22,7 +22,7 @@
     <Description Value="Child Form data management and relationships"/>
     <License Value="LGPL"/>
     <Version Minor="9" Release="4" Build="8"/>
-    <Files Count="8">
+    <Files Count="6">
       <Item1>
         <Filename Value="fonctions/fonctions_tableauframework.pas"/>
         <UnitName Value="fonctions_tableauframework"/>
@@ -36,25 +36,17 @@
         <UnitName Value="u_customframework"/>
       </Item3>
       <Item4>
-        <Filename Value="composants/u_formdico.pas"/>
-        <UnitName Value="u_formdico"/>
-      </Item4>
-      <Item5>
         <Filename Value="composants/u_searchcomponents.pas"/>
         <UnitName Value="u_searchcomponents"/>
-      </Item5>
-      <Item6>
-        <Filename Value="composants/u_propform.pas"/>
-        <UnitName Value="u_propform"/>
-      </Item6>
-      <Item7>
+      </Item4>
+      <Item5>
         <Filename Value="composants/u_fillcombobutton.pas"/>
         <UnitName Value="u_fillcombobutton"/>
-      </Item7>
-      <Item8>
+      </Item5>
+      <Item6>
         <Filename Value="forms/u_multidonnees.pas"/>
         <UnitName Value="u_multidonnees"/>
-      </Item8>
+      </Item6>
     </Files>
     <i18n>
       <EnableI18N Value="True"/>

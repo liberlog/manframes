@@ -8,8 +8,7 @@ interface
 
 uses
     fonctions_tableauframework, unite_variables, u_customframework, 
-  u_formdico, u_searchcomponents, u_propform, u_fillcombobutton, 
-  u_multidonnees, LazarusPackageIntf;
+  u_searchcomponents, u_fillcombobutton, u_multidonnees, LazarusPackageIntf;
 
 implementation
 

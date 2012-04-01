@@ -553,7 +553,12 @@ type
     tx_edition     : TSearchEdit;                   // Edit de recherche
     dblcbx_edition : TSearchCombo; // Recherche sur un RxDBLookupCombo par défaut
     lb_KeyDown  : Boolean ;
-//    lwin_ControlRecherche : TWinControl ;
+    { abstract methods }
+    // Méthodes abstraites
+    function fb_ChargeDonnees : Boolean; virtual; abstract;
+    procedure p_AfterColumnFrameShow( const aFWColumn : TFWSource ); virtual; abstract;
+    function fb_ChargementNomCol ( const AFWColumn : TFWSource ; const ai_NumSource : Integer ) : Boolean; virtual; abstract;
+
     function ffws_CreateSource(const as_Table: String;
       const av_Connection: Variant): TFWSource;
     procedure p_VerifyColumnBeforeValidate(const afwc_Source: TFWSource; const adat_Dataset : TDataset ); virtual;
@@ -568,7 +573,6 @@ type
                              var ai_Tag : Longint ):Integer; virtual;
     procedure p_InitOpenedDatasets; virtual;
     procedure p_AddGroupView ( const adgv_GroupViewToAdd : TDBGroupView ); virtual;
-    procedure p_AfterColumnFrameShow( const aFWColumn : TFWSource ); virtual; abstract;
     function  CreateSources: TFWSources; virtual;
     procedure p_CreateColumns; virtual;
     procedure p_MontreCacheColonne ( const adbgd_DataGrid : TCustomDBGrid; const adbgd_DataGridDataSource : TDatasource; const adbgd_DataGridColumns : TDBGridColumns; const aFWColumn : TFWSource );virtual;
@@ -582,10 +586,8 @@ type
                                 const astl_Cle : TStringlist ;
                                 const ae_BeforePost : TDataSetNotifyEvent;
                                 const ab_Efface           : Boolean     ): Boolean; virtual;
-    function fb_ChargeDonnees : Boolean; virtual;
     function  fb_ReinitCols ( const aFWColumn : TFWSource ; const ai_table : Integer ) : Boolean; virtual;
     procedure p_LoadSearchingAndQuery ; virtual;
-    function fb_ChargementNomCol ( const AFWColumn : TFWSource ; const ai_NumSource : Integer ) : Boolean; virtual; abstract;
     procedure p_ChargeDatasourcePrinc; virtual;
     procedure p_AffecteEvenementsWorkDatasources ; virtual;
     procedure p_assignColumnsDatasourceOwner ( const afw_Column : TFWSource ; const ads_DataSource : TDatasource ; const ai_NumArray : Integer ; const acom_Component : TComponent ); virtual;
@@ -657,8 +659,15 @@ type
      // des labels
      gb_CloseQuery : Boolean ;
      gca_Close     : TCloseAction ;
+
+     { abstract methods }
      // Méthodes abstraites
      procedure BeforeCreateFrameWork(Sender: TComponent); virtual; abstract;
+     function fb_InsereCompteur ( const adat_Dataset : TDataset ;
+                                  const aslt_Cle : TStringlist ;
+                                  const as_ChampCompteur, as_Table, as_PremierLettrage : String ;
+                                  const ach_DebutLettrage, ach_FinLettrage : Char ;
+                                  const ali_Debut, ali_LimiteRecherche : Int64 ): Boolean; overload; virtual;abstract;
 
      procedure p_NextControl ();
      procedure p_DataWorkGridsTabStop (const lb_Tabstop : Boolean );
@@ -684,11 +693,6 @@ type
                                              const as_ChampsClePrimaire : TStringList ;
                                              const avar_ValeursCle      : Variant     ;
            const as_ChampExclu        : String      ): String ;
-    function fb_InsereCompteur ( const adat_Dataset : TDataset ;
-                                 const aslt_Cle : TStringlist ;
-                                 const as_ChampCompteur, as_Table, as_PremierLettrage : String ;
-                                 const ach_DebutLettrage, ach_FinLettrage : Char ;
-                                 const ali_Debut, ali_LimiteRecherche : Int64 ): Boolean; overload; virtual;abstract;
     function fb_InsereCompteur ( const adat_Dataset               : TDataset ;
          const aslt_Cle                   : TStringlist ;
                                  const as_ChampCompteur, as_Table : String ;
@@ -2770,160 +2774,6 @@ begin
   // Puis, on se place sur le controle souhaité
   actrl_Focus.SetFocus;
 end;
-
-// Renseignement de la table à charger et de ses colonnes correspondantes
-// Gestion des évenements liés aux Label et aux DBEdit et gestion des DBEdit
-function TF_CustomFrameWork.fb_ChargeDonnees : Boolean;
-var
-  li_i,
-  li_j,
-  li_Tag,
-  li_DataWork,
-  li_NumArray : integer;
-  lmet_MethodeDistribueeEnter,
-  lmet_MethodeDistribueeOrder,
-  lmet_MethodeDistribueeExit : TMethod;
-  lds_DataSource : TDatasource ;
-  lcom_Component : TComponent ;
-
-begin
-  if gb_DonneesChargees
-  or not assigned ( gdat_DatasetPrinc )
-   Then
-    Begin
-//     ShowMessage ( 'La Form n''est pas connectée à la table ADO' );
-     Result := False ;
-     Exit ;
-    End ;
-
-
-  gb_DonneesChargees := True ;
-    // Récupérer une méthode et la déployer
-  lmet_MethodeDistribueeEnter.Data := Self;
-  lmet_MethodeDistribueeExit .Data := Self;
-  lmet_MethodeDistribueeOrder.Data := Self;
-  lmet_MethodeDistribueeOrder.Code := MethodAddress('p_OrderEdit');
-  lmet_MethodeDistribueeEnter.Code := MethodAddress('p_DBEditBeforeEnter');
-  lmet_MethodeDistribueeExit .Code := MethodAddress('p_DBEditBeforeExit');
-
-
-  // La seule chose à initialiser est le tag du DBEdit !!!
-  // Utilisation de RTTI pour récupérer les propriétés publiées du composant
-  // Pour cela, ajouter la classe TypInfo dans le uses
-  for li_i := 0 to Self.ComponentCount - 1 do
-   // Test si c'est un tag d'édition
-   Begin
-    lcom_Component := Self.Components[li_i] ;
-//    Showmessage ( Self.Components[li_i].Name + ' ' + IntToStr ( li_i ));
-    If ( lcom_Component is TControl )
-    and not ( lcom_Component is TImage       )
-    and not ( lcom_Component is TPageControl )
-    and not ( lcom_Component is TCustomPanel )
-    and not ( lcom_Component is TTabSheet    ) Then
-     Begin
-      li_DataWork := fi_ParentEstPanel ( Sources, lcom_Component as TControl );
-      with Sources.Items [ li_DataWork ] do
-       Begin
-          lds_DataSource := Datasource;
-          li_Tag := 0 ;
-          li_NumArray := fi_GetNumArray ( lcom_Component, li_DataWork, lds_DataSource, li_Tag );
-          // Le tag du tcontrol doit être supérieur à 0
-          if ( li_Tag  < 0 ) then
-            Continue ;
-          if not assigned ( lds_DataSource ) Then
-            Begin
-              li_j := fi_ParentEstPanel( Sources, lcom_Component as TControl);
-              lds_DataSource := Sources [ li_j ].Datasource;
-            End;
-          if ( lcom_Component is TLabel ) then
-            Begin
-               if  fb_IsTagLabel (( lcom_Component as Tlabel ).Tag)
-               and ( FieldsDefs.Count > li_NumArray )
-                then
-                  (lcom_Component as TLabel).Caption := FieldsDefs [ li_NumArray ].CaptionName;
-            End
-          else
-            if  not ( lcom_Component.ClassNameIs('TDBGroupView' ))
-            and fb_IsTagEdit(lcom_Component.Tag)
-             Then
-              begin
-
-                  if Supports (  lcom_Component, IFWComponentEdit ) Then
-                    Begin
-                      p_SetComponentMethodProperty( lcom_Component, 'OnOrder', lmet_MethodeDistribueeOrder );
-                    End ;
-                 if assigned ( lds_DataSource ) Then
-                  Begin
-                    p_SetComponentObjectProperty ( lcom_Component, 'DataSource', lds_DataSource );
-                  End ;
-                  {
-                if  (( gb_DicoUpdateFormField and ( li_Tag >= CST_TAG_NON_DICO )) or gb_AutoInsert )
-                and fb_IsTagEdit(lcom_Component.Tag) Then
-                  Begin
-                    ls_Field := fs_getComponentProperty ( lcom_Component, 'DataField' );
-                    if trim ( ls_Field ) <> '' Then
-                      Begin
-                        lws_Caption := '' ;
-                        if Self.Components [ li_i ] is TControl Then
-                          for li_j := 0 to ComponentCount - 1 do
-                            if  ( Self.Components [ li_j ] is TLabel )
-                            and ((( Self.Components [ li_j ] as TLabel ).Tag = lcom_Component.Tag ) or (( Self.Components [ li_j ] as TLabel ).Tag - CST_TAG_Lbl = lcom_Component.Tag ))
-                            and (( Self.Components [ li_j ] as TLabel ).Parent = ( Self.Components [ li_i ] as TControl ).Parent ) Then
-                              Begin
-                                lws_Caption := ( Self.Components [ li_j ] as TLabel ).Caption;
-                                Break ;
-                              End ;
-                      End ;
-                  End ;    }
-                  if  lcom_Component is TControl Then
-                    Begin
-                      p_SetComponentMethodProperty( lcom_Component, 'FWBeforeEnter', lmet_MethodeDistribueeEnter );
-                      p_SetComponentMethodProperty( lcom_Component, 'FWBeforeExit', lmet_MethodeDistribueeExit );
-                    End ;
-
-                  if  fb_IsCheckCtrlPoss (lcom_Component)
-                   Then p_SetFontColor ( lcom_Component, gCol_Label )
-                   Else
-                     try
-                        if lcom_Component is TWinControl Then
-                          fb_ControlSetReadOnly ( lcom_Component as TWinControl, fb_ControlReadOnly ( lcom_Component as TWinControl ));
-
-                     except
-                      On E: Exception do
-                        Begin
-                          fcla_GereException ( E, gds_SourceWork );
-                        End ;
-
-                     End ;
-               if (li_NumArray >= 0 )
-               and ( li_NumArray < FieldsDefs.Count ) then
-                 with FieldsDefs [ li_NumArray ] do
-                   Begin
-                     (lcom_Component as TControl).Hint     := HintName;
-                     (lcom_Component as TControl).ShowHint := True;
-                      if fb_IsCheckCtrlPoss (lcom_Component)
-                       Then
-                        Begin
-                          if ( gb_DicoGroupementMontreCaption or not ( lcom_Component is TDBRadioGroup )) Then
-                            p_SetComponentProperty ( lcom_Component, 'Caption', CaptionName )
-                          Else
-                            p_SetComponentProperty ( lcom_Component, 'Caption', '' );
-                        End ;
-
-                      p_SetComponentProperty ( lcom_Component, 'HelpContext', tkInteger, Aide);
-                      p_assignColumnsDatasourceOwner ( Sources.Items [ li_DataWork ], lds_DataSource, li_NumArray, lcom_Component );
-
-                    End;
-
-
-
-           end;
-      End;
-    End;
-  End;
-  Result := True ;
-End ;
-
 
 /////////////////////////////////////////////////////////////////////////////////
 // Fonction    : fb_ChargeTablePrinc

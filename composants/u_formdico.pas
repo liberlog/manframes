@@ -40,15 +40,17 @@ uses
   fonctions_version,
 {$ENDIF}
   fonctions_erreurs,
-  fonctions_init, ExtCtrls ;
+  fonctions_init, ExtCtrls,
+  u_formauto;
 
 {$IFDEF VERSIONS}
 const
-    gVer_TFormFrameWork : T_Version = ( Component : 'Composant TF_FormDico' ;
+    gVer_TFormDico : T_Version = ( Component : 'Composant TF_FormDico' ;
                                       FileUnit : 'U_FormDico' ;
                                       Owner : 'Matthieu Giroux' ;
                                       Comment : 'Fiche personnalisée avec méthodes génériques et gestion de données liées à une table DICO.' ;
-                                      BugsStory : '1.1.0.1 : Chanching Columns to Sources, optimising.' + #13#10 +
+                                      BugsStory : '1.2.0.0 : Automating.' + #13#10 +
+                                                  '1.1.0.1 : Chanching Columns to Sources, optimising.' + #13#10 +
                                                   '1.1.0.0 : Création de la propriété Columns.' + #13#10 +
                                                   '1.0.1.3 : Bug DatasourceQuery non trouvé enlevé.' + #13#10 +
                                                   '1.0.1.2 : Récupération de TableName pour tous Datasets.' + #13#10 +
@@ -56,14 +58,14 @@ const
                                                   '1.0.1.0 : Gestion FrameWork pour tous Datasources testée.' + #13#10 +
                                                   '1.0.0.0 : Gestion FrameWork avec ADO non testée' ;
                                        UnitType : 3 ;
-                                       Major : 1 ; Minor : 1 ; Release : 0 ; Build : 1 );
+                                       Major : 1 ; Minor : 2 ; Release : 0 ; Build : 0 );
 {$ENDIF}
 
 
 type
   { TF_FormDico }
 
-  TF_FormDico = class( TF_CustomFrameWork)
+  TF_FormDico = class( TF_FormAuto)
   private
     ge_DbSortServer: TSortdataEvent;
     ge_BeforeDicoCreate: TNotifyEvent;
@@ -138,7 +140,7 @@ uses unite_variables,
      fonctions_variant, fonctions_proprietes,
      fonctions_dbcomponents;
 
-{ TF_FormFrameWork }
+{ TF_FormDico }
 
 procedure TF_FormDico.p_InitFrameWork(const Sender: TComponent);
 begin
@@ -354,7 +356,7 @@ End;
 
 {$IFDEF VERSIONS}
 initialization
-  p_ConcatVersion ( gVer_TFormFrameWork );
+  p_ConcatVersion ( gVer_TFormDico );
 {$ENDIF}
 end.
 

@@ -58,16 +58,13 @@ procedure Register;
 implementation
 
 uses DB, TypInfo,
-  U_FormDico,
   {$IFDEF FPC}
   lresources,
   {$ENDIF}
   u_customframework,
-  u_propform,
   U_RegVersion,
   u_fillcombobutton,
-  unite_messages,
-  u_multidata;
+  unite_messages;
 
 { TNavigatorsProperty }
 
@@ -166,13 +163,9 @@ begin // Enregistre le nouvel expert de projet
   // Procédures à garder pour peut-être plus tard ( utilisation actuelle d'unités dépréciées)
 // Un register libère automatiquement la variable à la suppression
 {$IFDEF FPC}
-  RegisterNoIcon([TF_FormDico]);
-  RegisterNoIcon([TF_PropForm]);
-  RegisterNoIcon([TMDataSources]);
+//  RegisterNoIcon([TMDataSources]);
 {$ELSE}
-  RegisterCustomModule ( TF_FormDico, TCustomModule );
-  RegisterCustomModule ( TF_PropForm, TCustomModule );
-  RegisterCustomModule ( TMDataSources, TCustomModule );
+//  RegisterCustomModule ( TMDataSources, TCustomModule );
 {$ENDIF}
   RegisterComponents('ManFrames', [TExtFillCombo]);
   RegisterPropertyEditor(TypeInfo(string), TF_CustomFrameWork, 'Version', TVersionProperty);

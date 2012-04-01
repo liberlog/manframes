@@ -25,7 +25,7 @@
     <Description Value="Full management software RAD Framework"/>
     <License Value="LGPL"/>
     <Version Minor="9" Release="4" Build="2"/>
-    <Files Count="8">
+    <Files Count="12">
       <Item1>
         <Filename Value="forms/u_acces.pas"/>
         <UnitName Value="U_Acces"/>
@@ -58,6 +58,23 @@
         <Filename Value="fonctions/fonctions_Objets_Data.pas"/>
         <UnitName Value="fonctions_Objets_Data"/>
       </Item8>
+      <Item9>
+        <Filename Value="composants/u_formauto.pas"/>
+        <UnitName Value="u_formauto"/>
+      </Item9>
+      <Item10>
+        <Filename Value="composants/u_formdico.pas"/>
+        <UnitName Value="u_formdico"/>
+      </Item10>
+      <Item11>
+        <Filename Value="composants/u_propform.pas"/>
+        <UnitName Value="u_propform"/>
+      </Item11>
+      <Item12>
+        <Filename Value="composants/u_register_mansoftware.pas"/>
+        <HasRegisterProc Value="True"/>
+        <UnitName Value="U_Register_ManSoftware"/>
+      </Item12>
     </Files>
     <i18n>
       <EnableI18N Value="True"/>

@@ -42,13 +42,14 @@ uses
 
 {$IFDEF VERSIONS}
 const
-      gver_M_Donnees : T_Version = ( Component : 'Data Module with connections and cloned queries.' ; FileUnit : 'U_multidonnees' ;
+      gver_MDataSources : T_Version = ( Component : 'Data Module with connections and cloned queries.' ; FileUnit : 'U_multidonnees' ;
                         			           Owner : 'Matthieu Giroux' ;
                         			           Comment : 'Created from XML file.' ;
-                        			           BugsStory   : 'Version 1.0.0.1 : IBX Version.' + #13#10
+                        			           BugsStory   : 'Version 1.1.0.0 : Component Version.' + #13#10
+                                                                       + 'Version 1.0.0.1 : IBX Version.' + #13#10
                                                                        + 'Version 1.0.0.0 : ZEOS, CSV and DELPHI ADO Version.'  ;
                         			           UnitType : 2 ;
-                        			           Major : 1 ; Minor : 0 ; Release : 0 ; Build : 0 );
+                        			           Major : 1 ; Minor : 1 ; Release : 0 ; Build : 0 );
 {$ENDIF}
 
       // ADO ZEOS CSV
@@ -506,6 +507,6 @@ end;
 
 {$IFDEF VERSIONS}
 initialization
-  p_ConcatVersion ( gver_M_Donnees );
+  p_ConcatVersion ( gver_MDataSources );
 {$ENDIF}
 end.
