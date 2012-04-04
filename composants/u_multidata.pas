@@ -40,8 +40,8 @@ uses
 {$ENDIF}
   DB;
 
-{$IFDEF VERSIONS}
 const
+{$IFDEF VERSIONS}
       gver_MDataSources : T_Version = ( Component : 'Data Module with connections and cloned queries.' ; FileUnit : 'U_multidonnees' ;
                         			           Owner : 'Matthieu Giroux' ;
                         			           Comment : 'Created from XML file.' ;

@@ -164,8 +164,8 @@ msgstr ""
 #: unite_variables.gs_erreur_modification_maj
 #, fuzzy
 #| msgid ""
-#| " cet enregistrement. \n"
-#| "e autre fonction.\n"
+#| "t enregistrement. \n"
+#| "utre fonction.\n"
 msgid ""
 "Impossible de supprimer cet enregistrement. \n"
 "Il est utilisé dans une autre fonction.\n"
@@ -398,8 +398,8 @@ msgstr "Validate"
 #: unite_variables.gs_zones_obligatoires
 #, fuzzy
 #| msgid ""
-#| "peuvent pas être vides : @ARG .\n"
-#| "u annuler.\n"
+#| "vent pas être vides : @ARG .\n"
+#| "nnuler.\n"
 msgid ""
 "Les zones suivantes ne peuvent pas être vides : @ARG .\n"
 "\n"
@@ -419,8 +419,8 @@ msgstr ""
 #: unite_variables.gs_zone_obligatoire
 #, fuzzy
 #| msgid ""
-#| "s être vide.\n"
-#| "u annuler.\n"
+#| "�tre vide.\n"
+#| "nnuler.\n"
 msgid ""
 "La zone @ARG ne peut pas être vide.\n"
 "\n"
@@ -431,9 +431,7 @@ msgstr ""
 
 #: unite_variables.gs_zone_unique
 #, fuzzy
-#| msgid ""
-#| ".\n"
-#| "essayer, ou annuler.\n"
+#| msgid "nsayer, ou annuler."
 msgid ""
 "La zone @ARG est unique.\n"
 "\n"
