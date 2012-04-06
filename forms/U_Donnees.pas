@@ -230,20 +230,20 @@ Begin
  lmet_MethodeDistribueeSearch.Data := Self;
  Connection := nil;
  Acces      := nil;
- case gdt_DatasetType of
-   {$IFDEF ZEOS}
-   dtZEOS : Begin
-              Connection :=TZConnection.Create(Self);
-              Acces      :=TZConnection.Create(Self);
-            End;
-   {$ENDIF}
-   {$IFDEF EADO}
-   dtADO  : Begin
-              Connection :=TADOConnection.Create(Self);
-              Acces      :=TADOConnection.Create(Self);
-            End;
-   {$ENDIF}
- end;
+ {$IFDEF ZEOS}
+ if gdt_DatasetType = dtZEOS Then
+  Begin
+    Connection :=TZConnection.Create(Self);
+    Acces      :=TZConnection.Create(Self);
+  End;
+ {$ENDIF}
+ {$IFDEF EADO}
+  if gdt_DatasetType = dtADO Then
+   Begin
+     Connection :=TADOConnection.Create(Self);
+     Acces      :=TADOConnection.Create(Self);
+   End;
+ {$ENDIF}
 
  if not assigned ( Connection )  then
    Exit;

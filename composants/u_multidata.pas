@@ -389,31 +389,32 @@ Begin
    Begin
      FClep := as_Clep ;
      Fdtt_DatasetType := adtt_DatasetType;
-     case adtt_DatasetType of
        {$IFDEF ZEOS}
-       dtZEOS : Begin
-                  Fdat_QueryCopy := TZQuery.Create(Self);
-                  Fcom_Connection :=TZConnection.Create(Self);
-                  ( Fdat_QueryCopy as TZQuery ).Connection := Fcom_Connection as TZConnection;
-                End;
+       if adtt_DatasetType = dtZEOS Then
+         Begin
+          Fdat_QueryCopy := TZQuery.Create(Self);
+          Fcom_Connection :=TZConnection.Create(Self);
+          ( Fdat_QueryCopy as TZQuery ).Connection := Fcom_Connection as TZConnection;
+         End;
        {$ENDIF}
        {$IFDEF IBX}
-       dtIBX  : Begin
-                  Fdat_QueryCopy := TIBQuery.Create(Self);
-                  Fcom_Connection :=TIBDataBase.Create(Self);
-                  ( Fdat_QueryCopy as TIBQuery ).Transaction := TIBTransaction.Create ( Self );
-                  ( Fdat_QueryCopy as TIBQuery ).Transaction.DefaultDatabase := Fcom_Connection as TIBDataBase;
-                  ( Fdat_QueryCopy as TIBQuery ).Database := Fcom_Connection as TIBDataBase;
-                End;
+       if adtt_DatasetType = dtIBX Then
+         Begin
+          Fdat_QueryCopy := TIBQuery.Create(Self);
+          Fcom_Connection :=TIBDataBase.Create(Self);
+          ( Fdat_QueryCopy as TIBQuery ).Transaction := TIBTransaction.Create ( Self );
+          ( Fdat_QueryCopy as TIBQuery ).Transaction.DefaultDatabase := Fcom_Connection as TIBDataBase;
+          ( Fdat_QueryCopy as TIBQuery ).Database := Fcom_Connection as TIBDataBase;
+        End;
        {$ENDIF}
        {$IFDEF EADO}
-       dtADO  : Begin
-                  Fdat_QueryCopy := TADOQuery.Create(Self);
-                  Fcom_Connection :=TADOConnection.Create(Self);
-                  ( Fdat_QueryCopy as TADOQuery ).Connection :=Fcom_Connection as TADOConnection;
-                End;
+       if adtt_DatasetType = dtADO Then
+         Begin
+          Fdat_QueryCopy := TADOQuery.Create(Self);
+          Fcom_Connection :=TADOConnection.Create(Self);
+          ( Fdat_QueryCopy as TADOQuery ).Connection :=Fcom_Connection as TADOConnection;
+        End;
        {$ENDIF}
-     end;
 
    if not assigned ( Fcom_Connection )  then
      Exit;
