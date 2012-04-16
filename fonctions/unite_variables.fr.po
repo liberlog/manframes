@@ -190,8 +190,8 @@ msgstr ""
 #: unite_variables.gs_erreur_modification_maj
 #, fuzzy
 #| msgid ""
-#| " enregistrement. \n"
-#| "tre fonction.\n"
+#| "enregistrement. \n"
+#| "re fonction.\n"
 msgid ""
 "Impossible de supprimer cet enregistrement. \n"
 "Il est utilisé dans une autre fonction.\n"
@@ -328,8 +328,8 @@ msgstr "Le libell#233 du menu ne peut pas #234tre vide."
 #: unite_variables.gs_mettre_a_jour_fiche
 #, fuzzy
 #| msgid ""
-#| "facé ou modifié par un autre utilisateur.\n"
-#| "jour.\n"
+#| "acé ou modifié par un autre utilisateur.\n"
+#| "our.\n"
 msgid ""
 "L'enregistrement a été effacé ou modifié par un autre utilisateur.\n"
 "\n"
@@ -464,8 +464,8 @@ msgstr "Les champs Utilisateur, Sommaire, Privil#232ge ne peuvent pas #234tre vi
 #: unite_variables.gs_valeurs_utilisees
 #, fuzzy
 #| msgid ""
-#| "� utilisées.\n"
-#| "entes, annuler ou réeffectuer la validation si une valeur n'est pas modifiable.\n"
+#| " utilisées.\n"
+#| "ntes, annuler ou réeffectuer la validation si une valeur n'est pas modifiable.\n"
 msgid ""
 "Les valeurs @ARG sont déjà utilisées.\n"
 "\n"
@@ -478,8 +478,8 @@ msgstr ""
 #: unite_variables.gs_valeur_utilisee
 #, fuzzy
 #| msgid ""
-#| "tilisée.\n"
-#| "nte, annuler ou réeffectuer la validation si une valeur n'est pas modifiable.\n"
+#| "ilisée.\n"
+#| "te, annuler ou réeffectuer la validation si une valeur n'est pas modifiable.\n"
 msgid ""
 "La valeur @ARG est déjà utilisée.\n"
 "\n"
@@ -496,8 +496,8 @@ msgstr "Valider les modifications"
 #: unite_variables.gs_zones_obligatoires
 #, fuzzy
 #| msgid ""
-#| "ent pas être vides : @ARG .\n"
-#| "nuler.\n"
+#| "nt pas être vides : @ARG .\n"
+#| "uler.\n"
 msgid ""
 "Les zones suivantes ne peuvent pas être vides : @ARG .\n"
 "\n"
@@ -517,8 +517,8 @@ msgstr ""
 #: unite_variables.gs_zone_obligatoire
 #, fuzzy
 #| msgid ""
-#| "tre vide.\n"
-#| "nuler.\n"
+#| "re vide.\n"
+#| "uler.\n"
 msgid ""
 "La zone @ARG ne peut pas être vide.\n"
 "\n"
