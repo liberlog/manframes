@@ -318,6 +318,7 @@ procedure p_ExecuteFonction ( aobj_Sender                  : TObject            
 const CST_MAN_INI_CONNECTION_NAME = 'Connection Name';
       CST_MAN_INI_SOURCE_TYPE     = 'Source Type';
       CST_MAN_INI_DATA_DRIVER     = 'Driver' ;
+      CST_MAN_INI_DRIVER_FIREBIRD = 'firebird';
       CST_MAN_INI_DATA_URL        = 'URL';
       CST_MAN_INI_DATA_BASE       = 'Base';
       CST_MAN_INI_DATA_USER       = 'User';
@@ -364,14 +365,14 @@ Begin
         end;
     end
    Else
+   {$IFDEF IBX}
+   if ( LowerCase(aif_IniFile.ReadString(as_SectionName,CST_MAN_INI_SOURCE_TYPE,'')) = CST_MAN_INI_DRIVER_FIREBIRD )  Then
+     DMModuleSources.CreateConnection ( dtIBX, ls_ConnectionClep )
+    Else
+   {$ENDIF}
    with DMModuleSources.CreateConnection ( {$IFDEF ZEOS}dtZEOS{$ELSE}{$IFDEF EADO}dtADO{$ELSE}dtCSV{$ENDIF}{$ENDIF}, ls_ConnectionClep ) do
     Begin
       DataDriver := aif_IniFile.ReadString(as_SectionName,CST_MAN_INI_DATA_DRIVER,'');
-      {$IFDEF IBX}
-      if ( CST_MAN_DRIVER_FIREBIRD = LowerCase(DataDriver) ) > 0 )
-        DMModuleSources.CreateConnection ( dtIBX, ls_ConnectionClep )
-       Else
-      {$ENDIF}
         Begin
           dataURL := aif_IniFile.ReadString(as_SectionName,CST_MAN_INI_DATA_URL,'');
           li_Pos := pos ( '//', DataURL );

@@ -2,6 +2,7 @@ unit U_MotPasse;
 
 {$IFDEF FPC}
 {$MODE Delphi}
+{$R *.lfm}
 {$ELSE}
 {$R *.dfm}
 {$ENDIF}
@@ -117,9 +118,6 @@ begin
 end;
 
 initialization
-{$IFDEF FPC}
-  {$i U_MotPasse.lrs}
-{$ENDIF}
   p_ConcatVersion ( gVer_F_MotPasse );
 end.
 
