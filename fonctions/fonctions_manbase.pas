@@ -7,7 +7,11 @@
 interface
 
 uses
-  Classes, u_multidata, SysUtils, DB;
+  Classes, u_multidata, SysUtils,
+  {$IFDEF VERSIONS}
+    fonctions_version,
+  {$ENDIF}
+  DB, Controls;
 
 const
 {$IFDEF VERSIONS}
@@ -15,9 +19,10 @@ const
                                       FileUnit : 'U_ManBase' ;
                                       Owner : 'Matthieu Giroux' ;
                                       Comment : 'Base de la Fiche personnalisée avec méthodes génériques et gestion de données.' ;
-                                      BugsStory :  '0.9.0.0 : base non testée' + #13#10 ;
+                                      BugsStory :  '0.9.0.1 : Tested and centralizing from XML Frames' + #13#10 +
+                                                   '0.9.0.0 : base not tested'  ;
                                        UnitType : 3 ;
-                                       Major : 0 ; Minor : 9 ; Release : 0; Build : 0 );
+                                       Major : 0 ; Minor : 9 ; Release : 0; Build : 1 );
 
 {$ENDIF}
     CST_COMPONENTS_DATASOURCE_BEGIN   = 'ds_' ;
@@ -26,7 +31,14 @@ const
 function fds_CreateDataSourceAndDataset ( const as_Table, as_NameEnd : String  ; const adat_QueryCopy : TDataset ; const acom_Owner : TComponent): TDatasource;
 function fds_CreateDataSourceAndOpenedQuery ( const as_Table, as_Fields, as_NameEnd : String  ; const ar_Connection : TDSSource; const alis_NodeFields : TList ; const acom_Owner : TComponent): TDatasource;
 function fds_CreateDataSourceAndTable ( const as_Table, as_NameEnd, as_DataURL : String  ; const adtt_DatasetType : TDatasetType ; const adat_QueryCopy : TDataset ; const acom_Owner : TComponent): TDatasource;
-
+procedure p_SetComboProperties ( const acom_combo : TControl;
+                                 const acom_Owner : TComponent;
+                                 const ads_Connection : TDSSource;
+                                 const as_Table, as_FieldsID,
+                                       as_FieldsDisplay, as_Name : String;
+                                 const alis_IdRelation : TList;
+                                 const ai_FieldCounter, ai_Counter : Integer;
+                                 const OneFieldToFill : Boolean );
 
 type
   TFWFieldColumn = class;
@@ -94,7 +106,7 @@ type
 
 implementation
 
-uses fonctions_dbcomponents, fonctions_proprietes;
+uses fonctions_dbcomponents, fonctions_proprietes, typinfo, fonctions_languages;
 
 { TFWFieldColumns }
 
@@ -128,6 +140,50 @@ end;
 
 { functions }
 
+procedure p_SetComboProperties ( const acom_combo : TControl;
+                                 const acom_Owner : TComponent;
+                                 const ads_Connection : TDSSource;
+                                 const as_Table, as_FieldsID,
+                                       as_FieldsDisplay, as_Name : String;
+                                 const alis_IdRelation : TList;
+                                 const ai_FieldCounter, ai_Counter : Integer;
+                                 const OneFieldToFill : Boolean );
+var
+    ls_Fields : String;
+    lds_Datasource : TDataSource;
+Begin
+  with acom_combo do
+    Begin
+      Width := 100;
+      if as_FieldsDisplay <> '' Then
+       Begin
+         ls_Fields := as_FieldsID + ',' + as_FieldsDisplay;
+         p_SetComponentProperty(acom_combo,CST_PROPERTY_LISTFIELD    , as_FieldsDisplay);
+         p_SetComponentProperty(acom_combo,CST_PROPERTY_LOOKUPDISPLAY, as_FieldsDisplay);
+       end
+      Else
+       ls_Fields := as_FieldsID;
+      if ls_Fields <> '' Then
+        Begin
+          lds_Datasource := fds_CreateDataSourceAndOpenedQuery ( as_Table, ls_Fields, IntToStr ( ai_FieldCounter ) + '_' + IntToStr ( ai_Counter ), ads_Connection, alis_IdRelation, acom_owner );
+          p_SetComponentObjectProperty(acom_combo,CST_PROPERTY_LISTSOURCE  , lds_datasource );
+          p_SetComponentObjectProperty(acom_combo,CST_PROPERTY_LOOKUPSOURCE, lds_datasource );
+        end;
+      if OneFieldToFill Then
+        Begin
+          if IsPublishedProp(acom_combo,CST_PROPERTY_SEARCHSOURCE) Then
+           p_SetComponentObjectProperty(acom_combo,CST_PROPERTY_SEARCHSOURCE, fds_CreateDataSourceAndOpenedQuery ( as_Table, ls_Fields, 'Insert'+ IntToStr ( ai_FieldCounter ) + '_' + IntToStr ( ai_Counter ), ads_Connection, alis_IdRelation, acom_Owner ));
+        end;
+
+      if as_Name <> '' Then
+        Begin
+         Hint:=fs_GetLabelCaption(as_Name);
+         ShowHint:=True;
+        end;
+      p_SetComponentProperty(acom_combo,CST_PROPERTY_KEYFIELD   , as_FieldsID);
+      p_SetComponentProperty(acom_combo,CST_PROPERTY_LOOKUPFIELD, as_FieldsID);
+    end;
+End;
 ////////////////////////////////////////////////////////////////////////////////
 // function fds_CreateDataSourceAndOpenedQuery
 // create datasource, dataset, setting and open it

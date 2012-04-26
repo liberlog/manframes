@@ -81,7 +81,8 @@ uses
                                       FileUnit : 'U_CustomFrameWork' ;
                                       Owner : 'Matthieu Giroux' ;
                                       Comment : 'Fiche personnalisée avec méthodes génériques et gestion de données.' ;
-                                      BugsStory : '1.1.0.3 : UTF 8.' + #13#10
+                                      BugsStory : '1.1.0.4 : Centrelazing from XML Frames.' + #13#10
+                                                + '1.1.0.3 : UTF 8.' + #13#10
                                                 + '1.1.0.2 : Add procedure to add group view.' + #13#10
                                                 + '1.1.0.1 : Renaming Columns to Sources and creating Linked Sources.' + #13#10
                                                 + '1.1.0.0 : Creating fonctions_manbase and manbase package.' + #13#10
@@ -94,7 +95,7 @@ uses
                                                 + '0.1.1.1 : Gestion mieux centralisée sur Datasource, Datasource2,etc.' + #13#10
                                                 + '0.1.0.1 : Version non testée' + #13#10 ;
                                        UnitType : 3 ;
-                                       Major : 1 ; Minor : 1 ; Release : 0; Build : 3 );
+                                       Major : 1 ; Minor : 1 ; Release : 0; Build : 4 );
 
 {$ENDIF}
 
@@ -555,6 +556,7 @@ type
     lb_KeyDown  : Boolean ;
     { abstract methods }
     // Méthodes abstraites
+    function ffws_SearchSource(const as_Table: String): TFWSource;
     function fb_ChargeDonnees : Boolean; virtual; abstract;
     procedure p_AfterColumnFrameShow( const aFWColumn : TFWSource ); virtual; abstract;
     function fb_ChargementNomCol ( const AFWColumn : TFWSource ; const ai_NumSource : Integer ) : Boolean; virtual; abstract;
@@ -6704,6 +6706,20 @@ Begin
         end;
 End;
 
+
+function TF_CustomFrameWork.ffws_SearchSource(const as_Table: String ): TFWSource;
+var li_i : Integer;
+begin
+  Result := nil;
+  for li_i := 0 to Sources.Count - 1  do
+    Begin
+      if ( Sources [ li_i ].Table = as_Table ) Then
+       Begin
+         Result := Sources [ li_i ];
+         Break;
+       end;
+    end;
+end;
 
 initialization
 {$IFDEF FPC}
