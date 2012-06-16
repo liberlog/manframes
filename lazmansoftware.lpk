@@ -75,7 +75,7 @@
     </Files>
     <i18n>
       <EnableI18N Value="True"/>
-      <OutDir Value="fonctions"/>
+      <OutDir Value="LANG"/>
     </i18n>
     <Type Value="RunAndDesignTime"/>
     <RequiredPkgs Count="13">
