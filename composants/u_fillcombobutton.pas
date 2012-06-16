@@ -9,11 +9,12 @@ unit u_fillcombobutton;
 interface
 
 uses
-  Classes, SysUtils, JvXPButtons, Graphics, u_buttons_appli, forms,
+  Classes, SysUtils, JvXPButtons, Graphics, forms,
   {$IFDEF VERSIONS}
      fonctions_version,
   {$ENDIF}
-  Controls, u_customframework, u_framework_dbcomponents;
+  Controls, u_customframework, u_buttons_defs,
+  u_framework_dbcomponents;
 
 const
     CST_FILL_COMBO_WIDTH = 24 ;

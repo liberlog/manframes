@@ -20,7 +20,7 @@ uses
   Classes, Graphics, Forms, Controls, StdCtrls, Buttons, ExtCtrls,
   Dialogs, SysUtils, DBCtrls, fonctions_string, u_framework_components,
   JvXPCore, JvXPButtons, Messages, fonctions_version,
-  u_buttons_appli ;
+  u_buttons_appli, u_buttons_defs ;
 
   const
     gVer_F_MotPasse : T_Version = ( Component : 'Fenêtre Mot de passe' ;
