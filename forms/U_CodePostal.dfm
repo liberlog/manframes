@@ -403,9 +403,9 @@ object F_CodePostal: TF_CodePostal
     end
   end
   object SvgFormInfoIni: TOnFormInfoIni
-    SauvePosObjects = True
-    SauveEditObjets = []
-    SauvePosForm = True
+    SavePosObjects = True
+    SaveEdits = []
+    SavePosForm = True
     Left = 73
     Top = 89
   end

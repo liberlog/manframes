@@ -61,4 +61,4 @@ object F_SplashForm: TF_SplashForm
       WordWrap = True
     end
   end
-end
+end

@@ -138,7 +138,7 @@ object F_Acces: TF_Acces
     end
   end
   object OnFormInfoIni1: TOnFormInfoIni
-    SauveEditObjets = [feTComboValue]
+    SaveEdits = [feTComboValue]
     Left = 64
     Top = 40
   end

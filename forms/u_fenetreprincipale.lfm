@@ -3170,9 +3170,9 @@ inherited F_FenetrePrincipale: TF_FenetrePrincipale
     top = 367
   end
   object SvgFormInfoIni: TOnFormInfoIni[15]
-    SauvePosObjects = True
-    SauveEditObjets = []
-    SauvePosForm = True
+    SavePosObjects = True
+    SaveEdits = []
+    SavePosForm = True
     OnIniLoad = SvgFormInfoIniIniLoad
     OnIniWrite = SvgFormInfoIniIniWrite
     left = 256

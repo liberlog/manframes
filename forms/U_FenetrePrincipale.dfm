@@ -1250,9 +1250,9 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
     Top = 367
   end
   object SvgFormInfoIni: TOnFormInfoIni
-    SauvePosObjects = True
-    SauveEditObjets = []
-    SauvePosForm = True
+    SavePosObjects = True
+    SaveEdits = []
+    SavePosForm = True
     Left = 256
     Top = 168
   end
