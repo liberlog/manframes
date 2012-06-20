@@ -46,7 +46,7 @@
         <PackageName Value="LCL"/>
       </Item5>
     </RequiredPackages>
-    <Units Count="50">
+    <Units Count="62">
       <Unit0>
         <Filename Value="demo.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -55,7 +55,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="2"/>
         <CursorPos X="43" Y="31"/>
-        <UsageCount Value="122"/>
+        <UsageCount Value="123"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit0>
@@ -212,13 +212,13 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="U_FenetrePrincipale"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="7"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="482"/>
-        <CursorPos X="1" Y="501"/>
+        <TopLine Value="1"/>
+        <CursorPos X="1" Y="1"/>
         <UsageCount Value="12"/>
         <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit19>
       <Unit20>
@@ -275,7 +275,7 @@
       <Unit25>
         <Filename Value="../../../XMLFrames/fonctions/fonctions_autocomponents.pas"/>
         <UnitName Value="fonctions_autocomponents"/>
-        <EditorIndex Value="10"/>
+        <EditorIndex Value="18"/>
         <WindowIndex Value="0"/>
         <TopLine Value="49"/>
         <CursorPos X="1" Y="1"/>
@@ -453,7 +453,7 @@
       <Unit45>
         <Filename Value="../../../XMLFrames/fonctions/fonctions_objetsxml.pas"/>
         <UnitName Value="fonctions_ObjetsXML"/>
-        <EditorIndex Value="11"/>
+        <EditorIndex Value="19"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="103" Y="12"/>
@@ -474,7 +474,7 @@
       <Unit47>
         <Filename Value="../../../Extended/fonctions/fonctions_proprietes.pas"/>
         <UnitName Value="fonctions_proprietes"/>
-        <EditorIndex Value="9"/>
+        <EditorIndex Value="17"/>
         <WindowIndex Value="0"/>
         <TopLine Value="25"/>
         <CursorPos X="30" Y="36"/>
@@ -485,7 +485,7 @@
       <Unit48>
         <Filename Value="../../../Extended/fonctions/fonctions_languages.pas"/>
         <UnitName Value="fonctions_languages"/>
-        <EditorIndex Value="12"/>
+        <EditorIndex Value="20"/>
         <WindowIndex Value="0"/>
         <TopLine Value="78"/>
         <CursorPos X="10" Y="99"/>
@@ -495,7 +495,7 @@
       </Unit48>
       <Unit49>
         <Filename Value="../../forms/u_fenetreprincipale.lfm"/>
-        <EditorIndex Value="8"/>
+        <EditorIndex Value="16"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="19" Y="7"/>
@@ -503,128 +503,221 @@
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit49>
+      <Unit50>
+        <Filename Value="../../../Extended/extends.inc"/>
+        <EditorIndex Value="8"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="1" Y="8"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit50>
+      <Unit51>
+        <Filename Value="../../../Extended/composants/u_regfwbuttons_appli.pas"/>
+        <UnitName Value="u_regfwbuttons_appli"/>
+        <EditorIndex Value="9"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="20"/>
+        <CursorPos X="28" Y="35"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit51>
+      <Unit52>
+        <Filename Value="../../../Extended/composants/u_buttons_defs.pas"/>
+        <UnitName Value="u_buttons_defs"/>
+        <EditorIndex Value="11"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="146"/>
+        <CursorPos X="133" Y="164"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit52>
+      <Unit53>
+        <Filename Value="../../../Extended/composants/u_buttons_appli.pas"/>
+        <UnitName Value="u_buttons_appli"/>
+        <EditorIndex Value="10"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="7"/>
+        <CursorPos X="115" Y="13"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit53>
+      <Unit54>
+        <Filename Value="../../../Extended/composants/u_regbfsbuttons.lrs"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="1" Y="1"/>
+        <UsageCount Value="10"/>
+      </Unit54>
+      <Unit55>
+        <Filename Value="../../../Extended/composants/u_regbfsbuttons.pas"/>
+        <UnitName Value="u_regbfsbuttons"/>
+        <EditorIndex Value="13"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="1" Y="1"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit55>
+      <Unit56>
+        <Filename Value="../../../Extended/composants/u_buttons_blue.pas"/>
+        <UnitName Value="u_buttons_blue"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="1" Y="1"/>
+        <UsageCount Value="10"/>
+      </Unit56>
+      <Unit57>
+        <Filename Value="../../../Extended/composants/u_buttons_extension.pas"/>
+        <UnitName Value="u_buttons_extension"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="1" Y="6"/>
+        <UsageCount Value="10"/>
+      </Unit57>
+      <Unit58>
+        <Filename Value="../../../Extended/fonctions/unite_messages.pas"/>
+        <UnitName Value="unite_messages"/>
+        <EditorIndex Value="12"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="1" Y="11"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit58>
+      <Unit59>
+        <Filename Value="../../../Extended/fonctions/fonctions_string.pas"/>
+        <UnitName Value="fonctions_string"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="34"/>
+        <CursorPos X="12" Y="64"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit59>
+      <Unit60>
+        <Filename Value="../../../AncestroComponents/components/u_registerbuttons.pas"/>
+        <UnitName Value="u_registerbuttons"/>
+        <EditorIndex Value="14"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="1" Y="7"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit60>
+      <Unit61>
+        <Filename Value="../../../AncestroComponents/components/u_ancestropictimages.pas"/>
+        <UnitName Value="u_ancestropictimages"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="15"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="2"/>
+        <CursorPos X="1" Y="9"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit61>
     </Units>
-    <JumpHistory Count="30" HistoryIndex="29">
+    <JumpHistory Count="25" HistoryIndex="24">
       <Position1>
-        <Filename Value="../../fonctions/fonctions_manbase.pas"/>
-        <Caret Line="157" Column="46" TopLine="141"/>
+        <Filename Value="../../../XMLFrames/composants/u_xmlform.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position1>
       <Position2>
-        <Filename Value="../../../Extended/fonctions/fonctions_proprietes.pas"/>
-        <Caret Line="29" Column="13" TopLine="7"/>
+        <Filename Value="../../../XMLFrames/fonctions/fonctions_autocomponents.pas"/>
+        <Caret Line="55" Column="163" TopLine="53"/>
       </Position2>
       <Position3>
-        <Filename Value="../../../Extended/fonctions/fonctions_proprietes.pas"/>
-        <Caret Line="275" Column="20" TopLine="239"/>
+        <Filename Value="../../../XMLFrames/fonctions/fonctions_autocomponents.pas"/>
+        <Caret Line="137" Column="34" TopLine="103"/>
       </Position3>
       <Position4>
-        <Filename Value="../../../Extended/fonctions/fonctions_proprietes.pas"/>
-        <Caret Line="14" Column="3" TopLine="1"/>
+        <Filename Value="../../fonctions/fonctions_manbase.pas"/>
+        <Caret Line="179" Column="16" TopLine="158"/>
       </Position4>
       <Position5>
         <Filename Value="../../fonctions/fonctions_manbase.pas"/>
-        <Caret Line="157" Column="61" TopLine="136"/>
+        <Caret Line="108" Column="80" TopLine="74"/>
       </Position5>
       <Position6>
-        <Filename Value="../../../Extended/fonctions/fonctions_proprietes.pas"/>
-        <Caret Line="275" Column="18" TopLine="239"/>
+        <Filename Value="../../../XMLFrames/fonctions/fonctions_autocomponents.pas"/>
+        <Caret Line="115" Column="74" TopLine="103"/>
       </Position6>
       <Position7>
         <Filename Value="../../fonctions/fonctions_manbase.pas"/>
-        <Caret Line="22" Column="1" TopLine="22"/>
+        <Caret Line="182" Column="26" TopLine="161"/>
       </Position7>
       <Position8>
         <Filename Value="../../fonctions/fonctions_manbase.pas"/>
-        <Caret Line="159" Column="1" TopLine="136"/>
+        <Caret Line="168" Column="76" TopLine="149"/>
       </Position8>
       <Position9>
-        <Filename Value="../../fonctions/fonctions_manbase.pas"/>
-        <Caret Line="166" Column="70" TopLine="142"/>
+        <Filename Value="../../forms/u_fenetreprincipale.pas"/>
+        <Caret Line="501" Column="1" TopLine="476"/>
       </Position9>
       <Position10>
-        <Filename Value="../../fonctions/fonctions_manbase.pas"/>
-        <Caret Line="165" Column="187" TopLine="144"/>
+        <Filename Value="../../../Extended/composants/u_regfwbuttons_appli.pas"/>
+        <Caret Line="35" Column="28" TopLine="20"/>
       </Position10>
       <Position11>
-        <Filename Value="../../fonctions/fonctions_manbase.pas"/>
-        <Caret Line="166" Column="104" TopLine="144"/>
+        <Filename Value="../../../Extended/composants/u_buttons_appli.pas"/>
+        <Caret Line="768" Column="24" TopLine="749"/>
       </Position11>
       <Position12>
-        <Filename Value="../../fonctions/fonctions_manbase.pas"/>
-        <Caret Line="36" Column="1" TopLine="13"/>
+        <Filename Value="../../../Extended/composants/u_buttons_appli.pas"/>
+        <Caret Line="26" Column="89" TopLine="13"/>
       </Position12>
       <Position13>
-        <Filename Value="../../fonctions/fonctions_manbase.pas"/>
-        <Caret Line="144" Column="1" TopLine="141"/>
+        <Filename Value="../../../Extended/composants/u_regfwbuttons_appli.pas"/>
+        <Caret Line="35" Column="28" TopLine="20"/>
       </Position13>
       <Position14>
-        <Filename Value="../../fonctions/fonctions_manbase.pas"/>
-        <Caret Line="167" Column="192" TopLine="146"/>
+        <Filename Value="../../../Extended/composants/u_regbfsbuttons.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position14>
       <Position15>
-        <Filename Value="../../fonctions/fonctions_manbase.pas"/>
-        <Caret Line="169" Column="70" TopLine="148"/>
+        <Filename Value="../../../Extended/composants/u_buttons_defs.pas"/>
+        <Caret Line="51" Column="27" TopLine="35"/>
       </Position15>
       <Position16>
-        <Filename Value="../../fonctions/fonctions_manbase.pas"/>
-        <Caret Line="170" Column="1" TopLine="149"/>
+        <Filename Value="../../../Extended/composants/u_buttons_defs.pas"/>
+        <Caret Line="164" Column="81" TopLine="136"/>
       </Position16>
       <Position17>
-        <Filename Value="../../fonctions/fonctions_manbase.pas"/>
-        <Caret Line="173" Column="1" TopLine="152"/>
+        <Filename Value="../../../Extended/composants/u_buttons_defs.pas"/>
+        <Caret Line="137" Column="8" TopLine="119"/>
       </Position17>
       <Position18>
-        <Filename Value="../../fonctions/fonctions_manbase.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="../../../Extended/composants/u_buttons_defs.pas"/>
+        <Caret Line="164" Column="81" TopLine="146"/>
       </Position18>
       <Position19>
-        <Filename Value="../../fonctions/fonctions_manbase.pas"/>
-        <Caret Line="9" Column="5" TopLine="1"/>
+        <Filename Value="../../../Extended/composants/u_buttons_defs.pas"/>
+        <Caret Line="165" Column="1" TopLine="134"/>
       </Position19>
       <Position20>
-        <Filename Value="../../fonctions/fonctions_manbase.pas"/>
-        <Caret Line="174" Column="255" TopLine="153"/>
+        <Filename Value="../../../AncestroComponents/components/u_registerbuttons.pas"/>
+        <Caret Line="33" Column="1" TopLine="3"/>
       </Position20>
       <Position21>
-        <Filename Value="../../../XMLFrames/composants/u_xmlform.pas"/>
-        <Caret Line="371" Column="88" TopLine="368"/>
+        <Filename Value="../../../AncestroComponents/components/u_ancestropictimages.pas"/>
+        <Caret Line="21" Column="30" TopLine="1"/>
       </Position21>
       <Position22>
-        <Filename Value="../../../XMLFrames/composants/u_xmlform.pas"/>
-        <Caret Line="401" Column="32" TopLine="368"/>
+        <Filename Value="../../../AncestroComponents/components/u_registerbuttons.pas"/>
+        <Caret Line="30" Column="3" TopLine="3"/>
       </Position22>
       <Position23>
-        <Filename Value="../../../XMLFrames/composants/u_xmlform.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="../../../Extended/fonctions/unite_messages.pas"/>
+        <Caret Line="53" Column="40" TopLine="51"/>
       </Position23>
       <Position24>
-        <Filename Value="../../../XMLFrames/fonctions/fonctions_autocomponents.pas"/>
-        <Caret Line="55" Column="163" TopLine="53"/>
+        <Filename Value="../../../AncestroComponents/components/u_ancestropictimages.pas"/>
+        <Caret Line="508" Column="47" TopLine="501"/>
       </Position24>
       <Position25>
-        <Filename Value="../../../XMLFrames/fonctions/fonctions_autocomponents.pas"/>
-        <Caret Line="137" Column="34" TopLine="103"/>
+        <Filename Value="../../../AncestroComponents/components/u_ancestropictimages.pas"/>
+        <Caret Line="657" Column="1" TopLine="621"/>
       </Position25>
-      <Position26>
-        <Filename Value="../../fonctions/fonctions_manbase.pas"/>
-        <Caret Line="179" Column="16" TopLine="158"/>
-      </Position26>
-      <Position27>
-        <Filename Value="../../fonctions/fonctions_manbase.pas"/>
-        <Caret Line="108" Column="80" TopLine="74"/>
-      </Position27>
-      <Position28>
-        <Filename Value="../../../XMLFrames/fonctions/fonctions_autocomponents.pas"/>
-        <Caret Line="115" Column="74" TopLine="103"/>
-      </Position28>
-      <Position29>
-        <Filename Value="../../fonctions/fonctions_manbase.pas"/>
-        <Caret Line="182" Column="26" TopLine="161"/>
-      </Position29>
-      <Position30>
-        <Filename Value="../../fonctions/fonctions_manbase.pas"/>
-        <Caret Line="168" Column="76" TopLine="149"/>
-      </Position30>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
