@@ -1250,11 +1250,11 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
     Top = 367
   end
   object SvgFormInfoIni: TOnFormInfoIni
-    SavePosObjects = True
     SaveEdits = []
-    SavePosForm = True
     Left = 256
     Top = 168
+    SaveForm = [sfSaveSizes,sfSavePos]
+    Options = [loAutoUpdate,loAutoLoad,loFreeIni]
   end
   object im_icones: TImageList
     Height = 32

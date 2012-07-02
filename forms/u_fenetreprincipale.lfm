@@ -3170,13 +3170,13 @@ inherited F_FenetrePrincipale: TF_FenetrePrincipale
     top = 367
   end
   object SvgFormInfoIni: TOnFormInfoIni[15]
-    SavePosObjects = True
     SaveEdits = []
-    SavePosForm = True
     OnIniLoad = SvgFormInfoIniIniLoad
     OnIniWrite = SvgFormInfoIniIniWrite
     left = 256
     top = 168
+    SaveForm = [sfSaveSizes,sfSavePos]
+    Options = [loAutoUpdate,loAutoLoad,loFreeIni]
   end
   object mu_MenuIni: TMainMenu[16]
     Images = im_Liste

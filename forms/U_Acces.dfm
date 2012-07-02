@@ -141,5 +141,7 @@ object F_Acces: TF_Acces
     SaveEdits = [feTComboValue]
     Left = 64
     Top = 40
+    SaveForm = []
+    Options = [loAutoUpdate,loAutoLoad,loFreeIni]
   end
 end
