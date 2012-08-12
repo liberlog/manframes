@@ -25,7 +25,7 @@ uses
   LCLIntf, LCLType, SQLDB, PCheck, lresources,
 {$ELSE}
   Windows, OleDB, JvComponent, StoHtmlHelp, JvScrollBox,
-  JvExExtCtrls, JvSplitter, JvLED, U_ExtScrollBox,
+  JvExExtCtrls, JvSplitter, JvLED, 
   StdActns, JvExForms, JvExControls, Messages,
   JvXPCore, ImgList, 
   ToolWin,

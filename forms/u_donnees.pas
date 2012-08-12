@@ -116,7 +116,7 @@ uses Forms, Controls, SysUtils,
 {$IFDEF FPC}
   FileUtil,
 {$ENDIF}
-  U_FormMainIni,
+  U_FormMainIni, fonctions_system,
   fonctions_string, fonctions_dbcomponents, fonctions_proprietes ;
 
 {$IFNDEF CSV}
