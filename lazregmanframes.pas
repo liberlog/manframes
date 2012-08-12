@@ -7,14 +7,14 @@ unit lazregmanframes;
 interface
 
 uses
-  U_RegisterFrameWork, U_Register_ManSoftware, LazarusPackageIntf;
+  U_RegisterFrameWork, u_register_forms, LazarusPackageIntf;
 
 implementation
 
 procedure Register;
 begin
   RegisterUnit('U_RegisterFrameWork', @U_RegisterFrameWork.Register);
-  RegisterUnit('U_Register_ManSoftware', @U_Register_ManSoftware.Register);
+  RegisterUnit('u_register_forms', @u_register_forms.Register);
 end;
 
 initialization
