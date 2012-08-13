@@ -777,8 +777,8 @@ end;
 procedure TF_Administration.adoq_UtilisateursBeforePost(DataSet: TDataSet);
 begin
   try
-    if  ( Sources [ 0 ].MyRecord <> Null )
-    and ( Sources [ 0 ].MyRecord = UpperCase ( CST_UTIL_Administrateur ))
+    if  ( DBSources [ 0 ].MyRecord <> Null )
+    and ( DBSources [ 0 ].MyRecord = UpperCase ( CST_UTIL_Administrateur ))
     and (   ( ( adoq_Utilisateurs.FieldByName ( CST_UTIL_Clep  ).AsString  )<>  UpperCase ( CST_UTIL_Administrateur ))
          or (  ( adoq_Utilisateurs.FieldByName ( CST_UTIL__SOMM ).AsString ) <>  ( CST_SOMM_Administrateur )))
      Then
@@ -898,7 +898,7 @@ begin
     Begin
       Exit ;
     End ;
-  if  ( Sources [ 9 ].MyRecord = Null )
+  if  ( DBSources [ 9 ].MyRecord = Null )
    Then
     Begin
       MessageDlg ( GS_CHOISIR_FONCTION , mtWarning, [mbOk], 0);
@@ -907,7 +907,7 @@ begin
       Exit ;
     End ;
 
-  if  (    Sources [ 2 ].MyRecord = Null )
+  if  (    DBSources [ 2 ].MyRecord = Null )
    Then
     Begin
       MessageDlg ( GS_CHOISIR_SOMMAIRE , mtWarning, [mbOk], 0);
@@ -918,18 +918,18 @@ begin
   // Initialisation de la requête
   adoq_TreeUser.Close ;
   case ai_NoTable of
-   1 : if  ( Sources [ 2 ].MyRecord <> Null )
+   1 : if  ( DBSources [ 2 ].MyRecord <> Null )
         Then
          Begin // Table fonctions sommaire
           lws_TextSQL := 'SELECT * FROM SOMM_FONCTIONS '
-                      + 'WHERE SOFC__SOMM = ''' + fs_stringDbQuote ( Sources [ 2 ].MyRecord )  + ''' ORDER BY '+ CST_SOFC_NumOrdre + ','+ CST_SOFC__SOMM + ','+ CST_SOFC__FONC ;
+                      + 'WHERE SOFC__SOMM = ''' + fs_stringDbQuote ( DBSources [ 2 ].MyRecord )  + ''' ORDER BY '+ CST_SOFC_NumOrdre + ','+ CST_SOFC__SOMM + ','+ CST_SOFC__FONC ;
           if ab_ChercheFonction // On cherche une fonction en particulier
            Then
-            lws_TextSQL := lws_TextSQL + 'AND SOFC__FONC = ''' + fs_stringDbQuote ( Sources [ 9 ].MyRecord )  + '''' ;
+            lws_TextSQL := lws_TextSQL + 'AND SOFC__FONC = ''' + fs_stringDbQuote ( DBSources [ 9 ].MyRecord )  + '''' ;
         End ;
 
    2 :  Begin // Table fonctions menu
-          if Sources [ 4 ].MyRecord = Null
+          if DBSources [ 4 ].MyRecord = Null
            then
             Begin
               MessageDlg ( GS_CHOISIR_MENU , mtWarning, [mbOk], 0);
@@ -937,34 +937,34 @@ begin
               Exit ;
             End ;
           lws_TextSQL := 'SELECT * FROM MENU_FONCTIONS '
-                      + ' WHERE MEFC__SOMM = ''' + fs_stringDbQuote ( Sources [ 2 ].MyRecord )  + ''''
-                      + ' AND  MEFC__MENU = ''' + fs_stringDbQuote ( Sources [ 4 ].MyRecord     )  + ''' ORDER BY '+CST_MEFC_NumOrdre+','+CST_MEFC__SOMM+','+CST_MEFC__MENU+','+CST_MEFC__FONC ;
+                      + ' WHERE MEFC__SOMM = ''' + fs_stringDbQuote ( DBSources [ 2 ].MyRecord )  + ''''
+                      + ' AND  MEFC__MENU = ''' + fs_stringDbQuote ( DBSources [ 4 ].MyRecord     )  + ''' ORDER BY '+CST_MEFC_NumOrdre+','+CST_MEFC__SOMM+','+CST_MEFC__MENU+','+CST_MEFC__FONC ;
           if ab_ChercheFonction // On cherche une fonction en particulier
            Then
-            lws_TextSQL := lws_TextSQL + 'AND MEFC__FONC = ''' + fs_stringDbQuote ( Sources [ 9 ].MyRecord )  + '''' ;
+            lws_TextSQL := lws_TextSQL + 'AND MEFC__FONC = ''' + fs_stringDbQuote ( DBSources [ 9 ].MyRecord )  + '''' ;
         End ;
 
    3 :  Begin // Table fonctions sous menu
-          if ( Sources [ 6 ].MyRecord = Null )
+          if ( DBSources [ 6 ].MyRecord = Null )
            then
             Begin
               MessageDlg ( GS_CHOISIR_SOUS_MENU , mtWarning, [mbOk], 0);
               Abort ;
               Exit ;
             End ;
-          if (     Sources [ 4 ].MyRecord = Null )
+          if (     DBSources [ 4 ].MyRecord = Null )
            then
             Begin
               MessageDlg ( GS_CHOISIR_MENU , mtWarning, [mbOk], 0);
               Exit ;
             End ;
           lws_TextSQL := 'SELECT * FROM SOUM_FONCTIONS '
-                      + ' WHERE SMFC__SOMM = ''' + fs_stringDbQuote ( Sources [ 2 ].MyRecord )  + ''''
-                      + ' AND  SMFC__MENU = ''' + fs_stringDbQuote ( Sources [ 4 ].MyRecord     )  + ''''
-                      + ' AND  SMFC__SOUM = ''' + fs_stringDbQuote ( Sources [ 6 ].MyRecord )  + ''' ORDER BY '+ CST_SMFC_NumOrdre+','+CST_SMFC__SOMM+','+CST_SMFC__MENU+','+CST_SMFC__SOUM+','+CST_SMFC__FONC ;
+                      + ' WHERE SMFC__SOMM = ''' + fs_stringDbQuote ( DBSources [ 2 ].MyRecord )  + ''''
+                      + ' AND  SMFC__MENU = ''' + fs_stringDbQuote ( DBSources [ 4 ].MyRecord     )  + ''''
+                      + ' AND  SMFC__SOUM = ''' + fs_stringDbQuote ( DBSources [ 6 ].MyRecord )  + ''' ORDER BY '+ CST_SMFC_NumOrdre+','+CST_SMFC__SOMM+','+CST_SMFC__MENU+','+CST_SMFC__SOUM+','+CST_SMFC__FONC ;
           if ab_ChercheFonction // On cherche une fonction en particulier
            Then
-            lws_TextSQL := lws_TextSQL + 'AND SMFC__FONC = ''' + fs_stringDbQuote ( Sources [ 9 ].MyRecord )  + '''' ;
+            lws_TextSQL := lws_TextSQL + 'AND SMFC__FONC = ''' + fs_stringDbQuote ( DBSources [ 9 ].MyRecord )  + '''' ;
         End ;
 
   End ;
@@ -989,17 +989,17 @@ begin
   // Initialisation de la requête
   adoq_TreeUser.Close ;
   case ai_NoTable of
-   1 : if ( Sources [ 9 ].MyRecord <> Null )
+   1 : if ( DBSources [ 9 ].MyRecord <> Null )
         then
          Begin // Table fonctions sommaire
           p_UpdateBatch ( adoq_Sommaire );
           lws_TextSQL := 'INSERT INTO SOMM_FONCTIONS'
                         + ' ( SOFC__SOMM, SOFC__FONC, SOFC_Numordre )'
-                        + ' VALUES ( ''' + fs_stringDbQuote ( Sources [ 2 ].MyRecord )  + ''', ''' + fs_stringDbQuote ( Sources [ 9 ].MyRecord )  + ''',' + IntToStr ( ai_Numordre ) + ')' ;
+                        + ' VALUES ( ''' + fs_stringDbQuote ( DBSources [ 2 ].MyRecord )  + ''', ''' + fs_stringDbQuote ( DBSources [ 9 ].MyRecord )  + ''',' + IntToStr ( ai_Numordre ) + ')' ;
          End ;
 
    2 :  Begin // Table fonctions menu
-          if Sources [ 4 ].MyRecord = Null
+          if DBSources [ 4 ].MyRecord = Null
            Then
             Begin
               MessageDlg ( GS_CHOISIR_MENU , mtWarning, [mbOk], 0);
@@ -1010,18 +1010,18 @@ begin
           p_UpdateBatch ( adoq_Menus    );
           lws_TextSQL := 'INSERT INTO MENU_FONCTIONS'
                         + ' ( MEFC__SOMM, MEFC__MENU, MEFC__FONC, MEFC_Numordre )'
-                        + ' VALUES ( ''' + fs_stringDbQuote ( Sources [ 2 ].MyRecord )  + ''', ''' + fs_stringDbQuote ( Sources [ 4 ].MyRecord )  + ''', ''' + fs_stringDbQuote ( Sources [ 9 ].MyRecord )  + ''',' + InttoStr ( ai_Numordre ) + ')' ;
+                        + ' VALUES ( ''' + fs_stringDbQuote ( DBSources [ 2 ].MyRecord )  + ''', ''' + fs_stringDbQuote ( DBSources [ 4 ].MyRecord )  + ''', ''' + fs_stringDbQuote ( DBSources [ 9 ].MyRecord )  + ''',' + InttoStr ( ai_Numordre ) + ')' ;
         End ;
 
    3 :  Begin // Table fonctions sous menu
-          if Sources [ 4 ].MyRecord = Null
+          if DBSources [ 4 ].MyRecord = Null
            Then
             Begin
               MessageDlg ( GS_CHOISIR_MENU , mtWarning, [mbOk], 0);
               Abort ;
               Exit ;
             End ;
-          if Sources [ 6 ].MyRecord = Null
+          if DBSources [ 6 ].MyRecord = Null
            Then
             Begin
               MessageDlg ( GS_CHOISIR_SOUS_MENU , mtWarning, [mbOk], 0);
@@ -1033,7 +1033,7 @@ begin
           p_UpdateBatch ( adoq_SousMenus );
           lws_TextSQL :=  'INSERT INTO SOUM_FONCTIONS'
                       + ' ( SMFC__SOMM, SMFC__MENU, SMFC__SOUM, SMFC__FONC, SMFC_Numordre )'
-                      + ' VALUES ( ''' + fs_stringDbQuote ( Sources [ 2 ].MyRecord )  + ''', ''' + fs_stringDbQuote ( Sources [ 4 ].MyRecord )  + ''', ''' + fs_stringDbQuote ( Sources [ 6 ].MyRecord )  + ''', ''' + fs_stringDbQuote ( Sources [ 9 ].MyRecord )  + ''',' + InttoStr ( ai_Numordre ) + ')' ;
+                      + ' VALUES ( ''' + fs_stringDbQuote ( DBSources [ 2 ].MyRecord )  + ''', ''' + fs_stringDbQuote ( DBSources [ 4 ].MyRecord )  + ''', ''' + fs_stringDbQuote ( DBSources [ 6 ].MyRecord )  + ''', ''' + fs_stringDbQuote ( DBSources [ 9 ].MyRecord )  + ''',' + InttoStr ( ai_Numordre ) + ')' ;
         End ;
 
   End ;
@@ -1047,31 +1047,31 @@ begin
             adoq_SommaireFonctions.Open  ;
             if not adoq_SommaireFonctions.IsEmpty Then
               adoq_SommaireFonctions.FindLast ;
-            fi_CreeSommaire ( Application.MainForm, Self, Sources [ 2 ].MyRecord, adoq_TreeUser, nil, tbar_outils, tbsep_1, Panel_Fin, 49, nil, False );
+            fi_CreeSommaire ( Application.MainForm, Self, DBSources [ 2 ].MyRecord, adoq_TreeUser, nil, tbar_outils, tbsep_1, Panel_Fin, 49, nil, False );
             p_MAJBoutonsSommaire ;
           Except
           End ;
 
-     2 : if Sources [ 4 ].MyRecord <> Null
+     2 : if DBSources [ 4 ].MyRecord <> Null
           Then
            try // Table fonctions menu
              adoq_MenuFonctions.Close ;
              adoq_MenuFonctions.Open  ;
              if not adoq_MenuFonctions.IsEmpty Then
                adoq_MenuFonctions.FindLast ;
-             fb_CreeXPButtons ( Sources [ 2 ].MyRecord, Sources [ 4 ].MyRecord, Application.MainForm, Self , scb_Volet, nil, adoq_QueryTempo, nil, False, iml_Menus  );
+             fb_CreeXPButtons ( DBSources [ 2 ].MyRecord, DBSources [ 4 ].MyRecord, Application.MainForm, Self , scb_Volet, nil, adoq_QueryTempo, nil, False, iml_Menus  );
              p_MAJXPBoutons ;
             Except
             End ;
 
-     3 : if ( Sources [ 4 ].MyRecord <> Null )
+     3 : if ( DBSources [ 4 ].MyRecord <> Null )
           Then
            try // Table fonctions sous menu
              adoq_SousMenuFonctions.Close ;
              adoq_SousMenuFonctions.Open  ;
              if not adoq_SousMenuFonctions.IsEmpty Then
                adoq_SousMenuFonctions.FindLast ;
-             fb_CreeXPButtons ( Sources [ 2 ].MyRecord, Sources [ 4 ].MyRecord, Application.MainForm, Self , scb_Volet, nil, adoq_QueryTempo, nil, False, iml_Menus  );
+             fb_CreeXPButtons ( DBSources [ 2 ].MyRecord, DBSources [ 4 ].MyRecord, Application.MainForm, Self , scb_Volet, nil, adoq_QueryTempo, nil, False, iml_Menus  );
              p_MAJXPBoutons ;
             Except
             End ;
@@ -1191,12 +1191,12 @@ begin
       or ( aDat_GroupeFonctions <> adoq_Menus             )
        Then
         Begin
-          fb_CreeXPButtons ( Sources [ 2 ].MyRecord, Sources [ 4 ].MyRecord, Application.MainForm, Self , scb_Volet, nil, adoq_QueryTempo, nil, False, iml_Menus  );
+          fb_CreeXPButtons ( DBSources [ 2 ].MyRecord, DBSources [ 4 ].MyRecord, Application.MainForm, Self , scb_Volet, nil, adoq_QueryTempo, nil, False, iml_Menus  );
           p_MAJXPBoutons ;
        End
        Else
         Begin
-          fi_CreeSommaire  ( Application.MainForm, Self, Sources [ 2 ].MyRecord, adoq_TreeUser, nil, tbar_outils, tbsep_Debut, pa_FinDyna, 49, nil, False );
+          fi_CreeSommaire  ( Application.MainForm, Self, DBSources [ 2 ].MyRecord, adoq_TreeUser, nil, tbar_outils, tbsep_Debut, pa_FinDyna, 49, nil, False );
           p_MAJBoutonsSommaire ;
         End ;
        // Mise à jour de la table liée
@@ -1217,8 +1217,8 @@ end;
     // ab_erreur   : Y a - t-il eu une erreur
 function TF_Administration.fb_MAJTableNumOrdre(const ai_NoTable, ai_Numordre : Integer ; const as_Clep : String ; var ab_Erreur : Boolean ): Boolean;
 begin
-  if Sources [ 6 ].MyRecord <> Null Then
-    Result := fb_MAJTableNumOrdre ( ai_NoTable, ai_Numordre, as_Clep, Sources [ 2 ].MyRecord, Sources [ 4 ].MyRecord, Sources [ 6 ].MyRecord, ab_erreur )
+  if DBSources [ 6 ].MyRecord <> Null Then
+    Result := fb_MAJTableNumOrdre ( ai_NoTable, ai_Numordre, as_Clep, DBSources [ 2 ].MyRecord, DBSources [ 4 ].MyRecord, DBSources [ 6 ].MyRecord, ab_erreur )
   Else
     Result := False;
 End ;
@@ -1334,9 +1334,9 @@ begin
           adoq_SousMenuFonctions.Close ;
         End ;
       aDat_Dataset.Delete ;
-      if ( Sources [ 4 ].MyRecord <> Null ) Then
-        fb_CreeXPButtons ( Sources [ 2 ].MyRecord, Sources [ 4 ].MyRecord, Application.MainForm, Self , scb_Volet, nil, adoq_QueryTempo, nil, False, iml_Menus  );
-      fi_CreeSommaire  ( Application.MainForm, Self, Sources [ 2 ].MyRecord, adoq_TreeUser, nil, tbar_outils, tbsep_1, Panel_Fin, 49, nil, False );
+      if ( DBSources [ 4 ].MyRecord <> Null ) Then
+        fb_CreeXPButtons ( DBSources [ 2 ].MyRecord, DBSources [ 4 ].MyRecord, Application.MainForm, Self , scb_Volet, nil, adoq_QueryTempo, nil, False, iml_Menus  );
+      fi_CreeSommaire  ( Application.MainForm, Self, DBSources [ 2 ].MyRecord, adoq_TreeUser, nil, tbar_outils, tbsep_1, Panel_Fin, 49, nil, False );
       p_MAJXPBoutons ;
       p_MAJBoutonsSommaire ;
       Result := True ;
@@ -1379,7 +1379,7 @@ begin
           lbmk_GardeEnregistrement := aDat_Dataset.GetBookmark ;
         // Si il y a au moins un utilisateur on n'efface pas
 //          adoq_Utilisateurs.Close ;
-          adoq_Utilisateurs.Filter := 'UTIL__SOMM=''' + fs_stringDbQuote ( Sources [ 2 ].MyRecord ) + '''' ;
+          adoq_Utilisateurs.Filter := 'UTIL__SOMM=''' + fs_stringDbQuote ( DBSources [ 2 ].MyRecord ) + '''' ;
           adoq_Utilisateurs.Filtered := True ;
 //          adoq_Utilisateurs.Open ;
           if adoq_Utilisateurs.IsEmpty  // Effacement d'un sommaire et de ses descendants
@@ -2062,8 +2062,8 @@ begin
     End;
   {$ENDIF}
   gcco_Connexion := fcom_CloneConnexion ( gcco_ConnexionCopy, Self );
-  Sources.Clear;
-  with Sources.Add do
+  DBSources.Clear;
+  with DBSources.Add do
     Begin
       Table := 'UTILISATEURS';
       Key := 'UTIL_Clep' ;
@@ -2074,7 +2074,7 @@ begin
       Panels.add.Panel := PanelUtilisateur ;
       OnScroll := adoq_UtilisateursAfterScroll ;
     end ;
-  with Sources.Add do
+  with DBSources.Add do
     Begin
       Table := 'CONNEXION' ;
       Key := 'CONN_Clep';
@@ -2084,7 +2084,7 @@ begin
       NavEdit := nv_conn_saisie ;
       Panels.add.Panel := Panel_Connexion ;
     end ;
-  with Sources.Add do
+  with DBSources.Add do
     Begin
       Table := 'SOMMAIRE';
       Key := 'SOMM_Clep';
@@ -2093,7 +2093,7 @@ begin
       Navigator := nav_Sommaire ;
       OnScroll := adoq_SommaireAfterScroll ;
     end;
-  with Sources.Add do
+  with DBSources.Add do
     Begin
       Table := 'SOMM_FONCTIONS' ;
       Key := 'SOFC__FONC' ;
@@ -2102,7 +2102,7 @@ begin
       Navigator := nav_NavigateurSommaireFonctions ;
       OnScroll := adoq_SommaireFonctionsAfterScroll ;
     end ;
-  with Sources.Add do
+  with DBSources.Add do
     Begin
       Table := 'MENUS' ;
       Key := 'MENU_Clep' ;
@@ -2111,7 +2111,7 @@ begin
       Navigator := nav_NavigateurMenu ;
       OnScroll := adoq_MenusAfterScroll ;
     end;
-  with Sources.Add do
+  with DBSources.Add do
     Begin
       Table := 'MENU_FONCTIONS' ;
       Key := 'MEFC__FONC' ;
@@ -2120,7 +2120,7 @@ begin
       Navigator := nav_NavigateurMenuFonctions ;
       OnScroll := adoq_MenuFonctionsAfterScroll ;
     end ;
-  with Sources.Add do
+  with DBSources.Add do
     Begin
       Table := 'SOUS_MENUS' ;
       Key := 'SOUM_Clep' ;
@@ -2129,7 +2129,7 @@ begin
       Navigator := nav_NavigateurSousMenu ;
       OnScroll := adoq_SousMenusAfterScroll ;
     end;
-  with Sources.Add do
+  with DBSources.Add do
     Begin
       Table := 'SOUM_FONCTIONS' ;
       Key := 'SMFC__FONC' ;
@@ -2138,33 +2138,33 @@ begin
       Navigator := nav_NavigateurSousMenuFonctions;
       OnScroll := adoq_SousMenuFonctionsAfterScroll ;
     end ;
-  with Sources.Add do
+  with DBSources.Add do
     Begin
       Table := 'ENTREPRISE' ;
       ControlFocus := ed_nomapp ;
       NavEdit := nv_Entreprise ;
       Panels.add.Panel := p_Entreprise ;
     end ;
-  with Sources.Add do
+  with DBSources.Add do
     Begin
       Table := 'FONCTIONS' ;
       ControlFocus := dbl_Fonctions ;
       Navigator := nav_Fonctions ;
       OnScroll := adoq_FonctionsAfterScroll ;
     end ;
-  DataCloseMessage := True ;
-  DataPropsOff:=True;
+  DBCloseMessage := True ;
+  DBPropsOff:=True;
 
-  Sources [ 0 ].Datasource := ds_Utilisateurs;
-  Sources [ 1 ].Datasource := ds_connexion;
-  Sources [ 2 ].Datasource := ds_Sommaire;
-  Sources [ 3 ].Datasource := ds_SommaireFonctions;
-  Sources [ 4 ].Datasource := ds_Menus;
-  Sources [ 5 ].Datasource := ds_MenuFonctions;
-  Sources [ 6 ].Datasource := ds_SousMenus;
-  Sources [ 7 ].Datasource := ds_SousMenuFonctions;
-  Sources [ 8 ].Datasource := ds_entr;
-  Sources [ 9 ].Datasource := ds_Fonctions;
+  DBSources [ 0 ].Datasource := ds_Utilisateurs;
+  DBSources [ 1 ].Datasource := ds_connexion;
+  DBSources [ 2 ].Datasource := ds_Sommaire;
+  DBSources [ 3 ].Datasource := ds_SommaireFonctions;
+  DBSources [ 4 ].Datasource := ds_Menus;
+  DBSources [ 5 ].Datasource := ds_MenuFonctions;
+  DBSources [ 6 ].Datasource := ds_SousMenus;
+  DBSources [ 7 ].Datasource := ds_SousMenuFonctions;
+  DBSources [ 8 ].Datasource := ds_entr;
+  DBSources [ 9 ].Datasource := ds_Fonctions;
   im_about     .DataSource := ds_entr;
   im_acces     .DataSource := ds_entr;
   im_aide      .DataSource := ds_entr;
@@ -2208,8 +2208,8 @@ Begin
           if ((tbar_outils.Controls[li_i] as TPanel).ControlCount = 1)
             and ((tbar_outils.Controls[li_i] as TPanel).Controls[0] is TJvXpButton) then
             begin
-            if (    ( Sources [ 4 ].MyRecord <> Null )
-                and (((tbar_outils.Controls[li_i] as TPanel).Controls[0] as TJvXpButton).Hint = Sources [ 4 ].MyRecord )
+            if (    ( DBSources [ 4 ].MyRecord <> Null )
+                and (((tbar_outils.Controls[li_i] as TPanel).Controls[0] as TJvXpButton).Hint = DBSources [ 4 ].MyRecord )
                 and (((tbar_outils.Controls[li_i] as TPanel).Controls[0] as TJvXpButton).Tag = 1      ))
             or (    (((tbar_outils.Controls[li_i] as TPanel).Controls[0] as TJvXpButton).Hint = adoq_SommaireFonctions.FieldByName ( CST_FONC_Libelle ).AsString )
                 and (((tbar_outils.Controls[li_i] as TPanel).Controls[0] as TJvXpButton).Tag = 2      ))
@@ -2223,20 +2223,20 @@ End ;
 // Il faut filtrer les fonctions du menu en fonction du sommaire et du menu
 procedure TF_Administration.p_FiltreMenuFonctions ;
 Begin
-  adoq_MenuFonctions.Filter := CST_MEFC__SOMM + ' = ''' + fs_stringDbQuote ( Sources [ 2 ].MyRecord ) + '''' ;
-  if Sources [ 4 ].MyRecord <> Null Then
-    adoq_MenuFonctions.Filter := adoq_MenuFonctions.Filter + ' AND ' + CST_MEFC__MENU + ' = ''' + fs_stringDbQuote ( Sources [ 4 ].MyRecord ) + '''';
+  adoq_MenuFonctions.Filter := CST_MEFC__SOMM + ' = ''' + fs_stringDbQuote ( DBSources [ 2 ].MyRecord ) + '''' ;
+  if DBSources [ 4 ].MyRecord <> Null Then
+    adoq_MenuFonctions.Filter := adoq_MenuFonctions.Filter + ' AND ' + CST_MEFC__MENU + ' = ''' + fs_stringDbQuote ( DBSources [ 4 ].MyRecord ) + '''';
   adoq_MenuFonctions.Filtered := True ;
 End ;
 
 // Il faut filtrer les fonctions du sous menu en fonction du sommaire du menu et du sous menu
 procedure TF_Administration.p_FiltreSousMenuFonctions ;
 Begin
-  adoq_SousMenuFonctions.Filter := CST_SMFC__SOMM + ' = ''' + fs_stringDbQuote ( Sources [ 2 ].MyRecord ) + '''' ;
-  if Sources [ 4 ].MyRecord <> Null Then
-   adoq_SousMenuFonctions.Filter := adoq_SousMenuFonctions.Filter + ' AND ' + CST_SMFC__MENU + ' = ''' + fs_stringDbQuote ( Sources [ 4 ].MyRecord ) + '''';
-  if Sources [ 6 ].MyRecord <> Null Then
-   adoq_SousMenuFonctions.Filter := adoq_SousMenuFonctions.Filter + ' AND ' + CST_SMFC__SOUM + ' = ''' + fs_stringDbQuote ( Sources [ 6 ].MyRecord ) + '''';
+  adoq_SousMenuFonctions.Filter := CST_SMFC__SOMM + ' = ''' + fs_stringDbQuote ( DBSources [ 2 ].MyRecord ) + '''' ;
+  if DBSources [ 4 ].MyRecord <> Null Then
+   adoq_SousMenuFonctions.Filter := adoq_SousMenuFonctions.Filter + ' AND ' + CST_SMFC__MENU + ' = ''' + fs_stringDbQuote ( DBSources [ 4 ].MyRecord ) + '''';
+  if DBSources [ 6 ].MyRecord <> Null Then
+   adoq_SousMenuFonctions.Filter := adoq_SousMenuFonctions.Filter + ' AND ' + CST_SMFC__SOUM + ' = ''' + fs_stringDbQuote ( DBSources [ 6 ].MyRecord ) + '''';
   adoq_SousMenuFonctions.Filtered := True ;
 End ;
 
@@ -2246,13 +2246,13 @@ procedure TF_Administration.p_SelectionneFonctions ();
 var li_i : Integer ;
 Begin
   if not adoq_Fonctions.Active
-  and ( Sources [ 2 ].MyRecord <> Null )
+  and ( DBSources [ 2 ].MyRecord <> Null )
    Then
     Exit ;
 // Requête de recherche des fonctions utilisées
   adoq_TreeUser.Close ;
   try
-    p_OpenSQLQuery ( adoq_TreeUser, 'SELECT * FROM fc_fonctions_utilisees ( ''' + fs_StringDbQuote ( Sources [ 2 ].MyRecord ) + ''')'  );
+    p_OpenSQLQuery ( adoq_TreeUser, 'SELECT * FROM fc_fonctions_utilisees ( ''' + fs_StringDbQuote ( DBSources [ 2 ].MyRecord ) + ''')'  );
   //  ShowMessage ( adoq_TreeUser.Fields [0].Name + IntToStr ( adoq_TreeUser.Fields.Count ) );
     dbl_Fonctions.Items.BeginUpdate ;
     if not adoq_TreeUser.IsEmpty // si quelque chose
@@ -2337,8 +2337,8 @@ begin
                       or  (     (( scb_Volet.Controls[ li_i ]  as TJvXpBar).Caption =     adoq_MenuFonctions.FieldByName ( CST_FONC_Libelle ).AsString )
                             and (( scb_Volet.Controls[ li_i ]  as TJvXpBar).Tag = 1 )))))
             or  (          (( scb_Volet.Controls[ li_i ]  as TJvXpBar).Items.Count > 0 )
-                 and       ( Sources [ 6 ].MyRecord <> null )
-                 and       (( scb_Volet.Controls[ li_i ]  as TJvXpBar).Caption = Sources [ 6 ].MyRecord ))
+                 and       ( DBSources [ 6 ].MyRecord <> null )
+                 and       (( scb_Volet.Controls[ li_i ]  as TJvXpBar).Caption = DBSources [ 6 ].MyRecord ))
              then
               Begin
                 ( scb_Volet.Controls[ li_i ]  as TJvXpBar).Enabled := true ;
@@ -2373,13 +2373,13 @@ procedure TF_Administration.nav_NavigateurFonctionsBtnDelete(
   Sender: TObject);
 var lws_TextSQL : WideString;
 begin
-  if ( Sources [ 9 ].MyRecord = Null )
+  if ( DBSources [ 9 ].MyRecord = Null )
     Then
       Exit;
   Try
     if  ( Sender = nav_NavigateurSommaireFonctions )
     and ( ( adoq_Sommaire.FieldByName ( CST_SOMM_Clep ).AsString ) =  ( CST_SOMM_Administrateur ))
-    and ( Sources [ 9 ].MyRecord = CST_Fonc_V_1_Admin )
+    and ( DBSources [ 9 ].MyRecord = CST_Fonc_V_1_Admin )
      Then
       Begin
         MessageDlg ( GS_PAS_CETTE_FONCTION , mtWarning, [mbOk], 0);
@@ -2392,32 +2392,32 @@ begin
      Then
       Begin
         lws_TextSQL := 'DELETE FROM SOMM_FONCTIONS'
-                    + ' WHERE SOFC__SOMM = ''' + fs_stringDbQuote ( Sources [ 2 ].MyRecord    )  + ''''
-                    +  ' AND  SOFC__FONC = ''' + fs_stringDbQuote ( Sources [ 9 ].MyRecord )  + '''' ;
+                    + ' WHERE SOFC__SOMM = ''' + fs_stringDbQuote ( DBSources [ 2 ].MyRecord    )  + ''''
+                    +  ' AND  SOFC__FONC = ''' + fs_stringDbQuote ( DBSources [ 9 ].MyRecord )  + '''' ;
       End ;
 
     // Table fonctions menu
     if (Sender = nav_NavigateurMenuFonctions)
-    and ( Sources [ 4 ].MyRecord <> Null )
+    and ( DBSources [ 4 ].MyRecord <> Null )
      Then
       Begin
         lws_TextSQL :=  'DELETE FROM MENU_FONCTIONS'
-                    +  ' WHERE MEFC__SOMM = ''' + fs_stringDbQuote ( Sources [ 2 ].MyRecord    )  + ''''
-                    +  ' AND  MEFC__MENU = ''' + fs_stringDbQuote ( Sources [ 4 ].MyRecord        )  + ''''
-                    +  ' AND  MEFC__FONC = ''' + fs_stringDbQuote ( Sources [ 9 ].MyRecord )  + '''' ;
+                    +  ' WHERE MEFC__SOMM = ''' + fs_stringDbQuote ( DBSources [ 2 ].MyRecord    )  + ''''
+                    +  ' AND  MEFC__MENU = ''' + fs_stringDbQuote ( DBSources [ 4 ].MyRecord        )  + ''''
+                    +  ' AND  MEFC__FONC = ''' + fs_stringDbQuote ( DBSources [ 9 ].MyRecord )  + '''' ;
       End ;
 
     // Table fonctions sous menu
     if  ( Sender = nav_NavigateurSousMenuFonctions )
-    and ( Sources [ 4 ].MyRecord <> Null )
-    and ( Sources [ 6 ].MyRecord <> Null )
+    and ( DBSources [ 4 ].MyRecord <> Null )
+    and ( DBSources [ 6 ].MyRecord <> Null )
      Then
       Begin
         lws_TextSQL :=  'DELETE FROM SOUM_FONCTIONS'
-                      + 'WHERE SMFC__SOMM = ''' + fs_stringDbQuote ( Sources [ 2 ].MyRecord    )  + ''''
-                      + ' AND  SMFC__MENU = ''' + fs_stringDbQuote ( Sources [ 4 ].MyRecord        )  + ''''
-                      + ' AND  SMFC__SOUM = ''' + fs_stringDbQuote ( Sources [ 6 ].MyRecord    )  + ''''
-                      +  ' AND  SMFC__FONC = ''' + fs_stringDbQuote ( Sources [ 9 ].MyRecord )  + '''' ;
+                      + 'WHERE SMFC__SOMM = ''' + fs_stringDbQuote ( DBSources [ 2 ].MyRecord    )  + ''''
+                      + ' AND  SMFC__MENU = ''' + fs_stringDbQuote ( DBSources [ 4 ].MyRecord        )  + ''''
+                      + ' AND  SMFC__SOUM = ''' + fs_stringDbQuote ( DBSources [ 6 ].MyRecord    )  + ''''
+                      +  ' AND  SMFC__FONC = ''' + fs_stringDbQuote ( DBSources [ 9 ].MyRecord )  + '''' ;
       End ;
 
   p_ExecuteSQLQuery( adoq_TreeUser, lws_TextSQL );
@@ -2428,7 +2428,7 @@ begin
         adoq_SommaireFonctions.Close ;
         adoq_SommaireFonctions.Open ;
         adoq_DatasetMAJNumerosOrdre ( adoq_SommaireFonctions, 2 );
-        fi_CreeSommaire ( Application.MainForm, Self, Sources [ 2 ].MyRecord, adoq_TreeUser, nil, tbar_outils, tbsep_1, Panel_Fin, 49, nil, False );
+        fi_CreeSommaire ( Application.MainForm, Self, DBSources [ 2 ].MyRecord, adoq_TreeUser, nil, tbar_outils, tbsep_1, Panel_Fin, 49, nil, False );
         p_MAJBoutonsSommaire ;
       End ;
 
@@ -2438,8 +2438,8 @@ begin
         adoq_MenuFonctions.Close ;
         adoq_MenuFonctions.Open ;
         adoq_DatasetMAJNumerosOrdre ( adoq_MenuFonctions, 4 );
-        if ( Sources [ 4 ].MyRecord <> Null ) Then
-          fb_CreeXPButtons ( Sources [ 2 ].MyRecord, Sources [ 4 ].MyRecord, Application.MainForm, Self , scb_Volet, nil, adoq_QueryTempo, nil, False, iml_Menus  );
+        if ( DBSources [ 4 ].MyRecord <> Null ) Then
+          fb_CreeXPButtons ( DBSources [ 2 ].MyRecord, DBSources [ 4 ].MyRecord, Application.MainForm, Self , scb_Volet, nil, adoq_QueryTempo, nil, False, iml_Menus  );
         p_MAJXPBoutons ;
       End ;
 
@@ -2449,8 +2449,8 @@ begin
         adoq_SousMenuFonctions.Close ;
         adoq_SousMenuFonctions.Open ;
         adoq_DatasetMAJNumerosOrdre ( adoq_SousMenuFonctions, 6 );
-        if ( Sources [ 4 ].MyRecord <> Null ) Then
-          fb_CreeXPButtons ( Sources [ 2 ].MyRecord, Sources [ 4 ].MyRecord, Application.MainForm, Self , scb_Volet, nil, adoq_QueryTempo, nil, False, iml_Menus  );
+        if ( DBSources [ 4 ].MyRecord <> Null ) Then
+          fb_CreeXPButtons ( DBSources [ 2 ].MyRecord, DBSources [ 4 ].MyRecord, Application.MainForm, Self , scb_Volet, nil, adoq_QueryTempo, nil, False, iml_Menus  );
         p_MAJXPBoutons ;
       End ;
     p_SelectionneFonctions ;
@@ -2525,7 +2525,7 @@ begin
     if Dataset.State = dsInsert
      Then
       Begin
-        DataSet.FieldByName ( CST_MENU__SOMM    ).Value := Sources [ 2 ].MyRecord ;
+        DataSet.FieldByName ( CST_MENU__SOMM    ).Value := DBSources [ 2 ].MyRecord ;
       End ;
 //    p_VerificationExistenceEnregistrement ( 2 );
   Except
@@ -2548,8 +2548,8 @@ begin
     if Dataset.State = dsInsert
      Then
       Begin
-        DataSet.FieldByName ( CST_SOUM__SOMM    ).Value := Sources [ 2 ].MyRecord ;
-        DataSet.FieldByName ( CST_SOUM__MENU    ).Value := Sources [ 4 ].MyRecord     ;
+        DataSet.FieldByName ( CST_SOUM__SOMM    ).Value := DBSources [ 2 ].MyRecord ;
+        DataSet.FieldByName ( CST_SOUM__MENU    ).Value := DBSources [ 4 ].MyRecord     ;
       End ;
 //    p_VerificationExistenceEnregistrement ( 3 );
   Except
@@ -2599,8 +2599,8 @@ begin
   and not gb_DesactiveRecherche
    Then
     Begin
-      if  ( Sources [ 9 ].MyRecord <> Null ) then
-        adoq_Fonctions         .Locate ( CST_FONC_Clep, Sources [ 9 ].MyRecord, [] );
+      if  ( DBSources [ 9 ].MyRecord <> Null ) then
+        adoq_Fonctions         .Locate ( CST_FONC_Clep, DBSources [ 9 ].MyRecord, [] );
       lbl_Edition.Caption := GS_EDITION_FONCTION ;
      // Edition d'une fonction d'un menu
       p_MAJXPBoutons ;
@@ -2618,8 +2618,8 @@ begin
   and not gb_DesactiveRecherche
    Then
     Begin
-      if  ( Sources [ 9 ].MyRecord <> Null ) then
-        adoq_Fonctions         .Locate ( CST_FONC_Clep, Sources [ 9 ].MyRecord, [] );
+      if  ( DBSources [ 9 ].MyRecord <> Null ) then
+        adoq_Fonctions         .Locate ( CST_FONC_Clep, DBSources [ 9 ].MyRecord, [] );
       lbl_Edition.Caption := GS_EDITION_FONCTION ;
       p_MAJBoutonsSommaire ;
     End ;
@@ -2636,8 +2636,8 @@ begin
    Then
     Begin
       // Se positionne sur la fonction
-      if  ( Sources [ 9 ].MyRecord <> Null ) then
-        adoq_Fonctions         .Locate ( CST_FONC_Clep, Sources [ 9 ].MyRecord, [] );
+      if  ( DBSources [ 9 ].MyRecord <> Null ) then
+        adoq_Fonctions         .Locate ( CST_FONC_Clep, DBSources [ 9 ].MyRecord, [] );
      // Edition d'une fonction d'un sous menu
       lbl_Edition.Caption := GS_EDITION_FONCTION ;
       p_MAJXPBoutons ;
@@ -2682,7 +2682,7 @@ begin
       Abort ;
     End ;
   if ( Dataset.State = dsEdit )
-  and (    (    ( ( Sources [ 2 ].MyRecord ) = ( CST_SOMM_Administrateur ))
+  and (    (    ( ( DBSources [ 2 ].MyRecord ) = ( CST_SOMM_Administrateur ))
             and ( ( adoq_Sommaire.FieldByName ( CST_SOMM_Clep ).AsString ) <> ( CST_SOMM_Administrateur ))))
    Then
     Begin
@@ -2731,15 +2731,15 @@ end;
 // Dataset : Evenement onscroll
 procedure TF_Administration.adoq_MenusAfterScroll(DataSet: TDataSet);
 begin
-  if Sources [ 4 ].MyRecord <> Null Then
-    fb_CreeXPButtons ( Sources [ 2 ].MyRecord, Sources [ 4 ].MyRecord, Application.MainForm, Self , scb_Volet, nil, adoq_QueryTempo, nil, False, iml_Menus  );
+  if DBSources [ 4 ].MyRecord <> Null Then
+    fb_CreeXPButtons ( DBSources [ 2 ].MyRecord, DBSources [ 4 ].MyRecord, Application.MainForm, Self , scb_Volet, nil, adoq_QueryTempo, nil, False, iml_Menus  );
 
   // Modification de deux query : fonctions menu et sous menu
   p_FiltreMenuFonctions ;
   // ouverture de un query : fonctions menu
-  adoq_SousMenus.Filter := 'SOUM__SOMM=''' + fs_stringdbquote ( Sources [ 2 ].MyRecord ) + '''';
-  if Sources [ 4 ].MyRecord <> Null Then
-    adoq_SousMenus.Filter := adoq_SousMenus.Filter +  ' and SOUM__MENU=''' + fs_stringdbquote ( Sources [ 4 ].MyRecord     ) + '''' ;
+  adoq_SousMenus.Filter := 'SOUM__SOMM=''' + fs_stringdbquote ( DBSources [ 2 ].MyRecord ) + '''';
+  if DBSources [ 4 ].MyRecord <> Null Then
+    adoq_SousMenus.Filter := adoq_SousMenus.Filter +  ' and SOUM__MENU=''' + fs_stringdbquote ( DBSources [ 4 ].MyRecord     ) + '''' ;
   adoq_SousMenus.Filtered := True ;
 
   p_MAJBoutonsSommaire;
@@ -3177,7 +3177,7 @@ begin
           End ;
 
      2 :  Begin // Table fonctions menu
-            if  (    Sources [ 2 ].MyRecord = Null )
+            if  (    DBSources [ 2 ].MyRecord = Null )
              Then
               Begin
                 MessageDlg ( GS_CHOISIR_SOMMAIRE , mtWarning, [mbOk], 0);
@@ -3186,12 +3186,12 @@ begin
               End ;
 
             lws_TextSQL :=  'SELECT * FROM MENUS' );
-            lws_TextSQL :=  'WHERE MENU__SOMM = ''' + fs_stringDbQuote ( Sources [ 2 ].MyRecord )  + '''' );
+            lws_TextSQL :=  'WHERE MENU__SOMM = ''' + fs_stringDbQuote ( DBSources [ 2 ].MyRecord )  + '''' );
             lws_TextSQL :=  ' AND  MENU_Clep  = ''' + fs_stringDbQuote ( dbe_Edition.Text )  + '''' );
           End ;
 
      3 :  Begin // Table fonctions sous menu
-            if (     Sources [ 4 ].MyRecord = Null )
+            if (     DBSources [ 4 ].MyRecord = Null )
              then
               Begin
                 MessageDlg ( GS_CHOISIR_MENU , mtWarning, [mbOk], 0);
@@ -3199,7 +3199,7 @@ begin
                 adoq_TreeUser.SQL.EndUpdate ; // Mise à jour faite
                 Exit ;
               End ;
-            if  (    Sources [ 2 ].MyRecord = Null )
+            if  (    DBSources [ 2 ].MyRecord = Null )
              Then
               Begin
                 Abort ;
@@ -3207,8 +3207,8 @@ begin
                 Exit ;
               End ;
             lws_TextSQL :=  'SELECT * FROM SOUS_MENUS' );
-            lws_TextSQL :=  'WHERE SOUM__SOMM = ''' + fs_stringDbQuote ( Sources [ 2 ].MyRecord )  + '''' );
-            lws_TextSQL :=  ' AND  SOUM__MENU = ''' + fs_stringDbQuote ( Sources [ 4 ].MyRecord     )  + '''' );
+            lws_TextSQL :=  'WHERE SOUM__SOMM = ''' + fs_stringDbQuote ( DBSources [ 2 ].MyRecord )  + '''' );
+            lws_TextSQL :=  ' AND  SOUM__MENU = ''' + fs_stringDbQuote ( DBSources [ 4 ].MyRecord     )  + '''' );
             lws_TextSQL :=  ' AND  SOUM_Clep  = ''' + fs_stringDbQuote ( dbe_Edition.Text )  + '''' );
           End ;
 
@@ -3232,7 +3232,7 @@ begin
   case ai_NoTable of
     1 : Begin // table Sommaire
           // Le champ existe
-          if (( dsInsert = adoq_Sommaire.State ) or ( Sources [ 2 ].MyRecord <> adoq_Sommaire.FieldByName ( CST_SOMM_Clep ).AsString ))
+          if (( dsInsert = adoq_Sommaire.State ) or ( DBSources [ 2 ].MyRecord <> adoq_Sommaire.FieldByName ( CST_SOMM_Clep ).AsString ))
           and fb_ExisteEnregistrementATable ( ai_NoTable )
            Then
             Begin
@@ -3243,7 +3243,7 @@ begin
         End ;
     2 : Begin // table Menu
           // Le champ existe
-          if (( dsInsert = adoq_Menus.State ) or ( Sources [ 4 ].MyRecord <> adoq_Menus.FieldByName ( CST_MENU_Clep ).AsString ))
+          if (( dsInsert = adoq_Menus.State ) or ( DBSources [ 4 ].MyRecord <> adoq_Menus.FieldByName ( CST_MENU_Clep ).AsString ))
           and fb_ExisteEnregistrementATable ( ai_NoTable )
            Then
             Begin
@@ -3254,7 +3254,7 @@ begin
         End ;
     3 : Begin // table Sous menu
           // Le champ existe
-          if (( dsInsert = adoq_SousMenus.State ) or ( Sources [ 6 ].MyRecord <> adoq_SousMenus.FieldByName ( CST_SOUM_Clep ).AsString ))
+          if (( dsInsert = adoq_SousMenus.State ) or ( DBSources [ 6 ].MyRecord <> adoq_SousMenus.FieldByName ( CST_SOUM_Clep ).AsString ))
           and fb_ExisteEnregistrementATable ( ai_NoTable )
            Then
             Begin
@@ -3269,16 +3269,16 @@ end;
 // Mise à jour des xp boutons à l'insertion
 procedure TF_Administration.adoq_MenusAfterInsert(DataSet: TDataSet);
 begin
-  if Sources [ 4 ].MyRecord <> Null Then
-    fb_CreeXPButtons ( Sources [ 2 ].MyRecord, Sources [ 4 ].MyRecord, Application.MainForm, Self , scb_Volet, nil, adoq_QueryTempo, nil, False, iml_Menus  );
+  if DBSources [ 4 ].MyRecord <> Null Then
+    fb_CreeXPButtons ( DBSources [ 2 ].MyRecord, DBSources [ 4 ].MyRecord, Application.MainForm, Self , scb_Volet, nil, adoq_QueryTempo, nil, False, iml_Menus  );
   p_MAJXPBoutons ;
 end;
 
 // Mise à jour des xp boutons à l'insertion
 procedure TF_Administration.adoq_SousMenusAfterInsert(DataSet: TDataSet);
 begin
-  if Sources [ 4 ].MyRecord <> Null Then
-    fb_CreeXPButtons ( Sources [ 2 ].MyRecord, Sources [ 4 ].MyRecord, Application.MainForm, Self , scb_Volet, nil, adoq_QueryTempo, nil, False, iml_Menus  );
+  if DBSources [ 4 ].MyRecord <> Null Then
+    fb_CreeXPButtons ( DBSources [ 2 ].MyRecord, DBSources [ 4 ].MyRecord, Application.MainForm, Self , scb_Volet, nil, adoq_QueryTempo, nil, False, iml_Menus  );
   p_MAJXPBoutons ;
 end;
 
@@ -3286,7 +3286,7 @@ end;
 procedure TF_Administration.adoq_SommaireAfterInsert(DataSet: TDataSet);
 begin
   DataSet.FieldByName ( CST_SOMM_Niveau    ).Value := True ;
-  fi_CreeSommaire ( Application.MainForm, Self, Sources [ 2 ].MyRecord, adoq_TreeUser, nil, tbar_outils, tbsep_1, Panel_Fin, 49, nil, False );
+  fi_CreeSommaire ( Application.MainForm, Self, DBSources [ 2 ].MyRecord, adoq_TreeUser, nil, tbar_outils, tbsep_1, Panel_Fin, 49, nil, False );
   p_MAJBoutonsSommaire ;
 
 end;
@@ -3297,10 +3297,10 @@ end;
 procedure TF_Administration.adoq_SommaireAfterScroll(DataSet: TDataSet);
 begin
   // Modification du sommaire en cours
-  adoq_SommaireFonctions.Filter := CST_SOFC__SOMM + ' = ''' + fs_stringDbQuote ( Sources [ 2 ].MyRecord ) + '''' ;
+  adoq_SommaireFonctions.Filter := CST_SOFC__SOMM + ' = ''' + fs_stringDbQuote ( DBSources [ 2 ].MyRecord ) + '''' ;
   adoq_SommaireFonctions.Filtered := True ;
 // ouverture de un query complètement modifié : fonctions sommaire
-  adoq_Menus.Filter := 'MENU__SOMM=''' + fs_stringdbquote ( Sources [ 2 ].MyRecord ) + '''' ;
+  adoq_Menus.Filter := 'MENU__SOMM=''' + fs_stringdbquote ( DBSources [ 2 ].MyRecord ) + '''' ;
   adoq_Menus.Filtered := True ;
   // Création des menus
   p_SelectionneFonctions ();
@@ -3331,14 +3331,14 @@ begin
   adoq_MenuFonctions.Open;
   p_DetruitXPBar ( scb_volet );
   p_DetruitSommaire ( tbar_outils, tbsep_1, Panel_Fin );
-  if Sources [ 2 ].MyRecord <> Null
+  if DBSources [ 2 ].MyRecord <> Null
    Then
     try
-      fi_CreeSommaire ( Application.MainForm, Self, Sources [ 2 ].MyRecord, adoq_TreeUser, nil, tbar_outils, tbsep_1, Panel_Fin, 49, nil, False );
-      if Sources [ 4 ].MyRecord <> Null
+      fi_CreeSommaire ( Application.MainForm, Self, DBSources [ 2 ].MyRecord, adoq_TreeUser, nil, tbar_outils, tbsep_1, Panel_Fin, 49, nil, False );
+      if DBSources [ 4 ].MyRecord <> Null
        Then
          Begin
-          fb_CreeXPButtons ( Sources [ 2 ].MyRecord, Sources [ 4 ].MyRecord,  Application.MainForm, Self , scb_Volet, nil, adoq_QueryTempo, nil, False, iml_Menus  );
+          fb_CreeXPButtons ( DBSources [ 2 ].MyRecord, DBSources [ 4 ].MyRecord,  Application.MainForm, Self , scb_Volet, nil, adoq_QueryTempo, nil, False, iml_Menus  );
           p_MAJXPBoutons ;
          End;
     except
@@ -3671,8 +3671,8 @@ begin
       adat_Dataset.FindFirst;
       li_compteur := 1;
 
-      if ( Sources [ 6 ].MyRecord <> Null ) Then
-        fb_MAJTableNumOrdre( ai_NumTable, li_compteur, Sources [ ai_NumTable ].MyRecord, Sources [ 2 ].MyRecord, Sources [ 4 ].MyRecord, Sources [ 6 ].MyRecord, lb_Erreur );
+      if ( DBSources [ 6 ].MyRecord <> Null ) Then
+        fb_MAJTableNumOrdre( ai_NumTable, li_compteur, DBSources [ ai_NumTable ].MyRecord, DBSources [ 2 ].MyRecord, DBSources [ 4 ].MyRecord, DBSources [ 6 ].MyRecord, lb_Erreur );
       adat_Dataset.Next ;
     end;
 end;
@@ -3810,16 +3810,16 @@ end;
 procedure TF_Administration.dbe_NomExit(Sender: TObject);
 begin
   if UpperCase ( dbe_Nom.Text ) <> dbe_Nom.Text Then
-    if Sources [ 0 ].Datasource.DataSet.State = dsBrowse Then
+    if DBSources [ 0 ].Datasource.DataSet.State = dsBrowse Then
       Begin
-       Sources [ 0 ].Datasource.DataSet.Edit ;
-       Sources [ 0 ].Datasource.DataSet.FieldByName ( CST_UTIL_Clep ).Asstring := UpperCase (Sources [ 0 ].Datasource.DataSet.FieldByName ( CST_UTIL_Clep ).Asstring );
-       Sources [ 0 ].Datasource.DataSet.Post ;
+       DBSources [ 0 ].Datasource.DataSet.Edit ;
+       DBSources [ 0 ].Datasource.DataSet.FieldByName ( CST_UTIL_Clep ).Asstring := UpperCase (DBSources [ 0 ].Datasource.DataSet.FieldByName ( CST_UTIL_Clep ).Asstring );
+       DBSources [ 0 ].Datasource.DataSet.Post ;
       End
     Else
-      if Sources [ 0 ].Datasource.DataSet.State in [ dsInsert, dsEdit ] Then
+      if DBSources [ 0 ].Datasource.DataSet.State in [ dsInsert, dsEdit ] Then
         Begin
-          Sources [ 0 ].Datasource.DataSet.FieldByName ( CST_UTIL_Clep ).Asstring := UpperCase (Sources [ 0 ].Datasource.DataSet.FieldByName ( CST_UTIL_Clep ).Asstring );
+          DBSources [ 0 ].Datasource.DataSet.FieldByName ( CST_UTIL_Clep ).Asstring := UpperCase (DBSources [ 0 ].Datasource.DataSet.FieldByName ( CST_UTIL_Clep ).Asstring );
         End ;
 end;
 

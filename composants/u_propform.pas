@@ -120,28 +120,28 @@ type
     property BeforeCreate         : TNotifyEvent read ge_BeforeDicoCreate write ge_BeforeDicoCreate ;
     property DataSetLabels : Boolean read fb_False write p_SetLabels stored false default false;
 
-    property OnEraseFilter ;
-    property DataCloseMessage ;
-    property DatasourceQuerySearch ;
+    property DBOnEraseFilter ;
+    property DBCloseMessage ;
+    property DAtasourceQuerySearch ;
     property ScrolledPanel ;
-    property DataOnLocate       ;
-    property DataOnPost       ;
-    property DataOnSearch     ;
-    property DataSearching     ;
-    property DataUnSearch     ;
+    property DBOnLocate       ;
+    property DBOnPost       ;
+    property DBOnSearch     ;
+    property DBSearching     ;
+    property DBUnSearch     ;
 
-    property DataAutoInsert   ;
-    property DataOnSave       ;
-    property DataOnCancel     ;
-    property DataOnLoaded     ;
-    property DataUseQuery     ;
-    property DataAsyncDataset ;
+    property DBAutoInsert   ;
+    property DBOnSave       ;
+    property DBOnCancel     ;
+    property DBOnLoaded     ;
+    property DBUseQuery     ;
+    property DBAsyncDataset ;
     {$IFDEF VERSIONS}
     property Version ;
     {$ENDIF}
     property BeforeShow   ;
     property BeforeCreateForm ;
-    property DataUnload ;
+    property DBUnload ;
    end;
 
 implementation
@@ -170,8 +170,8 @@ end;
 function TF_PropForm.fstl_getDataKeyList ( Index : Longint ):TStringList;
 Begin
   Result := nil;
-  if Index < Sources.Count then
-    Result := Sources.Items[ Index ].KeyList;
+  if Index < DBSources.Count then
+    Result := DBSources.Items[ Index ].KeyList;
 End;
 
 // Réinitialisation des colonnes pour n'afficher que celles visibles dans le dico
@@ -210,9 +210,9 @@ procedure TF_PropForm.p_OrderEdit ( Edit : TObject );
 var li_i, li_j : Integer ;
 Begin
   li_j := 0 ;
-  li_i := fi_GetDataWork(Sources, Edit as TControl, li_j) ;
+  li_i := fi_GetDataWork(DBSources, Edit as TControl, li_j) ;
   if li_i > 0 then
-    p_PlacerFlecheTri ( Sources.Items [ li_i ], Edit as TWinControl,
+    p_PlacerFlecheTri ( DBSources.Items [ li_i ], Edit as TWinControl,
                                ( Edit as TwinControl ).Left, True );
 End;
 
@@ -374,7 +374,7 @@ begin
         end ;
     End;
   Result := ai_Tag;
-  with Sources.Items [ li_DataWork ] do
+  with DBSources.Items [ li_DataWork ] do
     Begin
       for li_i := 0 to FieldsDefs.Count - 1 do
         if FieldsDefs [ li_i ].NumTag = ai_Tag + 1 Then
@@ -404,7 +404,7 @@ end;
 
 procedure TF_PropForm.p_AfterColumnFrameShow( const aFWColumn : TFWSource );
 Begin
-  if DataAutoInsert // Mode auto-insertion
+  if DBAutoInsert // Mode auto-insertion
   and ( assigned ( gstl_SQLWork )
 {$IFDEF DELPHI_9_UP}or assigned ( gwst_SQLWork ) {$ENDIF DELPHI_9_UP}
     ) Then

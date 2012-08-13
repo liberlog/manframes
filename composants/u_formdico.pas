@@ -107,28 +107,28 @@ type
     property DataOnSort         : TSortdataEvent read ge_DbSortServer write ge_DbSortServer ;
     property BeforeCreate         : TNotifyEvent read ge_BeforeDicoCreate write ge_BeforeDicoCreate ;
 
-    property OnEraseFilter ;
-    property DataCloseMessage ;
+    property DBOnEraseFilter ;
+    property DBCloseMessage ;
     property DatasourceQuerySearch ;
     property ScrolledPanel ;
-    property DataOnLocate       ;
-    property DataOnPost       ;
-    property DataOnSearch     ;
-    property DataSearching     ;
-    property DataUnSearch     ;
+    property DBOnLocate       ;
+    property DBOnPost       ;
+    property DBOnSearch     ;
+    property DBSearching     ;
+    property DBUnSearch     ;
 
-    property DataAutoInsert   ;
-    property DataOnSave       ;
-    property DataOnCancel     ;
-    property DataOnLoaded     ;
-    property DataUseQuery     ;
-    property DataAsyncDataset ;
+    property DBAutoInsert   ;
+    property DBOnSave       ;
+    property DBOnCancel     ;
+    property DBOnLoaded     ;
+    property DBUseQuery     ;
+    property DBAsyncDataset ;
     {$IFDEF VERSIONS}
     property Version ;
     {$ENDIF}
     property BeforeShow   ;
     property BeforeCreateForm ;
-    property DataUnload ;
+    property DBUnload ;
    end;
 
 implementation
@@ -155,8 +155,8 @@ end;
 function TF_FormDico.fstl_getDataKeyList ( Index : Longint ):TStringList;
 Begin
   Result := nil;
-  if Index < Sources.Count then
-    Result := Sources.Items[ Index ].KeyList;
+  if Index < DBSources.Count then
+    Result := DBSources.Items[ Index ].KeyList;
 End;
 
 // Réinitialisation des colonnes pour n'afficher que celles visibles dans le dico
@@ -164,7 +164,7 @@ End;
 function TF_FormDico.fb_ReinitCols ( const at_datawork : TFWSource ; const ai_table : Integer ) : Boolean;
 begin
 //  li_k := 0 ;
-  if not DataPropsOff Then
+  if not DBPropsOff Then
     Result := inherited fb_ReinitCols ( at_datawork, ai_table )
    else
     Result := False ;
@@ -191,7 +191,7 @@ var li_i , li_j,
 begin
   Result := False ;
   lb_Loaded := False ;
-  if DataPropsOff Then
+  if DBPropsOff Then
     Begin
       Result := True ;
       Exit ;
@@ -244,11 +244,11 @@ begin
         Begin
           lfwc_Column := nil;
           if ls_NomTable <> dataset.Fields[0].AsString then
-           for li_j := 0 to Sources.Count - 1 do
-             if dataset.Fields[0].AsString = Sources [ li_j ].Table then
+           for li_j := 0 to DBSources.Count - 1 do
+             if dataset.Fields[0].AsString = DBSources [ li_j ].Table then
               Begin
-                lfwc_Column := Sources [ li_j ];
-                ls_NomTable := Sources [ li_j ].Table;
+                lfwc_Column := DBSources [ li_j ];
+                ls_NomTable := DBSources [ li_j ].Table;
                 Break;
               End;
            with dataset, lfwc_Column.FieldsDefs.Add do
@@ -273,7 +273,7 @@ begin
             end;
         End;
 
-      if DataAutoInsert Then
+      if DBAutoInsert Then
         Begin
           p_ChargeTable ( gds_SourceWork, gstl_SQLWork,{$IFDEF DELPHI_9_UP}gwst_SQLWork,{$ENDIF} at_DataWork.Table );
           gds_SourceWork.dataset.Open;
@@ -293,9 +293,9 @@ procedure TF_FormDico.p_OrderEdit ( Edit : TObject );
 var li_i, li_j : Integer ;
 Begin
   li_j := 0 ;
-  li_i := fi_GetDataWork(Sources, Edit as TControl, li_j) ;
+  li_i := fi_GetDataWork(DBSources, Edit as TControl, li_j) ;
   if li_i > 0 then
-    p_PlacerFlecheTri ( Sources.Items [ li_i ], Edit as TWinControl,
+    p_PlacerFlecheTri ( DBSources.Items [ li_i ], Edit as TWinControl,
                                ( Edit as TwinControl ).Left, True );
 End;
 
@@ -341,7 +341,7 @@ end;
 
 procedure TF_FormDico.p_AfterColumnFrameShow( const aFWColumn : TFWSource );
 Begin
-  if DataAutoInsert // Mode auto-insertion
+  if DBAutoInsert // Mode auto-insertion
   and ( assigned ( gstl_SQLWork )
 {$IFDEF DELPHI_9_UP}or assigned ( gwst_SQLWork ) {$ENDIF DELPHI_9_UP}
     ) Then

@@ -133,8 +133,8 @@ begin
     and not ( lcom_Component is TCustomPanel )
     and not ( lcom_Component is TTabSheet    ) Then
      Begin
-      li_DataWork := fi_ParentEstPanel ( Sources, lcom_Component as TControl );
-      with Sources.Items [ li_DataWork ] do
+      li_DataWork := fi_ParentEstPanel ( DBSources, lcom_Component as TControl );
+      with DBSources.Items [ li_DataWork ] do
        Begin
           lds_DataSource := Datasource;
           li_Tag := 0 ;
@@ -144,8 +144,8 @@ begin
             Continue ;
           if not assigned ( lds_DataSource ) Then
             Begin
-              li_j := fi_ParentEstPanel( Sources, lcom_Component as TControl);
-              lds_DataSource := Sources [ li_j ].Datasource;
+              li_j := fi_ParentEstPanel( DBSources, lcom_Component as TControl);
+              lds_DataSource := DBSources [ li_j ].Datasource;
             End;
           if ( lcom_Component is TLabel ) then
             Begin
@@ -223,7 +223,7 @@ begin
                         End ;
 
                       p_SetComponentProperty ( lcom_Component, 'HelpContext', tkInteger, HelpIdx);
-                      p_assignColumnsDatasourceOwner ( Sources.Items [ li_DataWork ], lds_DataSource, li_NumArray, lcom_Component );
+                      p_assignColumnsDatasourceOwner ( DBSources.Items [ li_DataWork ], lds_DataSource, li_NumArray, lcom_Component );
 
                     End;
 
