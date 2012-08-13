@@ -105,7 +105,7 @@ begin
        if assigned ( Field )
        and ( FOK )
        and ( FFormModal is TF_CustomFrameWork ) Then
-        with ( FFormModal as TF_CustomFrameWork ).Sources [ FFormSource ] do
+        with ( FFormModal as TF_CustomFrameWork ).DBSources [ FFormSource ] do
          if not Datasource.DataSet.IsEmpty Then
           Begin
             Result := mrOk;
@@ -136,7 +136,7 @@ begin
     SetFormEvents;
      if ( FFilter <> '' )
      and ( FFormModal is TF_CustomFrameWork ) Then
-      with ( FFormModal as TF_CustomFrameWork ).Sources [ FFormSource ] do
+      with ( FFormModal as TF_CustomFrameWork ).DBSources [ FFormSource ] do
        Begin
          lst_OldFilter  := fs_getComponentProperty(Datasource.DataSet, CST_DATASET_FILTER);
          lb_OldFiltered := fb_getComponentBoolProperty(Datasource.DataSet, CST_DATASET_FILTERED);
@@ -146,7 +146,7 @@ begin
     FFormModal.ShowModal;
      if ( FFilter <> '' )
      and ( FFormModal is TF_CustomFrameWork ) Then
-       with ( FFormModal as TF_CustomFrameWork ).Sources [ FFormSource ] do
+       with ( FFormModal as TF_CustomFrameWork ).DBSources [ FFormSource ] do
         Begin
           p_SetComponentProperty ( Datasource.DataSet, CST_DATASET_FILTER, lst_OldFilter );
           p_SetComponentBoolProperty ( Datasource.DataSet, CST_DATASET_FILTERED, lb_OldFiltered );
@@ -177,8 +177,8 @@ Begin
   and ( FFormModal is TF_CustomFrameWork ) Then
     with FFormModal as TF_CustomFrameWork do
       Begin
-        FOldGridDblClick:= TNotifyEvent ( fmet_getComponentMethodProperty ( Sources [ FFormSource ].Grid, 'OnDblClick' ));
-        p_SetComponentMethodProperty(Sources [ FFormSource ].Grid, 'OnDblClick', lmet_Event );
+        FOldGridDblClick:= TNotifyEvent ( fmet_getComponentMethodProperty ( DBSources [ FFormSource ].Grid, 'OnDblClick' ));
+        p_SetComponentMethodProperty(DBSources [ FFormSource ].Grid, 'OnDblClick', lmet_Event );
       end
    Else
     FOldGridDblClick:=nil;

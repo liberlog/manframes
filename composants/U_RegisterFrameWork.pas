@@ -31,6 +31,7 @@ uses DB, TypInfo,
   lresources,
   {$ENDIF}
   u_fillcombobutton,
+  u_man_reports_components,
   unite_messages;
 
 
@@ -43,7 +44,7 @@ begin // Enregistre le nouvel expert de projet
 {$ELSE}
 //  RegisterCustomModule ( TMDataSources, TCustomModule );
 {$ENDIF}
-  RegisterComponents('ManFrames', [TExtFillCombo]);
+  RegisterComponents('ManFrames', [TExtFillCombo,TFWPrintSources]);
 
 end;
 

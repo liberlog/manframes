@@ -61,29 +61,36 @@ type
                            End;
 
  { TFWColumn }
+
+  { TFWFieldColumn }
+
   TFWFieldColumn = class(TCollectionItem)
   private
     s_NomTable, s_FieldName : String;
     s_CaptionName, s_HintName: WideString;
     i_NumTag : Integer ;
-    i_AffiCol, i_AffiRech, i_AffiSort, i_Aide : Integer ;
+    i_ShowPrint,
+    i_ShowCol, i_ShowSearch, i_ShowSort, i_HelpIdx : Integer ;
     s_LookupTable, s_LookupKey, s_LookupDisplay: String;
-    b_ColObl, b_ColCreate, b_ColUnique : Boolean;
+    b_ColMain, b_ColCreate, b_ColUnique : Boolean;
   public
-    property NomTable : String read s_NomTable write s_NomTable;
+    constructor Create(ACollection: TCollection); override;
+  published
+    property TableName : String read s_NomTable write s_NomTable;
     property FieldName : String read s_FieldName write s_FieldName;
     property CaptionName : WideString read s_CaptionName write s_CaptionName;
     property HintName : WideString read s_HintName write s_HintName;
-    property NumTag : Longint read i_NumTag write i_NumTag;
-    property AffiCol : Longint read i_AffiCol write i_AffiCol;
-    property AffiRech : Longint read i_AffiRech write i_AffiRech;
-    property AffiSort : Longint read i_AffiSort write i_AffiSort;
-    property Aide : Longint read i_Aide write i_Aide;
+    property NumTag : Integer read i_NumTag write i_NumTag;
+    property ShowPrint : Integer read i_ShowPrint write i_ShowPrint default -1;
+    property ShowCol : Integer read i_ShowCol write i_ShowCol default -1;
+    property ShowSearch : Integer read i_ShowSearch write i_ShowSearch default -1;
+    property ShowSort : Integer read i_ShowSort write i_ShowSort default -1;
+    property HelpIdx : Integer read i_HelpIdx write i_HelpIdx default -1;
     property LookupTable : String read s_LookupTable write s_LookupTable;
     property LookupKey : String read s_LookupKey write s_LookupKey;
     property LookupDisplay : String read s_LookupDisplay write s_LookupDisplay;
-    property ColObl : Boolean read b_ColObl write b_ColObl;
-    property ColCree : Boolean read b_ColCreate write b_ColCreate;
+    property ColMain : Boolean read b_ColMain write b_ColMain;
+    property ColCreate : Boolean read b_ColCreate write b_ColCreate;
     property ColUnique : Boolean read b_ColUnique write b_ColUnique;
   End;
   TFWFieldColumnClass = class of TFWFieldColumn;
@@ -107,6 +114,15 @@ type
 implementation
 
 uses fonctions_dbcomponents, fonctions_proprietes, typinfo, fonctions_languages;
+
+constructor TFWFieldColumn.Create(ACollection: TCollection);
+begin
+  inherited Create(ACollection);
+  i_ShowCol :=-1;
+  i_ShowPrint :=-1;
+  i_ShowSearch :=-1;
+  i_ShowSort :=-1;
+end;
 
 { TFWFieldColumns }
 

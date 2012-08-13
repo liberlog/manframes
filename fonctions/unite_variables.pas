@@ -134,6 +134,7 @@ resourcestring
   GS_administration_seule = 'Seule la fonction d''Administration est accessible...';
   GS_ConfirmOnClose = 'Voulez-vous enregistrer vos modifications ?';
 
+  GS_PRINT_GRID = 'Grille @ARG';
   GS_FERMER_APPLICATION = 'Confirmez-vous la fermeture de l''application ?';
   GS_ADMINISTRATION_SEULEMENT = 'Seule la fonction d''Administration est accessible...';
   GS_DECONNECTER = 'Etes-vous sûr(e) de vouloir vous déconnecter ?';

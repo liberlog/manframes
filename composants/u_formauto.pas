@@ -222,7 +222,7 @@ begin
                             p_SetComponentProperty ( lcom_Component, 'Caption', '' );
                         End ;
 
-                      p_SetComponentProperty ( lcom_Component, 'HelpContext', tkInteger, Aide);
+                      p_SetComponentProperty ( lcom_Component, 'HelpContext', tkInteger, HelpIdx);
                       p_assignColumnsDatasourceOwner ( Sources.Items [ li_DataWork ], lds_DataSource, li_NumArray, lcom_Component );
 
                     End;

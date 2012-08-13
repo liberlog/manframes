@@ -168,6 +168,7 @@ type
      nav_Navigator : TExtDBNavigator ;
      con_ControlFocus : TWinControl ;
      ddl_DataLink : TDicoColumnDatalink ;
+     gs_title      ,
      s_Cle         ,
      s_LookFields  ,
      s_Table       : String ;
@@ -199,6 +200,7 @@ type
      ga_Counters : Array of TFWCounter;
      ga_CsvDefs : Array of TFWCsvDef;
      gr_Connection : TDSSource;
+     b_ShowPrint : Boolean;
 
     FStored: Boolean;
     function GetCounter(Index: Integer): TFWCounter;
@@ -264,6 +266,8 @@ type
     property Connection : TDSSource read gr_Connection write p_setConnection;
     // Table du Datasource de travail
     property Table : string read fs_getDataTable write p_setDataTable;
+    // Title of report
+    property Title : string read gs_title write gs_title;
     // Table du Datasource de travail
     property Key : string read fs_getDataKey write p_setDataKey;
     // Table du contrôle de focus du Datasource de travail
@@ -284,6 +288,7 @@ type
     property Linked  : TFWSourcesChilds read FLinked  write FLinked  ;
     // Clé étrangère du DataSource vers le grid Lookup
     property LookupField : string read fs_getLookupField write p_SetLookupField;
+    property ShowPrint : Boolean read b_ShowPrint write b_ShowPrint default True;
 
     property OnScroll  : TDatasetNotifyEvent read fe_getDataScroll  write p_SetDataScroll  ;
 
@@ -738,39 +743,39 @@ type
     procedure LayoutChanged; virtual;
 
   published
-    property DataPropsOff           : Boolean read gb_PasUtiliserProps write gb_PasUtiliserProps default False ;
+    property DBPropsOff           : Boolean read gb_PasUtiliserProps write gb_PasUtiliserProps default False ;
     property DatasourceQuery  : TDatasource read gds_SourceWork write p_SetWorkSource;
-    property DataOnEmptyEdit    : TMessageEvent read ge_DBEmptyEdit write ge_DBEmptyEdit ;
-    property DataOnUsedKey      : TMessageEvent read ge_DBUsedKey write ge_DBUsedKey ;
+    property DBOnEmptyEdit    : TMessageEvent read ge_DBEmptyEdit write ge_DBEmptyEdit ;
+    property DBOnUsedKey      : TMessageEvent read ge_DBUsedKey write ge_DBUsedKey ;
     procedure p_BtnSearch(Sender: TObject); // Recherche
     procedure p_DBEditBeforeEnter(Sender : TObject);
     procedure p_DBEditBeforeExit (Sender : TObject);
-    property Sources : TFWSources read  gFWSources write p_SetSources;
-    property OnEraseFilter : TOnEraseFilterEvent read ge_DBOnEraseFilter write ge_DBOnEraseFilter;
-    property DataCloseMessage : Boolean read gb_CloseMessage write gb_CloseMessage default false;
+    property DBSources : TFWSources read  gFWSources write p_SetSources;
+    property DBOnEraseFilter : TOnEraseFilterEvent read ge_DBOnEraseFilter write ge_DBOnEraseFilter;
+    property DBCloseMessage : Boolean read gb_CloseMessage write gb_CloseMessage default false;
     property DatasourceQuerySearch : TDatasource read gds_recherche write p_setSearch;
     property ScrolledPanel : TCustomPanel read gpan_ScrolledPanel write p_SetSCrolledPanel ;
-    property DataOnLocate       : TDatasetNotifyEvent read ge_DBlocate write ge_DBlocate ;
-    property DataOnPost       : TNotifyEvent read ge_DBDemandPost write ge_DBDemandPost ;
-    property DataOnSearch       : TSearchdataEvent read ge_DbBeforeSearch write ge_DbBeforeSearch ;
-    property DataSearching      : TSearchdataEvent read ge_DbSearching write ge_DbSearching ;
-    property DataUnSearch      : TSearchdataEvent read ge_DbAfterSearch write ge_DbAfterSearch ;
+    property DBOnLocate       : TDatasetNotifyEvent read ge_DBlocate write ge_DBlocate ;
+    property DBOnPost       : TNotifyEvent read ge_DBDemandPost write ge_DBDemandPost ;
+    property DBOnSearch       : TSearchdataEvent read ge_DbBeforeSearch write ge_DbBeforeSearch ;
+    property DBSearching      : TSearchdataEvent read ge_DbSearching write ge_DbSearching ;
+    property DBUnSearch      : TSearchdataEvent read ge_DbAfterSearch write ge_DbAfterSearch ;
     // Affiche-t-on un message sur erreur
-    property DataErrorMessage : Boolean read gb_DBMessageOnError write gb_DBMessageOnError default True ;
+    property DBErrorMessage : Boolean read gb_DBMessageOnError write gb_DBMessageOnError default True ;
 
-    property DataAutoInsert       : Boolean read gb_AutoInsert write p_SetAutoInsert default False ;
-    property DataOnSave         : TNotifyEvent read ge_SauveModifs write ge_SauveModifs;
-    property DataOnCancel         : TNotifyEvent read ge_AnnuleModifs write ge_AnnuleModifs;
-    property DataOnLoaded         : TNotifyEvent read ge_FormLoaded write ge_FormLoaded;
-    property DataUseQuery         : Boolean read gb_UseQuery write gb_UseQuery default False ;
-    property DataAsyncDataset  : Boolean read gb_ds_princAsynchrone write gb_ds_princAsynchrone default False ;
-    property DataSetLabels : Boolean read fb_False write p_SetLabels stored false default false;
+    property DBAutoInsert       : Boolean read gb_AutoInsert write p_SetAutoInsert default False ;
+    property DBOnSave         : TNotifyEvent read ge_SauveModifs write ge_SauveModifs;
+    property DBOnCancel         : TNotifyEvent read ge_AnnuleModifs write ge_AnnuleModifs;
+    property DBOnLoaded         : TNotifyEvent read ge_FormLoaded write ge_FormLoaded;
+    property DBUseQuery         : Boolean read gb_UseQuery write gb_UseQuery default False ;
+    property DBAsyncDataset  : Boolean read gb_ds_princAsynchrone write gb_ds_princAsynchrone default False ;
+    property DBSetLabels : Boolean read fb_False write p_SetLabels stored false default false;
     {$IFDEF VERSIONS}
     property Version : String read fs_GetVersion write p_SetVersion ;
     {$ENDIF}
     property BeforeShow   : TNotifyEvent read ge_BeforeShow   write p_SetBeforeShow ;
     property BeforeCreateForm : TNotifyEvent read ge_BeforeCreateForm write p_SetBeforeCreate ;
-    property DataUnload : Boolean read gb_Unload stored False ;
+    property DBUnload : Boolean read gb_Unload stored False ;
     property FieldDelimiter : Char read gc_FieldDelimiter write  gc_FieldDelimiter default ';';
     property OpenDatasets : TNotifyEvent read ge_OpenDatasets write ge_OpenDatasets ;
   end;
@@ -1046,7 +1051,7 @@ begin
             // Tri
           end
       else // Il faut déplacer les flèches au niveau du Label sur lequel on a cliqué
-        if not VarIsNull(FieldsDefs [ li_NoColonne ].AffiRech) then
+        if not VarIsNull(FieldsDefs [ li_NoColonne ].ShowSearch) then
           begin
             // Panel du contrôle en cours
             aim_FlecheBasse.Parent := aWin_ControlAvecTag.Parent ; // Important d'indiquer le parent pour les 2
@@ -1425,6 +1430,7 @@ begin
   FLinked := TFWSourcesChilds.Create(Self,TFWSourceChild);
   ddl_DataLink := TDicoColumnDatalink.Create(Self,FForm);
   FFieldsDefs := TFWFieldColumns.CReate ( Self, TFWFieldColumn );
+  b_ShowPrint := True;
 
 
 end;
@@ -2024,9 +2030,9 @@ begin
   Else lds_Connection:=DMModuleSources.fds_FindConnection( av_Connection, True );
   with lds_Connection do
     Begin
-      Result := Sources.Add as TFWSource;
+      Result := DBSources.Add as TFWSource;
       Result.gr_Connection := lds_Connection;
-      Result.Datasource := fds_CreateDataSourceAndTable ( as_Table, dataURL + IntToStr ( lds_Connection.Index ), IntToStr ( Sources.Count - 1 ), DatasetType, QueryCopy, Self);
+      Result.Datasource := fds_CreateDataSourceAndTable ( as_Table, dataURL + IntToStr ( lds_Connection.Index ), IntToStr ( DBSources.Count - 1 ), DatasetType, QueryCopy, Self);
       Result.Table := as_Table;
       if DatasetType = dtCSV Then
         Begin
@@ -2519,11 +2525,11 @@ begin
   {           if ( gTs_FieldName [ li_i ] = as_FieldName ) Then
                adbgd_DataGridColumns[li_j].Visible := ab_Montre
              Else}
-               adbgd_DataGridColumns[li_j].Visible := FieldsDefs [ li_i ].AffiCol <> 0;
+               adbgd_DataGridColumns[li_j].Visible := FieldsDefs [ li_i ].ShowCol <> 0;
             // Affectation de l'Index de colonne en fonction de la colonne d'affichage du dico
              if  adbgd_DataGridColumns[li_j].Visible
               Then
-               adbgd_DataGridColumns[li_j].Index   := FieldsDefs [ li_i ].AffiCol - 1;
+               adbgd_DataGridColumns[li_j].Index   := FieldsDefs [ li_i ].ShowCol - 1;
              Break ;
            End ;
     except
@@ -2649,10 +2655,10 @@ begin
       li_NumSource := fi_GetDataWork ( gFWSources, acom_Control as TControl, li_Delete);
       if li_NumSource < 0 then
         Exit;
-      lFw_Column := Sources [ li_NumSource ];
+      lFw_Column := DBSources [ li_NumSource ];
       with lFw_Column do
         for li_i := 0 to FieldsDefs.Count - 1 do
-          if  ( FieldsDefs [ li_i ].AffiRech>0)
+          if  ( FieldsDefs [ li_i ].ShowSearch>0)
           and ( acom_Control.Tag = FieldsDefs [ li_i ].NumTag)
           // Test si le panel correspond au datasource
            then
@@ -2881,7 +2887,7 @@ begin
       and ( nav_Saisie.ControlCount > 10 )
        Then
         if not lb_IsRechCtrlPoss
-        or VarIsNull(FieldsDefs [ li_NumCol ].AffiRech)
+        or VarIsNull(FieldsDefs [ li_NumCol ].ShowSearch)
          then
           Begin
             gi_NumColRech := -1 ;
@@ -2893,7 +2899,7 @@ begin
                                                      and assigned ( ddl_DataLink.DataSet )
                                                      and (ddl_DataLink.DataSet.State = dsBrowse);
             gs_NomColTri  := FieldsDefs [ li_NumCol ].FieldName;
-            gi_NumColRech := FieldsDefs [ li_NumCol ].AffiRech;
+            gi_NumColRech := FieldsDefs [ li_NumCol ].ShowSearch;
           end;
 
       if not lb_IsRechCtrlPoss
@@ -3059,9 +3065,9 @@ begin
       ls_Field := fs_getComponentProperty ( twin_edition, 'DataField' );
 
 
-      // Ã ce niveau, il faut placer les colonnes en fonction de AffiRech
+      // Ã ce niveau, il faut placer les colonnes en fonction de ShowSearch
       // Gestion du Datasource uniquement
-        // affirech doit posséder un numéro > 0 pour être affiché dans la grille
+        // ShowSearch doit posséder un numéro > 0 pour être affiché dans la grille
           if ( gi_NumColRech >= 0   ) Then
             p_AfficheRecherche ( gd_Grid, gd_GridColumns, ls_Field );
 
@@ -5122,10 +5128,10 @@ function TF_CustomFrameWork.fcf_chercheChamp(const as_Table,
 var li_i, li_j : Integer ;
 begin
   Result := nil ;
-  for li_j := 0 to Sources.Count - 1 do
-   with Sources [ li_j ] do
+  for li_j := 0 to DBSources.Count - 1 do
+   with DBSources [ li_j ] do
     for li_i := 0 to FieldsDefs.Count - 1 do
-      if  ( as_Table = FieldsDefs [ li_i ].NomTable )
+      if  ( as_Table = FieldsDefs [ li_i ].TableName )
       and ( as_Champ = FieldsDefs [ li_i ].FieldName )Then
         Begin
           Result := FieldsDefs [ li_i ] ;
@@ -5143,8 +5149,8 @@ begin
   lcf_Champ := fcf_chercheChamp ( as_Table, as_Champ );
   if lcf_Champ <> nil Then
     Begin
-      lcf_Champ.AffiCol  := 0 ;
-      lcf_Champ.AffiRech := Null ;
+      lcf_Champ.ShowCol  := 0 ;
+      lcf_Champ.ShowSearch := Null ;
     End ;
 End ;
 /////////////////////////////////////////////////////////////////////////////////
@@ -5973,7 +5979,7 @@ begin
       li_NumSource := fi_GetDataWork ( gFWSources, acom_Control as TControl, li_Delete);
       if li_NumSource < 0 then
         Exit;
-      lFw_Column := Sources [ li_NumSource ];
+      lFw_Column := DBSources [ li_NumSource ];
       Result := as_OldLabel ;
       with lFw_Column do
         for li_i := 0 to FieldsDefs.Count - 1 do
@@ -6025,13 +6031,13 @@ begin
   Result := False;
   // Test si c'est un tag d'édition
     // Test si le panel correspond au datasource2
-  for li_NumSource := 0 to Sources.Count - 1 do
-   with Sources [ li_NumSource ] do
+  for li_NumSource := 0 to DBSources.Count - 1 do
+   with DBSources [ li_NumSource ] do
     for li_i := 0 to alst_Fields.Count - 1 do
       if li_i < ahea_Header.Columns.Count Then
         Begin
           for li_j := 0 to FieldsDefs.Count - 1 do
-            if  ( FieldsDefs [ li_j ].NomTable  = aws_Table )
+            if  ( FieldsDefs [ li_j ].TableName  = aws_Table )
             and ( FieldsDefs [ li_j ].FieldName = alst_Fields [ li_i ] ) Then
               Begin
                 ahea_Header.Columns [ li_i ].Text := FieldsDefs [ li_j ].CaptionName ;
@@ -6073,13 +6079,13 @@ var li_i ,
     li_NumSource : Integer ;
 Begin
   Result := False ;
-  for li_NumSource := 0 to Sources.Count - 1 do
-   with Sources [ li_NumSource ] do
+  for li_NumSource := 0 to DBSources.Count - 1 do
+   with DBSources [ li_NumSource ] do
     for li_i := 0 to alst_Fields.Count - 1 do
       if li_i < alv_ListeView.Columns.Count Then
         Begin
           for li_j := 0 to FieldsDefs.Count - 1 do
-            if  ( FieldsDefs [ li_j ].NomTable  = aws_Table )
+            if  ( FieldsDefs [ li_j ].TableName  = aws_Table )
             and ( FieldsDefs [ li_j ].FieldName = alst_Fields [ li_i ] ) Then
               Begin
                 alv_ListeView.Columns [ li_i ].Caption := FieldsDefs [ li_j ].CaptionName;
@@ -6248,7 +6254,7 @@ end;
 
 procedure TF_CustomFrameWork.p_SetSources ( const ASources : TFWSources );
 begin
-  gFWSources.Assign( Sources );
+  gFWSources.Assign( DBSources );
 end;
 
 
@@ -6314,14 +6320,14 @@ begin
   if  assigned ( aFWColumn.datasource         )
   and assigned ( aFWColumn.datasource.Dataset )
   and assigned ( aFWColumn.Grid )
-  and not DataAutoInsert
+  and not DBAutoInsert
    Then
     with aFWColumn.datasource,aFWColumn do
      try
       lcol_Colonne := nil ;
       li_Index     := -1 ;
 //      adbgd_DataGridDataSource.Dataset.Close ;
-//      lb_Reinit := gd_grid.Sources.Count <= 1 ;
+//      lb_Reinit := gd_grid.DBSources.Count <= 1 ;
       Dataset.Open ;
 
       {$IFDEF FPC}
@@ -6335,7 +6341,7 @@ begin
       for li_j := 0 to gridColumns.Count - 1 do
         gridColumns[li_j].Visible := False ;
 
-//      gd_grid.Sources.RebuildColumns ;
+//      gd_grid.DBSources.RebuildColumns ;
 //      if lb_Reinit Then
       for li_i := 0 to FieldsDefs.Count - 1 do
        with FieldsDefs [ li_i ] do
@@ -6367,14 +6373,14 @@ begin
               lcol_Colonne.FieldName := FieldName ;
               if lcol_Colonne is TExtGridColumn then
                 ( lcol_Colonne as TExtGridColumn ).FieldTag:= NumTag;
-              lcol_Colonne.Visible := AffiCol <> 0;
-              if AffiCol >= 1 Then
+              lcol_Colonne.Visible := ShowCol <> 0;
+              if ShowCol >= 1 Then
                 Begin
                   inc ( li_Index );
-                  if AffiCol - 1 > li_Index Then
+                  if ShowCol - 1 > li_Index Then
                     lcol_Colonne.Index   := li_Index
                   Else
-                    lcol_Colonne.Index   := AffiCol - 1;
+                    lcol_Colonne.Index   := ShowCol - 1;
                 End ;
               lcol_Colonne.Title.Caption := CaptionName;
             End ;
@@ -6405,7 +6411,7 @@ var li_i         : Integer;
     lfwc_Source  : TFWSource ;
 
 begin
-  ge_EvenementCleUtilise :=  DataOnUsedKey ;
+  ge_EvenementCleUtilise :=  DBOnUsedKey ;
   // On va chercher s'il existe déjà une clé primaire identique
   // et si oui, on informe l'utilisateur qu'il faut la modifier
   // Plus utile avec la gestion par zones de saisie disablées
@@ -6433,7 +6439,7 @@ begin
       if assigned ( ds_DataSourcesWork )
       and ( adat_Dataset = ds_DataSourcesWork.DataSet ) Then
         Begin
-          lfwc_Source := Sources [ li_i ];
+          lfwc_Source := DBSources [ li_i ];
           Break;
         End ;
   if lfwc_Source  = nil then
@@ -6476,8 +6482,8 @@ Begin
       for li_i := 0 to FieldsDefs.Count - 1   do
        with FieldsDefs [ li_i ] do
         Begin
-          if  ColCree
-          and ( AffiCol < 0 )
+          if  ColCreate
+          and ( ShowCol < 0 )
           and ( FieldName = Key )
           and ( adat_Dataset.FindField ( FieldName ) is TNumericField )
           and ( adat_Dataset.FindField ( FieldName ).IsNull )
@@ -6488,7 +6494,7 @@ Begin
               end;
           if  ColUnique
           and ( adat_Dataset.State = dsInsert )
-          and ( AffiCol > 0 )
+          and ( ShowCol > 0 )
           and not ( adat_Dataset.FindField ( FieldName ).IsNull )
           and ( adat_Dataset.FindField ( FieldName ).DisplayName <> adat_Dataset.FindField ( FieldName ).AsString )
            Then
@@ -6503,7 +6509,7 @@ Begin
               Continue;
             end;
 
-          if ColObl
+          if ColMain
           and assigned ( adat_Dataset.FindField ( FieldName ))
           and ( Trim   ( adat_Dataset.FindField ( FieldName ).AsString ) = '')
              Then
@@ -6518,8 +6524,8 @@ Begin
      if li_Compteur > 0
       Then
         Begin
-         if assigned ( DataOnEmptyEdit ) Then
-           DataOnEmptyEdit ( Self, adat_Dataset, li_Compteur, ls_Message )
+         if assigned ( DBOnEmptyEdit ) Then
+           DBOnEmptyEdit ( Self, adat_Dataset, li_Compteur, ls_Message )
          Else
            Begin
             lt_Arg [0] := ls_Message ;
@@ -6633,7 +6639,7 @@ begin
         end ;
     End;
   Result := ai_Tag;
-  with Sources.Items [ li_DataWork ] do
+  with DBSources.Items [ li_DataWork ] do
     Begin
       for li_i := 0 to FieldsDefs.Count - 1 do
         if FieldsDefs [ li_i ].NumTag = ai_Tag + 1 Then
@@ -6711,11 +6717,11 @@ function TF_CustomFrameWork.ffws_SearchSource(const as_Table: String ): TFWSourc
 var li_i : Integer;
 begin
   Result := nil;
-  for li_i := 0 to Sources.Count - 1  do
+  for li_i := 0 to DBSources.Count - 1  do
     Begin
-      if ( Sources [ li_i ].Table = as_Table ) Then
+      if ( DBSources [ li_i ].Table = as_Table ) Then
        Begin
-         Result := Sources [ li_i ];
+         Result := DBSources [ li_i ];
          Break;
        end;
     end;
