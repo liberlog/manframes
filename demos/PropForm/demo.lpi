@@ -275,6 +275,7 @@
         <TopLine Value="335"/>
         <CursorPos X="21" Y="122"/>
         <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit24>
       <Unit25>
         <Filename Value="../../../XMLFrames/fonctions/fonctions_autocomponents.pas"/>
@@ -283,6 +284,7 @@
         <TopLine Value="49"/>
         <CursorPos X="1" Y="1"/>
         <UsageCount Value="11"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit25>
       <Unit26>
         <Filename Value="../../../XMLFrames/fonctions/fonctions_ObjetsXML.pas"/>
@@ -291,6 +293,7 @@
         <TopLine Value="774"/>
         <CursorPos X="1" Y="806"/>
         <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit26>
       <Unit27>
         <Filename Value="/usr/lib/lazarus/0.9.30/lcl/include/toolbutton.inc"/>
@@ -361,6 +364,7 @@
         <TopLine Value="102"/>
         <CursorPos X="10" Y="116"/>
         <UsageCount Value="11"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit34>
       <Unit35>
         <Filename Value="../../fonctions/fonctions_FenetrePrincipale.pas"/>
@@ -453,6 +457,7 @@
         <TopLine Value="1"/>
         <CursorPos X="145" Y="9"/>
         <UsageCount Value="11"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit44>
       <Unit45>
         <Filename Value="../../../XMLFrames/fonctions/fonctions_objetsxml.pas"/>
@@ -461,6 +466,7 @@
         <TopLine Value="1"/>
         <CursorPos X="103" Y="12"/>
         <UsageCount Value="11"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit45>
       <Unit46>
         <Filename Value="../../fonctions/fonctions_manbase.pas"/>
@@ -820,10 +826,14 @@
     </Parsing>
     <CodeGeneration>
       <Optimizations>
-        <OptimizationLevel Value="0"/>
+        <OptimizationLevel Value="3"/>
       </Optimizations>
     </CodeGeneration>
     <Linking>
+      <Debugging>
+        <GenerateDebugInfo Value="False"/>
+      </Debugging>
+      <LinkSmart Value="True"/>
       <Options>
         <Win32>
           <GraphicApplication Value="True"/>

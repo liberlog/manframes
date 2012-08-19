@@ -69,7 +69,6 @@ type
     s_NomTable, s_FieldName : String;
     s_CaptionName, s_HintName: WideString;
     i_NumTag : Integer ;
-    i_ShowPrint,
     i_ShowCol, i_ShowSearch, i_ShowSort, i_HelpIdx : Integer ;
     s_LookupTable, s_LookupKey, s_LookupDisplay: String;
     b_ColMain, b_ColCreate, b_ColUnique : Boolean;
@@ -81,7 +80,6 @@ type
     property CaptionName : WideString read s_CaptionName write s_CaptionName;
     property HintName : WideString read s_HintName write s_HintName;
     property NumTag : Integer read i_NumTag write i_NumTag;
-    property ShowPrint : Integer read i_ShowPrint write i_ShowPrint default -1;
     property ShowCol : Integer read i_ShowCol write i_ShowCol default -1;
     property ShowSearch : Integer read i_ShowSearch write i_ShowSearch default -1;
     property ShowSort : Integer read i_ShowSort write i_ShowSort default -1;
@@ -119,7 +117,6 @@ constructor TFWFieldColumn.Create(ACollection: TCollection);
 begin
   inherited Create(ACollection);
   i_ShowCol :=-1;
-  i_ShowPrint :=-1;
   i_ShowSearch :=-1;
   i_ShowSort :=-1;
 end;
