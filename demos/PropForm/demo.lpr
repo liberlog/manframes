@@ -9,15 +9,9 @@ uses
   Interfaces, // this includes the LCL widgetset
   Forms
   { you can add units after this },
-  U_FenetrePrincipale,
-  LCLType,Controls, Graphics,SysUtils,
-  U_Splash,
-  LCLIntf,
-  U_Donnees,
-  U_FormMainIni,
-  U_CustomFrameWork,
-  lazmansoft, lazextcomponents,
-  lazmanframes, lazmansoftware, u_propform;
+  U_FenetrePrincipale, LCLType, Controls, Graphics, SysUtils, U_Splash, LCLIntf,
+  U_Donnees, U_FormMainIni, U_CustomFrameWork, lazmansoft, lazextcomponents,
+  lazmanframes, lazmansoftware, u_propform, u_propertiesform, unit1;
 
 {$IFNDEF FPC}
 var lico_Icon        : TIcon ;
@@ -25,6 +19,7 @@ var lico_Icon        : TIcon ;
 	gc_classname: Array[0..255] of char;
 	gi_result: integer;
 {$ENDIF}
+var F_PRopForm : TF_PropForm;
 begin
   p_InitRegisterForms;
   Application.Initialize;
@@ -38,8 +33,10 @@ begin
   gb_DicoGroupementMontreCaption := False ;
   gdt_DatasetType := dtZEOS;
   try
+    Application.CreateForm(TF_PropForm4, F_PRopForm);
+    {
     Application.CreateForm(TM_Donnees, M_Donnees);
-    Application.CreateForm(TF_FenetrePrincipale, F_FenetrePrincipale);
+    Application.CreateForm(TF_FenetrePrincipale, F_FenetrePrincipale);}
   finally
   end;
   p_RegisterClasses ([]);

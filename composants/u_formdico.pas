@@ -67,19 +67,15 @@ type
 
   TF_FormDico = class( TF_FormAuto)
   private
-    ge_DbSortServer: TSortdataEvent;
-    ge_BeforeDicoCreate: TNotifyEvent;
     function fstl_getDataKeyList ( Index : Longint ):TStringList;
     procedure p_ChargeTable( const aq_dico : TDataSource; const astl_SQL : TStrings ;
     {$IFDEF DELPHI_9_UP} const awst_SQL : TWideStrings ;{$ENDIF}
       const as_Table: String);
   protected
     procedure p_AfterColumnFrameShow( const aFWColumn : TFWSource); override;
-    procedure Notification(AComponent: TComponent; Operation: TOperation); override;
     function  fb_ReinitCols ( const at_datawork : TFWSource ; const ai_table : Integer ) : Boolean; override;
     function fb_ChargementNomCol ( const at_DataWork : TFWSource;
                                    const ai_NumSource : Integer ) : Boolean; override;
-    procedure p_InitFrameWork ( const Sender : TComponent ); override;
     procedure p_InitExecutionFrameWork ( const Sender : TObject ); override;
    public
      // Méthode abstraite virtuelle
@@ -87,25 +83,8 @@ type
     // Clé primaire du DataSource
     property DataKeyList [ Index :  integer ] : TstringList read fstl_getDataKeyList;
    published
-    // EvÃ¨nement sur scrolling du datalink du datasource
-    {
-    property DataOnScroll  : TDatasetNotifyEvent read gt_DataWorks [ CST_FRAMEWORK_DATASOURCE_PRINC  ].e_Scroll write  gt_DataWorks [ CST_FRAMEWORK_DATASOURCE_PRINC  ].e_Scroll ;
-    // EvÃ¨nement sur scrolling du datalink du datasource 2
-    property Data2OnScroll : TDatasetNotifyEvent read gt_DataWorks [ CST_FRAMEWORK_DATASOURCE_SECOND ].e_Scroll write  gt_DataWorks [ CST_FRAMEWORK_DATASOURCE_SECOND ].e_Scroll ;
-    // EvÃ¨nement sur scrolling du datalink du datasource du grid
-    property DataGridOnScroll : TDatasetNotifyEvent read gt_DataWorks [ CST_FRAMEWORK_DATASOURCE_THIRD ].e_Scroll write  gt_DataWorks [ CST_FRAMEWORK_DATASOURCE_THIRD ].e_Scroll ;
-    // EvÃ¨nement data change du datalink du datasource
-    property DataOnFocus  : TDataChangeEvent read ge_FocusChangeEvent write  ge_FocusChangeEvent ;
-    // EvÃ¨nement data change du datalink datasource 2
-    property Data2OnFocus  : TDataChangeEvent read ge_FocusChangeEvent2 write  ge_FocusChangeEvent2 ;
-    // Datasource de travail
-    }
     procedure p_OrderEdit ( Edit : TObject );
 
-
-    // EvÃ¨nement Sur demande de sauvegarde
-    property DataOnSort         : TSortdataEvent read ge_DbSortServer write ge_DbSortServer ;
-    property BeforeCreate         : TNotifyEvent read ge_BeforeDicoCreate write ge_BeforeDicoCreate ;
 
     property DBOnEraseFilter ;
     property DBCloseMessage ;
@@ -116,6 +95,7 @@ type
     property DBOnSearch     ;
     property DBSearching     ;
     property DBUnSearch     ;
+    property DBSources;
 
     property DBAutoInsert   ;
     property DBOnSave       ;
@@ -129,7 +109,19 @@ type
     property BeforeShow   ;
     property BeforeCreateForm ;
     property DBUnload ;
-   end;
+
+    property DatasourceQuery  ;
+    property DBOnEmptyEdit    ;
+    property DBOnUsedKey      ;
+    property DBOnEraseFilter;
+    property DBCloseMessage;
+    // Affiche-t-on un message sur erreur
+    property DBErrorMessage;
+
+    property DBSetLabels;
+    property FieldDelimiter;
+    property OpenDatasets;
+  end;
 
 implementation
 
@@ -141,16 +133,6 @@ uses unite_variables,
      fonctions_dbcomponents;
 
 { TF_FormDico }
-
-procedure TF_FormDico.p_InitFrameWork(const Sender: TComponent);
-begin
-  if assigned ( ge_BeforeDicoCreate ) then
-    ge_BeforeDicoCreate ( Self );
-  inherited p_InitFrameWork(Sender);
-end;
-
-
-
 
 function TF_FormDico.fstl_getDataKeyList ( Index : Longint ):TStringList;
 Begin
@@ -290,12 +272,12 @@ begin
 end;
 
 procedure TF_FormDico.p_OrderEdit ( Edit : TObject );
-var li_i, li_j : Integer ;
+var lfw_Source : TFWSource ; li_j : Integer ;
 Begin
   li_j := 0 ;
-  li_i := fi_GetDataWork(DBSources, Edit as TControl, li_j) ;
-  if li_i > 0 then
-    p_PlacerFlecheTri ( DBSources.Items [ li_i ], Edit as TWinControl,
+  lfw_Source := ffws_GetDataWork(DBSources, Edit as TControl, li_j) ;
+  if lfw_Source <> nil then
+    p_PlacerFlecheTri ( lfw_Source, Edit as TWinControl,
                                ( Edit as TwinControl ).Left, True );
 End;
 
@@ -325,19 +307,6 @@ Begin
   ;
 End ;
 
-
-
-// Vérification du fait que des propriétés ne sont pas à nil et n'existent pas
-procedure TF_FormDico.Notification ( AComponent : TComponent ; Operation : TOperation );
-begin
-  inherited Notification(AComponent, Operation);
-{$IFDEF DELPHI}
-  if  ( Assigned                   ( DatasourceQuery ))
-  and ( AComponent.IsImplementorOf ( DatasourceQuery ))
-   then
-    DatasourceQuery := nil;
-{$ENDIF}
-end;
 
 procedure TF_FormDico.p_AfterColumnFrameShow( const aFWColumn : TFWSource );
 Begin

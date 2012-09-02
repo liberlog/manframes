@@ -51,21 +51,18 @@ uses
 
 
 type
-  { TFWPropColumn }
+  { TFWPropSource }
 
-  TFWPropColumn = class(TFWSource)
+  TFWPropSource = class(TFWSource)
   published
-    property FieldsDefs : TFWFieldColumns read FFieldsDefs;
+    property FieldsDefs;
   End;
-  TFWPropColumnClass = class of TFWPropColumn;
+  TFWPropSourceClass = class of TFWPropSource;
 
   { TF_PropForm }
 
   TF_PropForm = class( TF_FormAuto )
   private
-    ge_DbSortServer: TSortdataEvent;
-    gb_PasUtiliserDico        : Boolean;
-    ge_BeforeDicoCreate: TNotifyEvent;
     function fb_False : Boolean;
     procedure p_SetLabels(const a_Value: Boolean);
 
@@ -73,20 +70,12 @@ type
     procedure p_ChargeTable( const aq_dico : TDataSource; const astl_SQL : TStrings ;
     {$IFDEF DELPHI_9_UP} const awst_SQL : TWideStrings ;{$ENDIF}
       const as_Table: String);
-    function fi_GetNumArray( const acom_Component : TComponent ;
-                             const li_DataWork : Integer;
-                             var ads_DataSource : TDataSource ;
-                             var ai_Tag : Longint ):Integer;
   protected
     function CreateSources: TFWSources; override;
     procedure p_AfterColumnFrameShow( const aFWColumn : TFWSource); override;
-    procedure Notification(AComponent: TComponent; Operation: TOperation); override;
     function  fb_ReinitCols ( const at_datawork : TFWSource ; const ai_table : Integer ) : Boolean; override;
     function fb_ChargementNomCol ( const at_DataWork : TFWSource;
                                    const ai_NumSource : Integer ) : Boolean; override;
-    procedure p_InitFrameWork ( const Sender : TComponent ); override;
-    procedure p_assignColumnsDatasourceOwner ( const afw_Column : TFWSource ; const ads_DataSource : TDatasource ; const ai_NumArray : Integer ; const acom_Component : TComponent );override;
-    procedure p_InitExecutionFrameWork ( const Sender : TObject ); override;
    public
     function fb_InsereCompteur ( const adat_Dataset : TDataset ;
                                  const astl_Cle : TStringlist ;
@@ -98,37 +87,22 @@ type
     // Clé primaire du DataSource
     property DataKeyList [ Index :  integer ] : TstringList read fstl_getDataKeyList;
    published
-    // EvÃ¨nement sur scrolling du datalink du datasource
-    {
-    property DataOnScroll  : TDatasetNotifyEvent read gt_DataWorks [ CST_FRAMEWORK_DATASOURCE_PRINC  ].e_Scroll write  gt_DataWorks [ CST_FRAMEWORK_DATASOURCE_PRINC  ].e_Scroll ;
-    // EvÃ¨nement sur scrolling du datalink du datasource 2
-    property Data2OnScroll : TDatasetNotifyEvent read gt_DataWorks [ CST_FRAMEWORK_DATASOURCE_SECOND ].e_Scroll write  gt_DataWorks [ CST_FRAMEWORK_DATASOURCE_SECOND ].e_Scroll ;
-    // EvÃ¨nement sur scrolling du datalink du datasource du grid
-    property DataGridOnScroll : TDatasetNotifyEvent read gt_DataWorks [ CST_FRAMEWORK_DATASOURCE_THIRD ].e_Scroll write  gt_DataWorks [ CST_FRAMEWORK_DATASOURCE_THIRD ].e_Scroll ;
-    // EvÃ¨nement data change du datalink du datasource
-    property DataOnFocus  : TDataChangeEvent read ge_FocusChangeEvent write  ge_FocusChangeEvent ;
-    // EvÃ¨nement data change du datalink datasource 2
-    property Data2OnFocus  : TDataChangeEvent read ge_FocusChangeEvent2 write  ge_FocusChangeEvent2 ;
-    // Datasource de travail
-    }
     procedure p_OrderEdit ( Edit : TObject );
 
 
-    // EvÃ¨nement Sur demande de sauvegarde
-    property DataDicoOff           : Boolean read gb_PasUtiliserDico write gb_PasUtiliserDico default False ;
-    property DataOnSort         : TSortdataEvent read ge_DbSortServer write ge_DbSortServer ;
-    property BeforeCreate         : TNotifyEvent read ge_BeforeDicoCreate write ge_BeforeDicoCreate ;
-    property DataSetLabels : Boolean read fb_False write p_SetLabels stored false default false;
+    // Evénement Sur demande de sauvegarde
+    property DBSetLabels : Boolean read fb_False write p_SetLabels stored false default false;
 
     property DBOnEraseFilter ;
     property DBCloseMessage ;
-    property DAtasourceQuerySearch ;
+    property DatasourceQuerySearch ;
     property ScrolledPanel ;
     property DBOnLocate       ;
     property DBOnPost       ;
     property DBOnSearch     ;
     property DBSearching     ;
     property DBUnSearch     ;
+    property DBSources;
 
     property DBAutoInsert   ;
     property DBOnSave       ;
@@ -142,6 +116,19 @@ type
     property BeforeShow   ;
     property BeforeCreateForm ;
     property DBUnload ;
+
+    property DatasourceQuery  ;
+    property DBOnEmptyEdit    ;
+    property DBOnUsedKey      ;
+    property DBOnEraseFilter;
+    property DBCloseMessage;
+    // Affiche-t-on un message sur erreur
+    property DBErrorMessage;
+
+    property DBSetLabels;
+    property FieldDelimiter;
+    property OpenDatasets;
+
    end;
 
 implementation
@@ -155,22 +142,11 @@ uses fonctions_db, unite_variables,
 
 { TF_FormFrameWork }
 
-procedure TF_PropForm.p_InitFrameWork(const Sender: TComponent);
-begin
-  gb_PasUtiliserDico    := False ;
-  gb_DBMessageOnError   := True ;
-  if assigned ( ge_BeforeDicoCreate ) then
-    ge_BeforeDicoCreate ( Self );
-  inherited p_InitFrameWork(Sender);
-end;
-
-
-
 
 function TF_PropForm.fstl_getDataKeyList ( Index : Longint ):TStringList;
 Begin
   Result := nil;
-  if Index < DBSources.Count then
+  if ( Index > 0 ) and ( Index < DBSources.Count ) then
     Result := DBSources.Items[ Index ].KeyList;
 End;
 
@@ -179,7 +155,7 @@ End;
 function TF_PropForm.fb_ReinitCols ( const at_datawork : TFWSource ; const ai_table : Integer ) : Boolean;
 begin
 //  li_k := 0 ;
-  if not gb_PasUtiliserDico Then
+  if not DBPropsOff Then
     Result := inherited fb_ReinitCols ( at_datawork, ai_table )
    else
     Result := False ;
@@ -207,73 +183,14 @@ begin
 end;
 
 procedure TF_PropForm.p_OrderEdit ( Edit : TObject );
-var li_i, li_j : Integer ;
+var lfw_Source : TFWSource; li_j : Integer ;
 Begin
   li_j := 0 ;
-  li_i := fi_GetDataWork(DBSources, Edit as TControl, li_j) ;
-  if li_i > 0 then
-    p_PlacerFlecheTri ( DBSources.Items [ li_i ], Edit as TWinControl,
+  lfw_Source := ffws_GetDataWork(DBSources, Edit as TControl, li_j) ;
+  if lfw_Source <> nil then
+    p_PlacerFlecheTri ( lfw_Source, Edit as TWinControl,
                                ( Edit as TwinControl ).Left, True );
 End;
-
-procedure TF_PropForm.p_assignColumnsDatasourceOwner ( const afw_Column : TFWSource ; const ads_DataSource : TDatasource ; const ai_NumArray : Integer ; const acom_Component : TComponent );
-var lds_DataSource : TDatasource;
-Begin
-  if assigned ( ads_DataSource ) Then
-   with afw_Column do
-    Begin
-      if ( ai_NumArray <= FieldsDefs.Count - 1) Then
-       Begin
-        if not gb_PasUtiliserDico
-         then
-          p_SetComponentProperty ( acom_Component, 'DataField', FieldsDefs [ ai_NumArray ].FieldName);
-        if  ( FieldsDefs.Count - 1 >= 0 ) Then
-          p_SetComponentObjectProperty ( acom_Component, 'DataSource', ads_DataSource );
-       End;
-    End ;
-
-  with afw_Column do
-    if assigned ( ads_DataSource )
-    and ( ai_NumArray <= FieldsDefs.Count - 1)
-    and not ( gb_PasUtiliserDico )
-    and ((FieldsDefs [ ai_NumArray ].LookupTable) <> '' )
-    and fb_IsRechListeCtrlPoss ( acom_Component )// est-ce un control de list avec field de liste
-     then
-       with FieldsDefs [ ai_NumArray ] do
-        begin
-        // Ouvrir les propriétés de liste
-          lds_DataSource := fds_GetOrCloneDataSource ( acom_Component, 'ListSource', 'SELECT * FROM '+ LookupTable, Self, gdat_DatasetPrinc );
-          if not assigned ( lds_DataSource ) Then
-            lds_DataSource := fds_GetOrCloneDataSource ( acom_Component, 'LookupSource', 'SELECT * FROM '+ LookupTable, Self, gdat_DatasetPrinc );
-          if ( LookupDisplay <> Null ) Then
-            Begin
-              p_SetComponentProperty ( acom_Component, 'LookupDisplay', LookupDisplay);
-              p_SetComponentProperty ( acom_Component,   'ListField'  , LookupDisplay );
-            End ;
-          if ( LookupKey <> Null ) Then
-            Begin
-              p_SetComponentProperty ( acom_Component, 'LookupField'  , LookupKey );
-              p_SetComponentProperty ( acom_Component,    'KeyField'  , LookupKey );
-            End ;
-
-          if assigned ( lds_DataSource )
-          and assigned (( lds_DataSource as TDataSource ).Dataset ) Then
-            try
-              lds_DataSource.Dataset.Open ;
-            except
-              On E: Exception do
-                Begin
-                  fcla_GereException ( E, lds_DataSource.Dataset );
-                End ;
-            End ;
-        end;
-End;
-
-procedure TF_PropForm.p_InitExecutionFrameWork(const Sender: TObject);
-begin
-  inherited p_InitExecutionFrameWork(Sender);
-end;
-
 
 /////////////////////////////////////////////////////////////////////////////////
 // Fonction : fb_InsereCompteur
@@ -298,23 +215,7 @@ Begin
 End ;
 
 procedure TF_PropForm.p_ChargeTable ( const aq_dico : TDataSource; const astl_SQL : TStrings; {$IFDEF DELPHI_9_UP} const awst_SQL : TWideStrings ;{$ENDIF} const as_Table : String );
-var ls_SQL : WideString ;
 Begin
-  if not assigned ( astl_SQL )
-  {$IFDEF DELPHI_9_UP}
-  and not assigned ( awst_SQL )
-  {$ENDIF}
-   Then
-    Exit ;
-  gds_SourceWork.DataSet.Close;
-  ls_SQL := 'SELECT DICO_Table,DICO_Nocol,DICO_Nomcol,DICO_Libcol,DICO_Libhint,DICO_Affichage,DICO_Recc,DICO_Help,DICO_Tablefk,DICO_Colfk,DICO_Coldsp,DICO_Colobl,DICO_Fiche FROM DICO WHERE DICO_Table = ''' + as_Table + ''' ORDER BY 2';
-  if assigned ( astl_SQL ) then
-    astl_SQL.Text := ls_SQL
-  {$IFDEF DELPHI_9_UP}
-  else if assigned ( awst_SQL ) then
-    awst_SQL.Text := ls_SQL
-  {$ENDIF}
-  ;
 End ;
 
 
@@ -362,46 +263,6 @@ Begin
     End;
 End;
 
-function TF_PropForm.fi_GetNumArray ( const acom_Component : TComponent ; const li_DataWork : Integer; var ads_DataSource : TDataSource ; var ai_Tag : Longint ):Integer;
-var li_i : Longint ;
-begin
-  ai_Tag      := acom_Component.Tag - 1;
-  if acom_Component is TLabel Then
-    Begin
-      if ai_Tag >= CST_TAG_LBL Then
-        Begin
-          ai_Tag      := ai_Tag - CST_TAG_LBL ;
-        end ;
-    End;
-  Result := ai_Tag;
-  with DBSources.Items [ li_DataWork ] do
-    Begin
-      for li_i := 0 to FieldsDefs.Count - 1 do
-        if FieldsDefs [ li_i ].NumTag = ai_Tag + 1 Then
-          Begin
-            Result := li_i ;
-            Break ;
-          End ;
-      ads_DataSource := nil ;
-      if  assigned ( Datasource )
-      and assigned ( Datasource.DataSet )
-       Then Result := Result + FieldsBegin;
-      ads_DataSource := Datasource ;
-    End;
-End;
-
-// Vérification du fait que des propriétés ne sont pas Ã  nil et n'existent pas
-procedure TF_PropForm.Notification ( AComponent : TComponent ; Operation : TOperation );
-begin
-  inherited Notification(AComponent, Operation);
-{$IFDEF DELPHI}
-  if  ( Assigned                   ( DatasourceQuery ))
-  and ( AComponent.IsImplementorOf ( DatasourceQuery ))
-   then
-    DatasourceQuery := nil;
-{$ENDIF}
-end;
-
 procedure TF_PropForm.p_AfterColumnFrameShow( const aFWColumn : TFWSource );
 Begin
   if DBAutoInsert // Mode auto-insertion
@@ -418,7 +279,7 @@ End;
 
 function TF_PropForm.CreateSources: TFWSources;
 begin
-  Result := TFWSources.Create(Self, TFWPropColumn);
+  Result := TFWSources.Create(Self, TFWPropSource);
 end;
 
 

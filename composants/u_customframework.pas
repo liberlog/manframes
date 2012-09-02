@@ -104,7 +104,7 @@ type
   TF_CustomFrameWork = class;
   TDicoColumnDatalink = class;
   TFWSource = class;
-  TFWSourceSource = class of TFWSource;
+  TFWSourceClass = class of TFWSource;
   TFWPanelColumn = class(TCollectionItem)
   private
     FPanel : TWinControl ;
@@ -123,6 +123,7 @@ type
     function Add: TFWPanelColumn;
     constructor Create(const Source: TFWSource; const ColumnClass: TFWPanelColumnClass); virtual;
     property Parent: TFWSource read FParent;
+  published
     property Items[Index: Integer]: TFWPanelColumn read GetPanelColumn write SetPanelColumn; default;
   End;
 
@@ -153,6 +154,7 @@ type
     function Add: TFWSourceChild;
     constructor Create( const Source: TFWSource; const ColumnClass: TFWSourceChildClass); virtual;
     property Parent: TFWSource read FParent;
+  published
     property Items[Index: Integer]: TFWSourceChild read GetSourceColumn write SetSourceColumn; default;
   End;
 
@@ -161,6 +163,7 @@ type
   private
      e_Scroll         : TDatasetNotifyEvent ;
      FPanels : TFWPanels;
+     FFieldsDefs : TFWFieldColumns;
      FLinked : TFWSourcesChilds;
      FForm : TF_CustomFrameWork;
      gd_Grid : TCustomDBGrid ;
@@ -227,9 +230,12 @@ type
     procedure SetCounter(Index: Integer; const AValue: TFWCounter);
     procedure SetCsvDef(Index: Integer; const AValue: TFWCsvDef);
     procedure p_setConnection(const AValue: TDSSource);
+    procedure p_setLinked(const AValue: TFWSourcesChilds);
+    procedure p_setPanels(const AValue: TFWPanels);
+    procedure p_setFieldDefs(const AValue: TFWFieldColumns);
+
   protected
     ds_DataSourcesWork : TDataSource;
-    FFieldsDefs : TFWFieldColumns;
     property IsStored: Boolean read FStored write FStored default True;
     function fb_ChangeDataSourceWork : Boolean ;
   public
@@ -259,7 +265,7 @@ type
     property FieldsBegin : Longint read i_DebutTableau write i_DebutTableau;
     // Datasource principal en recherche uniquement
     property DatasourceSearch : TDataSource read ds_recherche write ds_recherche;
-    property FieldsDefs : TFWFieldColumns read FFieldsDefs;
+    property FieldsDefs : TFWFieldColumns read FFieldsDefs write p_setFieldDefs;
     property Counters [Index: Integer] : TFWCounter read GetCounter write SetCounter ;
     property CSVDefs  [Index: Integer] : TFWCsvDef read GetCsvDef write SetCsvDef ;
   published
@@ -284,8 +290,8 @@ type
     // Datasources secondaires édités
     property Datasource : TDataSource read fds_GetDataSource write p_SetDataSource;
     // Panel contenant le Grid de navigation
-    property Panels  : TFWPanels read FPanels  write FPanels  ;
-    property Linked  : TFWSourcesChilds read FLinked  write FLinked  ;
+    property Panels  : TFWPanels read FPanels  write p_setPanels  ;
+    property Linked  : TFWSourcesChilds read FLinked  write p_setLinked  ;
     // Clé étrangère du DataSource vers le grid Lookup
     property LookupField : string read fs_getLookupField write p_SetLookupField;
     property ShowPrint : Boolean read b_ShowPrint write b_ShowPrint default True;
@@ -303,13 +309,14 @@ type
   protected
     function GetOwner: TPersistent; override;
   public
-    constructor Create(Form: TF_CustomFrameWork; ColumnClass: TFWSourceSource); virtual;
+    constructor Create(Form: TF_CustomFrameWork; ColumnClass: TFWSourceClass); virtual;
     function Add: TFWSource;
     procedure LoadFromFile(const Filename: string); virtual;
     procedure LoadFromStream(S: TStream); virtual;
     procedure SaveToFile(const Filename: string); virtual;
     procedure SaveToStream(S: TStream); virtual;
     property Form: TF_CustomFrameWork read FForm;
+  published
     property Items[Index: Integer]: TFWSource read GetColumn write SetColumn; default;
   End;
 
@@ -366,32 +373,32 @@ type
 
   TF_CustomFrameWork = class({$IFDEF SFORM}TSuperForm{$ELSE}{$IFDEF TNT}TTntForm{$ELSE}TForm{$ENDIF}{$ENDIF}, IFWFormVerify)
   private
-    gs_connection : String;
-    gb_PasUtiliserProps        : Boolean;
-    gds_Query1           : TDataSource ;
-    gdat_Query1          : TDataset ;
-    ge_DBEmptyEdit: TMessageEvent;
-    ge_DBUsedKey: TMessageEvent;
-    gc_FieldDelimiter : Char ;
-    gFWSources : TFWSources;
+    gs_connection         : String;
+    gb_PasUtiliserProps   : Boolean;
+    gds_Query1            : TDataSource ;
+    gdat_Query1           : TDataset ;
+    ge_DBEmptyEdit        : TMessageEvent;
+    ge_DBUsedKey          : TMessageEvent;
+    gc_FieldDelimiter     : Char ;
+    gFWSources            : TFWSources;
     lwin_controlRecherche : TWinControl ;
-    gds_Query2           : TDataSource ;
-    gdat_Query2          : TDataset ;
-    gvar_valeurRecherche          : Variant ;
+    gds_Query2            : TDataSource ;
+    gdat_Query2           : TDataset ;
+    gvar_valeurRecherche  : Variant ;
     {$IFDEF EADO}
-    geo_ExecuteTemp : TExecuteOptions ;
+    geo_ExecuteTemp       : TExecuteOptions ;
     {$ENDIF}
     { Déclarations privées }
-    ge_DBlocate : TDatasetNotifyEvent ;
-    ge_DbOnSearch : TOnSearchdataEvent ;
-    ge_DBOnEraseFilter : TOnEraseFilterEvent ;
-    ge_DbBeforeSearch,
-    ge_DbSearching,
-    ge_DbAfterSearch : TSearchdataEvent ;
-    gpan_ScrolledPanel : TCustomPanel ;
-    gb_DBMessageOnError,
-    gb_JustCreated,
-    gb_RafraichitRecherche : Boolean ;
+    ge_DBlocate           : TDatasetNotifyEvent ;
+    ge_DbOnSearch         : TOnSearchdataEvent ;
+    ge_DBOnEraseFilter    : TOnEraseFilterEvent ;
+    ge_DbBeforeSearch     ,
+    ge_DbSearching        ,
+    ge_DbAfterSearch      : TSearchdataEvent ;
+    gpan_ScrolledPanel    : TCustomPanel ;
+    gb_DBMessageOnError   ,
+    gb_JustCreated        ,
+    gb_RafraichitRecherche: Boolean ;
     // Fichier ressources
     {$IFDEF DELPHI}
     ResInstance : THandle;
@@ -574,10 +581,10 @@ type
     {$IFDEF RX}
     procedure gd_GridTitleBtnClick(Sender: TObject; ACol: Integer; Field: TField); virtual;
     {$ENDIF}
-    function fi_GetNumArray( const acom_Component : TComponent ;
-                             const li_DataWork : Integer;
+    function ffd_GetNumArray( const acom_Component : TComponent ;
+                             const afws_DataWork : TFWSource;
                              var ads_DataSource : TDataSource ;
-                             var ai_Tag : Longint ):Integer; virtual;
+                             var ai_Tag : Longint ):TFWFieldColumn; virtual;
     procedure p_InitOpenedDatasets; virtual;
     procedure p_AddGroupView ( const adgv_GroupViewToAdd : TDBGroupView ); virtual;
     function  CreateSources: TFWSources; virtual;
@@ -597,7 +604,7 @@ type
     procedure p_LoadSearchingAndQuery ; virtual;
     procedure p_ChargeDatasourcePrinc; virtual;
     procedure p_AffecteEvenementsWorkDatasources ; virtual;
-    procedure p_assignColumnsDatasourceOwner ( const afw_Column : TFWSource ; const ads_DataSource : TDatasource ; const ai_NumArray : Integer ; const acom_Component : TComponent ); virtual;
+    procedure p_assignColumnsDatasourceOwner ( const afw_Column : TFWSource ; const ads_DataSource : TDatasource ; const afd_FieldDef : TFWFieldColumn ; const acom_Component : TComponent ); virtual;
     procedure p_InitFrameWork ( const Sender : TComponent ); virtual;
     procedure p_ChargeResources  ( const ar_RecordDatasource : TFWSource ; const li_DataWork  : Integer); virtual;
     procedure p_InitExecutionFrameWork ( const Sender : TObject ); dynamic;
@@ -628,7 +635,6 @@ type
     procedure KeyPress(var Key: Char); override;
     procedure DoShow; override;
     procedure Activate; override;
-    procedure DoHide; override;
     procedure DoClose ( var AAction: TCloseAction ); override;
     function fs_GetLabel(const as_OldLabel, as_Table,
       as_Field: String): String; overload;
@@ -742,15 +748,11 @@ type
     property SearchControl : TWinControl read lwin_controlRecherche write lwin_controlRecherche;
     procedure LayoutChanged; virtual;
 
-  published
+    property DBSources : TFWSources read  gFWSources write p_SetSources;
     property DBPropsOff           : Boolean read gb_PasUtiliserProps write gb_PasUtiliserProps default False ;
     property DatasourceQuery  : TDatasource read gds_SourceWork write p_SetWorkSource;
     property DBOnEmptyEdit    : TMessageEvent read ge_DBEmptyEdit write ge_DBEmptyEdit ;
     property DBOnUsedKey      : TMessageEvent read ge_DBUsedKey write ge_DBUsedKey ;
-    procedure p_BtnSearch(Sender: TObject); // Recherche
-    procedure p_DBEditBeforeEnter(Sender : TObject);
-    procedure p_DBEditBeforeExit (Sender : TObject);
-    property DBSources : TFWSources read  gFWSources write p_SetSources;
     property DBOnEraseFilter : TOnEraseFilterEvent read ge_DBOnEraseFilter write ge_DBOnEraseFilter;
     property DBCloseMessage : Boolean read gb_CloseMessage write gb_CloseMessage default false;
     property DatasourceQuerySearch : TDatasource read gds_recherche write p_setSearch;
@@ -778,6 +780,10 @@ type
     property DBUnload : Boolean read gb_Unload stored False ;
     property FieldDelimiter : Char read gc_FieldDelimiter write  gc_FieldDelimiter default ';';
     property OpenDatasets : TNotifyEvent read ge_OpenDatasets write ge_OpenDatasets ;
+  published
+    procedure p_BtnSearch(Sender: TObject); // Recherche
+    procedure p_DBEditBeforeEnter(Sender : TObject);
+    procedure p_DBEditBeforeExit (Sender : TObject);
   end;
 const
   CST_QUERY_FIN = 'End' ;
@@ -795,10 +801,10 @@ var gb_doublebuffer : Boolean = True ;
     gi_NiveauTransaction : Integer = 0 ;
     gb_DicoGroupementMontreCaption : Boolean = True ;
 
-function  fi_ParentEstPanel( const aFWColumns : TFWSources ; const acon_Control: TControl): Integer;
+function  ffws_ParentEstPanel( const aFWColumns : TFWSources ; const acon_Control: TControl): TFWSource;
 function fs_getFileNameOfTableColumn ( const afws_Source    : TFWSource ): String;
 function  fdat_GetDataset ( const aFWColumns : TFWSources ; const aobj_Sender : Tobject ): TDataset;
-function  fi_GetDataWork ( const aFWColumns : TFWSources ; const aobj_Sender : TControl ;var ai_Delete : Integer ):Integer;
+function  ffws_GetDataWork ( const aFWColumns : TFWSources ; const aobj_Sender : TControl ;var ai_Delete : Integer ):TFWSource;
 function  fi_GetDataWorkFromDataSet ( const aFWColumns : TFWSources ; const adat_DataSet : TDataset ):Integer;
 function  fi_GetDataWorkFromDataSource ( const aFWColumns : TFWSources ; const aobj_Datasource : TObject ):Integer;
 function  fi_GetDataWorkFromGrid ( const aFWColumns : TFWSources ; const agd_Grid : TCustomDBGrid ):Integer;
@@ -847,13 +853,13 @@ end;
 ////////////////////////////////////////////////////////////////////////////////
 function fdat_GetDataset ( const aFWColumns : TFWSources ; const aobj_Sender : Tobject ): TDataset;
 var
-    li_DataWork : Integer;
+    lfws_DataWork : TFWSource;
 begin
   Result := nil ;
-  li_DataWork := fi_ParentEstPanel ( aFWColumns, aobj_Sender as TControl );
-  if Assigned(aFWColumns [ li_DataWork ].ddl_DataLink) Then
+  lfws_DataWork := ffws_ParentEstPanel ( aFWColumns, aobj_Sender as TControl );
+  if Assigned( lfws_DataWork ) and Assigned(lfws_DataWork.ddl_DataLink) Then
     Begin
-      Result := aFWColumns [ li_DataWork ].ddl_DataLink.Dataset;
+      Result := lfws_DataWork.ddl_DataLink.Dataset;
     End;
 End ;
 
@@ -873,21 +879,21 @@ End;
 ////////////////////////////////////////////////////////////////////////////////
 //  Recherche du bon plan de travail à partir du TCUstomPanel
 ////////////////////////////////////////////////////////////////////////////////
-function fi_GetDataWork ( const aFWColumns : TFWSources ; const aobj_Sender : TControl ; var ai_Delete : Integer ): Integer;
+function  ffws_GetDataWork ( const aFWColumns : TFWSources ; const aobj_Sender : TControl ;var ai_Delete : Integer ):TFWSource;
 begin
   ai_Delete:=fi_GetArrayTag ( aobj_Sender );
-  Result := fi_ParentEstPanel ( aFWColumns, aobj_Sender );
+  Result := ffws_ParentEstPanel ( aFWColumns, aobj_Sender );
 End;
 ///////////////////////////////////////////////////////////////////////////////////
 // Fonction fi_ParentEstPanel
 // Vérifie si le parent de la zone est bien Data2Panel
 // acon_Control : La zone
 ///////////////////////////////////////////////////////////////////////////////////
-function fi_ParentEstPanel( const aFWColumns : TFWSources ; const acon_Control: TControl): Integer;
+function ffws_ParentEstPanel( const aFWColumns : TFWSources ; const acon_Control: TControl): TFWSource;
 var lcon_Parent : TControl ;
     li_i, li_j : Integer ;
 begin
-  Result := 0 ;
+  Result := nil ;
   if not assigned ( acon_Control ) Then
     Exit ;
   lcon_Parent := acon_Control.Parent ;
@@ -897,8 +903,8 @@ begin
        for li_j := 0 to aFWColumns [li_i].FPanels.count-1 do
         if lcon_Parent = aFWColumns [ li_i ].Panels [li_j].FPanel Then
           Begin
-            Result := li_i ;
-            Break ;
+            Result := aFWColumns [ li_i ];
+            Exit ;
           End ;
       lcon_Parent := lcon_Parent.Parent ;
     End ;
@@ -1144,8 +1150,12 @@ End ;
 //  Recherche du bon plan de travail à partir du TCUstomPanel
 ////////////////////////////////////////////////////////////////////////////////
 function  fds_GetDataSourceWork ( const aFWColumns : TFWSources ; const aobj_Sender : Tobject ):TDataSource;
+var afws_source : TFWSource;
 begin
-  Result := aFWColumns [ fi_ParentEstPanel ( aFWColumns, aobj_Sender as TControl )].ddl_DataLink.DataSource;
+  afws_source := ffws_ParentEstPanel ( aFWColumns, aobj_Sender as TControl );
+  if assigned ( afws_source )
+   Then Result := afws_source.ddl_DataLink.DataSource
+   Else Result := nil;
 End;
 function  fi_GetDataWorkFromDataSource ( const aFWColumns : TFWSources ; const aobj_Datasource : TObject ):Integer;
 var li_i : Integer ;
@@ -1228,14 +1238,13 @@ end;
 { TFWImage }
 
 procedure TFWImage.Click;
-var li_DataWork, li_Delete : Integer ;
+var li_Delete : Integer ;
 begin
   inherited Click;
   with Self.Owner as TF_CustomFrameWork do
     Begin
       li_Delete := -1 ;
-      li_DataWork :=  fi_GetDataWork ( gFWSources, Self, li_Delete );
-      p_TrieSurClickLabel ( gFWSources [ li_DataWork ], Self, True, True );
+      p_TrieSurClickLabel ( ffws_GetDataWork ( gFWSources, Self, li_Delete ), Self, True, True );
     End;
 end;
 
@@ -1278,6 +1287,22 @@ procedure TFWSource.p_setConnection(const AValue: TDSSource);
 begin
   p_setMiniConnectionTo ( AValue, gr_Connection );
 end;
+
+procedure TFWSource.p_setLinked(const AValue: TFWSourcesChilds);
+begin
+  FLinked.Assign(AValue);
+end;
+
+procedure TFWSource.p_setPanels(const AValue: TFWPanels);
+begin
+  FPanels.Assign(AValue);
+end;
+
+procedure TFWSource.p_setFieldDefs(const AValue: TFWFieldColumns);
+begin
+  FFieldsDefs.Assign(AValue);
+end;
+
 ////////////////////////////////////////////////////////////////////////////////
 // procedure SetCsvDef
 // CSV Management
@@ -1429,7 +1454,7 @@ begin
   FPanels := TFWPanels.Create(Self,TFWPanelColumn);
   FLinked := TFWSourcesChilds.Create(Self,TFWSourceChild);
   ddl_DataLink := TDicoColumnDatalink.Create(Self,FForm);
-  FFieldsDefs := TFWFieldColumns.CReate ( Self, TFWFieldColumn );
+  FFieldsDefs := TFWFieldColumns.Create ( Self, TFWFieldColumn );
   b_ShowPrint := True;
 
 
@@ -1605,7 +1630,7 @@ end;
 
 { TFWSources }
 
-constructor TFWSources.Create(Form: TF_CustomFrameWork; ColumnClass: TFWSourceSource);
+constructor TFWSources.Create(Form: TF_CustomFrameWork; ColumnClass: TFWSourceClass);
 begin
   inherited Create(ColumnClass);
   FForm := form;
@@ -1742,14 +1767,16 @@ begin
   gstl_SQLWork := nil ;
   p_InitFrameWork ( Self );
   {$IFDEF FPC}
-  OnCreate := FormCreate;
+  if not (csDesigning in ComponentState) Then
+    OnCreate := FormCreate;
   {$ENDIF}
   p_CreateColumns;
 
   inherited Create (Sender);
 
   {$IFNDEF FPC}
-  FormCreate ( Self );
+  if not (csDesigning in ComponentState) Then
+    FormCreate ( Self );
   {$ENDIF}
 End;
 
@@ -2640,7 +2667,7 @@ end;
 // pour lesquels une recherche est possible
 procedure TF_CustomFrameWork.p_ChargeIndicateurs ( const acom_Control : TComponent );
 var
-  li_i, li_NumSource, li_Delete: integer;
+  li_i, li_Delete: integer;
   lFw_Column : TFWSource ;
   im_MaFleche: TImage;
 
@@ -2652,10 +2679,9 @@ begin
       // Test si c'est un tag d'édition
         // Test si le panel correspond au datasource2
       li_Delete := 0 ;
-      li_NumSource := fi_GetDataWork ( gFWSources, acom_Control as TControl, li_Delete);
-      if li_NumSource < 0 then
+      lFw_Column := ffws_GetDataWork ( gFWSources, acom_Control as TControl, li_Delete);
+      if lFw_Column <> nil then
         Exit;
-      lFw_Column := DBSources [ li_NumSource ];
       with lFw_Column do
         for li_i := 0 to FieldsDefs.Count - 1 do
           if  ( FieldsDefs [ li_i ].ShowSearch>0)
@@ -4378,17 +4404,19 @@ end;
 procedure TF_CustomFrameWork.Notification ( AComponent : TComponent ; Operation : TOperation );
 begin
   inherited Notification(AComponent, Operation);
-{$IFDEF DELPHI}
-  if  ( Assigned                   ( DatasourceQuerySearch ))
-  and ( AComponent.IsImplementorOf ( DatasourceQuerySearch ))
-   then
+
+  if Operation <> opRemove Then Exit;
+
+  if AComponent = DatasourceQuerySearch then
     DatasourceQuerySearch := nil;
 
-  if  ( Assigned                   ( ScrolledPanel ))
-  and ( AComponent.IsImplementorOf ( ScrolledPanel ))
+  if  AComponent = DatasourceQuery
+   then
+    DatasourceQuery := nil;
+
+  if  AComponent = ScrolledPanel
    then
     ScrolledPanel := nil;
-{$ENDIF}
 end;
 // Gestion de l'appui des touches
 procedure TF_CustomFrameWork.KeyUp(var Key: Word; Shift: TShiftState);
@@ -4677,18 +4705,6 @@ Begin
       with gFWSources.items [ li_i ] do
         Modifying ( gd_Grid, nav_Navigator, nav_Saisie );
 End;
-///////////////////////////////////////////////////////////////////////////////
-// Procédure surchargée : DoHide
-// Description : Quand on cache on réaffecte les propriétés de conception
-///////////////////////////////////////////////////////////////////////////////
-procedure TF_CustomFrameWork.DoHide;
-begin
-  if not ( csDesigning in ComponentState ) Then
-    Begin
-//      WindowState := wsNormal;
-    End ;
-  inherited ;
-End ;
 
 ////////////////////////////////////////////////////////////////////////////////:
 // Procédure surchargée : DoClose
@@ -4697,9 +4713,9 @@ End ;
 ////////////////////////////////////////////////////////////////////////////////:
 procedure TF_CustomFrameWork.DoClose(var AAction: TCloseAction);
 begin
-  p_CacheRecherche ;
   if not ( csDesigning in ComponentState ) Then
     Begin
+     p_CacheRecherche ;
       // Toujours libérer la fiche par défaut pour ne pas utiliser trop la mémoire
       AAction := caFree ;
     End ;
@@ -5591,6 +5607,7 @@ var li_i : Integer ;
 begin
   gb_CloseQuery := True ;
   Result := inherited CloseQuery ;
+  if csDesigning in ComponentState Then Exit;
 {$IFDEF EADO}
   for li_i := 0 to high ( gt_Groupes ) do
     Begin
@@ -5966,7 +5983,7 @@ End ;
 // ai_Tag      : Tag non dico
 ///////////////////////////////////////////////////////////////////////
 function TF_CustomFrameWork.fs_GetLabel ( const as_OldLabel : String ; const acom_Control : TComponent ): String;
-var li_i, li_NumSource, li_Delete: Integer ;
+var li_i, li_Delete: Integer ;
   lFw_Column : TFWSource ;
 
 begin
@@ -5976,10 +5993,9 @@ begin
       li_Delete := -1 ;
       // Test si c'est un tag d'édition
         // Test si le panel correspond au datasource2
-      li_NumSource := fi_GetDataWork ( gFWSources, acom_Control as TControl, li_Delete);
-      if li_NumSource < 0 then
+      lFw_Column := ffws_GetDataWork ( gFWSources, acom_Control as TControl, li_Delete);
+      if lFw_Column <> nil then
         Exit;
-      lFw_Column := DBSources [ li_NumSource ];
       Result := as_OldLabel ;
       with lFw_Column do
         for li_i := 0 to FieldsDefs.Count - 1 do
@@ -6627,7 +6643,9 @@ Begin
 End;
 
 // Get number of colum from tag
-function TF_CustomFrameWork.fi_GetNumArray ( const acom_Component : TComponent ; const li_DataWork : Integer; var ads_DataSource : TDataSource ; var ai_Tag : Longint ):Integer;
+function TF_CustomFrameWork.ffd_GetNumArray ( const acom_Component : TComponent ;
+  const afws_DataWork : TFWSource;
+  var ads_DataSource : TDataSource ; var ai_Tag : Longint ):TFWFieldColumn;
 var li_i : Longint ;
 begin
   ai_Tag      := acom_Component.Tag - 1;
@@ -6638,36 +6656,32 @@ begin
           ai_Tag      := ai_Tag - CST_TAG_LBL ;
         end ;
     End;
-  Result := ai_Tag;
-  with DBSources.Items [ li_DataWork ] do
+  Result := nil;
+  with afws_DataWork do
     Begin
       for li_i := 0 to FieldsDefs.Count - 1 do
         if FieldsDefs [ li_i ].NumTag = ai_Tag + 1 Then
           Begin
-            Result := li_i ;
+            Result := FieldsDefs [ li_i ] ;
             Break ;
           End ;
-      ads_DataSource := nil ;
-      if  assigned ( Datasource )
-      and assigned ( Datasource.DataSet )
-       Then Result := Result + FieldsBegin;
       ads_DataSource := Datasource ;
     End;
 End;
 
 
 
-procedure TF_CustomFrameWork.p_assignColumnsDatasourceOwner ( const afw_Column : TFWSource ; const ads_DataSource : TDatasource ; const ai_NumArray : Integer ; const acom_Component : TComponent );
+procedure TF_CustomFrameWork.p_assignColumnsDatasourceOwner ( const afw_Column : TFWSource ; const ads_DataSource : TDatasource ; const afd_FieldDef : TFWFieldColumn ; const acom_Component : TComponent );
 var lds_DataSource : TDatasource;
 Begin
   if assigned ( ads_DataSource ) Then
    with afw_Column do
     Begin
-      if ( ai_NumArray <= FieldsDefs.Count - 1) Then
+      if ( afd_FieldDef <> nil ) Then
        Begin
         if not gb_PasUtiliserProps
          then
-          p_SetComponentProperty ( acom_Component, 'DataField', FieldsDefs [ ai_NumArray ].FieldName);
+          p_SetComponentProperty ( acom_Component, 'DataField', afd_FieldDef.FieldName);
         if  ( FieldsDefs.Count - 1 >= 0 ) Then
           p_SetComponentObjectProperty ( acom_Component, 'DataSource', ads_DataSource );
        End;
@@ -6675,14 +6689,14 @@ Begin
 
   with afw_Column do
     if assigned ( ads_DataSource )
-    and ( ai_NumArray <= FieldsDefs.Count - 1)
+    and (afd_FieldDef <> nil)
     and not ( gb_PasUtiliserProps )
-    and ((FieldsDefs [ ai_NumArray ].LookupTable) <> '' )
+    and (afd_FieldDef.LookupTable <> '' )
     and fb_IsRechListeCtrlPoss ( acom_Component )// est-ce un control de list avec field de liste
     and not assigned ( fobj_getComponentObjectProperty( acom_Component, 'ListSource'))
     and not assigned ( fobj_getComponentObjectProperty( acom_Component, 'LookupSource'))
      then
-       with FieldsDefs [ ai_NumArray ] do
+       with afd_FieldDef do
         begin
         // Ouvrir les propriétés de liste
           lds_DataSource := fds_GetOrCloneDataSource ( acom_Component, 'ListSource', 'SELECT * FROM '+ LookupTable, Self, gdat_DatasetPrinc );
