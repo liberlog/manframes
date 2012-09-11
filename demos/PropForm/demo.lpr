@@ -11,7 +11,7 @@ uses
   { you can add units after this },
   U_FenetrePrincipale, LCLType, Controls, Graphics, SysUtils, U_Splash, LCLIntf,
   U_Donnees, U_FormMainIni, U_CustomFrameWork, lazmansoft, lazextcomponents,
-  lazmanframes, lazmansoftware, u_propform, u_propertiesform, unit1;
+  lazmanframes, lazmansoftware, u_propform, u_propertiesform;
 
 {$IFNDEF FPC}
 var lico_Icon        : TIcon ;
@@ -33,7 +33,7 @@ begin
   gb_DicoGroupementMontreCaption := False ;
   gdt_DatasetType := dtZEOS;
   try
-    Application.CreateForm(TF_PropForm4, F_PRopForm);
+    Application.CreateForm(TF_PropertiesForm, F_PropertiesForm);
     {
     Application.CreateForm(TM_Donnees, M_Donnees);
     Application.CreateForm(TF_FenetrePrincipale, F_FenetrePrincipale);}

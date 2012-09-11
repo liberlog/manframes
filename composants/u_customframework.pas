@@ -131,14 +131,14 @@ type
 
   TFWSourceChild = class(TCollectionItem)
   private
-    FSource : TFWSource ;
+    FSource : Integer ;
     s_FieldsChilds : String ;
     stl_FieldsChilds  : TStringList ;
   public
     constructor Create(Collection: TCollection);override;
     destructor Destroy ; override;
   published
-    property Source : TFWSource  read FSource write FSource ;
+    property Source : Integer  read FSource write FSource ;
     property LookupFields : string read s_FieldsChilds write s_FieldsChilds;
   end;
   TFWSourceChildClass = class of TFWSourceChild;
@@ -203,6 +203,7 @@ type
      ga_Counters : Array of TFWCounter;
      ga_CsvDefs : Array of TFWCsvDef;
      gr_Connection : TDSSource;
+     gs_ConnectionKey : String;
      b_ShowPrint : Boolean;
 
     FStored: Boolean;
@@ -230,6 +231,7 @@ type
     procedure SetCounter(Index: Integer; const AValue: TFWCounter);
     procedure SetCsvDef(Index: Integer; const AValue: TFWCsvDef);
     procedure p_setConnection(const AValue: TDSSource);
+    procedure p_setConnectionKey(const AValue: String);
     procedure p_setLinked(const AValue: TFWSourcesChilds);
     procedure p_setPanels(const AValue: TFWPanels);
     procedure p_setFieldDefs(const AValue: TFWFieldColumns);
@@ -268,8 +270,9 @@ type
     property FieldsDefs : TFWFieldColumns read FFieldsDefs write p_setFieldDefs;
     property Counters [Index: Integer] : TFWCounter read GetCounter write SetCounter ;
     property CSVDefs  [Index: Integer] : TFWCsvDef read GetCsvDef write SetCsvDef ;
-  published
     property Connection : TDSSource read gr_Connection write p_setConnection;
+  published
+    property ConnectKey : String read gs_ConnectionKey write p_setConnectionKey;
     // Table du Datasource de travail
     property Table : string read fs_getDataTable write p_setDataTable;
     // Title of report
@@ -480,6 +483,7 @@ type
     {.$ENDIF}
     procedure p_AffecteEvenementsNavigators ( const acpa_Component : TCustomPanel );
     procedure p_ChargeEvenementsDatasourcePrinc;
+    procedure p_DataWorksLinksCancel(const ai_originalSource: Integer);
     procedure p_setEnregistrement(const aFWColumn: TFWSource);
     procedure p_SetLabels(const a_Value: Boolean);
     procedure p_SetSearch ( const a_Value : TDatasource );
@@ -1200,7 +1204,7 @@ constructor TFWSourceChild.Create(Collection: TCollection);
 begin
   inherited Create(Collection);
   stl_FieldsChilds := nil ;
-  Source := nil;
+  Source := -1;
 end;
 
 destructor TFWSourceChild.Destroy;
@@ -1286,6 +1290,22 @@ end;
 procedure TFWSource.p_setConnection(const AValue: TDSSource);
 begin
   p_setMiniConnectionTo ( AValue, gr_Connection );
+end;
+
+procedure TFWSource.p_setConnectionKey(const AValue: String);
+var li_i : Integer;
+begin
+  if AValue <> gs_ConnectionKey Then
+   Begin
+     gs_ConnectionKey := AValue;
+     with DMModuleSources.Sources do
+     for li_i := 0 to Count - 1 do
+      if Items[li_i].PrimaryKey = AValue Then
+       Begin
+         gr_Connection:=Items[li_i];
+         Break;
+       end;
+   end;
 end;
 
 procedure TFWSource.p_setLinked(const AValue: TFWSourcesChilds);
@@ -2107,8 +2127,8 @@ Begin
           for li_j := 0 to Linked.Count - 1 do
            with Linked.Items [ li_j ] do
              Begin
-               If ( Source <> gFWSources.items [ li_i ] )
-               and ( Source <> nil )
+               If ( Source <> li_i )
+               and ( Source > -1 )
                and ( LookupFields <> '' )
                 Then
                  p_ChampsVersListe(stl_FieldsChilds,s_FieldsChilds, gc_FieldDelimiter);
@@ -3287,11 +3307,11 @@ begin
         for li_j := 0 to FLinked.Count - 1 do
           with FLinked [ li_j ] do
             Begin
-              if  ( Source <> gFWSources.items [ li_i ] )
-              and ( Source <> nil )
-              and Assigned ( source.ds_DataSourcesWork.DataSet )
+              if  ( Source <> li_i )
+              and ( Source > -1 )
+              and Assigned ( gFWSources.items [ Source ].ds_DataSourcesWork.DataSet )
                Then
-                with source.ds_DataSourcesWork.DataSet do
+                with gFWSources.items [ Source ].ds_DataSourcesWork.DataSet do
                  if not ( State in [dsInsert, dsEdit]) Then
                   Edit;
             End;
@@ -3334,11 +3354,11 @@ begin
           for li_j := 0 to FLinked.Count - 1 do
             with FLinked [ li_j ] do
               Begin
-                if  ( Source <> gFWSources.items [ li_i ] )
-                and ( Source <> nil )
-                and Assigned ( source.ds_DataSourcesWork.DataSet )
+                if  ( Source <> li_i )
+                and ( Source > -1 )
+                and Assigned ( gFWSources.items [ Source ].ds_DataSourcesWork.DataSet )
                  Then
-                  with source.ds_DataSourcesWork.DataSet do
+                  with gFWSources.items [ Source ].ds_DataSourcesWork.DataSet do
                    if State in [ dsInsert, dsEdit ] Then
                      Post;
               End;
@@ -3387,6 +3407,22 @@ begin
         Break ;
       End ;
 end;
+procedure TF_CustomFrameWork.p_DataWorksLinksCancel( const ai_originalSource : Integer);
+var li_j : Integer ;
+Begin
+  with gFWSources.items [ ai_originalSource ] do
+  for li_j := 0 to FLinked.Count - 1 do
+    with FLinked [ li_j ] do
+      if  ( Source <> ai_originalSource )
+      and ( Source > -1 )
+      and Assigned ( gFWSources.items [ Source ].ds_DataSourcesWork.DataSet )
+       Then
+        with gFWSources.items [ Source ].ds_DataSourcesWork.DataSet do
+         if ( State in [dsInsert, dsEdit]) Then
+          Cancel;
+
+end;
+
 ////////////////////////////////////////////////////////////////////////////////
 //  Relatif à la BDD
 // Ne pas supprimer, sinon mauvais rafraichissement
@@ -3402,17 +3438,7 @@ begin
       Begin
         if not Visible Then
           Exit ;
-        for li_j := 0 to FLinked.Count - 1 do
-          with FLinked [ li_j ] do
-            Begin
-              if  ( Source <> gFWSources.items [ li_i ] )
-              and ( Source <> nil )
-              and Assigned ( source.ds_DataSourcesWork.DataSet )
-               Then
-                with source.ds_DataSourcesWork.DataSet do
-                 if ( State in [dsInsert, dsEdit]) Then
-                  Cancel;
-            End;
+        p_DataWorksLinksCancel( li_i );
         VerifyModifying;
             // gestion du focus sur le contrôle
         if ( assigned ( e_AfterCancel ))
@@ -3457,15 +3483,7 @@ begin
                 Abort ;
               End ;
           End ;
-        for li_j := 0 to FLinked.Count - 1 do
-          with FLinked [ li_j ] do
-            Begin
-              if  ( Source <> gFWSources.items [ li_i ] )
-              and ( Source <> nil )
-              and Assigned ( source.ds_DataSourcesWork.DataSet ) Then
-               with source.ds_DataSourcesWork.DataSet do
-                if State in [ dsInsert,dsEdit] Then Cancel;
-            End;
+        p_DataWorksLinksCancel( li_i );
            // ancien évènement
             // gestion du focus sur le contrôle
         if not assigned ( ActiveControl )
@@ -3503,10 +3521,10 @@ begin
           for li_j := 0 to FLinked.Count - 1 do
             with FLinked [ li_j ] do
               Begin
-              if  ( Source <> gFWSources.items [ li_i ] )
-              and ( Source <> nil )
-              and Assigned ( source.ds_DataSourcesWork.DataSet ) Then
-               with source.ds_DataSourcesWork.DataSet do
+              if  ( Source <> li_i )
+              and ( Source > -1 )
+              and Assigned ( gFWSources.items [ Source ].ds_DataSourcesWork.DataSet ) Then
+               with gFWSources.items [ Source ].ds_DataSourcesWork.DataSet do
                 if not ( State in [dsInsert,dsEdit])
                  Then
                   Insert;
@@ -3759,12 +3777,12 @@ Begin
        with gFWSource.FLinked [ li_j ] do
            if  assigned ( stl_FieldsChilds )
            and ( stl_FieldsChilds.Count > 0 )
-           and ( Source <> nil )
-           and Assigned ( source.ds_DataSourcesWork.DataSet )
+           and ( Source > -1 )
+           and Assigned ( gFWSources.items [ Source ].ds_DataSourcesWork.DataSet )
             Then
-              if source.ds_DataSourcesWork.DataSet.Active
+              if gFWSources.items [ Source ].ds_DataSourcesWork.DataSet.Active
                Then
-                 fb_SourceLookupFiltrage ( gFWSource, source, stl_FieldsChilds );
+                 fb_SourceLookupFiltrage ( gFWSource, gFWSources.items [ Source ], stl_FieldsChilds );
 End ;
 
 function TF_CustomFrameWork.fb_RafraichitFiltre ( const lt_DatasourceWork : TFWSource ) : Boolean ;

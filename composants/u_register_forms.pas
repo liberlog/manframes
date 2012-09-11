@@ -47,11 +47,9 @@ begin // Enregistre le nouvel expert de projet
 {$IFDEF FPC}
   RegisterCustomForm(TF_FormDico, CST_PACKAGE_MANFRAMES);
   RegisterCustomForm(TF_PropForm, CST_PACKAGE_MANFRAMES);
-  RegisterNoIcon([TMDataSources]);
 {$ELSE}
   RegisterCustomModule ( TF_FormDico, TCustomModule );
   RegisterCustomModule ( TF_PropForm, TCustomModule );
-//  RegisterCustomModule ( TMDataSources, TCustomModule );
 {$ENDIF}
 end;
 

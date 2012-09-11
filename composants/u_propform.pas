@@ -84,11 +84,12 @@ type
                                  const ali_Debut, ali_LimiteRecherche : Int64 ): Boolean; override;
      // Méthode abstraite virtuelle
      procedure BeforeCreateFrameWork(Sender: TComponent); override;
-    // Clé primaire du DataSource
-    property DataKeyList [ Index :  integer ] : TstringList read fstl_getDataKeyList;
-   published
-    procedure p_OrderEdit ( Edit : TObject );
+     // Clé primaire du DataSource
+     property DataKeyList [ Index :  integer ] : TstringList read fstl_getDataKeyList;
 
+   published
+
+    procedure p_OrderEdit ( Edit : TObject );
 
     // Evénement Sur demande de sauvegarde
     property DBSetLabels : Boolean read fb_False write p_SetLabels stored false default false;

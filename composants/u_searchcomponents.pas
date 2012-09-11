@@ -291,7 +291,6 @@ Begin
           CharCase:=TEditCharCase ( flin_getComponentProperty( twin_edition, 'CharCase' ));
           gs_NomColRech:=fvar_getComponentProperty( twin_edition, 'DataField' );
 //          tx_edition.Color    := gCol_search ;
-        //        Showmessage ( ' ok' );
           Show;
           if  Enabled
           and Parent.Enabled Then

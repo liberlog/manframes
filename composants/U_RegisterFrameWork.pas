@@ -40,9 +40,8 @@ begin // Enregistre le nouvel expert de projet
   // Procédures à garder pour peut-être plus tard ( utilisation actuelle d'unités dépréciées)
 // Un register libère automatiquement la variable à la suppression
 {$IFDEF FPC}
-//  RegisterNoIcon([TMDataSources]);
+//  RegisterNoIcon([]);
 {$ELSE}
-//  RegisterCustomModule ( TMDataSources, TCustomModule );
 {$ENDIF}
   RegisterComponents('ManFrames', [TExtFillCombo,TFWPrintSources]);
 
