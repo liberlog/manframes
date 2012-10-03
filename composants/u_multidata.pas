@@ -29,9 +29,9 @@ uses
 {$IFDEF EADO}
   ADODB,
 {$ENDIF}
-  {$IFDEF IBX}
-    IBQuery, IB, IBDatabase,
-  {$ENDIF}
+{$IFDEF IBX}
+  IBQuery, IB, IBDatabase,
+{$ENDIF}
 {$IFDEF ZEOS}
   ZConnection, ZDataset,
 {$ENDIF}
