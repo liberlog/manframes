@@ -50,7 +50,7 @@ uses
   ExtCtrls, ActnList, Menus,
   JvXPContainer, ComCtrls, JvXPButtons,
   IniFiles, Dialogs, Printers,
-  JvXPBar, Forms,  U_FormMainIni, fonctions_init,
+  JvXPBar, Forms,  u_formmaindb, fonctions_init,
   fonctions_Objets_Dynamiques, fonctions_Objets_Data,
   u_buttons_appli, fonctions_images, fonctions_string,
   U_OnFormInfoIni, DBCtrls,
@@ -102,7 +102,7 @@ type
 
   { TF_FenetrePrincipale }
 
-  TF_FenetrePrincipale = class(TF_FormMainIni)
+  TF_FenetrePrincipale = class(TF_FormMainDB)
     dbt_aide: TJvXPButton;
     dbt_ident: TJvXPButton;
     im_acces: TImage;
@@ -254,6 +254,7 @@ uses
   U_Acces, fonctions_dbcomponents,
   fonctions_FenetrePrincipale,
   fonctions_system,
+  U_FormMainIni,
   fonctions_proprietes, fonctions_languages ;
 
 

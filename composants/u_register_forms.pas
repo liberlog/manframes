@@ -36,6 +36,7 @@ uses DB, TypInfo,
   u_propform,
   u_fillcombobutton,
   unite_messages,
+  u_formmaindb,
   u_multidata;
 
 const CST_PACKAGE_MANFRAMES = 'lazmanframes';
@@ -47,9 +48,11 @@ begin // Enregistre le nouvel expert de projet
 {$IFDEF FPC}
   RegisterCustomForm(TF_FormDico, CST_PACKAGE_MANFRAMES);
   RegisterCustomForm(TF_PropForm, CST_PACKAGE_MANFRAMES);
+  RegisterCustomForm(TF_FormMainDB, CST_PACKAGE_MANFRAMES);
 {$ELSE}
   RegisterCustomModule ( TF_FormDico, TCustomModule );
   RegisterCustomModule ( TF_PropForm, TCustomModule );
+  RegisterCustomModule ( TF_FormMainDB, TCustomModule );
 {$ENDIF}
 end;
 

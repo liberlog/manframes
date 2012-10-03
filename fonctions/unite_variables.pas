@@ -121,6 +121,8 @@ var
 
 resourcestring
   GS_LOGIN    = 'Login';
+  gs_TestOk  = 'Test OK' ;
+  gs_TestBad  = 'Error' ;
   GS_PASSWORD = 'Mot de passe';
   GS_LOGIN_FAILED = 'Le Login et son mot de passe sont incorrects.' ;
   GS_LBL_PB        = 'Pb. connexion';

@@ -94,8 +94,9 @@ uses fonctions_images,
   ADODB,
 {$ENDIF}
 {$IFDEF ZEOS}
-  u_zconnection,
+  fonctions_zeos,
 {$ENDIF}
+  u_connection,
 {$IFDEF DBE}
   SQLExpr,
 {$ENDIF}

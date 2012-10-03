@@ -329,7 +329,7 @@ const CST_MAN_INI_CONNECTION_NAME = 'Connection Name';
 
 implementation
 
-uses U_FormMainIni, fonctions_string, SysUtils, TypInfo, Dialogs,
+uses u_formmaindb, U_FormMainIni, fonctions_string, SysUtils, TypInfo, Dialogs,
      U_Administration, fonctions_images , fonctions_init, U_FenetrePrincipale,
      fonctions_dbcomponents, fonctions_db, fonctions_manbase,
      unite_variables, Variants, fonctions_proprietes, 
@@ -476,16 +476,16 @@ begin
           gMen_MenuVolet.OnClick ( gMen_MenuVolet );
 
        // Création se la form
-       if ( Application.MainForm is TF_FormMainIni )
+       if ( Application.MainForm is TF_FormMainDB )
         Then
           Begin
             p_ChercheIconeFonction ( ai_FonctionEnCours, lbmp_Icon, True );
 {$IFNDEF CSV}
-            gcco_ConnexionCopy := ( Application.MainForm as TF_FormMainIni ).Connector;
+            gcco_ConnexionCopy := ( Application.MainForm as TF_FormMainDB ).Connector;
 {$ENDIF}
             if ( gT_TableauFonctions [ ai_FonctionEnCours ].Types = CST_FCT_TYPE_ADMIN ) Then
               Begin
-                 Result := ( Application.MainForm as TF_FormMainIni ).ffor_CreateChild ( TF_Administration, fsNormal, False, lico_Icon );
+                 Result := ( Application.MainForm as TF_FormMainDB ).ffor_CreateChild ( TF_Administration, fsNormal, False, lico_Icon );
                  F_Administration := Result as TF_Administration;
               End ;
             if Application.MainForm is TF_FenetrePrincipale Then

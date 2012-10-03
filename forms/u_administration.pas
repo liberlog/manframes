@@ -565,7 +565,7 @@ implementation
 
 
 uses fonctions_Objets_Dynamiques, fonctions_images, fonctions_string,
-     SysUtils, U_FormMainIni, JvXPBar, fonctions_db, fonctions_Objets_Data, 
+     SysUtils, u_formmaindb, U_FormMainIni,JvXPBar, fonctions_db, fonctions_Objets_Data,
      {$IFDEF ADO}
      ADOConEd,
      {$ENDIF}
