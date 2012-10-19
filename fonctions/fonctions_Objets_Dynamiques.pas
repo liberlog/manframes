@@ -279,7 +279,7 @@ Begin
       if lMen_MenuParent.Owner is TMainMenu
        Then
         ( lMen_MenuParent.Owner as TMainMenu ).Images.GetBitmap ( ( aobj_Sender as TMenuItem ).ImageIndex, lbmp_Icon );
-      if lbmp_Icon.Handle <> 0
+      if lbmp_Icon.Width > 0
        Then
         Begin
           lbmp_Icon.Transparent := True ;
@@ -304,7 +304,7 @@ Begin
     Begin
       Result.Assign ( ( aobj_Sender as TJvXpBar ).Icon  );
     End ;
-  if ( lbmp_Icon.Handle <> 0 )
+  if ( lbmp_Icon.Width > 0 )
    Then
     Begin
       {$IFDEF DELPHI}
@@ -365,7 +365,7 @@ Begin
       p_DetruitMenus ( aMen_MenuDetruit, aMen_MenuDetruit.Items [ li_i ], ab_DestroyAll );
     End ;
 
-  if aMen_MenuDetruit.Bitmap.Handle <> 0 Then
+  if aMen_MenuDetruit.Bitmap.Width > 0 Then
     Begin
       {$IFDEF DELPHI}
       aMen_MenuDetruit.Bitmap.Dormant ;
@@ -431,8 +431,9 @@ Begin
   Result.Hint    := as_FonctionLibelle ;
   lbmp_Tempo := TBitmap.Create ;
   lbmp_Tempo.Handle := 0 ;
-  if ab_AjouteBitmap
-  or ab_ImageDefaut
+  if ( ab_AjouteBitmap
+  or ab_ImageDefaut )
+  and ( aBmp_Picture.Width > 0 )
    Then
     Begin
       lbmp_Tempo.Assign ( aBmp_Picture );
@@ -447,7 +448,7 @@ Begin
    Then
      gb_ExisteFonctionMenu := True ;
 
-  if lbmp_Tempo.Handle <> 0
+  if lbmp_Tempo.Width > 0
    Then
     Begin
       {$IFDEF DELPHI}
@@ -555,7 +556,7 @@ Begin
         adx_WinXpBar.Icon.Assign ( aico_IconTableau );
       End
    else}
-  if  ( abmp_Picture.Handle <> 0  )
+  if  ( abmp_Picture.Width > 0  )
   and ( abmp_Picture.Width  =  aIma_ListeImages.Width  )
   and ( abmp_Picture.Height =  aIma_ListeImages.Height )
      Then
@@ -569,7 +570,7 @@ Begin
         p_BitmapVersIco ( lbmp_Bitmap, adx_WinXpBar.Icon );
       End
       else if assigned ( abmp_DefaultPicture )
-      and  ( abmp_DefaultPicture.Handle <> 0  )
+      and  ( abmp_DefaultPicture.Width > 0  )
        Then
         Begin
 {          if adx_WinXpBar.Icon.Handle <> 0
@@ -705,18 +706,18 @@ Begin
 
   lbmp_Tempo := TBitmap.Create ;
   lbmp_Tempo.Handle := 0 ;
-  if ( aBmp_FonctionBmp.Handle <> 0 )
+  if ( aBmp_FonctionBmp.Width > 0 )
    Then
     Begin
       lbmp_Tempo.Assign ( aBmp_FonctionBmp );
       Result.ImageIndex := fi_AjouteBmpAImages ( aBmp_FonctionBmp, aIma_ImagesXPBars );
     End
     else if ( aBmp_DefaultPicture <> nil )
-    and ( aBmp_DefaultPicture.Handle <> 0 )
+    and ( aBmp_DefaultPicture.Width > 0 )
      Then
       Result.ImageIndex := fi_AjouteBmpAImages ( lbmp_Tempo, aIma_ImagesXPBars );
 //  adx_WinXpBar.Refresh ;
-  if lbmp_Tempo.Handle <> 0
+  if lbmp_Tempo.Width > 0
    Then
     Begin
       {$IFDEF DELPHI}
