@@ -22,8 +22,8 @@
     </CompilerOptions>
     <Description Value="Child Form data management and relationships"/>
     <License Value="LGPL"/>
-    <Version Major="1" Minor="1" Build="1"/>
-    <Files Count="13">
+    <Version Major="1" Minor="1" Build="2"/>
+    <Files Count="11">
       <Item1>
         <Filename Value="fonctions/fonctions_tableauframework.pas"/>
         <UnitName Value="fonctions_tableauframework"/>
@@ -57,25 +57,17 @@
         <UnitName Value="fonctions_mandb"/>
       </Item8>
       <Item9>
-        <Filename Value="fonctions/fonctions_ibx.pas"/>
-        <UnitName Value="fonctions_ibx"/>
+        <Filename Value="fonctions/fonctions_extdb.pas"/>
+        <UnitName Value="fonctions_extdb"/>
       </Item9>
       <Item10>
-        <Filename Value="fonctions/fonctions_zeos.pas"/>
-        <UnitName Value="fonctions_zeos"/>
-      </Item10>
-      <Item11>
         <Filename Value="composants/u_formmaindb.pas"/>
         <UnitName Value="u_formmaindb"/>
-      </Item11>
-      <Item12>
-        <Filename Value="fonctions/fonctions_sqldb.pas"/>
-        <UnitName Value="fonctions_sqldb"/>
-      </Item12>
-      <Item13>
+      </Item10>
+      <Item11>
         <Filename Value="forms/u_connection.pas"/>
         <UnitName Value="u_connection"/>
-      </Item13>
+      </Item11>
     </Files>
     <i18n>
       <EnableI18N Value="True"/>

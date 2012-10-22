@@ -1,4 +1,4 @@
-unit fonctions_zeos;
+unit fonctions_extdb;
 
 interface
 
@@ -14,33 +14,55 @@ uses SysUtils,
      WideStrings,
   {$ENDIF}
   DB,
-  {$IFDEF EADO}
-    ADODB,
-  {$ENDIF}
   {$IFDEF IBX}
   IBQuery,
   {$ENDIF}
   {$IFDEF VERSIONS}
   fonctions_version,
   {$ENDIF}
+  {$IFDEF SQLDB}
+  sqldb,
+  {$ENDIF}
+  {$IFDEF EADO}
+  ADODB,
+  {$ENDIF}
+  {$IFDEF DBEXPRESS}
+  SQLExpr,
+  {$ENDIF}
   Controls,
-  IniFiles,
   DBCtrls, ExtCtrls,
+  IniFiles,
   Classes ;
 
 
 const
   {$IFDEF VERSIONS}
-  gVer_fonctions_zeos : T_Version = ( Component : 'Gestion des données d''une fiche' ;
-                                         FileUnit : 'fonctions_zeos' ;
+  gVer_fonctions_extdb : T_Version = ( Component : 'Gestion des données d''une fiche' ;
+                                         FileUnit : 'fonctions_extdb' ;
       			                 Owner : 'Matthieu Giroux' ;
       			                 Comment : 'Fonctions gestion des données avec les composants visuels.' ;
-      			                 BugsStory : 'Version 1.0.0.0 : Gestion des données rétilisable.';
+      			                 BugsStory :  'Version 1.0.0.0 : Gestion des donnÃ©es rétilisable.';
       			                 UnitType : 1 ;
       			                 Major : 1 ; Minor : 0 ; Release : 0 ; Build : 0 );
 
   {$ENDIF}
+var ge_DataSetErrorEvent : TDataSetErrorEvent ;
 
+{$IFDEF DBEXPRESS}
+function fb_IniSetSQLConnection ( const asqc_Connection : TSQLConnection ) : Boolean ;
+{$ENDIF}
+{$IFDEF EADO}
+function fb_IniSetADOConnection ( const aacx_Connection : TADOConnection ) : Boolean ;
+{$ENDIF}
+{$IFDEF ZEOS}
+function fb_IniSetZConnection ( const asqc_Connection : TComponent; const IniFile : TIniFile ) : Boolean ;
+procedure p_SetCaractersZEOSConnector(const azco_Connect : TComponent ; const as_NonUtfChars : String );
+function  fb_InitZConnection ( const Connexion : TComponent ; const Inifile : TCustomInifile ; const Test : Boolean ) : String;
+procedure p_InitZComponent ( const Connexion : TComponent ; const Inifile : TCustomInifile ; const Test : Boolean );
+function fs_CollationEncode ( const Connexion : TComponent ; const as_StringsProp : String ) : String;
+function fb_TestZComponent ( const Connexion : TComponent ; const lb_ShowMessage : Boolean ) : Boolean;
+
+const
         CST_ZCONNECTION = 'ZConnection';
         CST_ZDATABASE   = 'Database';
         CST_ZPROTOCOL   = 'Protocol';
@@ -50,14 +72,6 @@ const
         CST_ZUSER       = 'User';
         CST_ZCATALOG    = 'Catalog';
         CST_ZPROPERTIES = 'Properties';
-
-function fb_IniSetZConnection ( const asqc_Connection : TComponent; const IniFile : TIniFile ) : Boolean ;
-procedure p_SetCaractersZEOSConnector(const azco_Connect : TComponent ; const as_NonUtfChars : String );
-function  fb_InitZConnection ( const Connexion : TComponent ; const Inifile : TCustomInifile ; const Test : Boolean ) : String;
-procedure p_InitZComponent ( const Connexion : TComponent ; const Inifile : TCustomInifile ; const Test : Boolean );
-function fs_CollationEncode ( const Connexion : TComponent ; const as_StringsProp : String ) : String;
-function fb_TestZComponent ( const Connexion : TComponent ; const lb_ShowMessage : Boolean ) : Boolean;
-
 var
   gs_DataDriverIni : String = 'Driver' ;
   gs_DataBaseNameIni : String = 'Database Name' ;
@@ -68,17 +82,27 @@ var
   gs_DataProtocolIni : String = 'Protocol' ;
   gs_DataCollationIni : String = 'Collation Encode' ;
 
+{$ENDIF}
+{$IFDEF SQLDB}
+function fb_IniSetSQLConnection ( const asqc_Connection : TSQLConnection ) : Boolean ;
+{$ENDIF}
+
 implementation
 
 uses Variants,  fonctions_erreurs, fonctions_string,
   {$IFDEF FPC}
-  unite_variables,
+  unite_messages,
   {$ELSE}
-  unite_variables,
+  unite_messages_delphi,
   {$ENDIF}
-   fonctions_proprietes, TypInfo, fonctions_init,
-   Dialogs;
+   fonctions_proprietes, TypInfo, fonctions_db,
+   Dialogs, unite_variables,
+   fonctions_init;
 
+{$IFDEF ZEOS}
+////////////////////////////////////////////////////////////////////////////////
+// ZEOS Functions
+////////////////////////////////////////////////////////////////////////////////
 
 // Open connexion and erros
 function fb_TestZComponent ( const Connexion : TComponent ; const lb_ShowMessage : Boolean ) : Boolean;
@@ -176,11 +200,41 @@ Begin
   p_SetComponentBoolProperty ( asqc_Connection, CST_ZCONNECTED, False );
   fb_InitZConnection( asqc_Connection, IniFile, False );
 End;
+{$ENDIF}
 
+{$IFDEF SQLDB}
+function fb_IniSetSQLConnection ( const asqc_Connection : TSQLConnection ) : Boolean ;
+Begin
+  Result := False ;
+  asqc_Connection.Close;
+//  fb_InitConnection( asqc_Connection, FIniFile );
+End;
+{$ENDIF}
 
+{$IFDEF EADO}
+function fb_IniSetADOConnection ( const aacx_Connection : TADOConnection ) : Boolean ;
+Begin
+  Result := False ;
+  aacx_Connection.Connected:=False;
+  aacx_Connection.ConnectionString := f_IniReadSectionStr( 'parametres' ,'String d''acces', '' );
+  // Ouverture de la fenêtre de dialogue de connexion
+  if ( aacx_Connection.ConnectionString = '' ) Then
+    EdiTConnectionString(aacx_Connection) ;
+  Result := aacx_Connection.ConnectionString <> '';
+End;
+{$ENDIF}
+
+{$IFDEF DBEXPRESS}
+function fb_IniSetSQLConnection ( const asqc_Connection : TSQLConnection ) : Boolean ;
+Begin
+  Result := False ;
+  asqc_Connection.Close;
+//  fb_InitConnection( asqc_Connection, FIniFile );
+End;
+{$ENDIF}
 
 {$IFDEF VERSIONS}
 initialization
-  p_ConcatVersion ( gVer_fonctions_zeos );
+  p_ConcatVersion ( gVer_fonctions_extdb );
 {$ENDIF}
 end.

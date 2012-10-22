@@ -26,9 +26,7 @@ uses
 {$IFDEF DELPHI_9_UP}
      WideStrings ,
 {$ENDIF}
-{$IFDEF ZEOS}
-    fonctions_zeos,
-{$ENDIF}
+  fonctions_extdb,
 {$IFDEF VERSIONS}
   fonctions_version,
 {$ENDIF}
