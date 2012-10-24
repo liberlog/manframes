@@ -332,7 +332,8 @@ implementation
 uses u_formmaindb, U_FormMainIni, fonctions_string, SysUtils, TypInfo, Dialogs,
      U_Administration, fonctions_images , fonctions_init, U_FenetrePrincipale,
      fonctions_dbcomponents, fonctions_db, fonctions_manbase,
-     unite_variables, Variants, fonctions_proprietes, 
+     unite_variables, Variants, fonctions_proprietes,
+     fonctions_forms,
      fonctions_Objets_Dynamiques, u_multidata, u_multidonnees ;
 
 /////////////////////////////////////////////////////////////////////////
@@ -485,7 +486,7 @@ begin
 {$ENDIF}
             if ( gT_TableauFonctions [ ai_FonctionEnCours ].Types = CST_FCT_TYPE_ADMIN ) Then
               Begin
-                 Result := ( Application.MainForm as TF_FormMainDB ).ffor_CreateChild ( TF_Administration, fsNormal, False, lico_Icon );
+                 Result := ffor_CreateChild ( TF_Administration, fsNormal, False, lico_Icon );
                  F_Administration := Result as TF_Administration;
               End ;
             if Application.MainForm is TF_FenetrePrincipale Then
@@ -548,9 +549,7 @@ begin
               Then NiveauDroits := 4
               Else NiveauDroits := -1 ;
 
-              if ( Application.MainForm is TF_FormMainIni )
-               Then
-                 ( Application.MainForm as TF_FormMainIni ).fb_setNewFormStyle ( F_Administration, fsMDIChild, ab_Ajuster );
+              fb_setNewFormStyle ( F_Administration, fsMDIChild, ab_Ajuster );
               Update ;
               if ab_ajuster Then
                 Begin
@@ -2262,11 +2261,9 @@ begin
        p_ChercheIconeFonction ( ai_FonctionEnCours, lbmp_Icon, False );
        if assigned ( lbmp_Icon ) then
          p_BitmapVersIco(lbmp_Icon, lico_Icon);
-       if  ( Application.MainForm is TF_FormMainIni )
-        Then
-         Result := ( Application.MainForm as TF_FormMainIni ).fp_CreateChild ( gT_TableauFonctions [ ai_FonctionEnCours ].Nom,
-                                                                    'T' + gT_TableauFonctions [ ai_FonctionEnCours ].Nom,
-                                                                     lfs_newFormStyle , ab_Ajuster , lico_Icon );
+       fp_CreateChild ( gT_TableauFonctions [ ai_FonctionEnCours ].Nom,
+                        'T' + gT_TableauFonctions [ ai_FonctionEnCours ].Nom,
+                        lfs_newFormStyle , ab_Ajuster , lico_Icon );
         if assigned ( lico_Icon ) Then
           with lico_Icon do
             if Handle <> 0 Then

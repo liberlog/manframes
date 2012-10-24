@@ -16,6 +16,7 @@ uses
   U_Donnees,
   U_FormMainIni,
   U_CustomFrameWork,
+  fonctions_forms,
   lazmansoft, lazextcomponents,
   lazmanframes, lazmansoftware;
 

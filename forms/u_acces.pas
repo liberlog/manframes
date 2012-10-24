@@ -93,14 +93,12 @@ uses fonctions_images,
 {$IFDEF EADO}
   ADODB,
 {$ENDIF}
-{$IFDEF ZEOS}
-  fonctions_zeos,
-{$ENDIF}
   u_connection,
 {$IFDEF DBE}
   SQLExpr,
 {$ENDIF}
-  unite_variables, fonctions_db, fonctions_dbcomponents ;
+  unite_variables, fonctions_extdb,
+  fonctions_db, fonctions_dbcomponents ;
 
 {$IFDEF FPC}
 {$R *.lfm}

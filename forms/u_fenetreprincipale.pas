@@ -254,7 +254,7 @@ uses
   U_Acces, fonctions_dbcomponents,
   fonctions_FenetrePrincipale,
   fonctions_system,
-  U_FormMainIni,
+  U_FormMainIni, fonctions_forms,
   fonctions_proprietes, fonctions_languages ;
 
 

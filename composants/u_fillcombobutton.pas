@@ -76,7 +76,7 @@ type
 implementation
 
 uses fonctions_images, U_FormMainIni, fonctions_proprietes, fonctions_db,
-     unite_messages, unite_variables;
+     unite_messages, unite_variables, fonctions_forms;
 
 { TExtFillCombo }
 
@@ -195,14 +195,14 @@ begin
     Begin
       if  ( Application.MainForm is TF_FormMainIni )
        Then
-        FFormModal := TCustomForm ( ( Application.MainForm as TF_FormMainIni ).fp_CreateChild (  FFormRegisteredName,
-                                                                   'T' +  FFormRegisteredName,
-                                                                    lfs_newFormStyle , False , aico_Icon ));
+        FFormModal := TCustomForm ( fp_CreateChild (  FFormRegisteredName,
+                                                     'T' +  FFormRegisteredName,
+                                                      lfs_newFormStyle , False , aico_Icon ));
     end ;
   if  ( FFormModal = nil )
   and ( Application.MainForm is TF_FormMainIni )
    Then
-    FFormModal := ( Application.MainForm as TF_FormMainIni ).ffor_CreateChild ( FFormClass,
+    FFormModal := ffor_CreateChild ( FFormClass,
                                                                 lfs_newFormStyle , False , aico_Icon );
 
 end;
@@ -214,7 +214,7 @@ begin
   lfor_FormToClose := nil;
   if  ( Application.MainForm is TF_FormMainIni )
    Then
-    lfor_FormToClose := ( Application.MainForm as TF_FormMainIni ).ffor_FindForm ( FFormRegisteredName );
+    lfor_FormToClose := ffor_FindForm ( FFormRegisteredName );
   if ( lfor_FormToClose = nil ) Then
     Exit;
   if ( fsModal in lfor_FormToClose.FormState ) Then

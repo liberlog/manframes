@@ -569,8 +569,10 @@ uses fonctions_Objets_Dynamiques, fonctions_images, fonctions_string,
      {$IFDEF ADO}
      ADOConEd,
      {$ENDIF}
-     unite_variables, fonctions_tableauframework, fonctions_dbcomponents, fonctions_proprietes,
-     U_MotPasse, Fonctions_init , u_customframework, unite_messages, U_Donnees ;
+     unite_variables, fonctions_tableauframework,
+     fonctions_dbcomponents, fonctions_proprietes,
+     U_MotPasse, Fonctions_init , fonctions_forms,
+     u_customframework, unite_messages, U_Donnees ;
 
 // Méthodes de la propriété montrer l'onglet utilisateurs
 // ab_Value : Propriété MontreUtilisateurs à changer
@@ -3577,12 +3579,7 @@ begin
   if  gb_MotPasseModifie
   and not gb_MotPasseEstValide
    Then
-    Begin
-      if Application.MainForm is TF_FormMainIni
-       Then
-        ( Application.MainForm as TF_FormMainIni ).fb_CreateModal ( TF_MotPasse, TForm ( F_MotPasse ), False, caNone );
-
-    End ;
+    fb_CreateModal ( TF_MotPasse, TForm ( F_MotPasse ), False, caNone );
 end;
 
 // Bouton post : Valider le mot de passe
