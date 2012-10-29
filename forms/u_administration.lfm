@@ -1,4 +1,4 @@
-object F_Administration: TF_Administration
+inherited F_Administration: TF_Administration
   Left = 320
   Height = 564
   Top = 188
@@ -10,8 +10,7 @@ object F_Administration: TF_Administration
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   OnClose = FormClose
-  LCLVersion = '0.9.28.2'
-  object pa_Main: TPanel
+  object pa_Main: TPanel[0]
     Left = 0
     Height = 539
     Top = 25
@@ -29,32 +28,31 @@ object F_Administration: TF_Administration
       Align = alClient
       TabIndex = 0
       TabOrder = 0
-      OnPageChanged = pc_OngletsChange
       object ts_Sommaire: TTabSheet
         Caption = 'Gestion des sommaires'
-        ClientHeight = 506
+        ClientHeight = 507
         ClientWidth = 778
         object RbSplitter2: TSplitter
           Left = 601
-          Height = 456
+          Height = 457
           Top = 50
           Width = 5
         end
         object RbSplitter3: TSplitter
           Left = 223
-          Height = 456
+          Height = 457
           Top = 50
           Width = 5
         end
         object pa_Volet: TPanel
           Left = 0
-          Height = 456
+          Height = 457
           Top = 50
           Width = 223
           Align = alLeft
           BevelOuter = bvNone
           Caption = 'pa_Volet'
-          ClientHeight = 456
+          ClientHeight = 457
           ClientWidth = 223
           Color = 10930928
           Constraints.MinHeight = 41
@@ -64,10 +62,12 @@ object F_Administration: TF_Administration
           OnResize = pa_VoletResize
           object scb_Volet: TScrollBox
             Left = 0
-            Height = 456
+            Height = 457
             Hint = 'Visionner ici votre volet d''accès'
             Top = 0
             Width = 223
+            HorzScrollBar.Page = 219
+            VertScrollBar.Page = 453
             Align = alClient
             Constraints.MinHeight = 10
             Constraints.MinWidth = 10
@@ -81,12 +81,12 @@ object F_Administration: TF_Administration
         end
         object RbPanel1: TPanel
           Left = 606
-          Height = 456
+          Height = 457
           Top = 50
           Width = 172
           Align = alClient
           BorderWidth = 1
-          ClientHeight = 456
+          ClientHeight = 457
           ClientWidth = 172
           Constraints.MinHeight = 10
           Constraints.MinWidth = 10
@@ -128,13 +128,15 @@ object F_Administration: TF_Administration
               OnResize = pa_FonctionsTypeResize
               object com_FonctionsType: TRxDBLookupCombo
                 Left = 0
-                Height = 21
+                Height = 26
                 Hint = 'Filtrer ici un type de fonction'
                 Top = 0
                 Width = 148
+                AutoSize = True
                 Anchors = [akTop, akLeft, akRight]
                 ButtonOnlyWhenFocused = False
                 ButtonWidth = 15
+                Color = clWindow
                 PopUpFormOptions.Columns = <>
                 Flat = False
                 Glyph.Data = {
@@ -173,7 +175,7 @@ object F_Administration: TF_Administration
                 Width = 157
                 AutoSize = False
                 Caption = 'Rechercher un type de fonction'
-                Font.Color = clBlack
+                Font.Color = clWindowText
                 Font.Height = -11
                 Font.Name = 'MS Sans Serif'
                 ParentColor = False
@@ -197,7 +199,7 @@ object F_Administration: TF_Administration
           end
           object dbl_Fonctions: TDBListView
             Left = 2
-            Height = 385
+            Height = 386
             Top = 69
             Width = 168
             Align = alClient
@@ -214,12 +216,12 @@ object F_Administration: TF_Administration
         end
         object RbPanel3: TPanel
           Left = 228
-          Height = 456
+          Height = 457
           Top = 50
           Width = 373
           Align = alLeft
           BorderWidth = 1
-          ClientHeight = 456
+          ClientHeight = 457
           ClientWidth = 373
           Constraints.MinHeight = 10
           Constraints.MinWidth = 10
@@ -231,7 +233,7 @@ object F_Administration: TF_Administration
             Cursor = crVSplit
             Left = 2
             Height = 5
-            Top = 185
+            Top = 186
             Width = 369
             Align = alBottom
             ResizeAnchor = akBottom
@@ -239,7 +241,7 @@ object F_Administration: TF_Administration
           object pa_2: TPanel
             Left = 2
             Height = 264
-            Top = 190
+            Top = 191
             Width = 369
             Align = alBottom
             BevelOuter = bvNone
@@ -315,7 +317,11 @@ object F_Administration: TF_Administration
                     Width = 72
                     FieldName = 'MENU_Clep'
                     Filter.DropDownRows = 0
+                    Filter.EmptyValue = '(Empty)'
+                    Filter.EmptyFont.Style = [fsItalic]
                     Filter.ItemIndex = -1
+                    EditButtons = <>
+                    FieldTag = 0
                   end                
                   item
                     Alignment = taCenter
@@ -325,16 +331,74 @@ object F_Administration: TF_Administration
                     Visible = False
                     FieldName = 'MENU_Bmp'
                     Filter.DropDownRows = 0
+                    Filter.EmptyValue = '(Empty)'
+                    Filter.EmptyFont.Style = [fsItalic]
                     Filter.ItemIndex = -1
+                    EditButtons = <>
+                    FieldTag = 0
+                  end>
+                KeyStrokes = <                
+                  item
+                    Command = rxgcShowFindDlg
+                    ShortCut = 16454
+                    Enabled = True
+                  end                
+                  item
+                    Command = rxgcShowColumnsDlg
+                    ShortCut = 16471
+                    Enabled = True
+                  end                
+                  item
+                    Command = rxgcShowFilterDlg
+                    ShortCut = 16468
+                    Enabled = True
+                  end                
+                  item
+                    Command = rxgcShowSortDlg
+                    ShortCut = 16467
+                    Enabled = True
+                  end                
+                  item
+                    Command = rxgcShowQuickFilter
+                    ShortCut = 16465
+                    Enabled = True
+                  end                
+                  item
+                    Command = rxgcHideQuickFilter
+                    ShortCut = 16456
+                    Enabled = True
+                  end                
+                  item
+                    Command = rxgcSelectAll
+                    ShortCut = 16449
+                    Enabled = True
+                  end                
+                  item
+                    Command = rxgcDeSelectAll
+                    ShortCut = 16429
+                    Enabled = True
+                  end                
+                  item
+                    Command = rxgcInvertSelection
+                    ShortCut = 16426
+                    Enabled = True
+                  end                
+                  item
+                    Command = rxgcOptimizeColumnsWidth
+                    ShortCut = 16427
+                    Enabled = True
                   end>
                 OptionsRx = []
                 Align = alClient
                 BorderStyle = bsNone
+                Color = clWindow
+                DrawFullLine = False
                 FocusColor = clRed
                 SelectedColor = clHighlight
                 GridLineStyle = psSolid
                 Options = [dgEditing, dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgAlwaysShowSelection, dgConfirmDelete]
                 ParentColor = False
+                ParentShowHint = False
                 Scrollbars = ssHorizontal
                 ShowHint = True
                 TabOrder = 1
@@ -370,7 +434,11 @@ object F_Administration: TF_Administration
                     Title.Orientation = toHorizontal
                     FieldName = 'FONC_Libelle'
                     Filter.DropDownRows = 0
+                    Filter.EmptyValue = '(Empty)'
+                    Filter.EmptyFont.Style = [fsItalic]
                     Filter.ItemIndex = -1
+                    EditButtons = <>
+                    FieldTag = 0
                   end                
                   item
                     Alignment = taCenter
@@ -381,16 +449,74 @@ object F_Administration: TF_Administration
                     Visible = False
                     FieldName = 'FONC_Bmp'
                     Filter.DropDownRows = 0
+                    Filter.EmptyValue = '(Empty)'
+                    Filter.EmptyFont.Style = [fsItalic]
                     Filter.ItemIndex = -1
+                    EditButtons = <>
+                    FieldTag = 0
+                  end>
+                KeyStrokes = <                
+                  item
+                    Command = rxgcShowFindDlg
+                    ShortCut = 16454
+                    Enabled = True
+                  end                
+                  item
+                    Command = rxgcShowColumnsDlg
+                    ShortCut = 16471
+                    Enabled = True
+                  end                
+                  item
+                    Command = rxgcShowFilterDlg
+                    ShortCut = 16468
+                    Enabled = True
+                  end                
+                  item
+                    Command = rxgcShowSortDlg
+                    ShortCut = 16467
+                    Enabled = True
+                  end                
+                  item
+                    Command = rxgcShowQuickFilter
+                    ShortCut = 16465
+                    Enabled = True
+                  end                
+                  item
+                    Command = rxgcHideQuickFilter
+                    ShortCut = 16456
+                    Enabled = True
+                  end                
+                  item
+                    Command = rxgcSelectAll
+                    ShortCut = 16449
+                    Enabled = True
+                  end                
+                  item
+                    Command = rxgcDeSelectAll
+                    ShortCut = 16429
+                    Enabled = True
+                  end                
+                  item
+                    Command = rxgcInvertSelection
+                    ShortCut = 16426
+                    Enabled = True
+                  end                
+                  item
+                    Command = rxgcOptimizeColumnsWidth
+                    ShortCut = 16427
+                    Enabled = True
                   end>
                 OptionsRx = []
                 Align = alClient
                 BorderStyle = bsNone
+                Color = clWindow
+                DrawFullLine = False
                 FocusColor = clRed
                 SelectedColor = clHighlight
                 GridLineStyle = psSolid
                 Options = [dgEditing, dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgAlwaysShowSelection, dgConfirmDelete]
                 ParentColor = False
+                ParentShowHint = False
                 ReadOnly = True
                 Scrollbars = ssHorizontal
                 ShowHint = True
@@ -505,7 +631,11 @@ object F_Administration: TF_Administration
                       Width = 61
                       FieldName = 'SOUM_Clep'
                       Filter.DropDownRows = 0
+                      Filter.EmptyValue = '(Empty)'
+                      Filter.EmptyFont.Style = [fsItalic]
                       Filter.ItemIndex = -1
+                      EditButtons = <>
+                      FieldTag = 0
                     end                  
                     item
                       Alignment = taCenter
@@ -515,16 +645,74 @@ object F_Administration: TF_Administration
                       Visible = False
                       FieldName = 'SOUM_Bmp'
                       Filter.DropDownRows = 0
+                      Filter.EmptyValue = '(Empty)'
+                      Filter.EmptyFont.Style = [fsItalic]
                       Filter.ItemIndex = -1
+                      EditButtons = <>
+                      FieldTag = 0
+                    end>
+                  KeyStrokes = <                  
+                    item
+                      Command = rxgcShowFindDlg
+                      ShortCut = 16454
+                      Enabled = True
+                    end                  
+                    item
+                      Command = rxgcShowColumnsDlg
+                      ShortCut = 16471
+                      Enabled = True
+                    end                  
+                    item
+                      Command = rxgcShowFilterDlg
+                      ShortCut = 16468
+                      Enabled = True
+                    end                  
+                    item
+                      Command = rxgcShowSortDlg
+                      ShortCut = 16467
+                      Enabled = True
+                    end                  
+                    item
+                      Command = rxgcShowQuickFilter
+                      ShortCut = 16465
+                      Enabled = True
+                    end                  
+                    item
+                      Command = rxgcHideQuickFilter
+                      ShortCut = 16456
+                      Enabled = True
+                    end                  
+                    item
+                      Command = rxgcSelectAll
+                      ShortCut = 16449
+                      Enabled = True
+                    end                  
+                    item
+                      Command = rxgcDeSelectAll
+                      ShortCut = 16429
+                      Enabled = True
+                    end                  
+                    item
+                      Command = rxgcInvertSelection
+                      ShortCut = 16426
+                      Enabled = True
+                    end                  
+                    item
+                      Command = rxgcOptimizeColumnsWidth
+                      ShortCut = 16427
+                      Enabled = True
                     end>
                   OptionsRx = []
                   Align = alClient
                   BorderStyle = bsNone
+                  Color = clWindow
+                  DrawFullLine = False
                   FocusColor = clRed
                   SelectedColor = clHighlight
                   GridLineStyle = psSolid
                   Options = [dgEditing, dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgAlwaysShowSelection, dgConfirmDelete]
                   ParentColor = False
+                  ParentShowHint = False
                   ReadOnly = True
                   Scrollbars = ssVertical
                   ShowHint = True
@@ -597,7 +785,11 @@ object F_Administration: TF_Administration
                       Width = 65
                       FieldName = 'FONC_Libelle'
                       Filter.DropDownRows = 0
+                      Filter.EmptyValue = '(Empty)'
+                      Filter.EmptyFont.Style = [fsItalic]
                       Filter.ItemIndex = -1
+                      EditButtons = <>
+                      FieldTag = 0
                     end                  
                     item
                       Alignment = taCenter
@@ -608,16 +800,74 @@ object F_Administration: TF_Administration
                       Visible = False
                       FieldName = 'FONC_Bmp'
                       Filter.DropDownRows = 0
+                      Filter.EmptyValue = '(Empty)'
+                      Filter.EmptyFont.Style = [fsItalic]
                       Filter.ItemIndex = -1
+                      EditButtons = <>
+                      FieldTag = 0
+                    end>
+                  KeyStrokes = <                  
+                    item
+                      Command = rxgcShowFindDlg
+                      ShortCut = 16454
+                      Enabled = True
+                    end                  
+                    item
+                      Command = rxgcShowColumnsDlg
+                      ShortCut = 16471
+                      Enabled = True
+                    end                  
+                    item
+                      Command = rxgcShowFilterDlg
+                      ShortCut = 16468
+                      Enabled = True
+                    end                  
+                    item
+                      Command = rxgcShowSortDlg
+                      ShortCut = 16467
+                      Enabled = True
+                    end                  
+                    item
+                      Command = rxgcShowQuickFilter
+                      ShortCut = 16465
+                      Enabled = True
+                    end                  
+                    item
+                      Command = rxgcHideQuickFilter
+                      ShortCut = 16456
+                      Enabled = True
+                    end                  
+                    item
+                      Command = rxgcSelectAll
+                      ShortCut = 16449
+                      Enabled = True
+                    end                  
+                    item
+                      Command = rxgcDeSelectAll
+                      ShortCut = 16429
+                      Enabled = True
+                    end                  
+                    item
+                      Command = rxgcInvertSelection
+                      ShortCut = 16426
+                      Enabled = True
+                    end                  
+                    item
+                      Command = rxgcOptimizeColumnsWidth
+                      ShortCut = 16427
+                      Enabled = True
                     end>
                   OptionsRx = []
                   Align = alClient
                   BorderStyle = bsNone
+                  Color = clWindow
+                  DrawFullLine = False
                   FocusColor = clRed
                   SelectedColor = clHighlight
                   GridLineStyle = psSolid
                   Options = [dgEditing, dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgAlwaysShowSelection, dgConfirmDelete]
                   ParentColor = False
+                  ParentShowHint = False
                   ReadOnly = True
                   Scrollbars = ssHorizontal
                   ShowHint = True
@@ -631,12 +881,12 @@ object F_Administration: TF_Administration
           end
           object pa_1: TPanel
             Left = 2
-            Height = 183
+            Height = 184
             Top = 2
             Width = 369
             Align = alClient
             BevelOuter = bvNone
-            ClientHeight = 183
+            ClientHeight = 184
             ClientWidth = 369
             TabOrder = 1
             object RbSplitter8: TSplitter
@@ -669,7 +919,7 @@ object F_Administration: TF_Administration
                 Width = 33
                 AutoSize = False
                 Caption = 'Edition'
-                Font.Color = clBlack
+                Font.Color = clWindowText
                 Font.Height = -11
                 Font.Name = 'MS Sans Serif'
                 ParentColor = False
@@ -686,13 +936,14 @@ object F_Administration: TF_Administration
               object dbe_Edition: TFWDBEdit
                 Tag = 1
                 Left = 9
-                Height = 27
+                Height = 25
                 Hint = 'Edition en cours'
                 Top = 48
                 Width = 272
-                Color = clMoneyGreen
+                CharCase = ecNormal
                 Font.Height = -13
                 Font.Name = 'MS Sans Serif'
+                MaxLength = 0
                 ParentFont = False
                 ParentShowHint = False
                 ShowHint = True
@@ -749,22 +1000,22 @@ object F_Administration: TF_Administration
             end
             object pa_3: TPanel
               Left = 0
-              Height = 99
+              Height = 100
               Top = 84
               Width = 369
               Align = alClient
               BevelOuter = bvNone
-              ClientHeight = 99
+              ClientHeight = 100
               ClientWidth = 369
               TabOrder = 1
               object Panel24: TPanel
                 Left = 0
-                Height = 99
+                Height = 100
                 Top = 0
                 Width = 193
                 Align = alLeft
                 BevelOuter = bvNone
-                ClientHeight = 99
+                ClientHeight = 100
                 ClientWidth = 193
                 TabOrder = 0
                 object nav_Sommaire: TExtDBNavigator
@@ -800,7 +1051,7 @@ object F_Administration: TF_Administration
                 end
                 object dbg_Sommaire: TExtDBGrid
                   Left = 0
-                  Height = 79
+                  Height = 80
                   Top = 20
                   Width = 193
                   TitleButtons = False
@@ -813,7 +1064,11 @@ object F_Administration: TF_Administration
                       Width = 65
                       FieldName = 'SOMM_Clep'
                       Filter.DropDownRows = 0
+                      Filter.EmptyValue = '(Empty)'
+                      Filter.EmptyFont.Style = [fsItalic]
                       Filter.ItemIndex = -1
+                      EditButtons = <>
+                      FieldTag = 0
                     end                  
                     item
                       Title.Alignment = taCenter
@@ -821,11 +1076,68 @@ object F_Administration: TF_Administration
                       Title.Orientation = toHorizontal
                       FieldName = 'SOMM_Niveau'
                       Filter.DropDownRows = 0
+                      Filter.EmptyValue = '(Empty)'
+                      Filter.EmptyFont.Style = [fsItalic]
                       Filter.ItemIndex = -1
+                      EditButtons = <>
+                      FieldTag = 0
+                    end>
+                  KeyStrokes = <                  
+                    item
+                      Command = rxgcShowFindDlg
+                      ShortCut = 16454
+                      Enabled = True
+                    end                  
+                    item
+                      Command = rxgcShowColumnsDlg
+                      ShortCut = 16471
+                      Enabled = True
+                    end                  
+                    item
+                      Command = rxgcShowFilterDlg
+                      ShortCut = 16468
+                      Enabled = True
+                    end                  
+                    item
+                      Command = rxgcShowSortDlg
+                      ShortCut = 16467
+                      Enabled = True
+                    end                  
+                    item
+                      Command = rxgcShowQuickFilter
+                      ShortCut = 16465
+                      Enabled = True
+                    end                  
+                    item
+                      Command = rxgcHideQuickFilter
+                      ShortCut = 16456
+                      Enabled = True
+                    end                  
+                    item
+                      Command = rxgcSelectAll
+                      ShortCut = 16449
+                      Enabled = True
+                    end                  
+                    item
+                      Command = rxgcDeSelectAll
+                      ShortCut = 16429
+                      Enabled = True
+                    end                  
+                    item
+                      Command = rxgcInvertSelection
+                      ShortCut = 16426
+                      Enabled = True
+                    end                  
+                    item
+                      Command = rxgcOptimizeColumnsWidth
+                      ShortCut = 16427
+                      Enabled = True
                     end>
                   OptionsRx = []
                   Align = alClient
                   BorderStyle = bsNone
+                  Color = clWindow
+                  DrawFullLine = False
                   FocusColor = clRed
                   SelectedColor = clHighlight
                   GridLineStyle = psSolid
@@ -841,17 +1153,17 @@ object F_Administration: TF_Administration
               end
               object Panel25: TPanel
                 Left = 193
-                Height = 99
+                Height = 100
                 Top = 0
                 Width = 176
                 Align = alClient
                 BevelOuter = bvNone
-                ClientHeight = 99
+                ClientHeight = 100
                 ClientWidth = 176
                 TabOrder = 1
                 object dbg_SommaireFonctions: TExtDBGrid
                   Left = 0
-                  Height = 79
+                  Height = 80
                   Hint = 'Insérer une fonction'
                   Top = 20
                   Width = 176
@@ -866,7 +1178,11 @@ object F_Administration: TF_Administration
                       Width = 90
                       FieldName = 'FONC_Libelle'
                       Filter.DropDownRows = 0
+                      Filter.EmptyValue = '(Empty)'
+                      Filter.EmptyFont.Style = [fsItalic]
                       Filter.ItemIndex = -1
+                      EditButtons = <>
+                      FieldTag = 0
                     end                  
                     item
                       Alignment = taCenter
@@ -877,16 +1193,74 @@ object F_Administration: TF_Administration
                       Visible = False
                       FieldName = 'FONC_Bmp'
                       Filter.DropDownRows = 0
+                      Filter.EmptyValue = '(Empty)'
+                      Filter.EmptyFont.Style = [fsItalic]
                       Filter.ItemIndex = -1
+                      EditButtons = <>
+                      FieldTag = 0
+                    end>
+                  KeyStrokes = <                  
+                    item
+                      Command = rxgcShowFindDlg
+                      ShortCut = 16454
+                      Enabled = True
+                    end                  
+                    item
+                      Command = rxgcShowColumnsDlg
+                      ShortCut = 16471
+                      Enabled = True
+                    end                  
+                    item
+                      Command = rxgcShowFilterDlg
+                      ShortCut = 16468
+                      Enabled = True
+                    end                  
+                    item
+                      Command = rxgcShowSortDlg
+                      ShortCut = 16467
+                      Enabled = True
+                    end                  
+                    item
+                      Command = rxgcShowQuickFilter
+                      ShortCut = 16465
+                      Enabled = True
+                    end                  
+                    item
+                      Command = rxgcHideQuickFilter
+                      ShortCut = 16456
+                      Enabled = True
+                    end                  
+                    item
+                      Command = rxgcSelectAll
+                      ShortCut = 16449
+                      Enabled = True
+                    end                  
+                    item
+                      Command = rxgcDeSelectAll
+                      ShortCut = 16429
+                      Enabled = True
+                    end                  
+                    item
+                      Command = rxgcInvertSelection
+                      ShortCut = 16426
+                      Enabled = True
+                    end                  
+                    item
+                      Command = rxgcOptimizeColumnsWidth
+                      ShortCut = 16427
+                      Enabled = True
                     end>
                   OptionsRx = []
                   Align = alClient
                   BorderStyle = bsNone
+                  Color = clWindow
+                  DrawFullLine = False
                   FocusColor = clRed
                   SelectedColor = clHighlight
                   GridLineStyle = psSolid
                   Options = [dgEditing, dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgAlwaysShowSelection, dgConfirmDelete]
                   ParentColor = False
+                  ParentShowHint = False
                   ReadOnly = True
                   Scrollbars = ssVertical
                   ShowHint = True
@@ -1071,7 +1445,7 @@ object F_Administration: TF_Administration
       end
       object ts_connexion: TTabSheet
         Caption = 'Gestion des connexions'
-        ClientHeight = 506
+        ClientHeight = 507
         ClientWidth = 778
         object RbSplitter9: TSplitter
           Left = 297
@@ -1125,7 +1499,11 @@ object F_Administration: TF_Administration
                 Width = 50
                 FieldName = 'CONN_Clep'
                 Filter.DropDownRows = 0
+                Filter.EmptyValue = '(Empty)'
+                Filter.EmptyFont.Style = [fsItalic]
                 Filter.ItemIndex = -1
+                EditButtons = <>
+                FieldTag = 0
               end            
               item
                 Title.Alignment = taCenter
@@ -1134,7 +1512,11 @@ object F_Administration: TF_Administration
                 Width = 125
                 FieldName = 'CONN_Libelle'
                 Filter.DropDownRows = 0
+                Filter.EmptyValue = '(Empty)'
+                Filter.EmptyFont.Style = [fsItalic]
                 Filter.ItemIndex = -1
+                EditButtons = <>
+                FieldTag = 0
               end            
               item
                 Title.Alignment = taCenter
@@ -1143,11 +1525,68 @@ object F_Administration: TF_Administration
                 Width = 150
                 FieldName = 'CONN_Chaine'
                 Filter.DropDownRows = 0
+                Filter.EmptyValue = '(Empty)'
+                Filter.EmptyFont.Style = [fsItalic]
                 Filter.ItemIndex = -1
+                EditButtons = <>
+                FieldTag = 0
+              end>
+            KeyStrokes = <            
+              item
+                Command = rxgcShowFindDlg
+                ShortCut = 16454
+                Enabled = True
+              end            
+              item
+                Command = rxgcShowColumnsDlg
+                ShortCut = 16471
+                Enabled = True
+              end            
+              item
+                Command = rxgcShowFilterDlg
+                ShortCut = 16468
+                Enabled = True
+              end            
+              item
+                Command = rxgcShowSortDlg
+                ShortCut = 16467
+                Enabled = True
+              end            
+              item
+                Command = rxgcShowQuickFilter
+                ShortCut = 16465
+                Enabled = True
+              end            
+              item
+                Command = rxgcHideQuickFilter
+                ShortCut = 16456
+                Enabled = True
+              end            
+              item
+                Command = rxgcSelectAll
+                ShortCut = 16449
+                Enabled = True
+              end            
+              item
+                Command = rxgcDeSelectAll
+                ShortCut = 16429
+                Enabled = True
+              end            
+              item
+                Command = rxgcInvertSelection
+                ShortCut = 16426
+                Enabled = True
+              end            
+              item
+                Command = rxgcOptimizeColumnsWidth
+                ShortCut = 16427
+                Enabled = True
               end>
             OptionsRx = []
             Align = alClient
             BorderStyle = bsNone
+            Color = clWindow
+            DrawFullLine = False
             FocusColor = clRed
             SelectedColor = clHighlight
             GridLineStyle = psSolid
@@ -1192,7 +1631,7 @@ object F_Administration: TF_Administration
             TabOrder = 1
             object ts_2: TTabSheet
               Caption = 'Utilisateurs'
-              ClientHeight = 295
+              ClientHeight = 322
               ClientWidth = 466
               ParentFont = False
               object RbSplitter11: TSplitter
@@ -1321,7 +1760,7 @@ object F_Administration: TF_Administration
                   item
                     AutoSize = True
                     Caption = 'Non membres'
-                    Width = 139
+                    Width = 150
                   end>
                 ColumnClick = False
                 DragMode = dmAutomatic
@@ -1366,7 +1805,7 @@ object F_Administration: TF_Administration
                   item
                     AutoSize = True
                     Caption = 'Membres'
-                    Width = 207
+                    Width = 218
                   end>
                 ColumnClick = False
                 DragMode = dmAutomatic
@@ -1421,7 +1860,7 @@ object F_Administration: TF_Administration
               Width = 130
               AutoSize = False
               Caption = 'Chaîne de connexion'
-              Font.Color = clBlack
+              Font.Color = clWindowText
               Font.Height = -13
               Font.Name = 'MS Sans Serif'
               ParentColor = False
@@ -1436,7 +1875,7 @@ object F_Administration: TF_Administration
               Width = 39
               AutoSize = False
               Caption = 'Libellé'
-              Font.Color = clBlack
+              Font.Color = clWindowText
               Font.Height = -13
               Font.Name = 'MS Sans Serif'
               ParentColor = False
@@ -1451,7 +1890,7 @@ object F_Administration: TF_Administration
               Width = 32
               AutoSize = False
               Caption = 'Code'
-              Font.Color = clBlack
+              Font.Color = clWindowText
               Font.Height = -13
               Font.Name = 'MS Sans Serif'
               ParentColor = False
@@ -1470,9 +1909,6 @@ object F_Administration: TF_Administration
               Font.Color = clBlack
               Font.Height = -13
               Font.Name = 'MS Sans Serif'
-              Lines.Strings = (
-                'ed_chaine'
-              )
               ParentFont = False
               TabOrder = 2
             end
@@ -1499,9 +1935,10 @@ object F_Administration: TF_Administration
               Top = 60
               Width = 297
               DataField = 'CONN_Libelle'
-              Color = clMoneyGreen
+              CharCase = ecNormal
               Font.Height = -13
               Font.Name = 'MS Sans Serif'
+              MaxLength = 0
               ParentFont = False
               ParentShowHint = False
               ShowHint = True
@@ -1516,9 +1953,10 @@ object F_Administration: TF_Administration
               Width = 297
               DataField = 'CONN_Clep'
               ReadOnly = True
-              Color = clMoneyGreen
+              CharCase = ecNormal
               Font.Height = -13
               Font.Name = 'MS Sans Serif'
+              MaxLength = 0
               ParentFont = False
               ParentShowHint = False
               ShowHint = True
@@ -1543,7 +1981,7 @@ object F_Administration: TF_Administration
       end
       object ts_Utilisateurs: TTabSheet
         Caption = 'Gestion des Utilisateurs'
-        ClientHeight = 506
+        ClientHeight = 507
         ClientWidth = 778
         ImageIndex = 1
         object RbSplitter10: TSplitter
@@ -1594,7 +2032,7 @@ object F_Administration: TF_Administration
               Width = 60
               AutoSize = False
               Caption = 'Utilisateur'
-              Font.Color = clBlack
+              Font.Color = clWindowText
               Font.Height = -13
               Font.Name = 'MS Sans Serif'
               ParentColor = False
@@ -1609,7 +2047,7 @@ object F_Administration: TF_Administration
               Width = 60
               AutoSize = False
               Caption = 'Sommaire'
-              Font.Color = clBlack
+              Font.Color = clWindowText
               Font.Height = -13
               Font.Name = 'MS Sans Serif'
               ParentColor = False
@@ -1624,7 +2062,7 @@ object F_Administration: TF_Administration
               Width = 86
               AutoSize = False
               Caption = 'Mot de passe'
-              Font.Color = clBlack
+              Font.Color = clWindowText
               Font.Height = -13
               Font.Name = 'MS Sans Serif'
               ParentColor = False
@@ -1639,7 +2077,7 @@ object F_Administration: TF_Administration
               Width = 52
               AutoSize = False
               Caption = 'Privilège'
-              Font.Color = clBlack
+              Font.Color = clWindowText
               Font.Height = -13
               Font.Name = 'MS Sans Serif'
               ParentColor = False
@@ -1654,9 +2092,10 @@ object F_Administration: TF_Administration
               Top = 42
               Width = 297
               DataField = 'UTIL_Clep'
-              Color = clMoneyGreen
+              CharCase = ecNormal
               Font.Height = -13
               Font.Name = 'MS Sans Serif'
+              MaxLength = 0
               ParentFont = False
               ParentShowHint = False
               ShowHint = True
@@ -1670,6 +2109,7 @@ object F_Administration: TF_Administration
               Hint = 'Choisir un sommaire'
               Top = 68
               Width = 298
+              AutoSize = True
               ButtonOnlyWhenFocused = False
               ButtonWidth = 15
               Color = 16776176
@@ -1723,6 +2163,7 @@ object F_Administration: TF_Administration
               Hint = 'Sélectionner un privilège'
               Top = 94
               Width = 298
+              AutoSize = True
               ButtonOnlyWhenFocused = False
               ButtonWidth = 15
               Color = 16776176
@@ -1776,7 +2217,7 @@ object F_Administration: TF_Administration
             TabOrder = 1
             object TabSheet1: TTabSheet
               Caption = 'Connexions'
-              ClientHeight = 311
+              ClientHeight = 338
               ClientWidth = 466
               ParentFont = False
               object RbSplitter12: TSplitter
@@ -1905,7 +2346,7 @@ object F_Administration: TF_Administration
                   item
                     AutoSize = True
                     Caption = 'Non membres'
-                    Width = 139
+                    Width = 150
                   end>
                 ColumnClick = False
                 DragMode = dmAutomatic
@@ -1950,7 +2391,7 @@ object F_Administration: TF_Administration
                   item
                     AutoSize = True
                     Caption = 'Membres'
-                    Width = 207
+                    Width = 218
                   end>
                 ColumnClick = False
                 DragMode = dmAutomatic
@@ -2027,7 +2468,7 @@ object F_Administration: TF_Administration
             Hint = 'Sélectionner un utilisateur'
             Top = 27
             Width = 293
-            TitleButtons = True
+            TitleButtons = False
             AutoSort = False
             Columns = <            
               item
@@ -2040,7 +2481,11 @@ object F_Administration: TF_Administration
                 Width = 140
                 FieldName = 'UTIL_Clep'
                 Filter.DropDownRows = 0
+                Filter.EmptyValue = '(Empty)'
+                Filter.EmptyFont.Style = [fsItalic]
                 Filter.ItemIndex = -1
+                EditButtons = <>
+                FieldTag = 0
               end            
               item
                 Font.Color = 13500416
@@ -2052,11 +2497,68 @@ object F_Administration: TF_Administration
                 Width = 139
                 FieldName = 'UTIL__SOMM'
                 Filter.DropDownRows = 0
+                Filter.EmptyValue = '(Empty)'
+                Filter.EmptyFont.Style = [fsItalic]
                 Filter.ItemIndex = -1
+                EditButtons = <>
+                FieldTag = 0
+              end>
+            KeyStrokes = <            
+              item
+                Command = rxgcShowFindDlg
+                ShortCut = 16454
+                Enabled = True
+              end            
+              item
+                Command = rxgcShowColumnsDlg
+                ShortCut = 16471
+                Enabled = True
+              end            
+              item
+                Command = rxgcShowFilterDlg
+                ShortCut = 16468
+                Enabled = True
+              end            
+              item
+                Command = rxgcShowSortDlg
+                ShortCut = 16467
+                Enabled = True
+              end            
+              item
+                Command = rxgcShowQuickFilter
+                ShortCut = 16465
+                Enabled = True
+              end            
+              item
+                Command = rxgcHideQuickFilter
+                ShortCut = 16456
+                Enabled = True
+              end            
+              item
+                Command = rxgcSelectAll
+                ShortCut = 16449
+                Enabled = True
+              end            
+              item
+                Command = rxgcDeSelectAll
+                ShortCut = 16429
+                Enabled = True
+              end            
+              item
+                Command = rxgcInvertSelection
+                ShortCut = 16426
+                Enabled = True
+              end            
+              item
+                Command = rxgcOptimizeColumnsWidth
+                ShortCut = 16427
+                Enabled = True
               end>
             OptionsRx = []
             Align = alClient
             BorderStyle = bsNone
+            Color = clWindow
+            DrawFullLine = False
             FocusColor = clRed
             SelectedColor = clHighlight
             GridLineStyle = psSolid
@@ -2077,8 +2579,8 @@ object F_Administration: TF_Administration
       end
       object ts_infos: TTabSheet
         Caption = 'Informations générales'
-        ClientHeight = 502
-        ClientWidth = 776
+        ClientHeight = 507
+        ClientWidth = 778
         ImageIndex = 3
         object p_Entreprise: TPanel
           Left = 0
@@ -2097,7 +2599,7 @@ object F_Administration: TF_Administration
             Width = 91
             AutoSize = False
             Caption = 'Libellé de login'
-            Font.Color = clBlack
+            Font.Color = clWindowText
             Font.Height = -13
             Font.Name = 'MS Sans Serif'
             ParentColor = False
@@ -2112,7 +2614,7 @@ object F_Administration: TF_Administration
             Width = 132
             AutoSize = False
             Caption = 'Libellé de l''application'
-            Font.Color = clBlack
+            Font.Color = clWindowText
             Font.Height = -13
             Font.Name = 'MS Sans Serif'
             ParentColor = False
@@ -2127,7 +2629,7 @@ object F_Administration: TF_Administration
             Width = 78
             AutoSize = False
             Caption = 'Image d''aide'
-            Font.Color = clBlack
+            Font.Color = clWindowText
             Font.Height = -13
             Font.Name = 'MS Sans Serif'
             ParentColor = False
@@ -2142,7 +2644,7 @@ object F_Administration: TF_Administration
             Width = 187
             AutoSize = False
             Caption = 'Image pour quitter l''application'
-            Font.Color = clBlack
+            Font.Color = clWindowText
             Font.Height = -13
             Font.Name = 'MS Sans Serif'
             ParentColor = False
@@ -2157,7 +2659,7 @@ object F_Administration: TF_Administration
             Width = 90
             AutoSize = False
             Caption = 'Image d''accès'
-            Font.Color = clBlack
+            Font.Color = clWindowText
             Font.Height = -13
             Font.Name = 'MS Sans Serif'
             ParentColor = False
@@ -2172,7 +2674,7 @@ object F_Administration: TF_Administration
             Width = 95
             AutoSize = False
             Caption = 'Image à propos'
-            Font.Color = clBlack
+            Font.Color = clWindowText
             Font.Height = -13
             Font.Name = 'MS Sans Serif'
             ParentColor = False
@@ -2187,7 +2689,7 @@ object F_Administration: TF_Administration
             Width = 133
             AutoSize = False
             Caption = 'Image de l''application'
-            Font.Color = clBlack
+            Font.Color = clWindowText
             Font.Height = -13
             Font.Name = 'MS Sans Serif'
             ParentColor = False
@@ -2207,8 +2709,8 @@ object F_Administration: TF_Administration
             BorderSpacing.Bottom = 1
             BorderSpacing.Around = 1
             BorderSpacing.InnerBorder = 1
-            DataField = 'ENTR_Aide'
             OnClick = im_DblClick
+            Datafield = 'ENTR_Aide'
           end
           object im_quitter: TExtDBImage
             Tag = 11
@@ -2223,8 +2725,8 @@ object F_Administration: TF_Administration
             BorderSpacing.Bottom = 1
             BorderSpacing.Around = 1
             BorderSpacing.InnerBorder = 1
-            DataField = 'ENTR_Quitter'
             OnClick = im_DblClick
+            Datafield = 'ENTR_Quitter'
           end
           object im_acces: TExtDBImage
             Tag = 10
@@ -2239,8 +2741,8 @@ object F_Administration: TF_Administration
             BorderSpacing.Bottom = 1
             BorderSpacing.Around = 1
             BorderSpacing.InnerBorder = 1
-            DataField = 'ENTR_Acces'
             OnClick = im_DblClick
+            Datafield = 'ENTR_Acces'
           end
           object im_about: TExtDBImage
             Tag = 9
@@ -2255,8 +2757,8 @@ object F_Administration: TF_Administration
             BorderSpacing.Bottom = 1
             BorderSpacing.Around = 1
             BorderSpacing.InnerBorder = 1
-            DataField = 'ENTR_About'
             OnClick = im_DblClick
+            Datafield = 'ENTR_About'
           end
           object im_app: TExtDBImage
             Tag = 8
@@ -2271,8 +2773,8 @@ object F_Administration: TF_Administration
             BorderSpacing.Bottom = 1
             BorderSpacing.Around = 1
             BorderSpacing.InnerBorder = 1
-            DataField = 'ENTR_Icone'
             OnClick = im_DblClick
+            Datafield = 'ENTR_Icone'
           end
           object ed_nomlog: TFWDBEdit
             Tag = 7
@@ -2282,9 +2784,10 @@ object F_Administration: TF_Administration
             Top = 66
             Width = 297
             DataField = 'ENTR_Nomlog'
-            Color = clMoneyGreen
+            CharCase = ecNormal
             Font.Height = -13
             Font.Name = 'MS Sans Serif'
+            MaxLength = 0
             ParentFont = False
             ParentShowHint = False
             ShowHint = True
@@ -2298,9 +2801,10 @@ object F_Administration: TF_Administration
             Top = 40
             Width = 297
             DataField = 'ENTR_Nomapp'
-            Color = clMoneyGreen
+            CharCase = ecNormal
             Font.Height = -13
             Font.Name = 'MS Sans Serif'
+            MaxLength = 0
             ParentFont = False
             ParentShowHint = False
             ShowHint = True
@@ -2327,7 +2831,7 @@ object F_Administration: TF_Administration
       end
     end
   end
-  object Panel2: TPanel
+  object Panel2: TPanel[1]
     Left = 0
     Height = 25
     Top = 0
@@ -2338,7 +2842,7 @@ object F_Administration: TF_Administration
     ClientWidth = 784
     TabOrder = 1
     object Panel3: TPanel
-      Left = 698
+      Left = 691
       Height = 25
       Top = 0
       Width = 13
@@ -2347,7 +2851,7 @@ object F_Administration: TF_Administration
       TabOrder = 2
     end
     object bt_fermer: TFWClose
-      Left = 711
+      Left = 704
       Height = 25
       Top = 0
       Caption = 'Fermer'
@@ -2357,10 +2861,11 @@ object F_Administration: TF_Administration
       OnClick = bt_fermerClick
     end
     object bt_apercu: TFWPreview
-      Left = 625
+      Left = 666
       Height = 25
       Hint = 'Aperçu  (Impression / exportation)'
       Top = 0
+      Width = 25
       Caption = 'Aperçu'
       Enabled = False
       TabOrder = 0
@@ -2371,7 +2876,7 @@ object F_Administration: TF_Administration
       ParentFont = False
     end
   end
-  object im_ListeImages: TImageList
+  object im_ListeImages: TImageList[2]
     BkColor = clForeground
     left = 200
     top = 344
@@ -2507,14 +3012,14 @@ object F_Administration: TF_Administration
       00FF000000FF000000FF000000FF
     }
   end
-  object od_ChargerImage: TOpenDialog
+  object od_ChargerImage: TOpenDialog[3]
     DefaultExt = '.bmp'
     Filter = 'Bitmaps et Icônes|*.bmp;*.ico'
     Options = [ofReadOnly, ofHideReadOnly, ofPathMustExist, ofFileMustExist, ofEnableSizing]
     left = 56
     top = 248
   end
-  object iml_Menus: TImageList
+  object iml_Menus: TImageList[4]
     BkColor = clForeground
     left = 224
     top = 344
@@ -2554,7 +3059,7 @@ object F_Administration: TF_Administration
       00FF000000FF000000FF000000FF
     }
   end
-  object OpenDialog: TOpenDialog
+  object OpenDialog: TOpenDialog[5]
     DefaultExt = '.bmp'
     Filter = 'Fichiers Bitmap|*.bmp'
     left = 48

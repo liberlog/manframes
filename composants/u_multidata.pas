@@ -19,22 +19,6 @@ interface
 
 uses
   Classes,
-{$IFDEF CSV}
-{$IFDEF FPC}
-  SDFData,
-{$ELSE}
-  JvCSvData,
-{$ENDIF}
-{$ENDIF}
-{$IFDEF EADO}
-  ADODB,
-{$ENDIF}
-{$IFDEF IBX}
-  IBQuery, IB, IBDatabase,
-{$ENDIF}
-{$IFDEF ZEOS}
-  ZConnection, ZDataset,
-{$ENDIF}
 {$IFDEF VERSIONS}
   fonctions_version,
 {$ENDIF}
@@ -45,18 +29,23 @@ const
       gver_MDataSources : T_Version = ( Component : 'Data Module with connections and cloned queries.' ; FileUnit : 'U_multidonnees' ;
                         			           Owner : 'Matthieu Giroux' ;
                         			           Comment : 'Created from XML file.' ;
-                        			           BugsStory   : 'Version 1.1.0.0 : Component Version.' + #13#10
+                        			           BugsStory   : 'Version 1.2.0.0 : Erasing external links and creating procedure constants.' + #13#10
+                                                                       + 'Version 1.1.0.0 : Component Version.' + #13#10
                                                                        + 'Version 1.0.0.1 : IBX Version.' + #13#10
                                                                        + 'Version 1.0.0.0 : ZEOS, CSV and DELPHI ADO Version.'  ;
                         			           UnitType : 2 ;
-                        			           Major : 1 ; Minor : 1 ; Release : 0 ; Build : 0 );
+                        			           Major : 1 ; Minor : 2 ; Release : 0 ; Build : 0 );
 {$ENDIF}
 
       // ADO ZEOS CSV
 type TDatasetType = ({$IFNDEF FPC}dtADO,{$ENDIF}{$IFDEF ZEOS}dtZEOS,{$ENDIF}{$IFDEF IBX}dtIBX,{$ENDIF}dtCSV);
+     TCreateConnection = procedure ( const AOwner : TComponent ; var adtt_DatasetType : TDatasetType ; var AQuery : TDataset; var AConnection : TComponent );
     // Connection parameters
 
 var gs_DataExtension : String = '.res';
+
+const
+    ge_onCreateConnection : TCreateConnection = nil;
 
 type
     TDSSources = class;
@@ -142,7 +131,7 @@ type
     public
        { Déclarations publiques }
       function fds_FindConnection ( const as_Clep : String ; const ab_Show_Error : Boolean ): TDSSource ;
-      function CreateConnection ( const adtt_DatasetType : TDatasetType ; const as_Clep : String ): TDSSource; virtual;
+      function CreateConnection ( const as_Clep : String ): TDSSource; virtual;
       constructor Create ( AOwner : TComponent );override;
     published
       property Sources : TDSSources read  FConnections write p_SetSources;
@@ -381,40 +370,15 @@ End;
 // adtt_DatasetType : Dataset type
 // as_Clep : Clep of connection from XML file to set
 ////////////////////////////////////////////////////////////////////////////////
-function TMDataSources.CreateConnection ( const adtt_DatasetType : TDatasetType  ; const as_Clep : String ): TDSSource;
+function TMDataSources.CreateConnection ( const as_Clep : String ): TDSSource;
 var lmet_MethodeDistribueeSearch: TMethod;
 Begin
  Result := FConnections.Add;
  with Result do
    Begin
      FClep := as_Clep ;
-     Fdtt_DatasetType := adtt_DatasetType;
-       {$IFDEF ZEOS}
-       if adtt_DatasetType = dtZEOS Then
-         Begin
-          Fdat_QueryCopy := TZQuery.Create(Self);
-          Fcom_Connection :=TZConnection.Create(Self);
-          ( Fdat_QueryCopy as TZQuery ).Connection := Fcom_Connection as TZConnection;
-         End;
-       {$ENDIF}
-       {$IFDEF IBX}
-       if adtt_DatasetType = dtIBX Then
-         Begin
-          Fdat_QueryCopy := TIBQuery.Create(Self);
-          Fcom_Connection :=TIBDataBase.Create(Self);
-          ( Fdat_QueryCopy as TIBQuery ).Transaction := TIBTransaction.Create ( Self );
-          ( Fdat_QueryCopy as TIBQuery ).Transaction.DefaultDatabase := Fcom_Connection as TIBDataBase;
-          ( Fdat_QueryCopy as TIBQuery ).Database := Fcom_Connection as TIBDataBase;
-        End;
-       {$ENDIF}
-       {$IFDEF EADO}
-       if adtt_DatasetType = dtADO Then
-         Begin
-          Fdat_QueryCopy := TADOQuery.Create(Self);
-          Fcom_Connection :=TADOConnection.Create(Self);
-          ( Fdat_QueryCopy as TADOQuery ).Connection :=Fcom_Connection as TADOConnection;
-        End;
-       {$ENDIF}
+     if assigned ( ge_onCreateConnection ) Then
+      ge_onCreateConnection ( Self, fdtt_DatasetType, fdat_QueryCopy, fcom_Connection );
 
    if not assigned ( Fcom_Connection )  then
      Exit;
@@ -427,13 +391,6 @@ Begin
        p_setComponentMethodProperty ( Fcom_Connection, 'AfterConnect', lmet_MethodeDistribueeSearch );
        lmet_MethodeDistribueeSearch.Code := MethodAddress('ConnectionAfterDisconnect');
        p_setComponentMethodProperty ( Fcom_Connection, 'AfterDisconnect', lmet_MethodeDistribueeSearch );
-       {$IFDEF EADO}
-       if Fcom_Connection is TADOConnection then
-         Begin
-           ( Fcom_Connection as TADOConnection ).OnExecuteComplete := ConnectionExecuteComplete;
-           ( Fcom_Connection as TADOConnection ).OnWillExecute := ConnectionWillExecute;
-         End;
-       {$ENDIF}
      end;
    end;
 

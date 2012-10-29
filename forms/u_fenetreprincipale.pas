@@ -45,7 +45,7 @@ uses
   TntMenus, TntExtCtrls, TntStdActns,
   TntActnList,
 {$ENDIF}
-  U_Donnees,
+  u_multidonnees,
   Controls, Graphics, Classes, SysUtils,
   ExtCtrls, ActnList, Menus,
   JvXPContainer, ComCtrls, JvXPButtons,
@@ -272,8 +272,6 @@ var
 begin
   mi_CustomizedMenu := nil;
   mu_voletexplore   := nil;
-  Connector  := M_Donnees.Acces;
-  Connection := M_Donnees.Connection;
 {$IFDEF CLR}
   if not ( csDesigning in ComponentState ) Then
     Try
@@ -308,7 +306,7 @@ begin
   mu_apropos.OnClick := mu_aproposClick;
   {$ENDIF}
   // Initialisation
-  p_initialisationBoutons(Self, scb_volet, mu_voletexplore, M_Donnees.q_TreeUser,
+  p_initialisationBoutons(Self, scb_volet, mu_voletexplore,
                           nil, tbar_outils, tbsep_1, pa_2, CST_LARGEUR_PANEL,
                           nil, mu_ouvrir, im_Liste,
                           im_acces.Picture,
@@ -370,27 +368,27 @@ begin
 {$IFDEF CSV}
     M_Donnees.q_connexions.FileName := fs_getSoftData + gs_SoftEntreprise + gs_DataExtension;
 {$ELSE}
-    p_setSQLQuery ( M_Donnees.q_TreeUser, 'SELECT * FROM ' + gs_SoftEntreprise );
+    p_setSQLQuery ( gq_QueryFunctions, 'SELECT * FROM ' + gs_SoftEntreprise );
 {$ENDIF}
-    M_Donnees.q_TreeUser.Open;
-    if not M_Donnees.q_TreeUser.Eof then
+    gq_QueryFunctions.Open;
+    if not gq_QueryFunctions.Eof then
       begin
-        gs_NomAppli := M_Donnees.q_TreeUser.FieldByName ( 'ENTR_Nomapp'  ).AsString;
-        gs_NomLog  := M_Donnees.q_TreeUser.FieldByName ( 'ENTR_Nomlog'  ).AsString;
-        gs_Version := M_Donnees.q_TreeUser.FieldByName ( 'ENTR_Version' ).AsString;
-        if assigned ( M_Donnees.q_TreeUser.FindField ( 'ENTR_Resto' ))
-        and not M_Donnees.q_TreeUser.FindField ( 'ENTR_Resto'   ).IsNull Then
-          gb_Resto   := M_Donnees.q_TreeUser.FieldByName ( 'ENTR_Resto'   ).AsBoolean ;
-        if assigned ( M_Donnees.q_TreeUser.FindField ( 'ENTR_Repr'  ))
-        and not M_Donnees.q_TreeUser.FindField ( 'ENTR_Repr'   ).IsNull Then
-          gb_Resto   := M_Donnees.q_TreeUser.FieldByName ( 'ENTR_Repr'   ).AsBoolean ;
+        gs_NomAppli := gq_QueryFunctions.FieldByName ( 'ENTR_Nomapp'  ).AsString;
+        gs_NomLog  := gq_QueryFunctions.FieldByName ( 'ENTR_Nomlog'  ).AsString;
+        gs_Version := gq_QueryFunctions.FieldByName ( 'ENTR_Version' ).AsString;
+        if assigned ( gq_QueryFunctions.FindField ( 'ENTR_Resto' ))
+        and not gq_QueryFunctions.FindField ( 'ENTR_Resto'   ).IsNull Then
+          gb_Resto   := gq_QueryFunctions.FieldByName ( 'ENTR_Resto'   ).AsBoolean ;
+        if assigned ( gq_QueryFunctions.FindField ( 'ENTR_Repr'  ))
+        and not gq_QueryFunctions.FindField ( 'ENTR_Repr'   ).IsNull Then
+          gb_Resto   := gq_QueryFunctions.FieldByName ( 'ENTR_Repr'   ).AsBoolean ;
         gb_Siege := not gb_Resto ;
 
         // Affectation de l'image au niveau du menu,
         // de l'icone de l'application et du bouton
-        fb_AssignDBImage(M_Donnees.q_TreeUser.FieldByName ( 'ENTR_Icone'   ), im_appli.Picture.Icon, nil);
-        fb_AssignDBImage(M_Donnees.q_TreeUser.FieldByName ( 'ENTR_About'   ), im_about.Picture.Icon, nil);
-        fb_AssignDBImage(M_Donnees.q_TreeUser.FieldByName ( 'ENTR_About'   ), lbmp_Bitmap, nil);
+        fb_AssignDBImage(gq_QueryFunctions.FieldByName ( 'ENTR_Icone'   ), im_appli.Picture.Icon, nil);
+        fb_AssignDBImage(gq_QueryFunctions.FieldByName ( 'ENTR_About'   ), im_about.Picture.Icon, nil);
+        fb_AssignDBImage(gq_QueryFunctions.FieldByName ( 'ENTR_About'   ), lbmp_Bitmap, nil);
         p_RecuperePetitBitmap(lbmp_Bitmap);
         {$IFDEF VERSIONS}
         mu_apropos.Bitmap.Assign ( lbmp_Bitmap );
@@ -403,9 +401,9 @@ begin
             lbmp_Bitmap.FreeImage ;
             lbmp_Bitmap.Handle := 0 ;
           End ;
-        fb_AssignDBImage(M_Donnees.q_TreeUser.FieldByName ( 'ENTR_Acces'   ), im_acces.Picture.Icon, nil);
-        fb_AssignDBImage(M_Donnees.q_TreeUser.FieldByName ( 'ENTR_Acces'   ), dbt_ident.Glyph.Bitmap, nil);
-        fb_AssignDBImage(M_Donnees.q_TreeUser.FieldByName ( 'ENTR_Acces'   ), lbmp_Bitmap, nil);
+        fb_AssignDBImage(gq_QueryFunctions.FieldByName ( 'ENTR_Acces'   ), im_acces.Picture.Icon, nil);
+        fb_AssignDBImage(gq_QueryFunctions.FieldByName ( 'ENTR_Acces'   ), dbt_ident.Glyph.Bitmap, nil);
+        fb_AssignDBImage(gq_QueryFunctions.FieldByName ( 'ENTR_Acces'   ), lbmp_Bitmap, nil);
         p_RecuperePetitBitmap(lbmp_Bitmap);
         mu_identifier.Bitmap.Assign ( lbmp_Bitmap );
         if lbmp_Bitmap.Handle <> 0 Then
@@ -416,8 +414,8 @@ begin
             lbmp_Bitmap.FreeImage ;
             lbmp_Bitmap.Handle := 0 ;
           End ;
-        fb_AssignDBImage(M_Donnees.q_TreeUser.FieldByName ( 'ENTR_Quitter' ), dbt_quitter.Glyph.Bitmap, nil);
-        fb_AssignDBImage(M_Donnees.q_TreeUser.FieldByName ( 'ENTR_Quitter' ), lbmp_Bitmap, nil);
+        fb_AssignDBImage(gq_QueryFunctions.FieldByName ( 'ENTR_Quitter' ), dbt_quitter.Glyph.Bitmap, nil);
+        fb_AssignDBImage(gq_QueryFunctions.FieldByName ( 'ENTR_Quitter' ), lbmp_Bitmap, nil);
         p_RecuperePetitBitmap(lbmp_Bitmap);
         mu_quitter.Bitmap.Assign ( lbmp_Bitmap );
         if lbmp_Bitmap.Handle <> 0 Then
@@ -428,8 +426,8 @@ begin
             lbmp_Bitmap.FreeImage ;
             lbmp_Bitmap.Handle := 0 ;
           End ;
-        fb_AssignDBImage(M_Donnees.q_TreeUser.FieldByName ( 'ENTR_Aide'    ), dbt_aide.Glyph.Bitmap, nil);
-        fb_AssignDBImage(M_Donnees.q_TreeUser.FieldByName ( 'ENTR_Aide'    ), lbmp_Bitmap, nil);
+        fb_AssignDBImage(gq_QueryFunctions.FieldByName ( 'ENTR_Aide'    ), dbt_aide.Glyph.Bitmap, nil);
+        fb_AssignDBImage(gq_QueryFunctions.FieldByName ( 'ENTR_Aide'    ), lbmp_Bitmap, nil);
         p_RecuperePetitBitmap(lbmp_Bitmap);
         mu_ouvriraide.Bitmap.Assign ( lbmp_Bitmap );
         if lbmp_Bitmap.Handle <> 0 Then
@@ -441,7 +439,7 @@ begin
             lbmp_Bitmap.Handle := 0 ;
           End ;
       end;
-    M_Donnees.q_TreeUser.Close;
+    gq_QueryFunctions.Close;
 
   except
     On e:Exception do
@@ -703,20 +701,20 @@ begin
       gs_base    := fs_ArgConnectString(ls_ConnectString, 'Initial Catalog');
       // On recherche le sommaire correspondant à l'utilisateur connecté
 {$IFDEF CSV}
-      M_Donnees.q_TreeUser.FileName := fs_getSoftData + gs_SoftUsers + gs_DataExtension;
-      M_Donnees.q_TreeUser.Filter   := gs_SoftUserKey + '=' + gs_User;
+      gq_QueryFunctions.FileName := fs_getSoftData + gs_SoftUsers + gs_DataExtension;
+      gq_QueryFunctions.Filter   := gs_SoftUserKey + '=' + gs_User;
 {$ELSE}
-      p_setSQLQuery ( M_Donnees.q_TreeUser, 'SELECT UTIL__SOMM, UTIL__PRIV FROM UTILISATEURS WHERE UTIL_Clep = :user' );
-      p_setParamDataset ( M_Donnees.q_TreeUser, 'user', gs_user );
+      p_setSQLQuery ( gq_QueryFunctions, 'SELECT UTIL__SOMM, UTIL__PRIV FROM UTILISATEURS WHERE UTIL_Clep = :user' );
+      p_setParamDataset ( gq_QueryFunctions, 'user', gs_user );
 {$ENDIF}
       try
-        M_Donnees.q_TreeUser.Open;
-        if not M_Donnees.q_TreeUser.IsEmpty then
+        gq_QueryFunctions.Open;
+        if not gq_QueryFunctions.IsEmpty then
           begin
-            gs_SommaireEnCours := M_Donnees.q_TreeUser.Fields[0].AsString;
-            gi_niveau_priv     := M_Donnees.q_TreeUser.Fields[1].AsInteger;
+            gs_SommaireEnCours := gq_QueryFunctions.Fields[0].AsString;
+            gi_niveau_priv     := gq_QueryFunctions.Fields[1].AsInteger;
           end;
-        M_Donnees.q_TreeUser.Close;
+        gq_QueryFunctions.Close;
 
         // Appel aux fonctions de construction de la barre d'outil
         // ainsi que du volet d'exploration

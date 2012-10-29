@@ -21,10 +21,10 @@ uses
 {$IFDEF VERSIONS}
   fonctions_version,
 {$ENDIF}
-  U_Donnees, RxLookup, U_FenetrePrincipale,
+  u_multidonnees, RxLookup, U_FenetrePrincipale,
   Classes, Graphics, Forms, Controls, StdCtrls, Buttons,
   Dialogs, SysUtils, DBCtrls, fonctions_string,
-  U_FormMainIni, JvXPButtons, ExtCtrls,
+  U_FormMainIni, JvXPButtons, ExtCtrls, Db,
   u_framework_dbcomponents, U_OnFormInfoIni, u_buttons_appli,
   u_framework_components, u_buttons_defs ;
 
@@ -74,6 +74,7 @@ type
 
   private
     { Private declarations }
+    ds_User, ds_connexions : TDataSource ;
     FMainForm : TF_FormMainIni;
 
   public
@@ -98,7 +99,9 @@ uses fonctions_images,
   SQLExpr,
 {$ENDIF}
   unite_variables, fonctions_extdb,
-  fonctions_db, fonctions_dbcomponents ;
+  fonctions_db, fonctions_dbcomponents,
+  fonctions_proprietes,
+  fonctions_Objets_Data;
 
 {$IFDEF FPC}
 {$R *.lfm}
@@ -151,45 +154,39 @@ begin
   else
     begin
       // Test de chaine de connexion non vide
-      if  not M_Donnees.q_connexions.Eof  then
+      if  not gq_connexions.Eof  then
+       with gq_connexions do
         try
 
           {$IFDEF ZEOS}
-          lsts_Connect.Text := StringReplace ( M_Donnees.q_connexions.FieldByName ( 'CONN_Chaine' ).AsString, ' =', '=', [rfReplaceAll] );
+          lsts_Connect.Text := StringReplace ( FieldByName ( 'CONN_Chaine' ).AsString, ' =', '=', [rfReplaceAll] );
           {$ELSE}
-          ls_conn := M_Donnees.q_connexions.FieldByName ( 'CONN_Chaine' ).AsString;
+          ls_conn := FieldByName ( 'CONN_Chaine' ).AsString;
           {$ENDIF}
-          gs_Resto := M_Donnees.q_connexions.FieldByName ( 'CONN_Clep' ).AsString;
-          gs_LibResto := M_Donnees.q_connexions.FieldByName ( 'CONN_Libelle' ).AsString;
+          gs_Resto := FieldByName ( 'CONN_Clep' ).AsString;
+          gs_LibResto := FieldByName ( 'CONN_Libelle' ).AsString;
         except
         end;
       if fb_stringVide({$IFDEF ZEOS}lsts_Connect.Text{$ELSE}ls_conn{$ENDIF}) then
+       with Application.MainForm as TF_FormMainIni do
         begin
         	MessageDlg(GS_aucune_connexion + #13 + #13
         				     + GS_administration_seule, mtError, [mbOk], 0);
         	cbx_user.SetFocus;
 {$IFNDEF CSV}
 {$IFDEF EADO}
-          if M_Donnees.Connection is TADOConnection
-           Then
-            ( M_Donnees.Connection as TADOConnection ).ConnectionString := '' ;
+          p_SetComponentProperty ( gc_ConnectAccess, 'ConnectionString', '' );
 {$ENDIF}
 {$IFDEF DBEXPRESS}
-          if M_Donnees.Connection is TSQLConnection
-           Then
-            ( M_Donnees.Connection as TSQLConnection ).ConnectionName := '' ;
+         p_SetComponentProperty ( gc_ConnectAccess, 'ConnectionName', '' );
 {$ENDIF}
 {$IFDEF ZEOS}
-          if M_Donnees.Connection is TZConnection
-           Then
-             Begin
-              ( M_Donnees.Connection as TZConnection ).Database     := '';
-              ( M_Donnees.Connection as TZConnection ).Protocol     := '';
-              ( M_Donnees.Connection as TZConnection ).HostName     := '';
-              ( M_Donnees.Connection as TZConnection ).Password     := '';
-              ( M_Donnees.Connection as TZConnection ).User         := '';
-              ( M_Donnees.Connection as TZConnection ).catalog      := '';
-             End;
+              p_SetComponentProperty ( gc_ConnectAccess, 'Database', '' );
+              p_SetComponentProperty ( gc_ConnectAccess, 'Protocol', '' );
+              p_SetComponentProperty ( gc_ConnectAccess, 'HostName', '' );
+              p_SetComponentProperty ( gc_ConnectAccess, 'Password', '' );
+              p_SetComponentProperty ( gc_ConnectAccess, 'User'    , '' );
+              p_SetComponentProperty ( gc_ConnectAccess, 'catalog' , '' );
 {$ENDIF}
 {$ENDIF}
 //        	Exit;
@@ -198,27 +195,19 @@ begin
         Begin
 {$IFNDEF CSV}
 {$IFDEF EADO}
-          if M_Donnees.Connection is TADOConnection
-           Then
-            ( M_Donnees.Connection as TADOConnection ).ConnectionString := ls_conn;
+          p_SetComponentProperty ( gc_ConnectAccess, 'ConnectionString', ls_conn );
 {$ENDIF}
     {$IFDEF DBEXPRESS}
-          if M_Donnees.Connection is TSQLConnection
-           Then
-            ( M_Donnees.Connection as TSQLConnection ).ConnectionName := ls_conn;
+          p_SetComponentProperty ( gc_ConnectAccess, 'ConnectionName', ls_conn );
     {$ENDIF}
 {$IFDEF ZEOS}
-            if M_Donnees.Connection is TZConnection
-             Then
-               Begin
-                ( M_Donnees.Connection as TZConnection ).Database     := Trim ( lsts_Connect.Values [ gs_DataBaseNameIni ]);
-                ( M_Donnees.Connection as TZConnection ).Protocol     := Trim ( lsts_Connect.Values [ gs_DataProtocolIni ]);
-                ( M_Donnees.Connection as TZConnection ).HostName     := Trim ( lsts_Connect.Values [ gs_DataHostIni     ]);
-                ( M_Donnees.Connection as TZConnection ).Password     := Trim ( lsts_Connect.Values [ gs_DataPasswordIni ]);
-                ( M_Donnees.Connection as TZConnection ).User         := Trim ( lsts_Connect.Values [ gs_DataUserNameIni ]);
-                ( M_Donnees.Connection as TZConnection ).catalog      := Trim ( lsts_Connect.Values [ gs_DataCatalogIni  ]);
-                p_SetCaractersZEOSConnector(M_Donnees.Connection as TZConnection,Trim ( lsts_Connect.Values [ gs_DataCollationIni  ]));
-               End;
+                p_SetComponentProperty ( gc_ConnectAccess, 'Database', lsts_Connect.Values [ gs_DataBaseNameIni ]);
+                p_SetComponentProperty ( gc_ConnectAccess, 'Protocol', lsts_Connect.Values [ gs_DataProtocolIni ]);
+                p_SetComponentProperty ( gc_ConnectAccess, 'HostName', lsts_Connect.Values [ gs_DataHostIni     ]);
+                p_SetComponentProperty ( gc_ConnectAccess, 'Password', lsts_Connect.Values [ gs_DataPasswordIni ]);
+                p_SetComponentProperty ( gc_ConnectAccess, 'User    ', lsts_Connect.Values [ gs_DataUserNameIni ]);
+                p_SetComponentProperty ( gc_ConnectAccess, 'catalog ', lsts_Connect.Values [ gs_DataCatalogIni  ]);
+                p_SetCaractersZEOSConnector( gc_ConnectAccess,Trim ( lsts_Connect.Values [ gs_DataCollationIni  ]));
 {$ENDIF}
 {$ENDIF}
           End;
@@ -226,16 +215,16 @@ begin
       // Le mot de passe est comparé à celui en base (décrypté auparavant)
       try
 {$IFDEF CSV}
-        M_Donnees.q_TreeUser.FileName := fs_getSoftData + gs_SoftUsers + gs_DataExtension;
+        gq_QueryFunctions.FileName := fs_getSoftData + gs_SoftUsers + gs_DataExtension;
 {$ELSE}
-        p_SetSQLQuery ( M_Donnees.q_TreeUser, 'SELECT UTIL_Mdp FROM '+gs_SoftUsers+' WHERE UTIL_Clep = :user' );
-        p_setParamDataset (M_Donnees.q_TreeUser, 'user', cbx_user.Text );
+        p_SetSQLQuery ( gq_QueryFunctions, 'SELECT UTIL_Mdp FROM '+gs_SoftUsers+' WHERE UTIL_Clep = :user' );
+        p_setParamDataset (gq_QueryFunctions, 'user', cbx_user.Text );
 {$ENDIF}
-        M_Donnees.q_TreeUser.Open;
-        if not M_Donnees.q_TreeUser.IsEmpty then
-        	ls_mdp := fs_stringDeCrypte(M_Donnees.q_TreeUser.Fields[0].AsString);
+        gq_QueryFunctions.Open;
+        if not gq_QueryFunctions.IsEmpty then
+        	ls_mdp := fs_stringDeCrypte(gq_QueryFunctions.Fields[0].AsString);
       finally
-        M_Donnees.q_TreeUser.Close;
+        gq_QueryFunctions.Close;
       end;
 
       if (tx_mdp.Text = ls_mdp) then
@@ -270,9 +259,9 @@ begin
   try
 
     if ( gs_DefaultUser <> '' )
-    and M_Donnees.q_user.Active Then
+    and gq_User.Active Then
       Begin
-        M_Donnees.q_user.Locate ( CST_ACCES_UTILISATEUR_Clep, gs_DefaultUser, [] );
+        gq_User.Locate ( CST_ACCES_UTILISATEUR_Clep, gs_DefaultUser, [] );
       End ;
 
     lb_nomresto.Caption := gs_NomLog;
@@ -323,20 +312,21 @@ end;
 // On User Change setting the linked bases
 procedure TF_Acces.cbx_userChange(Sender: TObject);
 begin
+  with gq_connexions do
   try
-    M_Donnees.q_connexions.Close ;
+    Close ;
 {$IFDEF CSV}
-    M_Donnees.q_connexions.Filter := cbx_user.{$IFDEF FPC}ListField{$ELSE}LookupField{$ENDIF} +'='+ cbx_user.Text;
+    Filter := cbx_user.{$IFDEF FPC}ListField{$ELSE}LookupField{$ENDIF} +'='+ cbx_user.Text;
 {$ELSE}
 {$IFDEF EADO}
-    p_setParamDataset (M_Donnees.q_connexions,'Cle', cbx_user.Value );
+    p_setParamDataset (gq_connexions,'Cle', cbx_user.Value );
 {$ELSE}
     if assigned ( cbx_user.{$IFDEF FPC}ListSource{$ELSE}LookupSource{$ENDIF} ) Then
-      p_setParamDataset ( M_Donnees.q_connexions,'Cle', cbx_user.{$IFDEF FPC}ListSource{$ELSE}LookupSource{$ENDIF}.DataSet.FieldByName(cbx_user.{$IFDEF FPC}ListField{$ELSE}LookupDisplay{$ENDIF}).AsString );
+      p_setParamDataset ( gq_connexions,'Cle', cbx_user.{$IFDEF FPC}ListSource{$ELSE}LookupSource{$ENDIF}.DataSet.FieldByName(cbx_user.{$IFDEF FPC}ListField{$ELSE}LookupDisplay{$ENDIF}).AsString );
 {$ENDIF}
 {$ENDIF}
-    M_Donnees.q_connexions.Open;
-    if M_Donnees.q_connexions.IsEmpty Then
+    Open;
+    if IsEmpty Then
       cbx_Connexion.Enabled := False
     Else
       cbx_Connexion.Enabled := True ;
@@ -356,10 +346,14 @@ end;
 // Setting the datasource
 procedure TF_Acces.FormCreate(Sender: TObject);
 begin
-  cbx_User.{$IFDEF FPC}ListSource{$ELSE}LookupSource{$ENDIF} := M_Donnees.ds_User;
-  cbx_Connexion.{$IFDEF FPC}ListSource{$ELSE}LookupSource{$ENDIF} := M_Donnees.ds_Connexions;
+  ds_User:=TDataSource.Create(Self);
+  ds_User.DataSet:=gq_User;
+  ds_connexions:=TDataSource.Create(Self);
+  ds_connexions.DataSet:=gq_connexions;
+  cbx_User.{$IFDEF FPC}ListSource{$ELSE}LookupSource{$ENDIF} := ds_User;
+  cbx_Connexion.{$IFDEF FPC}ListSource{$ELSE}LookupSource{$ENDIF} := ds_Connexions;
   try
-    M_Donnees.q_user.Open;
+    gq_User.Open;
   finally
   End;
 end;

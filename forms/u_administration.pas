@@ -572,7 +572,7 @@ uses fonctions_Objets_Dynamiques, fonctions_images, fonctions_string,
      unite_variables, fonctions_tableauframework,
      fonctions_dbcomponents, fonctions_proprietes,
      U_MotPasse, Fonctions_init , fonctions_forms,
-     u_customframework, unite_messages, U_Donnees ;
+     u_customframework, unite_messages, u_multidata ;
 
 // Méthodes de la propriété montrer l'onglet utilisateurs
 // ab_Value : Propriété MontreUtilisateurs à changer
@@ -1649,7 +1649,7 @@ begin
   //////////////////////////////////////
   ///  adoq_nconn_util
   /////////////////////////////////////
-  adoq_nconn_util:= fdat_CloneDatasetWithoutSQL ( gdat_QueryCopy, Self );
+  adoq_nconn_util:= fdat_CloneDatasetWithoutSQL ( gq_User, Self );
   with adoq_nconn_util do
     Begin
       Name := 'adoq_nconn_util';
@@ -1671,7 +1671,7 @@ begin
   //////////////////////////////////////
   ///  adoq_Privileges
   /////////////////////////////////////
-   adoq_Privileges:= fdat_CloneDatasetWithoutSQL ( gdat_QueryCopy, Self );
+   adoq_Privileges:= fdat_CloneDatasetWithoutSQL ( gq_user, Self );
    p_SetSQLQuery ( adoq_Privileges, 'SELECT * FROM PRIVILEGES');
    with adoq_Privileges do
      Begin
@@ -1690,7 +1690,7 @@ begin
   //////////////////////////////////////
   ///  adoq_conn_util
   /////////////////////////////////////
-  adoq_conn_util:= fdat_CloneDatasetWithoutSQL ( gdat_QueryCopy, Self );
+  adoq_conn_util:= fdat_CloneDatasetWithoutSQL ( gq_user, Self );
   fb_SetParamQuery ( adoq_conn_util, 'conn' );
   p_SetSQLQuery ( adoq_conn_util,
       'SELECT UTIL_Clep FROM UTILISATEURS '+
@@ -1714,7 +1714,7 @@ begin
   ///  adoq_connexion
   /////////////////////////////////////
 
-  adoq_connexion:= fdat_CloneDatasetWithoutSQL ( gdat_QueryCopy, Self );
+  adoq_connexion:= fdat_CloneDatasetWithoutSQL ( gq_user, Self );
 
   p_SetSQLQuery ( adoq_connexion, 'SELECT * FROM CONNEXION');
   with adoq_connexion do
@@ -1735,7 +1735,7 @@ begin
   ///  adoq_TreeUser
   /////////////////////////////////////
 
-  adoq_TreeUser:= fdat_CloneDatasetWithoutSQL ( gdat_QueryCopy, Self );
+  adoq_TreeUser:= fdat_CloneDatasetWithoutSQL ( gq_user, Self );
   p_SetSQLQuery ( adoq_TreeUser, 'SELECT * FROM fc_fonctions_utilisees ( '#39'Administrateur'#39' )');
 
   with adoq_TreeUser do
@@ -1748,7 +1748,7 @@ begin
   ///  adoq_QueryTempo
   /////////////////////////////////////
 
-  adoq_QueryTempo:= fdat_CloneDatasetWithoutSQL ( gdat_QueryCopy, Self );
+  adoq_QueryTempo:= fdat_CloneDatasetWithoutSQL ( gq_user, Self );
   with adoq_QueryTempo do
     Begin
       Name := 'adoq_QueryTempo';
@@ -1759,7 +1759,7 @@ begin
   ///  adoq_entr
   /////////////////////////////////////
 
-  adoq_entr:= fdat_CloneDatasetWithoutSQL ( gdat_QueryCopy, Self );
+  adoq_entr:= fdat_CloneDatasetWithoutSQL ( gq_user, Self );
   p_SetSQLQuery ( adoq_entr, 'SELECT * FROM ENTREPRISE');
   with adoq_entr do
     Begin
@@ -1780,7 +1780,7 @@ begin
   ///  adoq_UtilisateurSommaire
   /////////////////////////////////////
 
-  adoq_UtilisateurSommaire:= fdat_CloneDatasetWithoutSQL ( gdat_QueryCopy, Self );
+  adoq_UtilisateurSommaire:= fdat_CloneDatasetWithoutSQL ( gq_user, Self );
     p_SetSQLQuery (adoq_UtilisateurSommaire,'SELECT * FROM SOMMAIRE');
   with adoq_UtilisateurSommaire do
     Begin
@@ -1800,7 +1800,7 @@ begin
   ///  adoq_Utilisateurs
   /////////////////////////////////////
 
-  adoq_Utilisateurs:= fdat_CloneDatasetWithoutSQL ( gdat_QueryCopy, Self );
+  adoq_Utilisateurs:= fdat_CloneDatasetWithoutSQL ( gq_user, Self );
   p_SetSQLQuery ( adoq_Utilisateurs, 'SELECT * FROM UTILISATEURS');
   with adoq_Utilisateurs do
     Begin
@@ -1826,7 +1826,7 @@ begin
   ///  adoq_SousMenuFonctions
   /////////////////////////////////////
 
-  adoq_SousMenuFonctions:= fdat_CloneDatasetWithoutSQL ( gdat_QueryCopy, Self );
+  adoq_SousMenuFonctions:= fdat_CloneDatasetWithoutSQL ( gq_user, Self );
 
     p_SetSQLQuery ( adoq_SousMenuFonctions, 'SELECT * FROM SOUM_FONCTIONS, FONCTIONS WHERE SMFC__FONC=FONC_Clep ' +
                   ' ORDER BY ' + CST_SMFC_Numordre+','+CST_SMFC__SOMM+','+CST_SMFC__MENU+','+CST_SMFC__SOUM+','+CST_SMFC__FONC);
@@ -1849,7 +1849,7 @@ begin
   ///  adoq_MenuFonctions
   /////////////////////////////////////
 
-  adoq_MenuFonctions:= fdat_CloneDatasetWithoutSQL ( gdat_QueryCopy, Self );
+  adoq_MenuFonctions:= fdat_CloneDatasetWithoutSQL ( gq_user, Self );
 
     p_SetSQLQuery ( adoq_MenuFonctions, 'SELECT * FROM MENU_FONCTIONS, FONCTIONS ' +
       ' WHERE MEFC__FONC=FONC_Clep ORDER BY '+ CST_MEFC_Numordre+','+CST_MEFC__SOMM+','+CST_MEFC__MENU+','+CST_MEFC__FONC);
@@ -1873,7 +1873,7 @@ begin
   ///  adoq_Menus
   /////////////////////////////////////
 
-  adoq_Menus:= fdat_CloneDatasetWithoutSQL ( gdat_QueryCopy, Self );
+  adoq_Menus:= fdat_CloneDatasetWithoutSQL ( gq_user, Self );
   p_SetSQLQuery ( adoq_Menus, 'SELECT * FROM MENUS ORDER BY MENU_NumOrdre,MENU_Clep');
   with adoq_Menus do
     Begin
@@ -1899,7 +1899,7 @@ begin
   ///  adoq_SousMenus
   /////////////////////////////////////
 
-  adoq_SousMenus:= fdat_CloneDatasetWithoutSQL ( gdat_QueryCopy, Self );
+  adoq_SousMenus:= fdat_CloneDatasetWithoutSQL ( gq_user, Self );
   p_SetSQLQuery ( adoq_SousMenus, 'SELECT * FROM SOUS_MENUS ORDER BY SOUM_NumOrdre,SOUM_Clep');
   with adoq_SousMenus do
     Begin
@@ -1924,7 +1924,7 @@ begin
   ///  adoq_SommaireFonctions
   /////////////////////////////////////
 
-  adoq_SommaireFonctions:= fdat_CloneDatasetWithoutSQL ( gdat_QueryCopy, Self );
+  adoq_SommaireFonctions:= fdat_CloneDatasetWithoutSQL ( gq_user, Self );
     p_SetSQLQuery ( adoq_SommaireFonctions,
       'SELECT * FROM SOMM_FONCTIONS, FONCTIONS ' +
       ' WHERE SOFC__FONC=FONC_Clep ' +
@@ -1948,7 +1948,7 @@ begin
   ///  adoq_Sommaire
   /////////////////////////////////////
 
-  adoq_Sommaire:= fdat_CloneDatasetWithoutSQL ( gdat_QueryCopy, Self );
+  adoq_Sommaire:= fdat_CloneDatasetWithoutSQL ( gq_user, Self );
     p_SetSQLQuery ( adoq_Sommaire, 'SELECT * FROM SOMMAIRE');
   with adoq_Sommaire do
     Begin
@@ -1973,7 +1973,7 @@ begin
   ///  adoq_FonctionsType
   /////////////////////////////////////
 
-  adoq_FonctionsType:= fdat_CloneDatasetWithoutSQL ( gdat_QueryCopy, Self );
+  adoq_FonctionsType:= fdat_CloneDatasetWithoutSQL ( gq_user, Self );
 
   p_SetSQLQuery ( adoq_FonctionsType, 'SELECT * FROM fc_types_des_fonctions ()');
   with adoq_FonctionsType do
@@ -1994,7 +1994,7 @@ begin
   ///  adoq_Fonctions
   /////////////////////////////////////
 
-  adoq_Fonctions:= fdat_CloneDatasetWithoutSQL ( gdat_QueryCopy, Self );
+  adoq_Fonctions:= fdat_CloneDatasetWithoutSQL ( gq_user, Self );
   p_SetSQLQuery ( adoq_Fonctions, 'SELECT * FROM FONCTIONS');
   with adoq_Fonctions do
     Begin
@@ -2016,7 +2016,7 @@ begin
   ///  adoq_nutil_conn
   /////////////////////////////////////
 
-  adoq_nutil_conn:= fdat_CloneDatasetWithoutSQL ( gdat_QueryCopy, Self );
+  adoq_nutil_conn:= fdat_CloneDatasetWithoutSQL ( gq_user, Self );
   p_SetSQLQuery ( adoq_nutil_conn,  'SELECT CONN_Clep FROM CONNEXION ' +
         ' WHERE CONN_Clep NOT IN (SELECT ACCE__CONN FROM ACCES WHERE ACCE__UTIL = :util)');
   fb_SetParamQuery ( adoq_nutil_conn, 'util' );
@@ -2038,7 +2038,7 @@ begin
   ///  aadoq_util_conn
   /////////////////////////////////////
 
-  adoq_util_conn:= fdat_CloneDatasetWithoutSQL ( gdat_QueryCopy, Self );
+  adoq_util_conn:= fdat_CloneDatasetWithoutSQL ( gq_user, Self );
   p_SetSQLQuery (adoq_util_conn, 'SELECT CONN_Clep FROM CONNEXION ' +
         ' WHERE CONN_Clep IN (SELECT ACCE__CONN FROM ACCES WHERE ACCE__UTIL = :util)');
   fb_SetParamQuery ( adoq_util_conn ,'util' );

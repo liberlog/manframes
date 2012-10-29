@@ -7,7 +7,7 @@ unit lazmansoftware;
 interface
 
 uses
-  U_Acces, U_Donnees, U_Administration, U_FenetrePrincipale, U_MotPasse, 
+  U_Acces, U_Administration, U_FenetrePrincipale, U_MotPasse, 
   fonctions_Objets_Data, u_formauto, u_formdico, u_propform, LazarusPackageIntf;
 
 implementation

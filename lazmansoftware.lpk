@@ -26,47 +26,43 @@
     <Description Value="Full management software RAD Framework"/>
     <License Value="LGPL"/>
     <Version Minor="9" Release="4" Build="2"/>
-    <Files Count="10">
+    <Files Count="9">
       <Item1>
         <Filename Value="forms/u_acces.pas"/>
         <UnitName Value="U_Acces"/>
       </Item1>
       <Item2>
-        <Filename Value="forms/U_Donnees.pas"/>
-        <UnitName Value="U_Donnees"/>
-      </Item2>
-      <Item3>
         <Filename Value="forms/u_administration.pas"/>
         <UnitName Value="U_Administration"/>
-      </Item3>
-      <Item4>
+      </Item2>
+      <Item3>
         <Filename Value="forms/u_fenetreprincipale.pas"/>
         <UnitName Value="U_FenetrePrincipale"/>
-      </Item4>
-      <Item5>
+      </Item3>
+      <Item4>
         <Filename Value="forms/U_MotPasse.lfm"/>
         <Type Value="LFM"/>
-      </Item5>
-      <Item6>
+      </Item4>
+      <Item5>
         <Filename Value="forms/U_MotPasse.pas"/>
         <UnitName Value="U_MotPasse"/>
-      </Item6>
-      <Item7>
+      </Item5>
+      <Item6>
         <Filename Value="fonctions/fonctions_Objets_Data.pas"/>
         <UnitName Value="fonctions_Objets_Data"/>
-      </Item7>
-      <Item8>
+      </Item6>
+      <Item7>
         <Filename Value="composants/u_formauto.pas"/>
         <UnitName Value="u_formauto"/>
-      </Item8>
-      <Item9>
+      </Item7>
+      <Item8>
         <Filename Value="composants/u_formdico.pas"/>
         <UnitName Value="u_formdico"/>
-      </Item9>
-      <Item10>
+      </Item8>
+      <Item9>
         <Filename Value="composants/u_propform.pas"/>
         <UnitName Value="u_propform"/>
-      </Item10>
+      </Item9>
     </Files>
     <i18n>
       <EnableI18N Value="True"/>

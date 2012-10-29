@@ -23,7 +23,7 @@
     <Description Value="Child Form data management and relationships"/>
     <License Value="LGPL"/>
     <Version Major="1" Minor="1" Build="2"/>
-    <Files Count="11">
+    <Files Count="10">
       <Item1>
         <Filename Value="fonctions/fonctions_tableauframework.pas"/>
         <UnitName Value="fonctions_tableauframework"/>
@@ -53,57 +53,50 @@
         <UnitName Value="u_man_reports_components"/>
       </Item7>
       <Item8>
-        <Filename Value="fonctions/fonctions_mandb.pas"/>
-        <UnitName Value="fonctions_mandb"/>
-      </Item8>
-      <Item9>
         <Filename Value="fonctions/fonctions_extdb.pas"/>
         <UnitName Value="fonctions_extdb"/>
-      </Item9>
-      <Item10>
+      </Item8>
+      <Item9>
         <Filename Value="composants/u_formmaindb.pas"/>
         <UnitName Value="u_formmaindb"/>
-      </Item10>
-      <Item11>
+      </Item9>
+      <Item10>
         <Filename Value="forms/u_connection.pas"/>
         <UnitName Value="u_connection"/>
-      </Item11>
+      </Item10>
     </Files>
     <i18n>
       <EnableI18N Value="True"/>
       <OutDir Value="LANG"/>
     </i18n>
     <Type Value="RunAndDesignTime"/>
-    <RequiredPkgs Count="9">
+    <RequiredPkgs Count="8">
       <Item1>
-        <PackageName Value="ibexpress"/>
+        <PackageName Value="extreports"/>
       </Item1>
       <Item2>
-        <PackageName Value="extreports"/>
-      </Item2>
-      <Item3>
         <PackageName Value="lazmanbase"/>
         <MaxVersion Major="1" Release="1" Build="6"/>
-      </Item3>
-      <Item4>
+      </Item2>
+      <Item3>
         <PackageName Value="FCL"/>
         <MinVersion Major="1" Valid="True"/>
+      </Item3>
+      <Item4>
+        <PackageName Value="rxnew"/>
       </Item4>
       <Item5>
-        <PackageName Value="rxnew"/>
+        <PackageName Value="LCL"/>
       </Item5>
       <Item6>
-        <PackageName Value="LCL"/>
+        <PackageName Value="lazfonctions"/>
       </Item6>
       <Item7>
-        <PackageName Value="lazfonctions"/>
+        <PackageName Value="lazextcomponents"/>
       </Item7>
       <Item8>
-        <PackageName Value="lazextcomponents"/>
-      </Item8>
-      <Item9>
         <PackageName Value="JvXPBarLaz"/>
-      </Item9>
+      </Item8>
     </RequiredPkgs>
     <UsageOptions>
       <UnitPath Value="$(PkgOutDir)"/>

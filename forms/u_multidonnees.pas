@@ -19,23 +19,6 @@ interface
 
 uses
   Classes,
-{$IFDEF CSV}
-{$IFDEF FPC}
-  SDFData,
-{$ELSE}
-  JvCSvData,
-{$ENDIF}
-{$ENDIF}
-{$IFDEF EADO}
-  ADODB,
-{$ENDIF}
-{$IFDEF IBX}
-  IBQuery, IB, IBDatabase,
-{$ENDIF}
-{$IFDEF ZEOS}
-  ZConnection,
-  ZDataset,
-{$ENDIF}
 {$IFDEF VERSIONS}
   fonctions_version,
 {$ENDIF}

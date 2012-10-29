@@ -39,7 +39,7 @@ uses
   TntMenus, TntExtCtrls, TntStdActns,
   TntActnList,
 {$ENDIF}
-  U_Donnees,
+  u_multidonnees,
   Controls, Graphics, Classes, SysUtils, StrUtils,
   ExtCtrls, ActnList, Menus,
   JvXPContainer, ComCtrls, JvXPButtons,
@@ -107,9 +107,6 @@ uses
 {$IFNDEF FPC}
   DB,
   fonctions_aide,
-{$ENDIF}
-{$IFDEF ZEOS}
-  ZConnection,
 {$ENDIF}
   unite_variables, unite_messages,
   fonctions_proprietes ;

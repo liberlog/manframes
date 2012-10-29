@@ -14,7 +14,7 @@ object F_MotPasse: TF_MotPasse
   Font.Name = 'MS Sans Serif'
   OnShow = FormShow
   Position = poScreenCenter
-  LCLVersion = '0.9.28.2'
+  LCLVersion = '1.0.2.0'
   object pa_1: TPanel
     Left = 8
     Height = 161
@@ -26,9 +26,9 @@ object F_MotPasse: TF_MotPasse
     TabOrder = 0
     object lb_mdp: TLabel
       Left = 20
-      Height = 23
+      Height = 18
       Top = 93
-      Width = 86
+      Width = 87
       Alignment = taRightJustify
       Caption = 'Mot de passe'
       Font.Color = clBlack
@@ -52,7 +52,7 @@ object F_MotPasse: TF_MotPasse
     end
     object tx_mdp: TEdit
       Left = 120
-      Height = 28
+      Height = 22
       Top = 91
       Width = 153
       EchoMode = emPassword

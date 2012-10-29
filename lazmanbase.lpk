@@ -36,23 +36,17 @@
       <OutDir Value="fonctions"/>
     </i18n>
     <Type Value="RunAndDesignTime"/>
-    <RequiredPkgs Count="5">
+    <RequiredPkgs Count="3">
       <Item1>
-        <PackageName Value="ibexpress"/>
+        <PackageName Value="lazextcomponents"/>
       </Item1>
       <Item2>
-        <PackageName Value="ZComponent"/>
+        <PackageName Value="lazfonctions"/>
       </Item2>
       <Item3>
-        <PackageName Value="lazextcomponents"/>
-      </Item3>
-      <Item4>
-        <PackageName Value="lazfonctions"/>
-      </Item4>
-      <Item5>
         <PackageName Value="FCL"/>
         <MinVersion Major="1" Valid="True"/>
-      </Item5>
+      </Item3>
     </RequiredPkgs>
     <UsageOptions>
       <UnitPath Value="$(PkgOutDir)"/>

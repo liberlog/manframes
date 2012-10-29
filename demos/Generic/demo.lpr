@@ -13,12 +13,12 @@ uses
   LCLType,Controls, Graphics,SysUtils,
   U_Splash,
   LCLIntf,
-  U_Donnees,
+  fonctions_Objets_Data,
   U_FormMainIni,
   U_CustomFrameWork,
   fonctions_forms,
   lazmansoft, lazextcomponents,
-  lazmanframes, lazmansoftware;
+  lazmanframes, lazmansoftware, u_data;
 
 {$IFNDEF FPC}
 var lico_Icon        : TIcon ;
@@ -37,13 +37,17 @@ begin
   gb_DicoKeyFormPresent  := True ;
   gb_DicoUseFormField    := True ;
   gb_DicoGroupementMontreCaption := False ;
-  gdt_DatasetType := dtZEOS;
   try
-    Application.CreateForm(TM_Donnees, M_Donnees);
+    Application.CreateForm(TMainDataModule,MainDataModule);
+    gq_User:=nil;
+    gq_QueryFunctions:=nil;
+    gc_ConnectAccess:=nil;
+    gq_connexions:=nil;
     Application.CreateForm(TF_FenetrePrincipale, F_FenetrePrincipale);
   finally
   end;
   p_RegisterClasses ([]);
+  Application.CreateForm(TMainDataModule, MainDataModule);
   Application.Run;
 end.
 

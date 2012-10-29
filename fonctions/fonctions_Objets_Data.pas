@@ -45,6 +45,7 @@ uses Forms, JvXPBar, DB, JvXPContainer,
 {$ENDIF}
   DBCtrls,
   IniFiles,
+  u_multidata,
   Graphics ;
 
 const // Champs utilisés
@@ -102,13 +103,23 @@ type  TFonction            = Record
                              End ;
 
 
-var   gT_TableauFonctions : ARRAY of TFonction ; // tableau gérant les fonctions
+var   gq_User             ,
+      gq_QueryFunctions   ,
+      gq_connexions       : TDataSet;
+      gc_ConnectAccess    : TComponent;
+      gs_SoftDb : String = 'weo_db';
+      gs_SoftUsers : String = 'UTILISATEURS';
+      gs_SoftUserKey : String = 'UTIL_Clep';
+      gs_SoftEntreprise : String = 'ENTREPRISE';
+      gs_DataExtension : String = '.res';
+      gdt_DatasetType : TDatasetType = {$IFDEF ZEOS}dtZEOS{$ELSE}{$IFDEF EADO}dtADO{$ELSE}dtCSV{$ENDIF}{$ENDIF};
+       //////////////////////////////////////////////////////////////////////////////////////
+      // auto filled variables
+     /////////////////////////////////////////////////////////////////////////////////////
+      gT_TableauFonctions : ARRAY of TFonction ; // tableau gérant les fonctions
       gT_TableauMenus     : ARRAY of TUnMenu ;     // tableau gérant les menus
-
-
       gs_SommaireEnCours      : string       ;   // Sommaire en cours MAJ régulièrement
       gF_FormParent           : TForm        ;   // Form parent initialisée au create
-      gadoq_QueryFonctions    : TDataset    ;   // Query aDO   initialisé  au create
       gBmp_DefaultPicture     : TBitmap      ;   // Bmp apparaissant si il n'y a pas d'image
       gWin_ParentContainer    : TScrollingWinControl  ;   // Volet d'accès
       gIco_DefaultPicture     : TIcon        ;   // Ico apparaissant si il n'y a pas d'image
@@ -176,7 +187,6 @@ procedure p_initialisationBoutons ( const aF_FormParent           : TForm       
                                     const aWin_PanelVolet         : TScrollingWinControl  ;
 //                                    const aWin_BarreVolet         : TWinControl  ;
                                     const aMen_MenuVolet          : TMenuItem    ;
-                                    const aadoq_QueryFonctions    : TDataset    ;
                                     const aIco_DefaultPicture     : TIcon        ;
                                     const aBar_ToolBarParent      : {$IFDEF FPC}TCustomControl{$ELSE}TToolWindow{$ENDIF}   ;
                                     const aSep_ToolBarSepareDebut : TControl;
@@ -334,7 +344,7 @@ uses u_formmaindb, U_FormMainIni, fonctions_string, SysUtils, TypInfo, Dialogs,
      fonctions_dbcomponents, fonctions_db, fonctions_manbase,
      unite_variables, Variants, fonctions_proprietes,
      fonctions_forms,
-     fonctions_Objets_Dynamiques, u_multidata, u_multidonnees ;
+     fonctions_Objets_Dynamiques, u_multidonnees ;
 
 /////////////////////////////////////////////////////////////////////////
 // Procédure p_Loaddata
@@ -355,23 +365,16 @@ Begin
   lds_connection:= DMModuleSources.fds_FindConnection(ls_ConnectionClep, False);
   if assigned ( lds_connection ) Then
     Exit;
-  if ( LowerCase(aif_IniFile.ReadString(as_SectionName,CST_MAN_INI_SOURCE_TYPE,'')) = CST_MAN_INI_DATA_FILE ) Then
+  with DMModuleSources.CreateConnection ( ls_ConnectionClep ) do
+   if ( LowerCase(aif_IniFile.ReadString(as_SectionName,CST_MAN_INI_SOURCE_TYPE,'')) = CST_MAN_INI_DATA_FILE ) Then
     Begin
-      with DMModuleSources.CreateConnection ( dtCSV, ls_ConnectionClep ) do
-        Begin
-          dataURL := aif_IniFile.ReadString(as_SectionName,CST_MAN_INI_DATA_URL,'') +DirectorySeparator ;
-          {$IFDEF WINDOWS}
-          dataURL := fs_RemplaceChar ( DataURL, '/', '\' );
-          {$ENDIF}
-        end;
+      dataURL := aif_IniFile.ReadString(as_SectionName,CST_MAN_INI_DATA_URL,'') +DirectorySeparator ;
+      {$IFDEF WINDOWS}
+      dataURL := fs_RemplaceChar ( DataURL, '/', '\' );
+      {$ENDIF}
     end
    Else
-   {$IFDEF IBX}
-   if ( LowerCase(aif_IniFile.ReadString(as_SectionName,CST_MAN_INI_SOURCE_TYPE,'')) = CST_MAN_INI_DRIVER_FIREBIRD )  Then
-     DMModuleSources.CreateConnection ( dtIBX, ls_ConnectionClep )
-    Else
-   {$ENDIF}
-   with DMModuleSources.CreateConnection ( {$IFDEF ZEOS}dtZEOS{$ELSE}{$IFDEF EADO}dtADO{$ELSE}dtCSV{$ENDIF}{$ENDIF}, ls_ConnectionClep ) do
+   with DMModuleSources.CreateConnection ( ls_ConnectionClep ) do
     Begin
       DataDriver := aif_IniFile.ReadString(as_SectionName,CST_MAN_INI_DATA_DRIVER,'');
         Begin
@@ -622,7 +625,6 @@ procedure p_initialisationBoutons ( const aF_FormParent           : TForm       
                         			      const aWin_PanelVolet         : TScrollingWinControl  ;
 //                                    const aWin_BarreVolet         : TWinControl  ;
                                     const aMen_MenuVolet          : TMenuItem    ;
-                                    const aadoq_QueryFonctions    : TDataset    ;
                                     const aIco_DefaultPicture     : TIcon        ;
                                     const aBar_ToolBarParent      : {$IFDEF FPC}TCustomControl{$ELSE}TToolWindow{$ENDIF}   ;
                                     const aSep_ToolBarSepareDebut : TControl;
@@ -645,7 +647,6 @@ Begin
   gF_FormParent           := aF_FormParent           ;
   gWin_ParentContainer    := aWin_PanelVolet         ;
 //  gWin_BarreVolet         := aWin_BarreVolet         ;
-  gadoq_QueryFonctions    := aadoq_QueryFonctions    ;
   gIco_DefaultPicture     := aIco_DefaultPicture     ;
   gBar_ToolBarParent      := aBar_ToolBarParent      ;
   gSep_ToolBarSepareDebut := aSep_ToolBarSepareDebut ;
@@ -1264,7 +1265,7 @@ End ;
 function fb_CreeLesMenus ( ): Boolean ;
 Begin
   Result := fb_CreeMenu (  gF_FormParent           ,
-                           gadoq_QueryFonctions    ,
+                           gq_QueryFunctions    ,
                            gs_SommaireEnCours      ,
                            gBmp_DefaultPicture     ,
                            gMen_MenuParent         ,
@@ -1272,7 +1273,7 @@ Begin
                            gIma_ImagesMenus        ,
                            gi_FinCompteurImages    ,
                            gb_UtiliseSMenu         );
-  Result := fb_CreeXPButtons ( gs_SommaireEnCours, '', gF_FormParent, gF_FormParent, gWin_ParentContainer, gMen_Menuvolet, gadoq_QueryFonctions, gBmp_DefaultPicture  , True, gIma_ImagesXPBars   ) and Result;
+  Result := fb_CreeXPButtons ( gs_SommaireEnCours, '', gF_FormParent, gF_FormParent, gWin_ParentContainer, gMen_Menuvolet, gq_QueryFunctions, gBmp_DefaultPicture  , True, gIma_ImagesXPBars   ) and Result;
 End ;
 // Création des composants MenuItem en fonction :
 // aMenuParent             : Le menu parent
@@ -1744,7 +1745,7 @@ Begin
   Result :=  fi_CreeSommaire ( gF_FormParent          ,
                         			 gF_FormParent          ,
                         			 gs_SommaireEnCours     ,
-                        			 gadoq_QueryFonctions   ,
+                        			 gq_QueryFunctions   ,
                         			 gIco_DefaultPicture    ,
                         			 gBar_ToolBarParent     ,
                                gSep_ToolBarSepareDebut,

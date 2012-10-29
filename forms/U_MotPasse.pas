@@ -16,7 +16,7 @@ uses
 {$ELSE}
   Windows, JvExControls,
 {$ENDIF}
-  U_Donnees,
+  u_multidonnees,
   Classes, Graphics, Forms, Controls, StdCtrls, Buttons, ExtCtrls,
   Dialogs, SysUtils, DBCtrls, fonctions_string, u_framework_components,
   JvXPCore, JvXPButtons, Messages, fonctions_version,
@@ -60,7 +60,7 @@ var
 
 implementation
 
-uses U_FormMainIni, unite_variables ;
+uses U_FormMainIni, unite_variables, fonctions_Objets_Data ;
 
 
 procedure TF_MotPasse.btn_okClick(Sender: TObject);
@@ -77,7 +77,7 @@ begin
         begin}
         	// Le mot de passe est comparé à celui dans l'edit
 
-        	if (tx_mdp.Text = fs_stringDeCrypte(M_Donnees.q_user.FieldByName( CST_UTIL_Mdp).Asstring ) ) then
+        	if (tx_mdp.Text = fs_stringDeCrypte(gq_user.FieldByName( CST_UTIL_Mdp).Asstring ) ) then
         		begin
         			gb_MotPasseEstValide := True ;
         			Close;

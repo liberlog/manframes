@@ -14,20 +14,8 @@ uses SysUtils,
      WideStrings,
   {$ENDIF}
   DB,
-  {$IFDEF IBX}
-  IBQuery,
-  {$ENDIF}
   {$IFDEF VERSIONS}
   fonctions_version,
-  {$ENDIF}
-  {$IFDEF SQLDB}
-  sqldb,
-  {$ENDIF}
-  {$IFDEF EADO}
-  ADODB,
-  {$ENDIF}
-  {$IFDEF DBEXPRESS}
-  SQLExpr,
   {$ENDIF}
   Controls,
   DBCtrls, ExtCtrls,

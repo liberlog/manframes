@@ -1,4 +1,4 @@
-﻿unit u_connection;
+unit u_connection;
 
 {$IFDEF FPC}
 {$mode Delphi}
@@ -33,24 +33,27 @@ uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs,
   StdCtrls, IniFiles;
 
-const
 {$IFDEF VERSIONS}
-  gVer_zconnection : T_Version = ( Component : 'Connexion ZEOS' ; FileUnit : 'u_zconnection' ;
+const
+  gVer_zconnection : T_Version = ( Component : 'Generic Connection' ; FileUnit : 'u_zconnection' ;
                         			                 Owner : 'Matthieu Giroux' ;
-                        			                 Comment : 'Fenetre de connexion ZEOS si pas dans l''INI.' ;
-                        			                 BugsStory : 'Version 0.0.5.1 : No JvXPButton.' + #13#10
+                        			                 Comment : 'connect window if not in INI.' ;
+                        			                 BugsStory : 'Version 1.0.0.0 : No ZEOS.' + #13#10
+                                                                    + 'Version 0.0.5.1 : No JvXPButton.' + #13#10
                                                                     + 'Version 0.0.5.0 : Fenetre avec les drivers et le codepage.' + #13#10
                                                                     + 'Version 0.0.4.0 : Fenetre sans les drivers.';
                         			                 UnitType : 3 ;
-                        			                 Major : 0 ; Minor : 0 ; Release : 5 ; Build : 1 );
+                        			                 Major : 1 ; Minor : 0 ; Release : 0 ; Build : 0 );
 {$ENDIF}
 
 type
+  TSetConnectComponents = procedure ( const cbx_Protocol: TComboBox;  const ch_ServerConnect: TCheckBox; const ed_Base, ed_Host, ed_Password, ed_User, ed_Catalog, ed_Collation: TEdit );
 
   { TF_ZConnectionWindow }
 
   TF_ZConnectionWindow = class(TForm)
     cbx_Protocol: TComboBox;
+    ch_ServerConnect: TCheckBox;
     Label7: TLabel;
     quit: TButton;
     Save: TButton;
@@ -95,11 +98,14 @@ var
 procedure p_ShowConnectionWindow ( const Connexion : TComponent ; const Inifile : TCustomInifile );
 procedure p_InitComponent ( const Connexion : TComponent ; const Inifile : TCustomInifile ; const Test : Boolean );
 
+const
+   ge_SetConnectComponentsOnCreate : TSetConnectComponents = nil;
+
 
 implementation
 
 uses fonctions_init,Types, fonctions_db, fonctions_dbcomponents,
-     fonctions_components, ZClasses, ZDbcIntfs, fonctions_proprietes;
+     fonctions_components, fonctions_proprietes;
 
 
 // Init connexion with inifile
@@ -129,20 +135,10 @@ end;
 
 // Getting Drivers Names
 constructor TF_ZConnectionWindow.Create(AOwner: TComponent);
-var
-  I, J: Integer;
-  Drivers: IZCollection;
-  Protocols: TStringDynArray;
 begin
   inherited Create(AOwner);
-  Drivers := DriverManager.GetDrivers;
-  Protocols := nil;
-  for I := 0 to Drivers.Count - 1 do
-  begin
-    Protocols := (Drivers[I] as IZDriver).GetSupportedProtocols;
-    for J := Low(Protocols) to High(Protocols) do
-      cbx_Protocol.Items.Append(Protocols[J]);
-  End;
+  if assigned ( ge_SetConnectComponentsOnCreate ) Then
+    ge_SetConnectComponentsOnCreate ( cbx_Protocol, ch_ServerConnect, ed_Base, ed_Host, ed_Password, ed_User, ed_Catalog, ed_Collation );
 end;
 
 procedure TF_ZConnectionWindow.DoShow;
