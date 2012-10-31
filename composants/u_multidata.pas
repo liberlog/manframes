@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////////
 //
 //	Nom Unité :  U_MultiDonnées
 //	Description :	Datamodule divers de données
@@ -113,17 +113,6 @@ type
        {$IFNDEF CSV}
         procedure ConnectionAfterConnect(Sender: TObject);
         procedure ConnectionAfterDisconnect(Sender: TObject);
-       {$IFDEF EADO}
-        procedure ConnectionExecuteComplete(Connection: TADOConnection;
-          RecordsAffected: Integer; const Error: Error;
-          var EventStatus: TEventStatus; const Command: _Command;
-          const Recordset: _Recordset);
-        procedure ConnectionWillExecute(Connection: TADOConnection;
-          var CommandText: WideString; var CursorType: TCursorType;
-          var LockType: TADOLockType; var CommandType: TCommandType;
-          var ExecuteOptions: TExecuteOptions; var EventStatus: TEventStatus;
-          const Command: _Command; const Recordset: _Recordset);
-        {$ENDIF}
         {$ENDIF}
 
       function  CreateSources: TDSSources; virtual;
@@ -299,60 +288,6 @@ begin
  FConnections:=CreateSources;
 end;
 
-{$IFDEF EADO}
-////////////////////////////////////////////////////////////////////////////////
-// Evènement   : ConnectionWillExecute
-// Description : Curseur SQL avec compteur de requête pour
-// Paramètres  : Connection : le connecteur
-//               Error          : nom de l'erreur
-// Paramètres à modifier  :
-//               EventStatus    : Status de l'évènement ( erreur ou pas )
-//               Command        : commande ADO
-//               Recordset      : Données ADO
-////////////////////////////////////////////////////////////////////////////////
-procedure TMDataSources.ConnectionExecuteComplete(
-	Connection: TADOConnection; RecordsAffected: Integer; const Error: Error;
-	var EventStatus: TEventStatus; const Command: _Command;
-	const Recordset: _Recordset);
-begin
-	// Décrémentation
-	dec ( gi_RequetesSQLEncours );
-	// Curseur classique
-	Screen.Cursor := crDefault ;
-	if gi_RequetesSQLEncours > 0 Then
-		// Curseur SQL en scintillement si requête asynchrone
-		Screen.Cursor := crSQLWait
-	Else
-		// Une reqête n'a peut-être pas été terminée
-		gi_RequetesSQLEncours := 0 ;
-end;
-
-////////////////////////////////////////////////////////////////////////////////
-// Evènement   : ConnectionWillExecute
-// Description : Curseur SQL avec compteur de requête pour
-// Paramètres  : Connection : le connecteur
-// Paramètres à modifier  :
-//							 CommandText : Le code SQL
-//               CursorType  : Type de curseur
-//               LockType    : Le mode d'accès en écriture
-//               CommandType : Type de commande SQL
-//               ExecuteOptions : Paramètres d'exécution
-//               EventStatus    : Status de l'évènement ( erreur ou pas )
-//               Command        : commande ADO
-//               Recordset      : Données ADO
-////////////////////////////////////////////////////////////////////////////////
-procedure TMDataSources.ConnectionWillExecute(Connection: TADOConnection;
-	var CommandText: WideString; var CursorType: TCursorType;
-	var LockType: TADOLockType; var CommandType: TCommandType;
-	var ExecuteOptions: TExecuteOptions; var EventStatus: TEventStatus;
-	const Command: _Command; const Recordset: _Recordset);
-begin
-	// Incrémente les requêtes
-	inc ( gi_RequetesSQLEncours );
-	// Curseur SQL
-	Screen.Cursor := crSQLWait ;
-end;
-{$ENDIF}
 {$ENDIF}
 ////////////////////////////////////////////////////////////////////////////////
 // Evènement : Create

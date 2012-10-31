@@ -31,9 +31,9 @@ uses
    RxDBGrid,
 {$ENDIF}
 {$ELSE}
-{$IFDEF RX}  
+{$IFDEF RX}
   RXDBCtrl,
-{$ENDIF}     
+{$ENDIF}
    Windows, Mask, DBTables, ActnMan,
    DBCGrids ,
 {$ENDIF}
@@ -53,9 +53,6 @@ uses
    TntForms, TntExtCtrls,
 {$ENDIF}
   Messages, Graphics, Controls, Classes, ExtCtrls, Dialogs, DB,
-  {$IFDEF EADO}
-  ADODB,
-  {$ENDIF}
   {$IFDEF DELPHI_9_UP}
   WideStrings,
   {$ENDIF}
@@ -70,13 +67,14 @@ uses
   TntStdCtrls ,
 {$ENDIF}
   fonctions_erreurs,
+  fonctions_db,
   U_GroupView,
   SyncObjs, fonctions_init,
   u_framework_components,
   u_multidata;
 
+const
 {$IFDEF VERSIONS}
-  const
     gVer_TCustomFrameWork : T_Version = ( Component : 'Composant TF_CustomFrameWork' ;
                                       FileUnit : 'U_CustomFrameWork' ;
                                       Owner : 'Matthieu Giroux' ;
@@ -98,6 +96,13 @@ uses
                                        Major : 1 ; Minor : 1 ; Release : 0; Build : 4 );
 
 {$ENDIF}
+  ge_LoadMainDataset : TSpecialProcDataset = nil;
+  ge_SetAsyncMainDataset : TSpecialFuncDataset = nil;
+  ge_OpenMainDataset : TSpecialFuncDataset = nil;
+  ge_MainDatasetOnError : TSpecialFuncDataset = nil;
+  ge_SetMainDatasetEvents : TSpecialProcDataset = nil;
+  ge_UnsetMainDatasetEvents : TSpecialProcDataset = nil;
+
 
 
 type
@@ -123,7 +128,9 @@ type
     function Add: TFWPanelColumn;
     constructor Create(const Source: TFWSource; const ColumnClass: TFWPanelColumnClass); virtual;
     property Parent: TFWSource read FParent;
+  {$IFDEF FPC}
   published
+  {$ENDIF}
     property Items[Index: Integer]: TFWPanelColumn read GetPanelColumn write SetPanelColumn; default;
   End;
 
@@ -154,7 +161,9 @@ type
     function Add: TFWSourceChild;
     constructor Create( const Source: TFWSource; const ColumnClass: TFWSourceChildClass); virtual;
     property Parent: TFWSource read FParent;
+  {$IFDEF FPC}
   published
+  {$ENDIF}
     property Items[Index: Integer]: TFWSourceChild read GetSourceColumn write SetSourceColumn; default;
   End;
 
@@ -319,7 +328,9 @@ type
     procedure SaveToFile(const Filename: string); virtual;
     procedure SaveToStream(S: TStream); virtual;
     property Form: TF_CustomFrameWork read FForm;
+  {$IFDEF FPC}
   published
+  {$ENDIF}
     property Items[Index: Integer]: TFWSource read GetColumn write SetColumn; default;
   End;
 
@@ -388,9 +399,6 @@ type
     gds_Query2            : TDataSource ;
     gdat_Query2           : TDataset ;
     gvar_valeurRecherche  : Variant ;
-    {$IFDEF EADO}
-    geo_ExecuteTemp       : TExecuteOptions ;
-    {$ENDIF}
     { Déclarations privées }
     ge_DBlocate           : TDatasetNotifyEvent ;
     ge_DbOnSearch         : TOnSearchdataEvent ;
@@ -459,10 +467,6 @@ type
     ge_FetchEvent        : TEvent ;
 
     ge_OldAfterOpen      : TDataSetNotifyEvent;
-    {$IFDEF EADO}
-    ge_OldFetchComplete : TRecordsetEvent ;
-    ge_OldFetchProgress : TfetchProgressEvent ;
-    {$ENDIF}
 
     ge_OpenDatasets  , // Ouverture spécifiques des datasets des colonnes
     // Appel aux anciens évènements
@@ -612,17 +616,6 @@ type
     procedure p_InitFrameWork ( const Sender : TComponent ); virtual;
     procedure p_ChargeResources  ( const ar_RecordDatasource : TFWSource ; const li_DataWork  : Integer); virtual;
     procedure p_InitExecutionFrameWork ( const Sender : TObject ); dynamic;
-    {$IFDEF EADO}
-    function  fb_DebuteTransaction ( const aado_Dataset : TCustomADODataset ) : Boolean ; dynamic ;
-    function  fb_ValideTransaction ( const aado_Dataset : TCustomADODataset ) : Boolean ; dynamic ;
-    function  fb_AnnuleTransaction ( const aado_Dataset : TCustomADODataset ) : Boolean ; dynamic ;
-    function  fb_GereErreurTransaction  ( const aexc_exception: Exception ; const aado_Dataset: TCustomADODataset): Boolean; virtual ;
-    function  fb_PeutValiderTransaction ( const aado_Dataset : TCustomADODataset ): Boolean; virtual ;
-    procedure p_RefreshLoaded(DataSet: TCustomADODataSet; const Error: Error;
-      var EventStatus: TEventStatus);
-    procedure p_FetchProgressLoaded(DataSet: TCustomADODataSet; ProGress,
-      MaxProgress: Integer; var EventStatus: TEventStatus);
-    {$ENDIF}
     procedure p_UpdateRecord ;
     procedure p_ValideEditeNumerique ( const ab_PasseErreur : Boolean );
     procedure p_CacheRecherche ;
@@ -651,10 +644,6 @@ type
 
     function fs_GetLabel(const as_OldLabel : String ; const acom_Control : TComponent ): String; overload;
 
-    {$IFDEF EADO}
-    procedure p_AffecteEvenementsDatasetPrincipal(
-      const adat_DatasetPrinc: TDataset);
-    {$ENDIF}
     procedure p_DesAffecteEvenementsDatasetPrincipal(
       const adat_DatasetPrinc: TDataset);
     property CloseOnLoad : Boolean read gb_Close write gb_Close ;
@@ -834,7 +823,7 @@ uses fonctions_string,
      JvDBDateTimePicker, JvDateTimePicker, JvMemoryDataset, JvDBSpinEdit,
      JvToolEdit , JvDbControls,
   {$ENDIF}
-     fonctions_db, fonctions_dbcomponents, u_extcomponent,
+     fonctions_dbcomponents, u_extcomponent,
      u_extdbgrid, u_multidonnees,
      fonctions_numedit, unite_variables,
      u_buttons_appli, fonctions_languages,
@@ -941,10 +930,6 @@ begin
     Begin
       if  assigned ( ddl_DataLink ) Then
         Begin
-        {$IFDEF EADO}
-          if not ( ddl_DataLink.DataSet is TCustomADODataset )
-          or (( ddl_DataLink.DataSet as TCustomADODataset ).CursorLocation <> clUseClient ) then
-        {$ENDIF}
               if fb_SortADataset ( ddl_DataLink.Dataset, as_NomChamp, ab_SortDesc ) then
                lb_Continue := False
             Else
@@ -1034,9 +1019,6 @@ begin
         li_NoColonne  := aWin_ControlAvecTag.Tag  - 1 ;
 
       if not Assigned(ddl_DataLink.DataSet)
-      {$IFDEF EADO}
-         or not (ddl_DataLink.DataSet is TCustomADODataset )
-      {$ENDIF}
          or ( li_NoColonne < 0 )
         then
          Exit;
@@ -1961,54 +1943,8 @@ Begin
 End;
 procedure TF_CustomFrameWork.p_ChargeEvenementsDatasourcePrinc;
 Begin
-{$IFDEF EADO}
-   if  ( gdat_DatasetPrinc is TCustomADODataset ) Then
-    try
-    // gestion des évènements du mode asynchrone même si pas de mode asynchrone dans la fiche
-      ge_OldFetchComplete  := ( gdat_DatasetPrinc as TCustomADODataset ).OnFetchComplete  ;
-      ge_OldAfterOpen :=  gdat_DatasetPrinc.AfterOpen;
-      if gi_AsynchroneEnregistrements > 0 Then
-       Begin
-        ge_OldFetchProgress  := ( gdat_DatasetPrinc as TCustomADODataset ).OnFetchProgress  ;
-       End ;
-      p_AffecteEvenementsDatasetPrincipal ( gdat_DatasetPrinc );
-       // Ouverture de la connexion ADO
-      if assigned (( gdat_DatasetPrinc as TCustomADODataset ).Connection ) Then
-        ( gdat_DatasetPrinc as TCustomADODataset ).Connection.Open ;
-      // Gestion mode asynchrone demandée
-      if gb_ds_princAsynchrone
-       // On passe en mode asynchrone que si Form Main Ini le veut
-      and gb_ApplicationAsynchrone
-      and (( gdat_DatasetPrinc as TCustomADODataset ).CursorLocation = clUseClient )  Then
-        Begin
-          // Sauvegarde des anciens paramètres d'exécution
-          geo_ExecuteTemp := ( gdat_DatasetPrinc as TCustomADODataset ).ExecuteOptions ;
-          // datasource pas ouvert alors Mode asynchrone
-          if not gdat_DatasetPrinc.Active then
-            Begin
-              // On est vraiment en mode asynchrone sur le datasource principal
-              gdat_DatasetPrinc.AfterOpen        := nil ;
-              gFWSources [CST_FRAMEWORK_DATASOURCE_PRINC].ddl_DataLink.DataSource := nil ;
-              gb_ModeAsynchrone  := True ;
-              p_AsynchronousDataSet ( gdat_DatasetPrinc as TCustomADODataset );
-              // Evènement d'attente de fin d'ouverture
-              ge_FetchEvent := TEvent.Create ( nil, True, True, '' );
-            End
-           Else
-            Begin
-              gb_DatasourceActif := True ;
-            End ;
-         // ouverture en asynchrone du lien de données : fin de chargement au OnFetchComplete
-          gdat_DatasetPrinc.Open;
-        End ;
-     Except
-      on e: Exception do
-        Begin
-          gb_close := True ;
-          fcla_GereException ( e, gdat_DatasetPrinc );
-        End ;
-     End;
-{$ENDIF}
+  if assigned ( ge_LoadMainDataset ) then
+    ge_LoadMainDataset ( gdat_DatasetPrinc );
 End;
 
 procedure TF_CustomFrameWork.p_ChargeDatasourcePrinc;
@@ -2303,27 +2239,6 @@ Begin
       gFWSources.items [ li_i ].ddl_DataLink := nil;
     End;
 End;
-{$IFDEF EADO}
-
-//////////////////////////////////////////////////////////////////////////////////
-// Procédure : p_AffecteEvenementsDatasetPrincipal
-// Description : Affectation des évènement de DatasetMain
-// Paramètres  : adat_DatasetPrinc : Le Dataset Principal
-//////////////////////////////////////////////////////////////////////////////////
-procedure TF_CustomFrameWork.p_AffecteEvenementsDatasetPrincipal ( const adat_DatasetPrinc : TDataset );
-Begin
-  if ( adat_DatasetPrinc is TCustomADODataset ) Then
-    Begin
-      // gestion des évènements du mode asynchrone même si pas de mode asynchrone dans la fiche
-      ( adat_DatasetPrinc as TCustomADODataset ).OnFetchComplete := p_RefreshLoaded; // fin de chargement au OnFetchComplete
-      if gi_AsynchroneEnregistrements > 0 Then
-        Begin
-         ( adat_DatasetPrinc as TCustomADODataset ).OnFetchProgress := p_FetchProgressLoaded; // fin de chargement au OnFetchComplete
-        End ;
-    End ;
-
-End ;
-{$ENDIF}
 //////////////////////////////////////////////////////////////////////////////////
 // Procédure : p_AffecteEvenementsDatasetPrincipal
 // Description : Affectation des évènement de DatasetMain
@@ -2331,205 +2246,17 @@ End ;
 //////////////////////////////////////////////////////////////////////////////////
 procedure TF_CustomFrameWork.p_DesAffecteEvenementsDatasetPrincipal ( const adat_DatasetPrinc : TDataset );
 Begin
-{$IFDEF EADO}
-  if ( adat_DatasetPrinc is TCustomADODataset ) Then
-    Begin
-      ( adat_DatasetPrinc as TCustomADODataset ).OnFetchComplete  := ge_OldFetchComplete ;
-      if gi_AsynchroneEnregistrements > 0 Then
-        ( adat_DatasetPrinc as TCustomADODataset ).OnFetchProgress  := ge_oldfetchProgress ;
-    End ;
-{$ENDIF}
-End ;
-{$IFDEF EADO}
-///////////////////////////////////////////////////////////////////////////////////
-// Fonction : fb_AnnuleTransaction
-// Description : Annule la transaction
-// Paramètres : aado_Dataset   : le dataset de la transaction en cours
-//              Résultat       : transaction annulée ou pas
-///////////////////////////////////////////////////////////////////////////////////
-function TF_CustomFrameWork.fb_AnnuleTransaction ( const aado_Dataset : TCustomADODataset ): Boolean;
-begin
-  Result := False ;
-  if assigned ( aado_Dataset.Connection ) Then
-    try
-        aado_Dataset.Connection.RollbackTrans ;
-        dec ( gi_NiveauTransaction );
-        gb_InTransaction := False ;
-        Result := True ;
-    Except
-      on e:Exception do
-        f_GereException ( e, aado_Dataset, aado_Dataset.Connection, true );
-    End ;
-end;
-
-///////////////////////////////////////////////////////////////////////////////////
-// Fonction : fb_DebuteTransaction
-// Description : débute une transaction sur le dataset
-// Paramètres : aado_Dataset   : le dataset de la transaction en cours
-//              Résultat       : transaction débutée ou pas
-///////////////////////////////////////////////////////////////////////////////////
-function TF_CustomFrameWork.fb_DebuteTransaction(
-  const aado_Dataset: TCustomADODataset): Boolean;
-begin
-  Result := False ;
-  if assigned ( aado_Dataset )
-  and assigned ( aado_Dataset.Connection ) Then
-    Begin
-      while aado_Dataset.Connection.InTransaction do
-        if not fb_ValideTransaction ( aado_Dataset ) Then
-          Exit ;
-      try
-        gi_NiveauTransaction := aado_Dataset.Connection.BeginTrans ;
-        Result := True ;
-        gb_InTransaction := True ;
-      Except
-        on e:Exception do
-          fcla_GereException ( e, aado_Dataset );
-      End ;
-    End ;
-
-end;
-
-///////////////////////////////////////////////////////////////////////////////////
-// Fonction : fb_ValideTransaction
-// Description : valide une transaction sur le dataset
-// Paramètres : aado_Dataset   : le dataset de la transaction en cours
-//              Résultat       : transaction validée ou pas
-///////////////////////////////////////////////////////////////////////////////////
-function TF_CustomFrameWork.fb_ValideTransaction ( const aado_Dataset : TCustomADODataset ) : Boolean ;
-begin
-  Result := False ;
-  if assigned ( aado_Dataset.Connection ) Then
-    while ( aado_Dataset.Connection.InTransaction ) do
-      try
-        if not fb_PeutValiderTransaction ( aado_Dataset ) Then
-          Exit ;
-        aado_Dataset.Connection.CommitTrans ;
-        dec ( gi_NiveauTransaction );
-        Result := True ;
-        gb_InTransaction := False ;
-      Except
-        on e:Exception do
-          if not fb_GereErreurTransaction ( e, aado_Dataset ) Then
-            Begin
-              fcla_GereException ( e, aado_Dataset );
-              Exit ;
-            End ;
-          Else
-            Result := True ;
-      End ;
-    Begin
-    End ;
-
-end;
-
-///////////////////////////////////////////////////////////////////////////////////
-// Fonction virtuelle : fb_PeutValiderTransaction
-// Description : Vérifie si on peut valider la transaction sur le Dataset
-// Paramètres : aado_Dataset   : le dataset de la transaction en cours
-//              Résultat       : continuer la transaction ou pas
-///////////////////////////////////////////////////////////////////////////////////
-function TF_CustomFrameWork.fb_PeutValiderTransaction( const aado_Dataset : TCustomADODataset ) : Boolean ;
-begin
-  Result := True ;
+  if Assigned ( ge_UnsetMainDatasetEvents ) then
+    ge_UnsetMainDatasetEvents ( adat_DatasetPrinc );
 End ;
 
-///////////////////////////////////////////////////////////////////////////////////
-// Fonction virtuelle : fb_GereErreurTransaction
-// Description : Gère une erreur de transaction
-// Paramètres : aexc_exception : L'exception générée
-//              aado_Dataset   : le dataset de la transaction en cours
-//              Résultat       : Erreur gérée ou non
-///////////////////////////////////////////////////////////////////////////////////
-function TF_CustomFrameWork.fb_GereErreurTransaction ( const aexc_exception : Exception ; const aado_Dataset : TCustomADODataset ) : Boolean ;
-begin
-  Result := False ;
-End ;
 
-//////////////////////////////////////////////////////////////////////////////////
-// Evènement : p_RefreshLoaded
-// Description : Evènement qui se produit en mode assynchrone quand tous les enregistrements ont été chargés
-// Paramètres  : DataSet     : La Dataset ADO du mode assynchrone
-//               Error       : Erreur si EventStatus est à esErrorsOccured
-//               EventStatus : Evènements de la command SQL
-//////////////////////////////////////////////////////////////////////////////////
-procedure TF_CustomFrameWork.p_RefreshLoaded(DataSet: TCustomADODataSet;
-  const Error: Error; var EventStatus: TEventStatus);
-var lt_Arg : Array [0..1] of String ;
-Begin
-  if not DataSet.Active
-  and ( EventStatus <> esErrorsOccured ) Then
-    Exit ;
-  gb_Fetching := False ;
-  try
-    if assigned ( ge_oldfetchComplete ) Then
-      ge_oldfetchComplete ( Dataset, Error, EventStatus );
-  Except
-    on e: Exception do
-      fcla_GereException ( e, Dataset );
-  End ;
-
-  gb_DatasourceActif := True ;
-  if EventStatus = esErrorsOccured  Then
-    Begin
-      lt_Arg [ 0 ] := 'du Datasource principal ' + Dataset.Name ;
-      lt_Arg [ 1 ] := Self.Name ;
-      ShowMessage ( fs_RemplaceMsg ( GS_ERREUR_OUVERTURE + #13#10 + GS_FORM_ABANDON_OUVERTURE, lt_Arg ));
-      gb_Close := True ;
-    End ;
-
-  ge_FetchEvent.SetEvent ;
-
-End ;
-
-//////////////////////////////////////////////////////////////////////////////////
-// Evènement : p_FetchProgressLoaded
-// Description : Evènement qui se produit en mode assynchrone quand des enregistrements ont été chargés
-// Paramètres  : DataSet     : La Dataset ADO du mode assynchrone
-//               ProGress    : Progression, nombre d'enregistrements chargés
-//               MaxProgress : Total voulu
-//               EventStatus : Evènements de la command SQL
-//////////////////////////////////////////////////////////////////////////////////
-procedure TF_CustomFrameWork.p_FetchProgressLoaded(DataSet: TCustomADODataSet; ProGress, MaxProgress : Integer; var EventStatus: TEventStatus);
-Begin
-  if not DataSet.Active Then
-    Exit ;
-  gb_Fetching := True ;
-  try
-    if assigned ( ge_oldfetchProgress ) Then
-      ge_oldfetchProgress ( Dataset, Progress, MaxProgress, EventStatus );
-  Except
-    on e: Exception do
-      fcla_GereException ( e, Dataset );
-  End ;
-
-  if EventStatus <> esErrorsOccured  Then
-    Begin
-      if ProGress >= gi_AsynchroneEnregistrements Then
-        Begin
-          gb_DatasourceActif := True ;
-          ge_FetchEvent.SetEvent ;
-        End ;
-    End ;
-
-
-End ;
-
-{$ENDIF}
 
 procedure TF_CustomFrameWork.p_OpenDatasource ;
 Begin
-
-{$IFDEF EADO}
-  if ( gdat_DatasetPrinc is TCustomADODataset ) Then
-    if not ( eoAsyncExecute in ( gdat_DatasetPrinc as TCustomADODataset ).ExecuteOptions ) Then
-      Begin
-        gb_DatasourceActif := True ;
-      End;
-//  else
-{$ELSE}
-  gb_DatasourceActif := True ;
-{$ENDIF}
+  if Assigned ( ge_OpenMainDataset )
+   then gb_DatasourceActif := ge_OpenMainDataset ( gdat_DatasetPrinc )
+   else gb_DatasourceActif := True ;
 End ;
 
 function TF_CustomFrameWork.fb_False: Boolean;
@@ -3954,17 +3681,17 @@ begin
                   ddl_DataLink.DataSource := ds_DataSourcesWork ;
                  fb_ChargeDonnees;
               finally
-      {$IFDEF EADO}
                 if  gb_ModeAsynchrone Then
-                  try
-                    ( gdat_DatasetPrinc as TCustomADODataset ).ExecuteOptions := geo_ExecuteTemp ;
-                    gb_ModeAsynchrone := False ;
+                  if Assigned ( ge_SetAsyncMainDataset ) then
+                   try
+                    gb_ModeAsynchrone := ge_SetAsyncMainDataset ( gdat_DatasetPrinc );
                     if assigned ( ge_OldAfterOpen ) Then
                       ge_OldAfterOpen (gdat_DatasetPrinc );
-                  Except
-                    On e: Exception do fcla_GereException ( e, gdat_DatasetPrinc );
-                  End ;
-      {$ENDIF}
+                   Except
+                      On e: Exception do fcla_GereException ( e, gdat_DatasetPrinc );
+                   End ;
+
+
 
               End ;
 
@@ -4136,9 +3863,7 @@ end;
 function TF_CustomFrameWork.fb_MAJDatasource ( const ads_Datasource : TDatasource; const as_ClePrimaire : String ; const avar_Enregistrement : Variant ):Boolean;
 var lvar_Enregistrement : Variant ;
     li_i                : Integer ;
-{$IFDEF EADO}
-    ls_Sort : String ;
-{$ENDIF}
+
 Begin
   Result := True ;
   for li_i := 0 to high ( gt_Groupes ) do
@@ -4156,11 +3881,8 @@ Begin
   and fb_PeutMettreAjourDatasource ( ads_Datasource ) Then
     Begin
       p_DeleteOtherDatasources();
+      with ads_Datasource do
       try
-{$IFDEF EADO}
-        if ( ads_Datasource.DataSet is TCustomADODataset ) Then
-          ls_Sort := ( ads_Datasource.DataSet as TCustomADODataset ).Sort ;
-{$ENDIF}
         if VarIsArray ( avar_Enregistrement ) Then
           Begin
             lvar_Enregistrement := VarArrayCreate ( [ 0, VarArrayHighBound ( avar_Enregistrement, 1 ) ], varVariant );
@@ -4172,20 +3894,7 @@ Begin
         Else
           lvar_Enregistrement := avar_Enregistrement ;
           // Le requery est plus rapide que le close open
-{$IFDEF EADO}
-        if ads_Datasource.DataSet.Active
-        and ( ads_Datasource.DataSet is TCustomADODataset ) Then
-          ( ads_Datasource.DataSet as TCustomADODataset ).Requery
-        Else
-{$ENDIF}
-          Begin
-            ads_Datasource.DataSet.Close ;
-            ads_Datasource.DataSet.Open ;
-          End ;
-{$IFDEF EADO}
-        if ( ads_Datasource.DataSet is TCustomADODataset ) Then
-          ( ads_Datasource.DataSet as TCustomADODataset ).Sort := ls_Sort ;
-{$ENDIF}
+        fb_RefreshDataset(DataSet);
         if not ads_Datasource.DataSet.IsEmpty
         and ( VarIsArray ( lvar_Enregistrement ) or ( lvar_Enregistrement <> Null ))
          Then
@@ -4204,18 +3913,9 @@ Begin
 End ;
 
 function TF_CustomFrameWork.fb_MAJDatasource ( const adat_Dataset : TDataSet ):Boolean;
-var lbkm_Enregistrement : TBookmarkStr ;
-    lb_Eof   ,
-    lb_Empty : Boolean ;
-    li_i    : Integer;
-{$IFDEF EADO}
-    ls_Sort : String ;
-{$ENDIF}
+var li_i    : Integer;
 Begin
   Result   := True ;
-  lb_Empty := False ;
-  lb_Eof   := False ;
-  lbkm_Enregistrement := '' ;
   for li_i := 0 to gFWSources.Count - 1 do
    with gFWSources.items [ li_i ] do
      if assigned ( ddl_DataLink )
@@ -4227,29 +3927,8 @@ Begin
   if   ( not adat_Dataset.Active or ( adat_Dataset.State = dsBrowse )) Then
     Begin
       try
-{$IFDEF EADO}
-        if ( adat_DataSet is TCustomADODataset ) Then
-          ls_Sort := ( adat_DataSet as TCustomADODataset ).Sort ;
-{$ENDIF}
-        lbkm_Enregistrement := adat_DataSet.Bookmark ;
-        lb_Empty := adat_DataSet.IsEmpty ;
-        lb_Eof   := adat_DataSet.EOF ;
 
-{$IFDEF EADO}
-        if ( adat_Dataset is TCustomADODataset ) Then
-          Begin
-            ( adat_Dataset as TCustomADODataset ).Requery;
-          End
-        Else
-{$ENDIF}
-          Begin
-            adat_Dataset.Close ;
-            adat_Dataset.Open ;
-          End ;
-{$IFDEF EADO}
-        if ( adat_DataSet is TCustomADODataset ) Then
-          ( adat_DataSet as TCustomADODataset ).Sort := ls_Sort ;
-{$ENDIF}
+        fb_RefreshDataset(adat_DataSet);
       except
         On E: Exception do
           Begin
@@ -4258,13 +3937,6 @@ Begin
             f_GereExceptionEvent ( E, adat_Dataset, ge_NilEvent, not gb_DBMessageOnError );
           End ;
        End ;
-      if not lb_Empty Then
-        try
-          adat_DataSet.Bookmark := lbkm_Enregistrement ;
-        Except
-        End ;
-      if lb_Eof Then
-        adat_DataSet.Last ;
     End ;
 End ;
 
@@ -4287,8 +3959,9 @@ begin
     End ;
 {$IFDEF EADO}
   if  assigned ( gdat_DatasetPrinc )
-  and ( gdat_DatasetPrinc is TCustomADODataset ) Then
-    gdat_DatasetRefreshOnError := gdat_DatasetPrinc as TCustomADODataset
+  and assigned ( ge_MainDatasetOnError )
+  and ge_MainDatasetOnError ( gdat_DatasetPrinc ) Then
+    gdat_DatasetRefreshOnError := gdat_DatasetPrinc
   Else
     gdat_DatasetRefreshOnError := nil ;
 {$ENDIF}
@@ -4314,11 +3987,7 @@ begin
            with gFWSources [CST_FRAMEWORK_DATASOURCE_PRINC] do
       //      if not gdat_DatasetPrinc.Active Then
               Begin
-{$IFDEF EADO}
-                if ( gdat_DatasetPrinc is TCustomADODataset )
-                and assigned (( gdat_DatasetPrinc as TCustomADODataset ).Connection ) Then
-                  ( gdat_DatasetPrinc as TCustomADODataset ).Connection.Open ;
-{$ENDIF}
+                p_AutoConnection(gdat_DatasetPrinc);
                 // Met à jour le datasource principal
                 gb_Close := not fb_MAJDatasource ( ddl_DataLink.DataSource, s_Cle, var_Enregistrement );
               End ;
@@ -4374,22 +4043,7 @@ begin
                      if  assigned ( ds_Liste.DataSet )
                      // et actif
                      and ds_Liste.DataSet.Active Then
-                       Begin
-{$IFDEF EADO}
-                          if ds_Liste.DataSet is TCustomADODataset Then
-                            Begin
-                              ls_Sort := ( ds_Liste.DataSet as TCustomADODataset ).Sort ;
-                              ( ds_Liste.DataSet as TCustomADODataset ).Requery ;
-                              ( ds_Liste.DataSet as TCustomADODataset ).Sort := ls_Sort ;
-                            End
-                          Else
-{$ENDIF}
-                            Begin
-                              // Met à jour en ouvrant et fermant
-                              ds_Liste.DataSet.Close ;
-                              ds_Liste.DataSet.Open ;
-                            End ;
-                       End ;
+                       fb_RefreshDataset(ds_Liste.DataSet);
                    End ;
               End ;
 
@@ -6451,8 +6105,9 @@ begin
   // Plus utile avec la gestion par zones de saisie disablées
 {$IFDEF EADO}
   if  assigned ( DatasetMain )
-  and ( DatasetMain is TCustomADODataset ) Then
-    gdat_DatasetRefreshOnError := DatasetMain as TCustomADODataset
+  and Assigned(ge_MainDatasetOnError)
+  and ge_MainDatasetOnError ( DatasetMain ) Then
+    gdat_DatasetRefreshOnError := DatasetMain
   Else
     gdat_DatasetRefreshOnError := nil ;
 {$ENDIF}

@@ -10,6 +10,9 @@ interface
 {$I ..\extends.inc}
 
 uses SysUtils,
+  {$IFDEF EADO}
+     ADODB,
+  {$ENDIF}
   {$IFDEF DELPHI_9_UP}
      WideStrings,
   {$ENDIF}
@@ -49,6 +52,7 @@ function  fb_InitZConnection ( const Connexion : TComponent ; const Inifile : TC
 procedure p_InitZComponent ( const Connexion : TComponent ; const Inifile : TCustomInifile ; const Test : Boolean );
 function fs_CollationEncode ( const Connexion : TComponent ; const as_StringsProp : String ) : String;
 function fb_TestZComponent ( const Connexion : TComponent ; const lb_ShowMessage : Boolean ) : Boolean;
+function fs_IniSetConnection ( const accx_Connection : TComponent ) : String ;
 
 const
         CST_ZCONNECTION = 'ZConnection';
@@ -83,9 +87,41 @@ uses Variants,  fonctions_erreurs, fonctions_string,
   {$ELSE}
   unite_messages_delphi,
   {$ENDIF}
+  {$IFDEF EADO}
+     AdoConEd,
+  {$ENDIF}
    fonctions_proprietes, TypInfo, fonctions_db,
    Dialogs, unite_variables,
    fonctions_init;
+
+
+
+function fs_IniSetConnection ( const accx_Connection : TComponent ) : String ;
+Begin
+  Result := '' ;
+{$IFDEF ZEOS}
+  if accx_Connection.ClassNameIs(CST_ZCONNECTION) then
+    Begin
+      Result := fb_InitZConnection( accx_Connection, FIniFile, False );
+    End;
+{$ENDIF}
+{$IFDEF EADO}
+  if accx_Connection is TADOConnection then
+    Begin
+      if EditConnectionString( accx_Connection as TADOConnection ) Then
+        Begin
+          Result := ( accx_Connection as TADOConnection ).ConnectionString;
+        End;
+    End;
+{$ENDIF}
+{$IFDEF SQLDB}
+  if accx_Connection is TSQLConnection then
+    Begin
+//      Result := fb_InitSelSQLConnection( accx_Connection as TSQLConnection, FIniFile );
+    End;
+{$ENDIF}
+
+End;
 
 {$IFDEF ZEOS}
 ////////////////////////////////////////////////////////////////////////////////
@@ -207,7 +243,7 @@ Begin
   aacx_Connection.ConnectionString := f_IniReadSectionStr( 'parametres' ,'String d''acces', '' );
   // Ouverture de la fenêtre de dialogue de connexion
   if ( aacx_Connection.ConnectionString = '' ) Then
-    EdiTConnectionString(aacx_Connection) ;
+    EditConnectionString(aacx_Connection) ;
   Result := aacx_Connection.ConnectionString <> '';
 End;
 {$ENDIF}
