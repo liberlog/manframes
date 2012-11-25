@@ -38,7 +38,7 @@ const
 {$ENDIF}
 
       // ADO ZEOS CSV
-type TDatasetType = ({$IFNDEF FPC}dtADO,{$ENDIF}{$IFDEF ZEOS}dtZEOS,{$ENDIF}{$IFDEF IBX}dtIBX,{$ENDIF}dtCSV);
+type TDatasetType = ({$IFNDEF FPC}dtADO,{$ENDIF}{$IFDEF ZEOS}dtZEOS,{$ENDIF}{$IFDEF DBNET}dtDBNet,{$ENDIF}{$IFDEF IBX}dtIBX,{$ENDIF}dtCSV);
      TCreateConnection = procedure ( const AOwner : TComponent ; var adtt_DatasetType : TDatasetType ; var AQuery : TDataset; var AConnection : TComponent );
     // Connection parameters
 
@@ -64,10 +64,10 @@ type
           fs_DataPassword : String ;
           fs_Database     : String ;
           fs_DataDriver   : String ;
+          FDataSecure     : Boolean;
        protected
        public
          constructor Create(Collection: TCollection);override;
-         destructor Destroy;override;
          property Module: TMDataSources read FMDataSources;
          property DatasetType : TDatasetType read fdtt_DatasetType;
          property QueryCopy : TDataset read fdat_QueryCopy;
@@ -76,6 +76,7 @@ type
          property Connection : TComponent read fcom_Connection write fcom_Connection;
          property DataURL : String read fs_dataURL write fs_dataURL;
          property DataPort : Integer read fi_DataPort write fi_DataPort;
+         property DataSecure : Boolean read FDataSecure write FDataSecure;
          property DataUser : String read fs_DataUser write fs_DataUser;
          property DataPassword : String read fs_dataPassword write fs_dataPassword;
          property DataBase : String read fs_dataBase write fs_dataBase;
@@ -238,11 +239,9 @@ end;
 constructor TDSSource.Create(Collection: TCollection);
 begin
   inherited Create(Collection);
-end;
-
-destructor TDSSource.Destroy;
-begin
-  inherited Destroy;
+  FDataSecure:=False;
+  fdat_QueryCopy  := nil;
+  fcom_Connection := nil;
 end;
 
 {$IFNDEF CSV}

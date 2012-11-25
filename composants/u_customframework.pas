@@ -102,6 +102,7 @@ const
   ge_MainDatasetOnError : TSpecialFuncDataset = nil;
   ge_SetMainDatasetEvents : TSpecialProcDataset = nil;
   ge_UnsetMainDatasetEvents : TSpecialProcDataset = nil;
+  CST_DBPROPERTY_PRIMARYKEY = 'PrimaryKey';
 
 
 
@@ -2030,6 +2031,7 @@ procedure TF_CustomFrameWork.p_AffecteEvenementsWorkDatasources ( );
 var li_i, li_j : Integer;
     li_CompteCol : Integer;
     lt_Arg : Array [0..2] of String ;
+    ls_temp:String;
     lmet_MethodeDistribueeSearch: TMethod;
 Begin
   lmet_MethodeDistribueeSearch.Data := Self;
@@ -2094,15 +2096,26 @@ Begin
               e_BeforeCancel := ddl_DataLink.Dataset.BeforeCancel ;
               ddl_DataLink.Dataset.BeforeCancel := p_DataWorkBeforeCancel ;
             End;
-
-          ddl_DataLink.Dataset.AfterInsert  := p_DataWorkAfterInsert ;
-          ddl_DataLink.Dataset.BeforeInsert := p_DataWorkBeforeInsert ;
-          ddl_DataLink.Dataset.BeforePost   := p_DataWorkBeforePost ;
-          ddl_DataLink.Dataset.AfterPost    := p_DataWorkAfterPost ;
-          ddl_DataLink.Dataset.AfterCancel  := p_DataWorkAfterCancel ;
-          ddl_DataLink.Dataset.AfterEdit    := p_DataWorkAfterEdit ;
-          ddl_DataLink.Dataset.BeforePost   := p_DataWorkBeforePost ;
-          ddl_DataLink.Dataset.BeforeDelete := p_DataWorkBeforeDelete ;
+          with ddl_DataLink.Dataset do
+           Begin
+             if  assigned ( GetPropInfo ( ddl_DataLink.Dataset, CST_DBPROPERTY_PRIMARYKEY ))
+             and ( stl_Cle.Count > 0 ) Then
+               Begin
+                 for li_j := 0 to stl_Cle.Count - 1 do
+                  if li_j = 0
+                   Then ls_temp:=stl_Cle[li_j]
+                   Else AppendStr(ls_temp,';'+stl_Cle[li_j]);
+                 p_SetComponentProperty( ddl_DataLink.Dataset, CST_DBPROPERTY_PRIMARYKEY, ls_temp );
+               End;
+            AfterInsert  := p_DataWorkAfterInsert ;
+            BeforeInsert := p_DataWorkBeforeInsert ;
+            BeforePost   := p_DataWorkBeforePost ;
+            AfterPost    := p_DataWorkAfterPost ;
+            AfterCancel  := p_DataWorkAfterCancel ;
+            AfterEdit    := p_DataWorkAfterEdit ;
+            BeforePost   := p_DataWorkBeforePost ;
+            BeforeDelete := p_DataWorkBeforeDelete ;
+           end;
           ddl_DataLink.DataSource.OnStateChange := p_DatasourceWorksStateChange ;
           if assigned ( nav_Saisie ) Then
             Begin

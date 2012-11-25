@@ -16,8 +16,8 @@ uses
 
 {$IFDEF VERSIONS}
 const
-      gver_fonctions_zeos : T_Version = ( Component : 'IBX Connect package.' ;
-                                         FileUnit : 'fonctions_ibx' ;
+      gver_fonctions_zeos : T_Version = ( Component : 'ZEOS Connect package.' ;
+                                         FileUnit : 'fonctions_zeos' ;
                         		 Owner : 'Matthieu Giroux' ;
                         		 Comment : 'Just add the package.' ;
                         		 BugsStory   : 'Version 1.0.0.0 : ZEOS Version.'  ;
