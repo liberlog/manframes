@@ -778,6 +778,9 @@ type
     procedure p_BtnSearch(Sender: TObject); // Recherche
     procedure p_DBEditBeforeEnter(Sender : TObject);
     procedure p_DBEditBeforeExit (Sender : TObject);
+    {$IFDEF FPC}
+    property AutoSize default False;
+    {$ENDIF}
   end;
 const
   CST_QUERY_FIN = 'End' ;
@@ -1835,6 +1838,7 @@ end;
 procedure TF_CustomFrameWork.p_InitFrameWork ( const Sender : TComponent );
 Begin
   {$IFDEF FPC}
+  AutoSize := False;
   gb_CloseMessage := False;
   {$ENDIF}
   gb_DBMessageOnError   := True ;
@@ -6280,7 +6284,7 @@ begin
   if ( gds_SourceWork <> nil )
   and assigned ( gds_SourceWork.DataSet ) Then
     Begin
-      lobj_SQL := fobj_getComponentObjectProperty ( gds_SourceWork.DataSet, 'SQL' );
+      lobj_SQL := fobj_getComponentObjectProperty ( gds_SourceWork.DataSet, CST_DBPROPERTY_SQL );
       if ( lobj_SQL is TStrings ) Then
         gstl_SQLWork := lobj_SQL as TStrings
 {$IFDEF DELPHI_9_UP}
