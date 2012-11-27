@@ -523,6 +523,7 @@ type
     function fvar_GetEnregistrement1 : Variant ;
     function fs_Lettrage(const ach_Lettrage: Char;const ai64_Compteur : Int64 ; const ali_TailleLettrage : Longint ): String ;
     function fb_CacheRecherche ( const ads_Datasource : TDatasource ): Boolean ;
+    procedure p_DatasourceWorksStateChange(Sender: TObject);
     procedure p_DataWorkNavClick(Sender: TObject; Button : TExtNavigateBtn);
     procedure p_DataWorkBeforeInsert(DataSet: TDataSet);
     procedure p_DataWorkAfterInsert(DataSet: TDataSet);
@@ -543,7 +544,6 @@ type
     procedure p_ActiveGrille ( const adbgd_DataGrid : TCustomGrid ; const anv_navigator, anv_SaisieRecherche : TCustomPanel );
     procedure p_CreationEditRecherche;
     procedure p_PlacerFocus(const actrl_Focus: TWinControl);
-    procedure p_DatasourceWorksStateChange(Sender: TObject);
     procedure p_BugActivecontrolNameEmpty(const DataSet: TDataSet;
       const aCtrl_Focus: TWinControl);
     procedure p_SurSortieDBEdit(const acon_dbcontrol: TWinControl);

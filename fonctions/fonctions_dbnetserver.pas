@@ -33,16 +33,29 @@ uses
     StdCtrls,
     ZeosDataServer,
     ZConnection,
-    fonctions_dbcomponents;
+    fonctions_dbcomponents,
+    u_moduledbnetserver;
 
 
 
 procedure p_CreateOnLineconnection ( const AOwner : TComponent ; var adtt_DatasetType : TDatasetType ; var AQuery : TDataset; var AConnection : TComponent );
+var LZConnection : TZConnection;
 Begin
   adtt_DatasetType := dtDBNet;
   AQuery := nil;
   AConnection :=TZeosDataServer.Create(AOwner);
-  ( AConnection as TZeosDataServer ).ZeosDBConnection := TZConnection.Create(AOwner);
+  LZConnection:= TZConnection.Create(AOwner);
+  ( AConnection as TZeosDataServer ).ZeosDBConnection := LZConnection;
+  DataModuleServer := TDataModuleServer.create ( nil );
+  with AConnection as TZeosDataServer, DataModuleServer do
+    Begin
+      OnCustInternalCall := ZeosDataServerCustInternalCall;
+      OnUserLogonCall    := ZeosDataServerUserLogonCall;
+    end;
+  with LZConnection, DataModuleServer do
+    Begin
+      OnLogin := ZConnectionLogin;
+    end;
 end;
 
 initialization
@@ -50,5 +63,7 @@ initialization
  {$IFDEF VERSIONS}
  p_ConcatVersion ( gVer_fonctions_dbnetserver );
  {$ENDIF}
+finalization
+  DataModuleServer.free;
 end.
 
