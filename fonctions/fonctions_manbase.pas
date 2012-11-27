@@ -235,8 +235,6 @@ begin
   Result := fds_CreateDataSourceAndDataset ( as_Table, as_NameEnd, adat_QueryCopy, acom_Owner );
   case adtt_DatasetType of
     dtCSV  : p_setComponentProperty ( Result.Dataset, 'FileName', as_DataURL + as_Table + gs_DataExtension );
-  Else
-    p_SetSQLQuery(Result.Dataset, 'SELECT * FROM ' + as_Table );
   End;
 end;
 

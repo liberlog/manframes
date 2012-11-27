@@ -2100,8 +2100,21 @@ Begin
               e_BeforeCancel := ddl_DataLink.Dataset.BeforeCancel ;
               ddl_DataLink.Dataset.BeforeCancel := p_DataWorkBeforeCancel ;
             End;
+          with ddl_DataLink do
+           Begin
+            ls_temp := fs_getSQLQuery ( Dataset );
+            if ls_temp = '' Then
+             Begin
+               ls_temp := '*' ;
+               for li_j := 0 to FieldsDefs.Count - 1 do
+                if li_j = 0
+                  Then ls_temp := FieldsDefs [ li_j ].FieldName
+                  Else AppendStr(ls_temp,','+FieldsDefs [ li_j ].FieldName);
+               p_SetSQLQuery(Dataset,'SELECT ' +ls_temp+' FROM ' + Table );
+             End;
           with ddl_DataLink.Dataset do
            Begin
+
              if  assigned ( GetPropInfo ( ddl_DataLink.Dataset, CST_DBPROPERTY_PRIMARYKEY ))
              and ( stl_Cle.Count > 0 ) Then
                Begin
@@ -2120,6 +2133,7 @@ Begin
             BeforePost   := p_DataWorkBeforePost ;
             BeforeDelete := p_DataWorkBeforeDelete ;
            end;
+             end;
           ddl_DataLink.DataSource.OnStateChange := p_DatasourceWorksStateChange ;
           if assigned ( nav_Saisie ) Then
             Begin
@@ -3346,7 +3360,8 @@ Begin
     Begin
       if not ab_Efface
       and ( adat_Dataset.State = dsInsert )
-      and ( adat_Dataset.FindField ( astl_Cle [ li_i ] ).DataType = ftString ) Then
+      and assigned ( adat_Dataset.FindField ( astl_Cle [ li_i ] ))
+      and ( adat_Dataset.FieldByName ( astl_Cle [ li_i ] ).DataType = ftString ) Then
         adat_Dataset.FindField ( astl_Cle [ li_i ] ).AsString := Trim ( adat_Dataset.FindField ( astl_Cle [ li_i ] ).AsString );
 {      Result := True ;
       for li_j := 0 to FieldsDefs.Count - 1   do
