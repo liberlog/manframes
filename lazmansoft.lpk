@@ -25,7 +25,7 @@
     </CompilerOptions>
     <Description Value="Full management software RAD Framework"/>
     <License Value="LGPL"/>
-    <Version Minor="9" Release="4" Build="7"/>
+    <Version Minor="9" Release="4" Build="8"/>
     <Files Count="4">
       <Item1>
         <Filename Value="fonctions/fonctions_Objets_Dynamiques.pas"/>
