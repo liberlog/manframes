@@ -2107,9 +2107,11 @@ Begin
              Begin
                ls_temp := '*' ;
                for li_j := 0 to FieldsDefs.Count - 1 do
-                if li_j = 0
-                  Then ls_temp := FieldsDefs [ li_j ].FieldName
-                  Else AppendStr(ls_temp,','+FieldsDefs [ li_j ].FieldName);
+                with FieldsDefs [li_j] do
+                  if ColSelect Then
+                    if ls_temp = '*'
+                      Then ls_temp := FieldName
+                      Else AppendStr(ls_temp,','+FieldName);
                p_SetSQLQuery(Dataset,'SELECT ' +ls_temp+' FROM ' + Table );
              End;
           with ddl_DataLink.Dataset do

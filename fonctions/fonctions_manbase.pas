@@ -71,7 +71,7 @@ type
     i_NumTag : Integer ;
     i_ShowCol, i_ShowSearch, i_ShowSort, i_HelpIdx : Integer ;
     s_LookupTable, s_LookupKey, s_LookupDisplay: String;
-    b_ColMain, b_ColCreate, b_ColUnique : Boolean;
+    b_ColMain, b_ColCreate, b_ColUnique, b_colSelect : Boolean;
   public
     constructor Create(ACollection: TCollection); override;
   published
@@ -89,6 +89,7 @@ type
     property LookupDisplay : String read s_LookupDisplay write s_LookupDisplay;
     property ColMain : Boolean read b_ColMain write b_ColMain;
     property ColCreate : Boolean read b_ColCreate write b_ColCreate;
+    property ColSelect : Boolean read b_colSelect write b_colSelect default True;
     property ColUnique : Boolean read b_ColUnique write b_ColUnique;
   End;
   TFWFieldColumnClass = class of TFWFieldColumn;
@@ -121,6 +122,7 @@ begin
   i_ShowCol :=-1;
   i_ShowSearch :=-1;
   i_ShowSort :=-1;
+  b_colSelect:=True;
 end;
 
 { TFWFieldColumns }
