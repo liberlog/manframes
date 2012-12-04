@@ -69,6 +69,7 @@ uses
   fonctions_erreurs,
   fonctions_db,
   U_GroupView,
+  U_FormAdapt,
   SyncObjs, fonctions_init,
   u_framework_components,
   u_multidata;
@@ -386,7 +387,7 @@ type
 
   { TF_CustomFrameWork }
 
-  TF_CustomFrameWork = class({$IFDEF SFORM}TSuperForm{$ELSE}{$IFDEF TNT}TTntForm{$ELSE}TForm{$ENDIF}{$ENDIF}, IFWFormVerify)
+  TF_CustomFrameWork = class(TF_FormAdapt, IFWFormVerify)
   private
     gs_connection         : String;
     gb_PasUtiliserProps   : Boolean;
@@ -2127,7 +2128,6 @@ Begin
                  p_SetComponentProperty( ddl_DataLink.Dataset, CST_DBPROPERTY_PRIMARYKEY, ls_temp );
                End;
             AfterInsert  := p_DataWorkAfterInsert ;
-            BeforeInsert := p_DataWorkBeforeInsert ;
             BeforePost   := p_DataWorkBeforePost ;
             AfterPost    := p_DataWorkAfterPost ;
             AfterCancel  := p_DataWorkAfterCancel ;
@@ -3670,9 +3670,12 @@ begin
        Else
         Begin
           for li_i := 0 to gFWSources.Count - 1 do
-            if  assigned ( gFWSources.items [ li_i ].ddl_DataLink )
-            and assigned ( gFWSources.items [ li_i ].ddl_DataLink.DataSet ) Then
-              gFWSources.items [ li_i ].ddl_DataLink.DataSet.Open ;
+            if assigned ( gFWSources.items [ li_i ].ddl_DataLink.DataSet ) Then
+              with gFWSources.items [ li_i ].ddl_DataLink.DataSet do
+             Begin
+              Open ;
+              BeforeInsert := p_DataWorkBeforeInsert ;
+             end;
 
             if  gb_ModeAsynchrone
             and not gb_DatasourceActif Then
