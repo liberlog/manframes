@@ -2021,7 +2021,7 @@ begin
     Begin
       Result := DBSources.Add as TFWSource;
       Result.gr_Connection := lds_Connection;
-      Result.Datasource := fds_CreateDataSourceAndTable ( as_Table, dataURL + IntToStr ( lds_Connection.Index ), IntToStr ( DBSources.Count - 1 ), DatasetType, QueryCopy, Self);
+      Result.Datasource := fds_CreateDataSourceAndTable ( as_Table, DataBase + IntToStr ( lds_Connection.Index ), IntToStr ( DBSources.Count - 1 ), DatasetType, QueryCopy, Self);
       Result.Table := as_Table;
       if DatasetType = dtCSV Then
         Begin

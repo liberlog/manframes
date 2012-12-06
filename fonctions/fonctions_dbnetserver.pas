@@ -45,10 +45,13 @@ Begin
   AQuery := nil;
   AConnection :=TZeosDataServer.Create(AOwner);
   LZConnection:= TZConnection.Create(AOwner);
-  ( AConnection as TZeosDataServer ).ZeosDBConnection := LZConnection;
+
   DataModuleServer := TDataModuleServer.create ( nil );
   with AConnection as TZeosDataServer, DataModuleServer do
     Begin
+      ZeosDBConnection := LZConnection;
+      AuthRequired:=False;
+      LocalOnly:=False;
       OnCustInternalCall := ZeosDataServerCustInternalCall;
       OnUserLogonCall    := ZeosDataServerUserLogonCall;
     end;
