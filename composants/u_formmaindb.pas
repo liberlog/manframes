@@ -43,9 +43,10 @@ uses
                                        FileUnit : 'U_FormMainDB' ;
                                        Owner : 'Matthieu Giroux' ;
                                        Comment : 'Fiche principale deuxième version.' ;
-                                       BugsStory :'1.0.0.0 : Gestion DB.';
+                                       BugsStory :'1.0.0.1 : Removing IsImplementorOf.' +
+                                                  '1.0.0.0 : Gestion DB.';
                                        UnitType : 3 ;
-                                       Major : 1 ; Minor : 0 ; Release : 0 ; Build : 0 );
+                                       Major : 1 ; Minor : 0 ; Release : 0 ; Build : 1 );
 
 {$ENDIF}
 function fs_IniSetConnection ( const accx_Connection : TComponent ) : String ;
@@ -318,13 +319,12 @@ begin
   // Si le composant est détruit
   inherited Notification(AComponent, Operation);
 
-  if Operation <> opRemove Then
+  if ( Operation <> opRemove )
+  or ( csDestroying in ComponentState ) Then
     Exit;
 
-  if (Assigned(FConnection)) and (AComponent.IsImplementorOf(Connection)) then
-    FConnection := nil;
-  if (Assigned(FConnector )) and (AComponent.IsImplementorOf(Connector )) then
-    FConnector := nil;
+  if Assigned(FConnection) and (AComponent = Connection) then FConnection := nil;
+  if Assigned(FConnector ) and (AComponent = Connector ) then FConnector  := nil;
 end;
 
 

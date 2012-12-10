@@ -80,7 +80,8 @@ const
                                       FileUnit : 'U_CustomFrameWork' ;
                                       Owner : 'Matthieu Giroux' ;
                                       Comment : 'Fiche personnalisée avec méthodes génériques et gestion de données.' ;
-                                      BugsStory : '1.1.0.4 : Centrelazing from XML Frames.' + #13#10
+                                      BugsStory : '1.1.0.5 : Removing IsImplementorOf.' +
+                                                  '1.1.0.4 : Centrelazing from XML Frames.' + #13#10
                                                 + '1.1.0.3 : UTF 8.' + #13#10
                                                 + '1.1.0.2 : Add procedure to add group view.' + #13#10
                                                 + '1.1.0.1 : Renaming Columns to Sources and creating Linked Sources.' + #13#10
@@ -94,7 +95,7 @@ const
                                                 + '0.1.1.1 : Gestion mieux centralisée sur Datasource, Datasource2,etc.' + #13#10
                                                 + '0.1.0.1 : Version non testée' + #13#10 ;
                                        UnitType : 3 ;
-                                       Major : 1 ; Minor : 1 ; Release : 0; Build : 4 );
+                                       Major : 1 ; Minor : 1 ; Release : 0; Build : 5 );
 
 {$ENDIF}
   ge_LoadMainDataset : TSpecialProcDataset = nil;
@@ -1485,28 +1486,33 @@ end;
 procedure TFWSource.Notification ( AComponent : TComponent ; Operation : TOperation );
 begin
   inherited Notification(AComponent, Operation);
-  if  ( Assigned                   ( DataGrid ))
-  and ( AComponent.IsImplementorOf ( DataGrid ))
+
+  if ( Operation <> opRemove )
+  or ( csDestroying in ComponentState ) Then
+    Exit;
+
+  if    Assigned   ( DataGrid )
+  and ( AComponent = DataGrid )
    then
     DataGrid := nil;
-  if  ( Assigned                   ( Datasource ))
-  and ( AComponent.IsImplementorOf ( Datasource ))
+  if    Assigned   ( Datasource )
+  and ( AComponent = Datasource )
    then
     Datasource := nil;
-  if  ( Assigned                   ( DataNavigator ))
-  and ( AComponent.IsImplementorOf ( DataNavigator ))
+  if    Assigned   ( DataNavigator )
+  and ( AComponent = DataNavigator )
    then
     DataNavigator := nil;
-  if  ( Assigned                   ( DataNavEdit ))
-  and ( AComponent.IsImplementorOf ( DataNavEdit ))
+  if    Assigned   ( DataNavEdit )
+  and ( AComponent = DataNavEdit )
    then
     DataNavEdit := nil;
-  if  ( Assigned                   ( ControlFocus ))
-  and ( AComponent.IsImplementorOf ( ControlFocus ))
+  if    Assigned   ( ControlFocus )
+  and ( AComponent = ControlFocus )
    then
     ControlFocus := nil;
-  if  ( Assigned                   ( DataPanel ))
-  and ( AComponent.IsImplementorOf ( DataPanel ))
+  if    Assigned   ( DataPanel )
+  and ( AComponent = DataPanel )
    then
     DataPanel := nil;
 end;
