@@ -26,13 +26,13 @@ uses SysUtils,
   Classes ;
 
 
+{$IFDEF VERSIONS}
 const
-  {$IFDEF VERSIONS}
   gVer_fonctions_extdb : T_Version = ( Component : 'Gestion des données d''une fiche' ;
                                          FileUnit : 'fonctions_extdb' ;
       			                 Owner : 'Matthieu Giroux' ;
       			                 Comment : 'Fonctions gestion des données avec les composants visuels.' ;
-      			                 BugsStory :  'Version 1.0.0.0 : Gestion des donnÃ©es rétilisable.';
+      			                 BugsStory :  'Version 1.0.0.0 : Gestion des données réutilisable.';
       			                 UnitType : 1 ;
       			                 Major : 1 ; Minor : 0 ; Release : 0 ; Build : 0 );
 

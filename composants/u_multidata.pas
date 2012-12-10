@@ -24,8 +24,8 @@ uses
 {$ENDIF}
   DB;
 
-const
 {$IFDEF VERSIONS}
+const
       gver_MDataSources : T_Version = ( Component : 'Data Module with connections and cloned queries.' ; FileUnit : 'U_multidonnees' ;
                         			           Owner : 'Matthieu Giroux' ;
                         			           Comment : 'Created from XML file.' ;
