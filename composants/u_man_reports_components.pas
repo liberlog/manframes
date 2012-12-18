@@ -152,6 +152,7 @@ begin
      Begin
        fb_CreateReport(Self,AReport,Grid, DataSource,
                        fobj_getComponentObjectProperty(Grid,CST_PROPERTY_COLUMNS) as TCollection,
+                       AReport.Background.Picture.Bitmap.Canvas,
                        FDBTitle);
      end;
 end;
