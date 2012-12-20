@@ -247,7 +247,7 @@ uses
 {$IFDEF ZEOS}
   ZConnection,
 {$ENDIF}
-{$IFDEF VIRTUALTREES}
+{$IFDEF VERSIONS}
   U_About,
 {$ENDIF}
   unite_variables, unite_messages,
@@ -331,7 +331,14 @@ begin
   {$ENDIF}
 {$ENDIF}
 
-  gs_DefaultUser := gmif_MainFormIniInit.Readstring ( INISEC_PAR, INISEC_UTI, '' );
+  if not assigned ( FMainIni ) Then
+    Begin
+      ShowMessage ( GS_MUST_BE_ROOT );
+      Application.Terminate;
+      Exit;
+    end;
+
+  gs_DefaultUser := FMainIni.Readstring ( INISEC_PAR, INISEC_UTI, '' );
 
   p_FreeConfigFile ;
   SvgFormInfoIni.LaFormCreate ( Self );
@@ -477,7 +484,7 @@ begin
   Finally
   End ;
   // Transformation des icones 32*32 en 16*16 pour le menu
-  {$IFDEF VIRTUALTREES}
+  {$IFDEF VERSIONS}
   im_icones.GetBitmap(2, lbmp_Bitmap);
   gic_F_AboutIcon := TIcon.Create;
   p_BitmapVersIco ( lbmp_Bitmap, gic_F_AboutIcon );

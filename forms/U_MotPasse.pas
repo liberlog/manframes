@@ -19,18 +19,23 @@ uses
   u_multidonnees,
   Classes, Graphics, Forms, Controls, StdCtrls, Buttons, ExtCtrls,
   Dialogs, SysUtils, DBCtrls, fonctions_string, u_framework_components,
-  JvXPCore, JvXPButtons, Messages, fonctions_version,
+  JvXPCore, JvXPButtons, Messages,
+{$IFDEF VERSIONS}
+  fonctions_version,
+{$ENDIF}
   u_buttons_appli, u_buttons_defs ;
 
-  const
-    gVer_F_MotPasse : T_Version = ( Component : 'Fenêtre Mot de passe' ;
-        			 FileUnit : 'U_MotPasse' ;
-                                 Owner : 'Matthieu Giroux' ;
-                                 Comment : 'Fenêtre de validation du Mot de passe.' ;
-        			 BugsStory : 'Version 1.1.0.0 : Passage en non ADO' + #13#10
-                                           + '1.0.0.0 : Gestion du mot de passe plus simple.';
-                                 UnitType : 2 ;
-        			 Major : 1 ; Minor : 1 ; Release : 0 ; Build : 0 );
+{$IFDEF VERSIONS}
+const
+  gVer_F_MotPasse : T_Version = ( Component : 'Fenêtre Mot de passe' ;
+      			 FileUnit : 'U_MotPasse' ;
+                               Owner : 'Matthieu Giroux' ;
+                               Comment : 'Fenêtre de validation du Mot de passe.' ;
+      			 BugsStory : 'Version 1.1.0.0 : Passage en non ADO' + #13#10
+                                         + '1.0.0.0 : Gestion du mot de passe plus simple.';
+                               UnitType : 2 ;
+      			 Major : 1 ; Minor : 1 ; Release : 0 ; Build : 0 );
+{$ENDIF}
 type
   TF_MotPasse = class(TForm)
     lb_valide: TLabel;
@@ -117,7 +122,9 @@ begin
   tx_mdp.Text := '' ;
 end;
 
+{$IFDEF VERSIONS}
 initialization
   p_ConcatVersion ( gVer_F_MotPasse );
+{$ENDIF}
 end.
 

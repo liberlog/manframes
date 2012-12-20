@@ -283,6 +283,10 @@ msgid ""
 "Veuillez resaisir votre mot de passe.\n"
 msgstr ""
 
+#: unite_variables.gs_must_be_root
+msgid "Vous devez être administrateur pour pouvoir continuer."
+msgstr ""
+
 #: unite_variables.gs_navigateur_vers_le_bas
 msgid "Déplacer la ligne vers le bas"
 msgstr ""

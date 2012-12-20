@@ -195,14 +195,14 @@ begin
     Begin
       if  ( Application.MainForm is TF_FormMainIni )
        Then
-        FFormModal := TCustomForm ( fp_CreateChild (  FFormRegisteredName,
+        FFormModal := TCustomForm ( fp_CreateUniqueChild (  FFormRegisteredName,
                                                      'T' +  FFormRegisteredName,
                                                       lfs_newFormStyle , False , aico_Icon ));
     end ;
   if  ( FFormModal = nil )
   and ( Application.MainForm is TF_FormMainIni )
    Then
-    FFormModal := ffor_CreateChild ( FFormClass,
+    FFormModal := ffor_CreateUniqueChild ( FFormClass,
                                                                 lfs_newFormStyle , False , aico_Icon );
 
 end;

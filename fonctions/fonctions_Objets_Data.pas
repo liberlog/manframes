@@ -489,7 +489,7 @@ begin
 {$ENDIF}
             if ( gT_TableauFonctions [ ai_FonctionEnCours ].Types = CST_FCT_TYPE_ADMIN ) Then
               Begin
-                 Result := ffor_CreateChild ( TF_Administration, fsNormal, False, lico_Icon );
+                 Result := ffor_CreateUniqueChild ( TF_Administration, fsNormal, False, lico_Icon );
                  F_Administration := Result as TF_Administration;
               End ;
             if Application.MainForm is TF_FenetrePrincipale Then
@@ -2262,7 +2262,7 @@ begin
        p_ChercheIconeFonction ( ai_FonctionEnCours, lbmp_Icon, False );
        if assigned ( lbmp_Icon ) then
          p_BitmapVersIco(lbmp_Icon, lico_Icon);
-       fp_CreateChild ( gT_TableauFonctions [ ai_FonctionEnCours ].Nom,
+       fp_CreateUniqueChild ( gT_TableauFonctions [ ai_FonctionEnCours ].Nom,
                         'T' + gT_TableauFonctions [ ai_FonctionEnCours ].Nom,
                         lfs_newFormStyle , ab_Ajuster , lico_Icon );
         if assigned ( lico_Icon ) Then
