@@ -1,4 +1,4 @@
-{.$DEFINE CLR}
+﻿{.$DEFINE CLR}
 // ************************************************************************ //
 // Dfm2Pas: WARNING!
 // -----------------
@@ -30,7 +30,7 @@ uses
 {$ELSE}
   Windows, OleDB, JvComponent, StoHtmlHelp, JvScrollBox,
   ImgList, ToolWin, menutbar, StrUtils,
-  JvExExtCtrls, JvSplitter, JvLED, U_ExtScrollBox,
+  JvExExtCtrls, JvSplitter, JvLED,
   StdActns, JvExForms, JvExControls, JvXPCore, Messages,
 {$ENDIF}
 {$IFDEF VERSIONS}

@@ -343,7 +343,7 @@ uses u_formmaindb, U_FormMainIni, fonctions_string, SysUtils, TypInfo, Dialogs,
      U_Administration, fonctions_images , fonctions_init, U_FenetrePrincipale,
      fonctions_dbcomponents, fonctions_db, fonctions_manbase,
      unite_variables, Variants, fonctions_proprietes,
-     fonctions_forms,
+     fonctions_forms, fonctions_system,
      fonctions_Objets_Dynamiques, u_multidonnees ;
 
 /////////////////////////////////////////////////////////////////////////

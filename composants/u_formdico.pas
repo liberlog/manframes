@@ -113,8 +113,6 @@ type
     property DatasourceQuery  ;
     property DBOnEmptyEdit    ;
     property DBOnUsedKey      ;
-    property DBOnEraseFilter;
-    property DBCloseMessage;
     // Affiche-t-on un message sur erreur
     property DBErrorMessage;
 

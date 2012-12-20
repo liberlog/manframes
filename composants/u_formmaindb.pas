@@ -1,4 +1,4 @@
-unit u_formmaindb;
+﻿unit u_formmaindb;
 // Unité de la Version 2 du projet FormMain
 // La version 1 TFormMain n'est pas sa fenêtre parente
 
@@ -155,15 +155,6 @@ uses fonctions_proprietes, fonctions_erreurs, TypInfo,
 function fs_IniSetConnection ( const accx_Connection : TComponent ) : String ;
 Begin
   Result := '' ;
-{$IFDEF EADO}
-  if accx_Connection is TADOConnection then
-    Begin
-      if EditConnectionString( accx_Connection as TADOConnection ) Then
-        Begin
-          Result := ( accx_Connection as TADOConnection ).ConnectionString;
-        End;
-    End;
-{$ENDIF}
 {$IFDEF ZEOS}
   if accx_Connection.ClassNameIs(CST_ZCONNECTION) then
     Begin
@@ -247,25 +238,6 @@ Begin
 
 End;
 
-{$IFDEF EADO}
-
-
-
-///////////////////////////////////////////////////////////////////////////////////
-// Procédure : p_AsyncDataSet
-// Description : Mise en mode asynchrone du Dataset
-///////////////////////////////////////////////////////////////////////////////////
-procedure p_AsynchronousDataSet(adat_DataSet: TCustomADODataset);
-begin
-  // On passe en mode asynchrone que si Form Main Ini le veut
-  if gb_ApplicationAsynchrone
-   Then
-    Begin
-      p_SetComponentProperty ( adat_DataSet, 'CommandTimeOut', tkInteger, gi_IniDatasourceAsynchroneTimeOut );
-      adat_DataSet.ExecuteOptions := adat_DataSet.ExecuteOptions + [eoAsyncExecute,eoAsyncFetch,eoAsyncFetchNonBlocking] ;
-    End ;
-End ;
-{$ENDIF}
 
 {------------------------------------------------------------------------------
  ---------------------- Fin Hook clavier pour le maj et le num ----------------
@@ -382,7 +354,7 @@ End ;
 function TF_FormMainDB.f_IniGetConfigFile: TIniFile;
 begin
   p_IniGetDBConfigFile ( FMainIni,FConnection,FConnector,gs_NomApp);
-  inherited;
+  Result := inherited f_IniGetConfigFile;
 end;
 
 // Propriété connection

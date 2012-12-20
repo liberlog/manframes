@@ -3,12 +3,12 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
   Top = 167
   HelpContext = 1400
   Caption = 'Exemple'
-  ClientHeight = 533
-  ClientWidth = 757
+  ClientHeight = 656
+  ClientWidth = 932
   Color = 13565951
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
+  Font.Height = -14
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   FormStyle = fsMDIForm
@@ -19,67 +19,61 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
   Visible = True
   OnActivate = F_FormMainIniActivate
   OnResize = F_FormMainIniResize
-  PixelsPerInch = 96
-  TextHeight = 13
-  object im_led: TJvLED
-    Left = 120
-    Top = 408
-    AutoSize = True
-    Visible = False
-  end
+  PixelsPerInch = 120
+  TextHeight = 16
   object spl_volet: TJvSplitter
-    Left = 225
+    Left = 270
     Top = 45
-    Width = 5
-    Height = 469
-    ExplicitLeft = 207
-    ExplicitTop = 40
-    ExplicitHeight = 485
+    Width = 6
+    Height = 592
+    ExplicitLeft = 277
+    ExplicitTop = 55
+    ExplicitHeight = 578
   end
   object im_appli: TImage
-    Left = 248
-    Top = 104
-    Width = 49
-    Height = 49
+    Left = 305
+    Top = 128
+    Width = 61
+    Height = 60
     AutoSize = True
     Visible = False
   end
   object im_acces: TImage
-    Left = 312
-    Top = 104
-    Width = 49
-    Height = 49
+    Left = 384
+    Top = 128
+    Width = 60
+    Height = 60
     AutoSize = True
     Visible = False
   end
   object im_about: TImage
-    Left = 376
-    Top = 104
-    Width = 49
-    Height = 49
+    Left = 463
+    Top = 128
+    Width = 60
+    Height = 60
     AutoSize = True
     Visible = False
   end
   object im_aide: TImage
-    Left = 464
-    Top = 104
-    Width = 49
-    Height = 49
+    Left = 571
+    Top = 128
+    Width = 60
+    Height = 60
     AutoSize = True
     Visible = False
   end
   object im_quit: TImage
-    Left = 528
-    Top = 104
-    Width = 49
-    Height = 49
+    Left = 650
+    Top = 128
+    Width = 60
+    Height = 60
     AutoSize = True
     Visible = False
   end
   object tbar_outils: TToolBar
     Left = 0
     Top = 0
-    Width = 757
+    Width = 932
     Height = 45
     Hint = 'Cliquer sur un bouton pour acc'#195#402#194#169'der '#195#402#194#160' une fonction'
     HelpContext = 1430
@@ -91,6 +85,7 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
     ParentShowHint = False
     ShowHint = True
     TabOrder = 0
+    ExplicitWidth = 757
     object pa_1: TPanel
       Left = 0
       Top = 0
@@ -210,8 +205,8 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
   end
   object br_statusbar: TStatusBar
     Left = 0
-    Top = 514
-    Width = 757
+    Top = 637
+    Width = 932
     Height = 19
     AutoHint = True
     BiDiMode = bdRightToLeft
@@ -252,12 +247,14 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
       end>
     ParentBiDiMode = False
     OnDrawPanel = br_statusbarDrawPanel
+    ExplicitTop = 633
+    ExplicitWidth = 757
   end
   object mtb_CustomizedMenu: TExtMenuToolBar
     Left = 0
     Top = 45
     Width = 30
-    Height = 469
+    Height = 592
     Align = alLeft
     AutoSize = False
     ButtonHeight = 38
@@ -273,35 +270,40 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
     TabOrder = 2
     Visible = False
     OnClickCustomize = mtb_CustomizedMenuClickCustomize
+    ExplicitHeight = 469
   end
   object tbar_volet: TPanel
     Left = 30
     Top = 45
-    Width = 195
-    Height = 469
+    Width = 240
+    Height = 592
     Align = alLeft
     BevelOuter = bvNone
     Caption = 'Volet d'#39'acc'#232's'
     TabOrder = 3
+    ExplicitLeft = 37
+    ExplicitTop = 55
+    ExplicitHeight = 578
     object scb_Volet: TScrollBox
       Left = 0
       Top = 0
-      Width = 195
-      Height = 469
+      Width = 240
+      Height = 592
       Hint = 'Cliquez pour acc'#233'der aux fonctions'
       HelpContext = 1440
       Align = alClient
       BevelInner = bvNone
       BevelOuter = bvNone
       BorderStyle = bsNone
-      Constraints.MinHeight = 10
-      Constraints.MinWidth = 10
+      Constraints.MinHeight = 12
+      Constraints.MinWidth = 12
       DockSite = True
       Color = clBtnFace
       ParentColor = False
       ParentShowHint = False
       ShowHint = True
       TabOrder = 0
+      ExplicitHeight = 577
     end
   end
   object im_Liste: TImageList
@@ -1250,11 +1252,9 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
     Top = 367
   end
   object SvgFormInfoIni: TOnFormInfoIni
-    SaveEdits = []
+    SaveForm = [sfSavePos, sfSaveSizes]
     Left = 256
     Top = 168
-    SaveForm = [sfSaveSizes,sfSavePos]
-    Options = [loAutoUpdate,loAutoLoad,loFreeIni]
   end
   object im_icones: TImageList
     Height = 32

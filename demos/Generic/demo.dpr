@@ -8,7 +8,8 @@ uses
   Windows,
   U_CustomFrameWork,
   ADODB,
-  U_Donnees;
+  fonctions_forms,
+  u_multidonnees;
 
 {$IMPORTEDDATA ON}
 
@@ -53,7 +54,6 @@ begin
 		gb_DicoKeyFormPresent  := True ;
 		gb_DicoUseFormField    := True ;
 		gb_DicoGroupementMontreCaption := False ;
-		Application.CreateForm(TM_Donnees, M_Donnees);
   Application.CreateForm(TF_FenetrePrincipale, F_FenetrePrincipale);
   finally
 	end;

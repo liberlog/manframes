@@ -1,4 +1,4 @@
-unit fonctions_zeos;
+﻿unit fonctions_zeos;
 
 {$IFDEF FPC}
 {$MODE Delphi}
@@ -36,6 +36,7 @@ uses
     StdCtrls,
     ZCompatibility,
     ZDbcIntfs,
+    Types,
     fonctions_dbcomponents, ZClasses;
 
 

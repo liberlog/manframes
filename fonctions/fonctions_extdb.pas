@@ -1,4 +1,4 @@
-unit fonctions_extdb;
+﻿unit fonctions_extdb;
 
 interface
 
@@ -37,7 +37,10 @@ const
       			                 Major : 1 ; Minor : 0 ; Release : 0 ; Build : 0 );
 
   {$ENDIF}
+
+type TComponentConnexion = procedure ( const Connexion : TComponent ; const Inifile : TCustomInifile);
 var ge_DataSetErrorEvent : TDataSetErrorEvent ;
+    ge_ReadMainDB        : TComponentConnexion = nil;
 
 {$IFDEF DBEXPRESS}
 function fb_IniSetSQLConnection ( const asqc_Connection : TSQLConnection ) : Boolean ;
@@ -55,6 +58,7 @@ function fb_TestZComponent ( const Connexion : TComponent ; const lb_ShowMessage
 function fs_IniSetConnection ( const accx_Connection : TComponent ) : String ;
 
 const
+        CST_ADOCONNECTION ='ADOConnection';
         CST_ZCONNECTION = 'ZConnection';
         CST_ZDATABASE   = 'Database';
         CST_ZPROTOCOL   = 'Protocol';
@@ -99,6 +103,8 @@ uses Variants,  fonctions_erreurs, fonctions_string,
 function fs_IniSetConnection ( const accx_Connection : TComponent ) : String ;
 Begin
   Result := '' ;
+  if assigned ( ge_ReadMainDB ) then
+    ge_ReadMainDB ( accx_Connection, FIniFile );
 {$IFDEF ZEOS}
   if accx_Connection.ClassNameIs(CST_ZCONNECTION) then
     Begin
