@@ -26,13 +26,14 @@ const
                                        Owner : 'Matthieu Giroux' ;
                                        Comment : 'Button of Filling Combo for 1-N link.' + #13#10
                                                + 'Need to have U_FormMainIni as MainForm, u_customframework as Modal Form.' ;
-                                       BugsStory : '0.9.0.2 : UTF 8.' + #13#10
+                                       BugsStory : '0.9.0.3 : Notification Bug.' + #13#10
+                                                 + '0.9.0.2 : UTF 8.' + #13#10
                                                  + '0.9.0.1 : Optimising.' + #13#10
                                                  + '0.9.0.0 : Testing on LAZARUS.' + #13#10
                                                  + '0.8.0.1 : Some tests.' + #13#10
                                                  + '0.8.0.0 : Not Finished.';
                                        UnitType : 3 ;
-                                       Major : 0 ; Minor : 9 ; Release : 0 ; Build : 2 );
+                                       Major : 0 ; Minor : 9 ; Release : 0 ; Build : 3 );
 {$ENDIF}
 
 { TExtFillCombo }
@@ -61,6 +62,7 @@ type
       procedure CreateFormWithIcon(const aBmp_Icon: TBitmap); virtual;
       procedure Click; override;
       procedure AutoPlace; virtual;
+      procedure Notification(AComponent: TComponent; Operation: TOperation); override;
      published
       procedure OnGridDblClick ( Sender : TObject ); virtual;
       procedure OnCloseModalForm ( Sender: TObject; var AAction: TCloseAction ); virtual;
@@ -88,6 +90,7 @@ begin
   FFormSource := 0 ;
   FOnSet := Nil;
   Width := CST_FILL_COMBO_WIDTH;
+  FFWDBLookupCombo:=nil;
 end;
 
 function TExtFillCombo.AfterModalHidden : Integer;
@@ -250,7 +253,8 @@ begin
       Execute;
     end;
 end;
-
+// procedure TExtFillCombo.AutoPlace
+// palcer le bouton à droite de la combo
 procedure TExtFillCombo.AutoPlace;
 var li_Width : Integer ;
 begin
@@ -264,6 +268,14 @@ begin
   Left := Combo.Left + li_Width + CST_FILL_SPACE_WITH_COMBO;
   Top  := Combo.Top;
   Height := Combo.Height;
+end;
+
+procedure TExtFillCombo.Notification(AComponent: TComponent;
+  Operation: TOperation);
+begin
+  inherited Notification(AComponent, Operation);
+  if Operation <> opRemove Then Exit;
+  if AComponent = Combo Then Combo := nil;
 end;
 
 procedure TExtFillCombo.OnGridDblClick(Sender: TObject);

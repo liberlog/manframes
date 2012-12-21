@@ -490,6 +490,8 @@ type
     {.$ENDIF}
     procedure p_AffecteEvenementsNavigators ( const acpa_Component : TCustomPanel );
     procedure p_ChargeEvenementsDatasourcePrinc;
+    procedure p_CreateEventualCsvFile(const afd_FieldsDefs: TFieldDefs;
+      const afws_Source: TFWSource);
     procedure p_DataWorksLinksCancel(const ai_originalSource: Integer);
     procedure p_setEnregistrement(const aFWColumn: TFWSource);
     procedure p_SetLabels(const a_Value: Boolean);
@@ -818,6 +820,8 @@ procedure p_TrieSurClickLabel (
         const alab_label : TControl ;
         const ab_IsImage     : Boolean ;
         const ab_SortDBGRid : Boolean);
+function fs_getListSelect ( const afc_FieldsDefs : TFWFieldColumns ; const as_listOrigin : string = '*' ): String;
+function fs_getListShow ( const afc_FieldsDefs : TFWFieldColumns ): String;
 
 implementation
 
@@ -844,6 +848,35 @@ function fs_getFileNameOfTableColumn ( const afws_Source    : TFWSource ): Strin
 begin
   Result := afws_Source.Connection.dataURL + afws_Source.Table + gs_DataExtension ;
 end;
+
+
+function fs_getListSelect ( const afc_FieldsDefs : TFWFieldColumns ; const as_listOrigin : string = '*' ): String;
+var li_j, li_pos : Integer;
+Begin
+  Result := as_listOrigin;
+  for li_j := 0 to afc_FieldsDefs.Count - 1 do
+   with afc_FieldsDefs [li_j] do
+     if ColSelect Then
+       if Result = '*'
+         Then Result := FieldName
+         Else
+          if ( pos ( FieldName + ',', as_listOrigin + ',' )= 0 )
+           then AppendStr(Result,','+FieldName);
+end;
+
+
+function fs_getListShow ( const afc_FieldsDefs : TFWFieldColumns ): String;
+var li_j : Integer;
+Begin
+  Result := '*';
+  for li_j := 0 to afc_FieldsDefs.Count - 1 do
+   with afc_FieldsDefs [li_j] do
+     if ShowCol >= 0 Then
+       if Result = '*'
+         Then Result := FieldName
+         Else AppendStr(Result,','+FieldName);
+end;
+
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -2035,7 +2068,6 @@ begin
         End;
     End;
 End;
-
 // procedure TF_CustomFrameWork.p_AffecteEvenementsWorkDatasources
 // Renseignements des évènements des datasources
 procedure TF_CustomFrameWork.p_AffecteEvenementsWorkDatasources ( );
@@ -2044,6 +2076,7 @@ var li_i, li_j : Integer;
     lt_Arg : Array [0..2] of String ;
     ls_temp:String;
     lmet_MethodeDistribueeSearch: TMethod;
+    lfd_FieldsDefs : TFieldDefs;
 Begin
   lmet_MethodeDistribueeSearch.Data := Self;
   lmet_MethodeDistribueeSearch.Code := MethodAddress('p_BtnSearch');
@@ -2112,16 +2145,9 @@ Begin
             ls_temp := fs_getSQLQuery ( Dataset );
             if ls_temp = '' Then
              Begin
-               ls_temp := '*' ;
-               for li_j := 0 to FieldsDefs.Count - 1 do
-                with FieldsDefs [li_j] do
-                  if ColSelect Then
-                    if ls_temp = '*'
-                      Then ls_temp := FieldName
-                      Else AppendStr(ls_temp,','+FieldName);
-               p_SetSQLQuery(Dataset,'SELECT ' +ls_temp+' FROM ' + Table );
+               p_SetSQLQuery(Dataset,'SELECT ' +fs_getListSelect(FieldsDefs)+' FROM ' + Table );
              End;
-          with ddl_DataLink.Dataset do
+          with ddl_DataLink,Dataset do
            Begin
 
              if  assigned ( GetPropInfo ( ddl_DataLink.Dataset, CST_DBPROPERTY_PRIMARYKEY ))
@@ -2134,12 +2160,19 @@ Begin
                  p_SetComponentProperty( ddl_DataLink.Dataset, CST_DBPROPERTY_PRIMARYKEY, ls_temp );
                End;
             AfterInsert  := p_DataWorkAfterInsert ;
-            BeforePost   := p_DataWorkBeforePost ;
+            BeforeInsert := p_DataWorkBeforeInsert ;
             AfterPost    := p_DataWorkAfterPost ;
             AfterCancel  := p_DataWorkAfterCancel ;
             AfterEdit    := p_DataWorkAfterEdit ;
-            BeforePost   := p_DataWorkBeforePost ;
             BeforeDelete := p_DataWorkBeforeDelete ;
+            lfd_FieldsDefs := fobj_GetcomponentObjectProperty ( Dataset, CST_DBPROPERTY_FIELDDEFS ) as TFieldDefs;
+            if assigned ( lfd_FieldsDefs ) Then
+             Begin
+              for li_j := 0 to FieldsDefs.Count - 1 do
+               with FieldsDefs [li_j] do
+                 lfd_FieldsDefs.Add (FieldName, FieldType, FieldSize );
+              p_CreateEventualCsvFile(lfd_FieldsDefs,gFWSources.items [ li_i ]);
+             End;
            end;
              end;
           ddl_DataLink.DataSource.OnStateChange := p_DatasourceWorksStateChange ;
@@ -2493,6 +2526,39 @@ begin
             end;
       End ;
 end;
+
+
+// procedure p_CreateCsvFile
+// Creating CSV file
+// afd_FieldsDefs : field definition
+//  afws_Source   : Column definition
+procedure TF_CustomFrameWork.p_CreateEventualCsvFile ( const afd_FieldsDefs : TFieldDefs ; const afws_Source : TFWSource );
+var lstl_File : TStringList;
+    ls_FileInside : String ;
+    li_i : Longint;
+Begin
+  if  ( afws_Source.Connection.DatasetType = dtCSV )
+  and not FileExists ( fs_getFileNameOfTableColumn ( afws_Source ))
+  and ( afd_FieldsDefs.count > 0 )
+   Then
+    Begin
+      lstl_File := TStringList.create ;
+      try
+        ls_FileInside := '' ;
+        for li_i := 0 to afd_FieldsDefs.count -1 do
+          Begin
+            if li_i = 0 then
+              ls_FileInside := afd_FieldsDefs [ li_i ].Name
+             else
+              ls_FileInside := ls_FileInside + gch_SeparatorCSV + afd_FieldsDefs [ li_i ].Name
+          End;
+        lstl_File.text := ls_FileInside ;
+        lstl_File.SaveToFile ( fs_getFileNameOfTableColumn ( afws_Source ));
+      finally
+        lstl_File.free;
+      end;
+    End;
+End;
 
 // Remise en place du TabOrder de la zone de saisie cachée
 // Ne pas appeler cette méthode dans la fiche -> Appeler plutôt p_cacherecherche
@@ -3680,7 +3746,7 @@ begin
               with gFWSources.items [ li_i ].ddl_DataLink.DataSet do
              Begin
               Open ;
-              BeforeInsert := p_DataWorkBeforeInsert ;
+              BeforePost   := p_DataWorkBeforePost ;
              end;
 
             if  gb_ModeAsynchrone
@@ -6389,6 +6455,7 @@ End;
 
 procedure TF_CustomFrameWork.p_assignColumnsDatasourceOwner ( const afw_Column : TFWSource ; const ads_DataSource : TDatasource ; const afd_FieldDef : TFWFieldColumn ; const acom_Component : TComponent );
 var lds_DataSource : TDatasource;
+    ls_Temp : String;
 Begin
   if assigned ( ads_DataSource ) Then
    with afw_Column do
@@ -6407,26 +6474,28 @@ Begin
     if assigned ( ads_DataSource )
     and (afd_FieldDef <> nil)
     and not ( gb_PasUtiliserProps )
-    and (afd_FieldDef.LookupTable <> '' )
+    and (afd_FieldDef.LookupSource > -1 )
     and fb_IsRechListeCtrlPoss ( acom_Component )// est-ce un control de list avec field de liste
     and not assigned ( fobj_getComponentObjectProperty( acom_Component, 'ListSource'))
     and not assigned ( fobj_getComponentObjectProperty( acom_Component, 'LookupSource'))
+    and (afd_FieldDef.LookupSource < gFWSources.Count )
      then
-       with afd_FieldDef do
+       with gFWSources [ afd_FieldDef.LookupSource ] do
         begin
         // Ouvrir les propriétés de liste
-          lds_DataSource := fds_GetOrCloneDataSource ( acom_Component, 'ListSource', 'SELECT * FROM '+ LookupTable, Self, gdat_DatasetPrinc );
+          lds_DataSource := fds_GetOrCloneDataSource ( acom_Component, 'ListSource', 'SELECT * FROM '+ Table, Self, gdat_DatasetPrinc );
           if not assigned ( lds_DataSource ) Then
-            lds_DataSource := fds_GetOrCloneDataSource ( acom_Component, 'LookupSource', 'SELECT * FROM '+ LookupTable, Self, gdat_DatasetPrinc );
-          if ( LookupDisplay <> Null ) Then
+            lds_DataSource := fds_GetOrCloneDataSource ( acom_Component, 'LookupSource', 'SELECT * FROM '+ Table, Self, gdat_DatasetPrinc );
+          ls_Temp := fs_getListShow(FieldsDefs);
+          if ( ls_Temp <> '*' ) Then
             Begin
-              p_SetComponentProperty ( acom_Component, 'LookupDisplay', LookupDisplay);
-              p_SetComponentProperty ( acom_Component,   'ListField'  , LookupDisplay );
+              p_SetComponentProperty ( acom_Component, 'LookupDisplay', ls_Temp);
+              p_SetComponentProperty ( acom_Component,   'ListField'  , ls_Temp );
             End ;
-          if ( LookupKey <> Null ) Then
+          if ( Key <> '' ) Then
             Begin
-              p_SetComponentProperty ( acom_Component, 'LookupField'  , LookupKey );
-              p_SetComponentProperty ( acom_Component,    'KeyField'  , LookupKey );
+              p_SetComponentProperty ( acom_Component, 'LookupField'  , Key );
+              p_SetComponentProperty ( acom_Component,    'KeyField'  , Key );
             End ;
 
           if assigned ( lds_DataSource )

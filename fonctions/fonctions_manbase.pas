@@ -33,12 +33,11 @@ function fds_CreateDataSourceAndTable ( const as_Table, as_NameEnd, as_DataURL :
 procedure p_SetComboProperties ( const acom_combo : TControl;
                                  const acom_Owner : TComponent;
                                  const ads_Connection : TDSSource;
-                                 ads_ListSource, ads_SearchSource : TDataSource;
+                                 ads_ListSource : TDataSource;
                                  const as_Table, as_FieldsID,
                                        as_FieldsDisplay, as_Name : String;
                                  const alis_IdRelation : TList;
-                                 const ai_FieldCounter, ai_Counter : Integer;
-                                 const OneFieldToFill : Boolean );
+                                 const ai_FieldCounter, ai_Counter : Integer);
 
 type
   TFWFieldColumn = class;
@@ -69,9 +68,10 @@ type
     s_NomTable, s_FieldName : String;
     s_CaptionName, s_HintName: WideString;
     i_NumTag : Integer ;
-    i_ShowCol, i_ShowSearch, i_ShowSort, i_HelpIdx : Integer ;
+    i_ShowCol, i_ShowSearch, i_ShowSort, i_HelpIdx, i_FieldSize, i_LookupSource : Integer ;
     s_LookupTable, s_LookupKey, s_LookupDisplay: String;
     b_ColMain, b_ColCreate, b_ColUnique, b_colSelect : Boolean;
+    ft_FieldType : TFIeldType ;
   public
     constructor Create(ACollection: TCollection); override;
   published
@@ -84,13 +84,13 @@ type
     property ShowSearch : Integer read i_ShowSearch write i_ShowSearch default -1;
     property ShowSort : Integer read i_ShowSort write i_ShowSort default -1;
     property HelpIdx : Integer read i_HelpIdx write i_HelpIdx default -1;
-    property LookupTable : String read s_LookupTable write s_LookupTable;
-    property LookupKey : String read s_LookupKey write s_LookupKey;
-    property LookupDisplay : String read s_LookupDisplay write s_LookupDisplay;
+    property LookupSource : Integer read i_LookupSource write i_LookupSource;
     property ColMain : Boolean read b_ColMain write b_ColMain;
     property ColCreate : Boolean read b_ColCreate write b_ColCreate;
     property ColSelect : Boolean read b_colSelect write b_colSelect default True;
     property ColUnique : Boolean read b_ColUnique write b_ColUnique;
+    property FieldType : TFieldType read ft_FieldType write ft_FieldType;
+    property FieldSize : Integer read  i_FieldSize write i_FieldSize default 0;
   End;
   TFWFieldColumnClass = class of TFWFieldColumn;
 
@@ -104,6 +104,7 @@ type
     function GetOwner: TPersistent; override;
   public
     constructor Create(Column: TCollectionItem; ColumnClass: TFWFieldColumnClass); virtual;
+    function indexOf ( const as_FieldName : String ) : Integer;
     function Add: TFWFieldColumn; virtual;
     property Column : TCollectionItem read FColumn;
     property Items[Index: Integer]: TFWFieldColumn read GetColumnField write SetColumnField; default;
@@ -119,10 +120,12 @@ uses fonctions_dbcomponents, fonctions_proprietes, typinfo, fonctions_languages;
 constructor TFWFieldColumn.Create(ACollection: TCollection);
 begin
   inherited Create(ACollection);
+  i_LookupSource := -1;
   i_ShowCol :=-1;
   i_ShowSearch :=-1;
   i_ShowSort :=-1;
   b_colSelect:=True;
+  i_FieldSize := 0;
 end;
 
 { TFWFieldColumns }
@@ -132,6 +135,19 @@ Begin
   inherited Create(ColumnClass);
   FColumn := Column;
 End;
+
+function TFWFieldColumns.indexOf(const as_FieldName: String): Integer;
+var li_i : Integer ;
+begin
+  Result := -1;
+  for li_i := 0 to Count -1 do
+   if Items [ li_i ].FieldName = as_FieldName Then
+     Begin
+      Result := Items [ li_i ].Index;
+      Break;
+     end;
+
+end;
 
 function TFWFieldColumns.GetColumnField(Index: Integer): TFWFieldColumn;
 begin
@@ -160,12 +176,11 @@ end;
 procedure p_SetComboProperties ( const acom_combo : TControl;
                                  const acom_Owner : TComponent;
                                  const ads_Connection : TDSSource;
-                                       ads_ListSource, ads_SearchSource : TDataSource;
+                                       ads_ListSource : TDataSource;
                                  const as_Table, as_FieldsID,
                                        as_FieldsDisplay, as_Name : String;
                                  const alis_IdRelation : TList;
-                                 const ai_FieldCounter, ai_Counter : Integer;
-                                 const OneFieldToFill : Boolean );
+                                 const ai_FieldCounter, ai_Counter : Integer);
 var
     ls_Fields : String;
 Begin
@@ -184,11 +199,6 @@ Begin
         Begin
           p_SetComponentObjectProperty(acom_combo,CST_PROPERTY_LISTSOURCE  , ads_ListSource );
           p_SetComponentObjectProperty(acom_combo,CST_PROPERTY_LOOKUPSOURCE, ads_ListSource );
-        end;
-      if OneFieldToFill Then
-        Begin
-          if IsPublishedProp(acom_combo,CST_PROPERTY_SEARCHSOURCE) Then
-           p_SetComponentObjectProperty(acom_combo,CST_PROPERTY_SEARCHSOURCE, ads_SearchSource);
         end;
 
       if as_Name <> '' Then
