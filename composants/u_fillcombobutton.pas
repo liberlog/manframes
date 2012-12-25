@@ -78,7 +78,8 @@ type
 implementation
 
 uses fonctions_images, U_FormMainIni, fonctions_proprietes, fonctions_db,
-     unite_messages, unite_variables, fonctions_forms;
+     unite_messages, unite_variables, fonctions_forms,
+     fonctions_dbcomponents;
 
 { TExtFillCombo }
 
@@ -102,7 +103,7 @@ begin
        if assigned ( {$IFNDEF RXJVCOMBO}ListSource{$ELSE}LookupSource{$ENDIF} )
         Then
           Begin
-           p_UpdateBatch ( {$IFNDEF RXJVCOMBO}ListSource{$ELSE}LookupSource{$ENDIF}.DataSet );
+           fb_RefreshDataset ( {$IFNDEF RXJVCOMBO}ListSource{$ELSE}LookupSource{$ENDIF}.DataSet );
            Refresh;
           end;
        if assigned ( Field )
@@ -132,30 +133,30 @@ begin
   FFormModal := nil;
   CreateFormWithIcon ( aBmp_Icon );
   if assigned ( FFormModal ) Then
-   Begin
-    p_SetComponentBoolProperty ( FFormModal, 'AutoSize', True );
-    FFormModal.Hide;
-    p_SetComponentProperty     ( FFormModal, 'Position', poMainFormCenter );
-    SetFormEvents;
-     if ( FFilter <> '' )
-     and ( FFormModal is TF_CustomFrameWork ) Then
-      with ( FFormModal as TF_CustomFrameWork ).DBSources [ FFormSource ] do
-       Begin
-         lst_OldFilter  := fs_getComponentProperty(Datasource.DataSet, CST_DATASET_FILTER);
-         lb_OldFiltered := fb_getComponentBoolProperty(Datasource.DataSet, CST_DATASET_FILTERED);
-         p_SetComponentProperty ( Datasource.DataSet, CST_DATASET_FILTER, FFilter );
-         p_SetComponentBoolProperty ( Datasource.DataSet, CST_DATASET_FILTERED, True );
-       end;
-    FFormModal.ShowModal;
-     if ( FFilter <> '' )
-     and ( FFormModal is TF_CustomFrameWork ) Then
-       with ( FFormModal as TF_CustomFrameWork ).DBSources [ FFormSource ] do
-        Begin
-          p_SetComponentProperty ( Datasource.DataSet, CST_DATASET_FILTER, lst_OldFilter );
-          p_SetComponentBoolProperty ( Datasource.DataSet, CST_DATASET_FILTERED, lb_OldFiltered );
-        end;
-    Result := AfterModalHidden;
-   end;
+     Begin
+      p_SetComponentBoolProperty ( FFormModal, 'AutoSize', True );
+      FFormModal.Hide;
+      p_SetComponentProperty     ( FFormModal, 'Position', poMainFormCenter );
+      SetFormEvents;
+       if ( FFilter <> '' )
+       and ( FFormModal is TF_CustomFrameWork ) Then
+        with ( FFormModal as TF_CustomFrameWork ).DBSources [ FFormSource ], Datasource do
+         Begin
+           lst_OldFilter  := fs_getComponentProperty(DataSet, CST_DATASET_FILTER);
+           lb_OldFiltered := fb_getComponentBoolProperty(DataSet, CST_DATASET_FILTERED);
+           p_SetComponentProperty ( DataSet, CST_DATASET_FILTER, FFilter );
+           p_SetComponentBoolProperty ( DataSet, CST_DATASET_FILTERED, True );
+         end;
+      FFormModal.ShowModal;
+       if ( FFilter <> '' )
+       and ( FFormModal is TF_CustomFrameWork ) Then
+         with ( FFormModal as TF_CustomFrameWork ).DBSources [ FFormSource ], Datasource do
+          Begin
+            p_SetComponentProperty ( DataSet, CST_DATASET_FILTER, lst_OldFilter );
+            p_SetComponentBoolProperty ( DataSet, CST_DATASET_FILTERED, lb_OldFiltered );
+          end;
+      Result := AfterModalHidden;
+     end;
 
 end;
 
