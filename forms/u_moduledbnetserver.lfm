@@ -1,0 +1,7 @@
+object DataModuleServer: TDataModuleServer
+  OldCreateOrder = False
+  Height = 244
+  HorizontalOffset = 479
+  VerticalOffset = 222
+  Width = 217
+end
