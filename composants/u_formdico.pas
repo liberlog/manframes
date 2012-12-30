@@ -240,14 +240,12 @@ begin
               HintName := '| ' + Fields[4].AsString;
               ShowCol     := Fields[5].AsInteger;
               HelpIdx        := Fields[7].AsInteger;
-              if Fields[6 ].IsNull then ShowSearch   := -1  Else  ShowSearch   := Fields[6 ].AsInteger;
-              if Fields[8 ].IsNull then LookupTable  := ''  Else  LookupTable  := Fields[8 ].AsString;
-              if Fields[9 ].IsNull then LookupKey    := ''  else  LookupKey    := Fields[9 ].AsString;
-              if Fields[10].IsNull then LookupDisplay   := ''  else  LookupDisplay   := Fields[10].AsString;
-              if ( Fields[11] is TBooleanField ) then
-                ColMain      := Fields[11].AsBoolean
+              if Fields[6 ].IsNull then ShowSearch   := -1  Else  ShowSearch    := Fields[6 ].AsInteger;
+              if Fields[8 ].IsNull then LookupSource := -1  Else  LookupSource  := Fields[8 ].AsInteger;
+              if ( Fields[9] is TBooleanField ) then
+                ColMain      := Fields[9].AsBoolean
                else
-                ColMain      := Fields[11].AsInteger > 0;
+                ColMain      := Fields[9].AsInteger > 0;
               ColCreate:=False;
               Next;
             end;
