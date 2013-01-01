@@ -195,6 +195,8 @@ Begin
        end
       Else
        ls_Fields := as_FieldsID;
+      p_SetComponentProperty(acom_combo,CST_PROPERTY_KEYFIELD   , as_FieldsID);
+      p_SetComponentProperty(acom_combo,CST_PROPERTY_LOOKUPFIELD, as_FieldsID);
       if ls_Fields <> '' Then
         Begin
           p_SetComponentObjectProperty(acom_combo,CST_PROPERTY_LISTSOURCE  , ads_ListSource );
@@ -206,8 +208,6 @@ Begin
          Hint:=fs_GetLabelCaption(as_Name);
          ShowHint:=True;
         end;
-      p_SetComponentProperty(acom_combo,CST_PROPERTY_KEYFIELD   , as_FieldsID);
-      p_SetComponentProperty(acom_combo,CST_PROPERTY_LOOKUPFIELD, as_FieldsID);
     end;
 End;
 

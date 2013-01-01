@@ -37,7 +37,7 @@ type
 
  { TFWPrintSources }
 
-  TFWPrintSources = class(TFWPrint,IPrintComponent)
+  TFWPrintSources = class(TFWPrint)
   private
     FFilter : TRLCustomPrintFilter;
     FSources : TFWSources;
@@ -56,7 +56,6 @@ type
     property  PopupMenu;
     property  ResultForm : TReportForm read FReportForm;
   published
-    procedure DrawReportImage( Sender:TObject; var PrintIt:boolean);  virtual;
     property DBFilter : TRLCustomPrintFilter read FFilter write FFilter;
     property Preview : TRLPreview read FPreview write FPreview;
     property DBTitle: string read FDBTitle write FDBTitle;
@@ -134,8 +133,6 @@ begin
      Finally
        Datasource.DataSet.EnableControls;
        Finalize ( RLListImages );
-       Destroy;
-       FReportForm := nil;
      End;
    end;
 end;
@@ -143,24 +140,21 @@ end;
 procedure TFWPrintSources.AddPreview(const AReport: TRLReport; const ASource : TFWSource);
 begin
   with ASource do
-  if ( AReport = nil )
-   Then
-     FReportForm := fref_CreateReport(Self,Grid, DataSource,
+    if ( AReport = nil )
+     Then
+      Begin
+       FReportForm.Free;
+       FReportForm := fref_CreateReport(Grid, DataSource,
+                           fobj_getComponentObjectProperty(Grid,CST_PROPERTY_COLUMNS) as TCollection,
+                           FDBTitle, FFilter)
+      end
+     Else
+       Begin
+         fb_CreateReport(AReport,Grid, DataSource,
                          fobj_getComponentObjectProperty(Grid,CST_PROPERTY_COLUMNS) as TCollection,
-                         FDBTitle, FFilter)
-   Else
-     Begin
-       fb_CreateReport(Self,AReport,Grid, DataSource,
-                       fobj_getComponentObjectProperty(Grid,CST_PROPERTY_COLUMNS) as TCollection,
-                       AReport.Background.Picture.Bitmap.Canvas,
-                       FDBTitle);
-     end;
-end;
-
-procedure TFWPrintSources.DrawReportImage(Sender: TObject; var PrintIt: boolean
-  );
-begin
-  p_DrawReportImage ( Sender, PrintIt );
+                         AReport.Background.Picture.Bitmap.Canvas,
+                         FDBTitle);
+       end;
 end;
 
 
