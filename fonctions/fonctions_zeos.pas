@@ -116,9 +116,9 @@ begin
 End;
 
 initialization
- ge_onCreateConnection := TCreateConnection ( p_CreateZeosconnection );
- ge_OnExecuteQuery:=TOnExecuteQuery(p_ExecuteZEOSQuery);
- ge_SetConnectComponentsOnCreate := TSetConnectComponents(p_setZEOSConnectionOnCreation);
+ ge_onCreateConnection := TCreateConnection ( {$IFNDEF FPC}@{$ENDIF}p_CreateZeosconnection );
+ ge_OnExecuteQuery:=TOnExecuteQuery({$IFNDEF FPC}@{$ENDIF}p_ExecuteZEOSQuery);
+ ge_SetConnectComponentsOnCreate := TSetConnectComponents({$IFNDEF FPC}@{$ENDIF}p_setZEOSConnectionOnCreation);
  {$IFDEF VERSIONS}
  p_ConcatVersion ( gVer_fonctions_zeos );
  {$ENDIF}
