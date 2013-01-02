@@ -22,7 +22,7 @@
     </CompilerOptions>
     <Description Value="Child Form data management and relationships"/>
     <License Value="LGPL"/>
-    <Version Major="1" Minor="2" Release="1" Build="3"/>
+    <Version Major="1" Minor="2" Release="1" Build="4"/>
     <Files Count="10">
       <Item1>
         <Filename Value="fonctions/fonctions_tableauframework.pas"/>

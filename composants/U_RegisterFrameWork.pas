@@ -50,6 +50,7 @@ end;
 initialization
 {$IFDEF FPC}
   {$I u_fillcombobutton.lrs}
+  {$I u_man_reports_components.lrs}
 {$ENDIF}
 end.
 
