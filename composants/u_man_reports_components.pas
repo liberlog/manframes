@@ -132,7 +132,6 @@ begin
        RLReport.Preview(FPreview);
      Finally
        Datasource.DataSet.EnableControls;
-       Finalize ( RLListImages );
      End;
    end;
 end;
