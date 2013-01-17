@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XMI xmi.version="1.0">
+<XMI.header>
+<XMI.metamodel xmi.name="UML" xmi.version="1.3"/>
+<XMI.documentation>
+<XMI.exporter>Eldean ESS-Model</XMI.exporter>
+<XMI.exporterVersion>2.2</XMI.exporterVersion>
+</XMI.documentation>
+</XMI.header>
+<XMI.content>
+<Model_Management.Model>
+<Model_Management.Package xmi.id="xmi_1">
+<Foundation.Core.ModelElement.name></Foundation.Core.ModelElement.name>
+<Foundation.Core.ModelElement.visibility xmi.value="private"/>
+<Model_Management.Package xmi.id="xmi_2">
+<Foundation.Core.ModelElement.name>((Unknown))</Foundation.Core.ModelElement.name>
+<Foundation.Core.ModelElement.visibility xmi.value="private"/>
+</Model_Management.Package>
+<Model_Management.Package xmi.id="xmi_3">
+<Foundation.Core.ModelElement.name>lazregzeos</Foundation.Core.ModelElement.name>
+<Foundation.Core.ModelElement.visibility xmi.value="private"/>
+<Foundation.Core.ModelElement.documentation>
+This file was automatically created by Lazarus. Do not edit!
+  This source is only used to compile and install the package.
+ 
+</Foundation.Core.ModelElement.documentation>
+</Model_Management.Package>
+<Model_Management.Package xmi.id="xmi_4">
+<Foundation.Core.ModelElement.name>fonctions_zeos</Foundation.Core.ModelElement.name>
+<Foundation.Core.ModelElement.visibility xmi.value="private"/>
+</Model_Management.Package>
+</Model_Management.Package>
+</Model_Management.Model>
+</XMI.content>
+</XMI>

@@ -1,0 +1,345 @@
+<html>
+<link rel="stylesheet" href="styles.css" type="text/css">
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body class="body">
+<table width="100%"><tr>
+<td><span class="p_name">Package: U_Acces</span></td>
+<td class="t_cell"><a href="p_xmi_148_diagram.html">Diagram</a></td>
+<td class="t_cell"><a href="overview.html">Back to overview</a></td>
+</tr></table>
+<p></p>
+<a name="xmi_122"></a><table width="500" border="0" cellpadding="2" cellspacing="1"><tr>
+<td class="ClassTableHeader" width="200">
+<b>TF_Acces</b><br>
+</td>
+<td class="ClassTableHeader" width="150">class
+      </td>
+</tr></table>
+<br><table class="Documentation" width="100%" border="0" cellpadding="2" cellspacing="1"><tr><td><p class="Documentation"><b>Description</b><br>
+TF_Acces 
+</p></td></tr></table>Inherits from:
+
+    TForm<br><b>Attributes</b><table width="100%" border="1" cellpadding="3" cellspacing="0">
+<tr>
+<td class="tableheader">Name</td>
+<td class="tableheader">Type</td>
+<td class="tableheader">Visibility</td>
+</tr>
+<tr>
+<td class="t_cell">ds_User<br><table class="Documentation" width="100%" border="0" cellpadding="2" cellspacing="1"><tr><td><p class="Documentation"><b>Description</b><br>
+Private declarations 
+</p></td></tr></table>
+</td>
+<td class="t_cell">TDataSource
+       
+    </td>
+<td class="t_cell">private</td>
+</tr>
+<tr>
+<td class="t_cell">ds_connexions<br>
+</td>
+<td class="t_cell">TDataSource
+       
+    </td>
+<td class="t_cell">private</td>
+</tr>
+<tr>
+<td class="t_cell">FMainForm<br>
+</td>
+<td class="t_cell">TF_FormMainIni
+       
+    </td>
+<td class="t_cell">private</td>
+</tr>
+<tr>
+<td class="t_cell">lb_nomresto<br>
+</td>
+<td class="t_cell">TFWLabel
+       
+    </td>
+<td class="t_cell">public</td>
+</tr>
+<tr>
+<td class="t_cell">lb_user<br>
+</td>
+<td class="t_cell">TFWLabel
+       
+    </td>
+<td class="t_cell">public</td>
+</tr>
+<tr>
+<td class="t_cell">lb_mdp<br>
+</td>
+<td class="t_cell">TFWLabel
+       
+    </td>
+<td class="t_cell">public</td>
+</tr>
+<tr>
+<td class="t_cell">tx_mdp<br>
+</td>
+<td class="t_cell">TEdit
+       
+    </td>
+<td class="t_cell">public</td>
+</tr>
+<tr>
+<td class="t_cell">pa_1<br>
+</td>
+<td class="t_cell">TPanel
+       
+    </td>
+<td class="t_cell">public</td>
+</tr>
+<tr>
+<td class="t_cell">btn_ok<br>
+</td>
+<td class="t_cell">TFWOK
+       
+    </td>
+<td class="t_cell">public</td>
+</tr>
+<tr>
+<td class="t_cell">btn_cancel<br>
+</td>
+<td class="t_cell">TFWCancel
+       
+    </td>
+<td class="t_cell">public</td>
+</tr>
+<tr>
+<td class="t_cell">Label1<br>
+</td>
+<td class="t_cell">TFWLabel
+       
+    </td>
+<td class="t_cell">public</td>
+</tr>
+<tr>
+<td class="t_cell">cbx_User<br>
+</td>
+<td class="t_cell">TFWDBLookupCombo
+       
+    </td>
+<td class="t_cell">public</td>
+</tr>
+<tr>
+<td class="t_cell">cbx_Connexion<br>
+</td>
+<td class="t_cell">TFWDBLookupCombo
+       
+    </td>
+<td class="t_cell">public</td>
+</tr>
+<tr>
+<td class="t_cell">OnFormInfoIni1<br>
+</td>
+<td class="t_cell">TOnFormInfoIni
+       
+    </td>
+<td class="t_cell">public</td>
+</tr>
+</table>
+<b>Operations</b><table width="100%" border="1" cellpadding="3" cellspacing="0">
+<tr>
+<td class="tableheader">Name</td>
+<td class="tableheader">Parameters</td>
+<td class="tableheader">Returns</td>
+<td class="tableheader">Visibility</td>
+</tr>
+<tr>
+<td class="t_cell">btn_cancelClick<table class="Documentation" width="100%" border="0" cellpadding="2" cellspacing="1"><tr><td><p class="Documentation"><b>Description</b><br>
+Event TF_Acces.btn_cancelClick
+ On Cancel Click
+</p></td></tr></table>
+</td>
+<td class="t_cell">
+<table border="0" cellpadding="2" cellspacing="1"><tr>
+<td class="t_cell">TObject</td>
+<td class="t_cell">Sender</td>
+</tr></table>
+       
+    </td>
+<td class="t_cell">
+       
+    </td>
+<td class="t_cell">public</td>
+</tr>
+<tr>
+<td class="t_cell">btn_okMouseUp<table class="Documentation" width="100%" border="0" cellpadding="2" cellspacing="1"><tr><td><p class="Documentation"><b>Description</b><br>
+Event TF_Acces.btn_okMouseUp
+ verifying the password on ok click
+</p></td></tr></table>
+</td>
+<td class="t_cell">
+<table border="0" cellpadding="2" cellspacing="1">
+<tr>
+<td class="t_cell">TObject</td>
+<td class="t_cell">Sender</td>
+</tr>
+<tr>
+<td class="t_cell">TMouseButton</td>
+<td class="t_cell">Button</td>
+</tr>
+<tr>
+<td class="t_cell">TShiftState</td>
+<td class="t_cell">Shift</td>
+</tr>
+<tr>
+<td class="t_cell">Integer</td>
+<td class="t_cell">X</td>
+</tr>
+<tr>
+<td class="t_cell">Integer</td>
+<td class="t_cell">Y</td>
+</tr>
+</table>
+       
+    </td>
+<td class="t_cell">
+       
+    </td>
+<td class="t_cell">public</td>
+</tr>
+<tr>
+<td class="t_cell">FormKeyDown<table class="Documentation" width="100%" border="0" cellpadding="2" cellspacing="1"><tr><td><p class="Documentation"><b>Description</b><br>
+Event TF_Acces.FormKeyDown
+ Auto going to ok on return
+</p></td></tr></table>
+</td>
+<td class="t_cell">
+<table border="0" cellpadding="2" cellspacing="1">
+<tr>
+<td class="t_cell">TObject</td>
+<td class="t_cell">Sender</td>
+</tr>
+<tr>
+<td class="t_cell">Word</td>
+<td class="t_cell">Key</td>
+</tr>
+<tr>
+<td class="t_cell">TShiftState</td>
+<td class="t_cell">Shift</td>
+</tr>
+</table>
+       
+    </td>
+<td class="t_cell">
+       
+    </td>
+<td class="t_cell">public</td>
+</tr>
+<tr>
+<td class="t_cell">cbx_userChange<table class="Documentation" width="100%" border="0" cellpadding="2" cellspacing="1"><tr><td><p class="Documentation"><b>Description</b><br>
+Event TF_Acces.cbx_userChange
+ On User Change setting the linked bases
+</p></td></tr></table>
+</td>
+<td class="t_cell">
+<table border="0" cellpadding="2" cellspacing="1"><tr>
+<td class="t_cell">TObject</td>
+<td class="t_cell">Sender</td>
+</tr></table>
+       
+    </td>
+<td class="t_cell">
+       
+    </td>
+<td class="t_cell">public</td>
+</tr>
+<tr>
+<td class="t_cell">FormCreate<table class="Documentation" width="100%" border="0" cellpadding="2" cellspacing="1"><tr><td><p class="Documentation"><b>Description</b><br>
+Event TF_Acces.FormCreate
+ Setting the datasource
+</p></td></tr></table>
+</td>
+<td class="t_cell">
+<table border="0" cellpadding="2" cellspacing="1"><tr>
+<td class="t_cell">TObject</td>
+<td class="t_cell">Sender</td>
+</tr></table>
+       
+    </td>
+<td class="t_cell">
+       
+    </td>
+<td class="t_cell">public</td>
+</tr>
+<tr>
+<td class="t_cell">FormClose<table class="Documentation" width="100%" border="0" cellpadding="2" cellspacing="1"><tr><td><p class="Documentation"><b>Description</b><br>
+Event TF_Acces.FormClose
+ Hiding on close : Destroying in P_ConnectData
+</p></td></tr></table>
+</td>
+<td class="t_cell">
+<table border="0" cellpadding="2" cellspacing="1">
+<tr>
+<td class="t_cell">TObject</td>
+<td class="t_cell">Sender</td>
+</tr>
+<tr>
+<td class="t_cell">TCloseAction</td>
+<td class="t_cell">Action</td>
+</tr>
+</table>
+       
+    </td>
+<td class="t_cell">
+       
+    </td>
+<td class="t_cell">public</td>
+</tr>
+<tr>
+<td class="t_cell">IsShortCut<table class="Documentation" width="100%" border="0" cellpadding="2" cellspacing="1"><tr><td><p class="Documentation"><b>Description</b><br>
+Touche enfoncée
+ Pour la gestion des touches MAJ / Num lors du LOG
+</p></td></tr></table>
+</td>
+<td class="t_cell">
+<table border="0" cellpadding="2" cellspacing="1"><tr>
+<td class="t_cell">TWMKey</td>
+<td class="t_cell">ao_Msg</td>
+</tr></table>
+       
+    </td>
+<td class="t_cell">Boolean
+       
+    </td>
+<td class="t_cell">public</td>
+</tr>
+<tr>
+<td class="t_cell">Create<table class="Documentation" width="100%" border="0" cellpadding="2" cellspacing="1"><tr><td><p class="Documentation"><b>Description</b><br>
+constructor TF_Acces.Create
+ Setting the form icon
+</p></td></tr></table>
+</td>
+<td class="t_cell">
+<table border="0" cellpadding="2" cellspacing="1"><tr>
+<td class="t_cell">TComponent</td>
+<td class="t_cell">AOwner</td>
+</tr></table>
+       
+    </td>
+<td class="t_cell">
+       
+    </td>
+<td class="t_cell">public</td>
+</tr>
+<tr>
+<td class="t_cell">Destroy<table class="Documentation" width="100%" border="0" cellpadding="2" cellspacing="1"><tr><td><p class="Documentation"><b>Description</b><br>
+destructor TF_Acces.Destroy
+ setting form variable to nil For auto creating form
+</p></td></tr></table>
+</td>
+<td class="t_cell">
+       
+    </td>
+<td class="t_cell">
+       
+    </td>
+<td class="t_cell">public</td>
+</tr>
+</table>
+<br><br>
+</body>
+</html>

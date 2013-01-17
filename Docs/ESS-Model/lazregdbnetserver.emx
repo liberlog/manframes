@@ -1,0 +1,119 @@
+<LogicPackage id="emx_1" name="" visibility="private">
+<UnitPackage id="emx_2" name="((Unknown))" visibility="private">
+<Class id="emx_3" name="TDataModule" visibility="private">
+<Class.Descendant>
+</Class.Descendant>
+</Class>
+<DataType id="emx_4" name="byte" visibility="private">
+</DataType>
+<DataType id="emx_5" name="PChar" visibility="private">
+</DataType>
+<DataType id="emx_6" name="TServerSockQuery" visibility="private">
+</DataType>
+<DataType id="emx_7" name="TNetProcString" visibility="private">
+</DataType>
+<DataType id="emx_8" name="TLogonStyle" visibility="private">
+</DataType>
+<DataType id="emx_9" name="TObject" visibility="private">
+</DataType>
+<DataType id="emx_10" name="string" visibility="private">
+</DataType>
+</UnitPackage>
+<UnitPackage id="emx_11" name="lazregdbnetserver" visibility="private">
+</UnitPackage>
+<UnitPackage id="emx_12" name="fonctions_dbnetserver" visibility="private">
+</UnitPackage>
+<UnitPackage id="emx_13" name="u_moduledbnetserver" visibility="private">
+<Class id="emx_14" name="TDataModuleServer" visibility="public">
+<Feature>
+<Operation id="emx_15" name="ZeosDataServerCustInternalCall" visibility="public">
+<Parameters>
+<ReturnParameter>
+<Parameter.kind value="return"/>
+<DataType idref="emx_7"/>
+</ReturnParameter>
+<Parameter id="emx_16" name="CustInstruc" visibility="private">
+<Parameter.type>
+<DataType idref="emx_4"/>
+</Parameter.type>
+</Parameter>
+<Parameter id="emx_17" name="CustSubInstruc" visibility="private">
+<Parameter.type>
+<DataType idref="emx_4"/>
+</Parameter.type>
+</Parameter>
+<Parameter id="emx_18" name="CliParam" visibility="private">
+<Parameter.type>
+<DataType idref="emx_5"/>
+</Parameter.type>
+</Parameter>
+<Parameter id="emx_19" name="DataQuery" visibility="private">
+<Parameter.type>
+<DataType idref="emx_6"/>
+</Parameter.type>
+</Parameter>
+<Parameter id="emx_20" name="DataSQLProc" visibility="private">
+<Parameter.type>
+<DataType idref="emx_6"/>
+</Parameter.type>
+</Parameter>
+<Parameter id="emx_21" name="DataStoredProc" visibility="private">
+<Parameter.type>
+<DataType idref="emx_6"/>
+</Parameter.type>
+</Parameter>
+<Parameter id="emx_22" name="User" visibility="private">
+<Parameter.type>
+<DataType idref="emx_7"/>
+</Parameter.type>
+</Parameter>
+<Parameter id="emx_23" name="SubFunctions" visibility="private">
+<Parameter.type>
+<DataType idref="emx_7"/>
+</Parameter.type>
+</Parameter>
+</Parameters>
+</Operation>
+<Operation id="emx_24" name="ZeosDataServerUserLogonCall" visibility="public">
+<Parameters>
+<ReturnParameter>
+<Parameter.kind value="return"/>
+<DataType idref="emx_8"/>
+</ReturnParameter>
+<Parameter id="emx_25" name="UserName" visibility="private">
+<Parameter.type>
+<DataType idref="emx_7"/>
+</Parameter.type>
+</Parameter>
+<Parameter id="emx_26" name="Password" visibility="private">
+<Parameter.type>
+<DataType idref="emx_7"/>
+</Parameter.type>
+</Parameter>
+</Parameters>
+</Operation>
+<Operation id="emx_27" name="ZConnectionLogin" visibility="public">
+<Parameters>
+<Parameter id="emx_28" name="Sender" visibility="private">
+<Parameter.type>
+<DataType idref="emx_9"/>
+</Parameter.type>
+</Parameter>
+<Parameter id="emx_29" name="Username" visibility="private">
+<Parameter.type>
+<DataType idref="emx_10"/>
+</Parameter.type>
+</Parameter>
+<Parameter id="emx_30" name="Password" visibility="private">
+<Parameter.type>
+<DataType idref="emx_10"/>
+</Parameter.type>
+</Parameter>
+</Parameters>
+</Operation>
+</Feature>
+<Class.Ancestor>
+</Class.Ancestor>
+</Class>
+</UnitPackage>
+</LogicPackage>
