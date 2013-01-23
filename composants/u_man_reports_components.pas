@@ -20,6 +20,7 @@ uses
   u_buttons_appli, RLFilters,
   RLReport, RLPreview,
   fonctions_reports,
+  u_reports_components,
   u_customframework;
 
 {$IFDEF VERSIONS}
@@ -37,28 +38,22 @@ type
 
  { TFWPrintSources }
 
-  TFWPrintSources = class(TFWPrint)
+  TFWPrintSources = class(TFWPrintComp)
   private
-    FFilter : TRLCustomPrintFilter;
     FSources : TFWSources;
-    FReportForm : TReportForm;
-    FPreview : TRLPReview;
-    FDBTitle: string;
+    FSource : Word;
   protected
     procedure ClickPopUp ( AObject : TObject ); virtual;
-    procedure Notification(AComponent: TComponent; Operation: TOperation); override;
   public
     procedure Click; override;
     procedure Loaded; override;
     procedure PrintSource(const ASource: TFWSource); virtual;
     procedure AddPreview(const AReport: TRLReport; const ASource: TFWSource); virtual;
     constructor Create(Component: TComponent); override;
-    property  PopupMenu;
-    property  ResultForm : TReportForm read FReportForm;
+    procedure CreateAReport( const AReport : TRLReport ); override;
   published
-    property DBFilter : TRLCustomPrintFilter read FFilter write FFilter;
-    property Preview : TRLPreview read FPreview write FPreview;
-    property DBTitle: string read FDBTitle write FDBTitle;
+    property PopupMenu;
+    property DBSource : Word read FSource write FSource default 0;
   end;
 
 implementation
@@ -74,13 +69,6 @@ uses unite_variables,
 procedure TFWPrintSources.ClickPopUp(AObject: TObject);
 begin
   PrintSource(FSources [ ( AObject as TComponent ).Tag ]);
-end;
-
-procedure TFWPrintSources.Notification(AComponent: TComponent;
-  Operation: TOperation);
-begin
-  inherited Notification(AComponent, Operation);
-  if (Operation = opRemove) and (AComponent = DBFilter) then DBFilter := nil;
 end;
 
 procedure TFWPrintSources.Click;
@@ -126,10 +114,11 @@ begin
    Begin
     Datasource.DataSet.DisableControls;
     AddPreview(nil,ASource);
-    if FReportForm <> nil Then
-     with FReportForm do
+    if FormReport = nil Then
+     FormReport := fref_CreateReport( Grid, Datasource, fobj_getComponentObjectProperty ( Grid, CST_PROPERTY_COLUMNS ) as TCollection, DBTitle, Orientation, PaperSize, Filter );
+   with FormReport do
      try
-       RLReport.Preview(FPreview);
+       RLReport.Preview(Preview);
      Finally
        Datasource.DataSet.EnableControls;
      End;
@@ -142,17 +131,17 @@ begin
     if ( AReport = nil )
      Then
       Begin
-       FReportForm.Free;
-       FReportForm := fref_CreateReport(Grid, DataSource,
+       FormReport.Free;
+       FormReport := fref_CreateReport(Grid, DataSource,
                            fobj_getComponentObjectProperty(Grid,CST_PROPERTY_COLUMNS) as TCollection,
-                           FDBTitle, FFilter)
+                           DBTitle,Orientation, PaperSize, Filter)
       end
      Else
        Begin
          fb_CreateReport(AReport,Grid, DataSource,
                          fobj_getComponentObjectProperty(Grid,CST_PROPERTY_COLUMNS) as TCollection,
                          AReport.Background.Picture.Bitmap.Canvas,
-                         FDBTitle);
+                         DBTitle);
        end;
 end;
 
@@ -171,6 +160,14 @@ constructor TFWPrintSources.Create(Component: TComponent);
 begin
   inherited Create(Component);
   FSources:=nil;
+end;
+
+procedure TFWPrintSources.CreateAReport(const AReport: TRLReport);
+begin
+  if FSource < FSources.Count Then
+   with FSources [ FSource ] do
+    if Assigned( Grid ) Then
+     fb_CreateReport(AReport,Grid, DataSource, fobj_getComponentObjectProperty ( Grid, CST_PROPERTY_COLUMNS ) as TCollection, AReport.Background.Picture.Bitmap.Canvas, DBTitle);
 end;
 
 
