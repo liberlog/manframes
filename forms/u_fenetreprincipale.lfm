@@ -20,7 +20,7 @@ object F_FenetrePrincipale: TF_FenetrePrincipale
   OnActivate = F_FormMainIniActivate
   OnResize = F_FormMainIniResize
   Position = poScreenCenter
-  LCLVersion = '1.0.4.0'
+  LCLVersion = '1.0.6.0'
   Visible = True
   object im_appli: TImage
     Left = 248

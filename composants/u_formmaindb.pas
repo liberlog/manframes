@@ -104,7 +104,6 @@ type
     procedure DoClose ( var AAction : TCloseAction ); override;
     // Constructeur et destructeur
     Constructor Create ( AOwner : TComponent ); override;
-    Destructor Destroy; override;
     {Lit le fichier ini
     pour le composant form TF_FormMainDB
     avec connexion d'une base ADO
@@ -115,6 +114,7 @@ type
     procedure p_WriteDescendantIni(const amif_Init: TIniFile); virtual;
     // Lecture de l'ini dans le descendant
     procedure p_ReadDescendantIni(const amif_Init: TIniFile); virtual;
+    procedure DoShow; override;
   published
     {$IFDEF SFORM}
     property BoxChilds : TWinControl read FBoxChilds write FBoxChilds stored True ;
@@ -269,21 +269,6 @@ begin
     End ;
   inherited;
 End ;
-{Écrit le fichier INI pour le composant form TF_FormMainDB.
-Appel de la procédure p_SauvegardeParamIni dans la form si AutoWriteIni,
-de la procédure Finifile.Free s'il n'existe pas de fichier INI.}
-Destructor TF_FormMainDB.Destroy;
-begin
-
-  if not (csDesigning in ComponentState) then // si on est pas en mode conception
-    begin
-      // Libère et sauve le INI
-      p_SauveIni;
-    end;
-
-  Inherited Destroy;
-end;
-
 
 // Vérification du fait que des propriétés ne sont pas à nil et n'existent pas
 procedure TF_FormMainDB.Notification(AComponent: TComponent; Operation: TOperation);
@@ -347,6 +332,12 @@ End ;
 procedure TF_FormMainDB.p_ReadDescendantIni ( const amif_Init : TIniFile );
 begin
 End ;
+
+procedure TF_FormMainDB.DoShow;
+begin
+  p_FreeConfigFile;
+  inherited DoShow;
+end;
 
 // Fonction de gestion du fichier INI avec nom de connexion (le nom de l'exe)
 // Entrée : Le nom de la connexion qui en fait est le nom du fichier INI (en gros)

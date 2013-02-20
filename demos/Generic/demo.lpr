@@ -16,6 +16,7 @@ uses
   fonctions_Objets_Data,
   U_FormMainIni,
   U_CustomFrameWork,
+  fonctions_zeos,
   fonctions_forms,
   lazmansoft, lazextcomponents,
   lazmanframes, lazmansoftware, u_data;

@@ -272,6 +272,13 @@ var
 begin
   mi_CustomizedMenu := nil;
   mu_voletexplore   := nil;
+  DMModuleSources := TDMModuleSources.Create(Application);
+  DMModuleSources.CreateConnection('Connector');
+  DMModuleSources.CreateConnection('Connection');
+  AutoIniDB   := True ;
+  AutoIni     := True ;
+  Connector   := DMModuleSources.Sources [ 0 ].Connection;
+  Connection  := DMModuleSources.Sources [ 1 ].Connection;
 {$IFDEF CLR}
   if not ( csDesigning in ComponentState ) Then
     Try
@@ -288,9 +295,6 @@ begin
       {$ENDIF}
       InitializeControls;
       DoCreate;
-      AutoIniDB   := True ;
-      AutoIni     := True ;
-
       p_CreeFormMainIni (AOwner);
       F_FenetrePrincipale := Self ;
 
@@ -625,7 +629,7 @@ begin
   Screen.Cursor := crSQLWait;
   p_FreeChildForms;
   p_DetruitTout ( True );
-  if not gb_FirstAcces then p_SauveIni; // On libère le fichier INI sauf à la 1ère ouverture
+
   gi_NbSeparateurs := 3; // Le nombre initial de séparateur dans la barre d'outils
   F_FormMainIniResize(Self);
   pa_2.Refresh;

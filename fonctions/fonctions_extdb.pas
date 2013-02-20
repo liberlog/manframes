@@ -58,8 +58,8 @@ function fb_TestZComponent ( const Connexion : TComponent ; const lb_ShowMessage
 function fs_IniSetConnection ( const accx_Connection : TComponent ) : String ;
 
 const
-        CST_ADOCONNECTION ='ADOConnection';
-        CST_ZCONNECTION = 'ZConnection';
+        CST_ADOCONNECTION ='TADOConnection';
+        CST_ZCONNECTION = 'TZConnection';
         CST_ZDATABASE   = 'Database';
         CST_ZPROTOCOL   = 'Protocol';
         CST_ZHOSTNAME   = 'HostName';
@@ -96,6 +96,7 @@ uses Variants,  fonctions_erreurs, fonctions_string,
   {$ENDIF}
    fonctions_proprietes, TypInfo, fonctions_db,
    Dialogs, unite_variables,
+   u_connection,
    fonctions_init;
 
 
@@ -182,6 +183,9 @@ Begin
       p_SetComponentProperty ( Connexion, CST_ZUSER    , Inifile.ReadString ( gs_DataSectionIni, gs_DataUserNameIni, '' ));
       p_SetComponentProperty ( Connexion, CST_ZCATALOG , Inifile.ReadString ( gs_DataSectionIni, gs_DataCatalogIni    , '' ));
       p_SetCaractersZEOSConnector(Connexion, Inifile.ReadString ( gs_DataSectionIni, gs_DataCollationIni    , Inifile.ReadString ( gs_DataSectionIni, gs_DataCollationIni    , 'UTF8' )));
+      if fs_getComponentProperty ( Connexion, CST_ZDATABASE ) = '' Then
+        p_ShowConnectionWindow ( Connexion, Inifile );
+
     End ;
 End ;
 
