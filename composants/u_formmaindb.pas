@@ -158,7 +158,7 @@ Begin
 {$IFDEF ZEOS}
   if accx_Connection.ClassNameIs(CST_ZCONNECTION) then
     Begin
-      Result := fb_InitZConnection( accx_Connection, FIniFile, False );
+      Result := fs_InitZConnection( accx_Connection, FIniFile, False );
     End;
 {$ENDIF}
 {$IFDEF SQLDB}
@@ -176,7 +176,9 @@ End;
 // Entrée : Le nom de la connexion qui en fait est le nom du fichier INI (en gros)
 // Renvoie un fichier INI (même si c'est pas très utile) !!!
 procedure p_IniGetDBConfigFile( var amif_Init : TIniFile ;{$IFNDEF CSV} const acco_ConnAcces, acco_Conn: TComponent;{$ENDIF} const as_NomConnexion: string);
+var lb_ConnectForm : Boolean;
 begin
+  lb_ConnectForm := False;
   // Soit on a une connexion ADO
   if not Assigned(acco_Conn) then Exit;
   if fb_CreateCommonIni ( amif_Init, as_NomConnexion ) then
@@ -186,7 +188,7 @@ begin
 {$IFDEF ZEOS}
       if acco_Conn.ClassNameIs(CST_ZCONNECTION ) Then
         Begin
-          fb_IniSetZConnection ( acco_Conn, amif_Init );
+          lb_ConnectForm := fb_IniSetZConnection ( acco_Conn, amif_Init );
           p_SetComponentBoolProperty ( acco_Conn, 'Connected', True );
         End ;
 {$ENDIF}
@@ -203,13 +205,17 @@ begin
 {$IFDEF SQLDB}
         if ( acco_Conn is TSQLConnection ) Then
           Begin
-            fb_IniSetSQLConnection ( acco_Conn as TSQLConnection );
+            lb_NoConnectForm := fb_IniSetSQLConnection ( acco_Conn as TSQLConnection );
             ( acco_Conn as TSQLConnection ).Open ;
           End ;
 {$ENDIF}
         gs_aide := GS_CHEMIN_AIDE;
         // Mettre à jour le fichier INI
-        fb_iniWriteFile ( amif_Init, True );
+        if lb_ConnectForm Then
+          Begin
+           p_ShowConnectionWindow ( acco_Conn, amif_Init );
+           fb_iniWriteFile ( amif_Init, True );
+          end;
       end;
     gs_ModeConnexion := amif_Init.Readstring(INISEC_PAR, INISEC_CON, '');
     gs_aide := amif_Init.Readstring(INISEC_PAR, GS_AIDE, GS_CHEMIN_AIDE);

@@ -51,7 +51,7 @@ function fb_IniSetADOConnection ( const aacx_Connection : TADOConnection ) : Boo
 {$IFDEF ZEOS}
 function fb_IniSetZConnection ( const asqc_Connection : TComponent; const IniFile : TIniFile ) : Boolean ;
 procedure p_SetCaractersZEOSConnector(const azco_Connect : TComponent ; const as_NonUtfChars : String );
-function  fb_InitZConnection ( const Connexion : TComponent ; const Inifile : TCustomInifile ; const Test : Boolean ) : String;
+function  fs_InitZConnection ( const Connexion : TComponent ; const Inifile : TCustomInifile ; const Test : Boolean ) : String;
 procedure p_InitZComponent ( const Connexion : TComponent ; const Inifile : TCustomInifile ; const Test : Boolean );
 function fs_CollationEncode ( const Connexion : TComponent ; const as_StringsProp : String ) : String;
 function fb_TestZComponent ( const Connexion : TComponent ; const lb_ShowMessage : Boolean ) : Boolean;
@@ -109,7 +109,7 @@ Begin
 {$IFDEF ZEOS}
   if accx_Connection.ClassNameIs(CST_ZCONNECTION) then
     Begin
-      Result := fb_InitZConnection( accx_Connection, FIniFile, False );
+      Result := fs_InitZConnection( accx_Connection, FIniFile, False );
     End;
 {$ENDIF}
 {$IFDEF EADO}
@@ -158,7 +158,7 @@ Begin
 End ;
 
 // Init connexion with inifile
-function fb_InitZConnection ( const Connexion : TComponent ; const Inifile : TCustomInifile ; const Test : Boolean ) : String;
+function fs_InitZConnection ( const Connexion : TComponent ; const Inifile : TCustomInifile ; const Test : Boolean ) : String;
 Begin
   p_IniTZComponent ( Connexion, Inifile, Test );
   Result := gs_DataHostIni      + ' = ' +  fs_getComponentProperty( Connexion, CST_ZHOSTNAME )  + #13#10
@@ -183,8 +183,7 @@ Begin
       p_SetComponentProperty ( Connexion, CST_ZUSER    , Inifile.ReadString ( gs_DataSectionIni, gs_DataUserNameIni, '' ));
       p_SetComponentProperty ( Connexion, CST_ZCATALOG , Inifile.ReadString ( gs_DataSectionIni, gs_DataCatalogIni    , '' ));
       p_SetCaractersZEOSConnector(Connexion, Inifile.ReadString ( gs_DataSectionIni, gs_DataCollationIni    , Inifile.ReadString ( gs_DataSectionIni, gs_DataCollationIni    , 'UTF8' )));
-      if fs_getComponentProperty ( Connexion, CST_ZDATABASE ) = '' Then
-        p_ShowConnectionWindow ( Connexion, Inifile );
+
 
     End ;
 End ;
@@ -230,9 +229,11 @@ end;
 
 function fb_IniSetZConnection ( const asqc_Connection : TComponent; const IniFile : TIniFile ) : Boolean ;
 Begin
-  Result := False ;
+  Result := True ;
   p_SetComponentBoolProperty ( asqc_Connection, CST_ZCONNECTED, False );
-  fb_InitZConnection( asqc_Connection, IniFile, False );
+  fs_InitZConnection( asqc_Connection, IniFile, False );
+  if fs_getComponentProperty ( asqc_Connection, CST_ZDATABASE ) = '' Then
+    Result := False ;
 End;
 {$ENDIF}
 
