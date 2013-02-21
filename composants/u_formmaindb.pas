@@ -176,9 +176,9 @@ End;
 // Entrée : Le nom de la connexion qui en fait est le nom du fichier INI (en gros)
 // Renvoie un fichier INI (même si c'est pas très utile) !!!
 procedure p_IniGetDBConfigFile( var amif_Init : TIniFile ;{$IFNDEF CSV} const acco_ConnAcces, acco_Conn: TComponent;{$ENDIF} const as_NomConnexion: string);
-var lb_ConnectForm : Boolean;
+var lb_NoConnectForm : Boolean;
 begin
-  lb_ConnectForm := False;
+  lb_NoConnectForm := True;
   // Soit on a une connexion ADO
   if not Assigned(acco_Conn) then Exit;
   if fb_CreateCommonIni ( amif_Init, as_NomConnexion ) then
@@ -188,7 +188,7 @@ begin
 {$IFDEF ZEOS}
       if acco_Conn.ClassNameIs(CST_ZCONNECTION ) Then
         Begin
-          lb_ConnectForm := fb_IniSetZConnection ( acco_Conn, amif_Init );
+          lb_NoConnectForm := fb_IniSetZConnection ( acco_Conn, amif_Init );
           p_SetComponentBoolProperty ( acco_Conn, 'Connected', True );
         End ;
 {$ENDIF}
@@ -211,7 +211,7 @@ begin
 {$ENDIF}
         gs_aide := GS_CHEMIN_AIDE;
         // Mettre à jour le fichier INI
-        if lb_ConnectForm Then
+        if not lb_NoConnectForm Then
           Begin
            p_ShowConnectionWindow ( acco_Conn, amif_Init );
            fb_iniWriteFile ( amif_Init, True );
