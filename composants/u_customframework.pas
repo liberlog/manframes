@@ -1019,7 +1019,7 @@ begin
                       p_SetComponentProperty ( ldat_Dataset, 'SortType', 0 );
                     End
                    else
-                     p_SetComponentProperty ( ldat_Dataset, 'SortType', flin_getComponentProperty ( ldat_Dataset, 'SortType' ) = 0);
+                     p_SetComponentProperty ( ldat_Dataset, 'SortType', fli_getComponentProperty ( ldat_Dataset, 'SortType' ) = 0);
               End;
           End;
         End ;
@@ -4302,11 +4302,11 @@ begin
       else} if (lwin_ControlRecherche is TDBComboBox)
            and (lwin_ControlRecherche as TDBComboBox).DroppedDown then Exit
       else if (lwin_ControlRecherche.ClassNameIs('TJvDBDateEdit'))
-           and ( flin_getComponentProperty (lwin_ControlRecherche, 'PopupVisible')>0) then Exit
+           and ( fli_getComponentProperty (lwin_ControlRecherche, 'PopupVisible')>0) then Exit
       else if (lwin_ControlRecherche.ClassNameIs('TDBLookupComboBox')
            or lwin_ControlRecherche.ClassNameIs('TRxDBLookupCombo')
            or lwin_ControlRecherche.ClassNameIs('TJvDBLookupCombo'))
-           and (flin_getComponentProperty (lwin_ControlRecherche, 'ListVisible' )>0) then Exit
+           and (fli_getComponentProperty (lwin_ControlRecherche, 'ListVisible' )>0) then Exit
 
         // Enfin, on passe à l'élément suivant ou précédent sauf dans le cas
         // de la grille par l'appui des touches haut et bas

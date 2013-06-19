@@ -280,7 +280,7 @@ Begin
           Parent      := twin_edition.Parent;
           BoundsRect := twin_edition.BoundsRect;
           p_SetComponentObjectProperty(Self, 'Font', fobj_getComponentObjectProperty(twin_edition, 'Font'));
-          TabOrder   := flin_getComponentProperty    ( twin_edition, 'TabOrder' );
+          TabOrder   := fli_getComponentProperty    ( twin_edition, 'TabOrder' );
           Hint       := twin_edition.Hint;
           MaxLength  := li_MaxLength ;
           if assigned ( ds_Recherche.DataSet.FindField ( DataField )) Then
@@ -288,7 +288,7 @@ Begin
           Else
             Text := '' ;
           AutoSelect := True;
-          CharCase:=TEditCharCase ( flin_getComponentProperty( twin_edition, 'CharCase' ));
+          CharCase:=TEditCharCase ( fli_getComponentProperty( twin_edition, 'CharCase' ));
           gs_NomColRech:=fvar_getComponentProperty( twin_edition, 'DataField' );
 //          tx_edition.Color    := gCol_search ;
           Show;

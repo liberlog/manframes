@@ -262,7 +262,7 @@ begin
   if not Assigned ( FFWDBLookupCombo )
   or ( Parent <> FFWDBLookupCombo.Parent ) Then
     Exit;
-  li_Width:= flin_getComponentProperty(Combo, 'ButtonWidth');
+  li_Width:= fli_getComponentProperty(Combo, 'ButtonWidth');
   if li_Width < 0 Then
     li_Width := 0 ;
   inc ( li_Width, Combo.Width );
