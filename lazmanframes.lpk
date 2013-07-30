@@ -22,7 +22,7 @@
     </CompilerOptions>
     <Description Value="Child Form data management and relationships"/>
     <License Value="LGPL"/>
-    <Version Major="1" Minor="2" Release="2" Build="2"/>
+    <Version Major="1" Minor="2" Release="2" Build="3"/>
     <Files Count="10">
       <Item1>
         <Filename Value="fonctions/fonctions_tableauframework.pas"/>
@@ -70,7 +70,7 @@
       <OutDir Value="LANG"/>
     </i18n>
     <Type Value="RunAndDesignTime"/>
-    <RequiredPkgs Count="8">
+    <RequiredPkgs Count="7">
       <Item1>
         <PackageName Value="extreports"/>
       </Item1>
@@ -89,14 +89,11 @@
         <PackageName Value="LCL"/>
       </Item5>
       <Item6>
-        <PackageName Value="lazfonctions"/>
+        <PackageName Value="lazextcomponents"/>
       </Item6>
       <Item7>
-        <PackageName Value="lazextcomponents"/>
-      </Item7>
-      <Item8>
         <PackageName Value="JvXPBarLaz"/>
-      </Item8>
+      </Item7>
     </RequiredPkgs>
     <UsageOptions>
       <UnitPath Value="$(PkgOutDir)"/>
