@@ -49,7 +49,7 @@
       <OutDir Value="fonctions"/>
     </i18n>
     <Type Value="RunAndDesignTime"/>
-    <RequiredPkgs Count="9">
+    <RequiredPkgs Count="8">
       <Item1>
         <PackageName Value="lazextbuttons"/>
       </Item1>
@@ -69,14 +69,11 @@
         <PackageName Value="JvXPBarLaz"/>
       </Item6>
       <Item7>
-        <PackageName Value="lazfonctions"/>
+        <PackageName Value="rxnew"/>
       </Item7>
       <Item8>
-        <PackageName Value="rxnew"/>
-      </Item8>
-      <Item9>
         <PackageName Value="FCL"/>
-      </Item9>
+      </Item8>
     </RequiredPkgs>
     <PublishOptions>
       <Version Value="2"/>
