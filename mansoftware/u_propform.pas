@@ -1,4 +1,4 @@
-unit u_propform;
+﻿unit u_propform;
     ///////////////////////////////////////////////////////////////////////////////////////////
    // Unité de TF_PropForm
   // Le module crée des propriétés servant à gérer des données
@@ -121,12 +121,8 @@ type
     property DatasourceQuery  ;
     property DBOnEmptyEdit    ;
     property DBOnUsedKey      ;
-    property DBOnEraseFilter;
-    property DBCloseMessage;
     // Affiche-t-on un message sur erreur
     property DBErrorMessage;
-
-    property DBSetLabels;
     property FieldDelimiter;
     property OpenDatasets;
 

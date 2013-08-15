@@ -57,7 +57,6 @@ requires
   JvSystemD10R,
   JvStdCtrlsD10R,
   JvCoreD10R,
-  Fonctions,
   JvHMID10R,
   ExtComponents,
   ManFrames,
@@ -80,15 +79,18 @@ requires
   JvGlobusD10R;
 
 contains
-  U_Splash in 'forms\U_Splash.pas',
-  U_Acces in 'forms\U_Acces.pas' {F_Acces},
-  U_Donnees in 'forms\U_Donnees.pas',
-  U_FenetrePrincipale in 'forms\U_FenetrePrincipale.pas',
-  U_MotPasse in 'forms\U_MotPasse.pas' {F_MotPasse},
-  fonctions_Objets_Data in 'fonctions\fonctions_Objets_Data.pas',
-  fonctions_Objets_Dynamiques in 'fonctions\fonctions_Objets_Dynamiques.pas',
-  U_Administration in 'forms\U_Administration.pas',
-  fonctions_FenetrePrincipale in 'fonctions\fonctions_FenetrePrincipale.pas',
-  u_manfillcombobutton in 'composants\u_manfillcombobutton.pas';
+  fonctions_fenetreprincipale in 'mansoft\fonctions_fenetreprincipale.pas',
+  fonctions_objets_dynamiques in 'mansoft\fonctions_objets_dynamiques.pas',
+  u_splash in 'mansoft\u_splash.pas',
+  fonctions_administration in 'mansoftware\fonctions_administration.pas',
+  fonctions_administration_ado in 'mansoftware\fonctions_administration_ado.pas',
+  fonctions_objets_data in 'mansoftware\fonctions_objets_data.pas',
+  u_acces in 'mansoftware\u_acces.pas',
+  u_administration in 'mansoftware\u_administration.pas',
+  u_fenetreprincipale in 'mansoftware\u_fenetreprincipale.pas',
+  u_formauto in 'mansoftware\u_formauto.pas',
+  u_formdico in 'mansoftware\u_formdico.pas',
+  u_motpasse in 'mansoftware\u_motpasse.pas',
+  u_propform in 'mansoftware\u_propform.pas';
 
 end.

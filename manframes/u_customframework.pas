@@ -1,4 +1,4 @@
-Unit u_customframework;
+﻿Unit u_customframework;
  // Unité de TF_FormFrameWork
 
  // Le module crée des propriétés servant à récupérer des informations dans la table dico
@@ -6131,7 +6131,7 @@ begin
       lb_Reinit := True ;
       {$ELSE}
       lcom_Columns := TComponent ( fobj_getComponentObjectProperty ( Grid, 'Columns' ));
-      lb_Reinit := flin_getComponentProperty ( lcom_Columns, 'State' ) = Integer ( csDefault );
+      lb_Reinit := fli_getComponentProperty ( lcom_Columns, 'State' ) = Integer ( csDefault );
       {$ENDIF}
       if lb_Reinit Then
         gridColumns.Clear ;

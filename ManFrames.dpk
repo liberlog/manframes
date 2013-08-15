@@ -56,7 +56,6 @@ requires
   JvPageCompsD10R,
   dclado,
   JvXPCtrlsD10R,
-  Fonctions,
   dbexpress,
   ExtComponents,
   JvHMID10R,
@@ -83,18 +82,17 @@ requires
   TntUnicodeVcl_D90;
 
 contains
-  fonctions_aide in 'fonctions\fonctions_aide.pas',
-  U_RegisterFrameWork in 'composants\U_RegisterFrameWork.pas',
-  U_RegisterIni in 'composants\U_RegisterIni.pas',
-  ESBaseApp in 'composants\ESBaseApp.pas',
-  ESBaseData in 'composants\ESBaseData.pas',
-  u_customframework in 'composants\u_customframework.pas',
-  u_formdico in 'composants\u_formdico.pas',
-  u_searchcomponents in 'composants\u_searchcomponents.pas',
-  fonctions_tableauframework in 'fonctions\fonctions_tableauframework.pas',
-  unite_variables in 'fonctions\unite_variables.pas',
-  fonctions_manbase in 'fonctions\fonctions_manbase.pas',
-  u_propform in 'composants\u_propform.pas',
-  u_fillcombobutton in 'composants\u_fillcombobutton.pas';
+  fonctions_manbase in 'manbase\fonctions_manbase.pas',
+  u_multidata in 'manbase\u_multidata.pas',
+  fonctions_tableauframework in 'manframes\fonctions_tableauframework.pas',
+  u_connection in 'manframes\u_connection.pas',
+  u_customframework in 'manframes\u_customframework.pas',
+  u_fillcombobutton in 'manframes\u_fillcombobutton.pas',
+  u_formmaindb in 'manframes\u_formmaindb.pas',
+  u_man_reports_components in 'manframes\u_man_reports_components.pas',
+  u_multidonnees in 'manframes\u_multidonnees.pas',
+  u_searchcomponents in 'manframes\u_searchcomponents.pas',
+  unite_variables in 'manframes\unite_variables.pas',
+  fonctions_extdb in 'manframes\fonctions_extdb.pas';
 
 end.

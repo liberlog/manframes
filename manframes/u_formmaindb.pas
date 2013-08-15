@@ -1,4 +1,4 @@
-unit u_formmaindb;
+﻿unit u_formmaindb;
 // Unité de la Version 2 du projet FormMain
 // La version 1 TFormMain n'est pas sa fenêtre parente
 
@@ -198,7 +198,7 @@ begin
 {$IFDEF DBEXPRESS}
         if ( acco_Conn is TSQLConnection ) Then
           Begin
-            ( acco_Conn as TSQLConnection ).LoadParamsFromIniFile( fs_getSoftName + CST_INI_DB + CST_DBEXPRESS + CST_EXTENSION_INI);
+            ( acco_Conn as TSQLConnection ).LoadParamsFromIniFile( Application.Name + CST_INI_DB + CST_DBEXPRESS + CST_EXTENSION_INI);
             ( acco_Conn as TSQLConnection ).Open ;
           End ;
 {$ENDIF}

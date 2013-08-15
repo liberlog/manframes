@@ -1,4 +1,4 @@
-unit fonctions_extdb;
+﻿unit fonctions_extdb;
 
 interface
 
@@ -6,7 +6,7 @@ interface
 {$mode Delphi}
 {$ENDIF}
 
-{$I ..\DLCompilers.inc}
+{$I ..\dlcompilers.inc}
 {$I ..\extends.inc}
 
 uses SysUtils,
@@ -43,10 +43,10 @@ var ge_DataSetErrorEvent : TDataSetErrorEvent ;
     ge_ReadMainDB        : TComponentConnexion = nil;
 
 {$IFDEF DBEXPRESS}
-function fb_IniSetSQLConnection ( const asqc_Connection : TSQLConnection ) : Boolean ;
+function fb_IniSetSQLConnection ( const asqc_Connection : TComponent ) : Boolean ;
 {$ENDIF}
 {$IFDEF EADO}
-function fb_IniSetADOConnection ( const aacx_Connection : TADOConnection ) : Boolean ;
+function fb_IniSetADOConnection ( const aacx_Connection : TComponent ) : Boolean ;
 {$ENDIF}
 {$IFDEF ZEOS}
 function fb_IniSetZConnection ( const asqc_Connection : TComponent; const IniFile : TIniFile ) : Boolean ;
@@ -59,11 +59,12 @@ function fs_IniSetConnection ( const accx_Connection : TComponent ) : String ;
 
 const
         CST_ADOCONNECTION ='TADOConnection';
+        CST_ADOCONNECTION_STRING ='ConnectionString';
+        CST_CONNECTED   = 'Connected';
         CST_ZCONNECTION = 'TZConnection';
         CST_ZDATABASE   = 'Database';
         CST_ZPROTOCOL   = 'Protocol';
         CST_ZHOSTNAME   = 'HostName';
-        CST_ZCONNECTED  = 'Connected';
         CST_ZPASSWORD   = 'Password';
         CST_ZUSER       = 'User';
         CST_ZCATALOG    = 'Catalog';
@@ -140,7 +141,7 @@ function fb_TestZComponent ( const Connexion : TComponent ; const lb_ShowMessage
 Begin
   Result := False ;
   try
-    p_SetComponentBoolProperty ( Connexion, CST_ZCONNECTED, True );
+    p_SetComponentBoolProperty ( Connexion, CST_CONNECTED, True );
   Except
     on E: Exception do
       Begin
@@ -149,7 +150,7 @@ Begin
         Exit ;
       End ;
   End ;
-  if fb_getComponentBoolProperty( Connexion, CST_ZCONNECTED ) Then
+  if fb_getComponentBoolProperty( Connexion, CST_CONNECTED ) Then
     Begin
       Result := True ;
       if lb_ShowMessage Then
@@ -230,7 +231,7 @@ end;
 function fb_IniSetZConnection ( const asqc_Connection : TComponent; const IniFile : TIniFile ) : Boolean ;
 Begin
   Result := True ;
-  p_SetComponentBoolProperty ( asqc_Connection, CST_ZCONNECTED, False );
+  p_SetComponentBoolProperty ( asqc_Connection, CST_CONNECTED, False );
   fs_InitZConnection( asqc_Connection, IniFile, False );
   if fs_getComponentProperty ( asqc_Connection, CST_ZDATABASE ) = '' Then
     Result := False ;
@@ -238,7 +239,7 @@ End;
 {$ENDIF}
 
 {$IFDEF SQLDB}
-function fb_IniSetSQLConnection ( const asqc_Connection : TSQLConnection ) : Boolean ;
+function fb_IniSetSQLConnection ( const asqc_Connection : TComponent  ) : Boolean ;
 Begin
   Result := False ;
   asqc_Connection.Close;
@@ -247,23 +248,23 @@ End;
 {$ENDIF}
 
 {$IFDEF EADO}
-function fb_IniSetADOConnection ( const aacx_Connection : TADOConnection ) : Boolean ;
+function fb_IniSetADOConnection ( const aacx_Connection : TComponent ) : Boolean ;
 Begin
   Result := False ;
-  aacx_Connection.Connected:=False;
-  aacx_Connection.ConnectionString := f_IniReadSectionStr( 'parametres' ,'String d''acces', '' );
+  p_SetComponentBoolProperty ( aacx_Connection, cst_Connected,False);
+  p_SetComponentProperty     ( aacx_Connection, CST_ADOCONNECTION_STRING, f_IniReadSectionStr( 'parametres' ,'String d''acces', '' ));
   // Ouverture de la fenêtre de dialogue de connexion
-  if ( aacx_Connection.ConnectionString = '' ) Then
+  if fs_getComponentProperty ( aacx_Connection, CST_ADOCONNECTION_STRING ) = '' Then
     EditConnectionString(aacx_Connection) ;
-  Result := aacx_Connection.ConnectionString <> '';
+  Result := fs_getComponentProperty ( aacx_Connection, CST_ADOCONNECTION_STRING ) > '';
 End;
 {$ENDIF}
 
 {$IFDEF DBEXPRESS}
-function fb_IniSetSQLConnection ( const asqc_Connection : TSQLConnection ) : Boolean ;
+function fb_IniSetSQLConnection ( const asqc_Connection : TComponent ) : Boolean ;
 Begin
   Result := False ;
-  asqc_Connection.Close;
+  p_SetComponentBoolProperty ( asqc_Connection, cst_Connected,False);
 //  fb_InitConnection( asqc_Connection, FIniFile );
 End;
 {$ENDIF}
