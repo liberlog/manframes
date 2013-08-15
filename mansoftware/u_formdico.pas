@@ -1,14 +1,14 @@
 unit u_formdico;
- // Unité de TF_FormFrameWork
+ // UnitÃ© de TF_FormFrameWork
  // Auteur : Matthieu GIROUX - liberlog.fr
 
- // Le module crée des propriétés servant à récupérer des informations dans la table dico
- // Il adapte aussi des couleurs à la form enfant
+ // Le module crÃ©e des propriÃ©tÃ©s servant Ã  rÃ©cupÃ©rer des informations dans la table dico
+ // Il adapte aussi des couleurs Ã  la form enfant
  // IL comporte :
- // Un DataSource, son DataGrid, ses navigateurs, ses zones d'éditions
- // Un deuxième DataSource, son navigateur, ses zones d'éditions
+ // Un DataSource, son DataGrid, ses navigateurs, ses zones d'Ã©ditions
+ // Un deuxiÃ¨me DataSource, son navigateur, ses zones d'Ã©ditions
  // Un DataGridLookup et son navigateur
- // créé par Matthieu Giroux en décembre 2006
+ // crÃ©Ã© par Matthieu Giroux en dÃ©cembre 2006
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 
@@ -48,15 +48,15 @@ const
     gVer_TFormDico : T_Version = ( Component : 'Composant TF_FormDico' ;
                                       FileUnit : 'U_FormDico' ;
                                       Owner : 'Matthieu Giroux' ;
-                                      Comment : 'Fiche personnalisée avec méthodes génériques et gestion de données liées à une table DICO.' ;
+                                      Comment : 'Fiche personnalisÃ©e avec mÃ©thodes gÃ©nÃ©riques et gestion de donnÃ©es liÃ©es Ã  une table DICO.' ;
                                       BugsStory : '1.2.0.0 : Automating.' + #13#10 +
                                                   '1.1.0.1 : Chanching Columns to Sources, optimising.' + #13#10 +
-                                                  '1.1.0.0 : Création de la propriété Columns.' + #13#10 +
-                                                  '1.0.1.3 : Bug DatasourceQuery non trouvé enlevé.' + #13#10 +
-                                                  '1.0.1.2 : Récupération de TableName pour tous Datasets.' + #13#10 +
+                                                  '1.1.0.0 : CrÃ©ation de la propriÃ©tÃ© Columns.' + #13#10 +
+                                                  '1.0.1.3 : Bug DatasourceQuery non trouvÃ© enlevÃ©.' + #13#10 +
+                                                  '1.0.1.2 : RÃ©cupÃ©ration de TableName pour tous Datasets.' + #13#10 +
                                                   '1.0.1.1 : Ajouts de la gestion DBExpress et BDE.' + #13#10 +
-                                                  '1.0.1.0 : Gestion FrameWork pour tous Datasources testée.' + #13#10 +
-                                                  '1.0.0.0 : Gestion FrameWork avec ADO non testée' ;
+                                                  '1.0.1.0 : Gestion FrameWork pour tous Datasources testÃ©e.' + #13#10 +
+                                                  '1.0.0.0 : Gestion FrameWork avec ADO non testÃ©e' ;
                                        UnitType : 3 ;
                                        Major : 1 ; Minor : 2 ; Release : 0 ; Build : 0 );
 {$ENDIF}
@@ -78,9 +78,9 @@ type
                                    const ai_NumSource : Integer ) : Boolean; override;
     procedure p_InitExecutionFrameWork ( const Sender : TObject ); override;
    public
-     // Méthode abstraite virtuelle
+     // MÃ©thode abstraite virtuelle
      procedure BeforeCreateFrameWork(Sender: TComponent); override;
-    // Clé primaire du DataSource
+    // ClÃ© primaire du DataSource
     property DataKeyList [ Index :  integer ] : TstringList read fstl_getDataKeyList;
    published
     procedure p_OrderEdit ( Edit : TObject );
@@ -139,7 +139,7 @@ Begin
     Result := DBSources.Items[ Index ].KeyList;
 End;
 
-// Réinitialisation des colonnes pour n'afficher que celles visibles dans le dico
+// RÃ©initialisation des colonnes pour n'afficher que celles visibles dans le dico
 // adbgd_DataGrid : Le DataGrid en cours
 function TF_FormDico.fb_ReinitCols ( const at_datawork : TFWSource ; const ai_table : Integer ) : Boolean;
 begin
@@ -151,8 +151,8 @@ begin
 end;
 
 
-// Renseignement de la table à charger et de ses colonnes correspondantes
-// Gestion des évenements liés aux Label et aux DBEdit et gestion des DBEdit
+// Renseignement de la table Ã  charger et de ses colonnes correspondantes
+// Gestion des Ã©venements liÃ©s aux Label et aux DBEdit et gestion des DBEdit
 procedure TF_FormDico.BeforeCreateFrameWork(Sender: TComponent);
 begin
 end;
@@ -160,7 +160,7 @@ end;
 
 
 // Chargement des tableaux pour le nom des colonnes (SQL), leur nom d'affichage leur
-// état d'affichage (visible ou non), et le Hint de la barre de statut correspondant
+// Ã©tat d'affichage (visible ou non), et le Hint de la barre de statut correspondant
 function TF_FormDico.fb_ChargementNomCol ( const at_DataWork : TFWSource ; const ai_NumSource : Integer ) : Boolean;
 var li_i , li_j,
     li_TotalEnregistrements : integer;

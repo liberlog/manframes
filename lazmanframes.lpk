@@ -7,8 +7,8 @@
     <CompilerOptions>
       <Version Value="11"/>
       <SearchPaths>
-        <IncludeFiles Value="composants;fonctions;forms"/>
-        <OtherUnitFiles Value="composants;fonctions;forms"/>
+        <IncludeFiles Value="manframes"/>
+        <OtherUnitFiles Value="manframes"/>
         <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
       <Parsing>
@@ -25,43 +25,43 @@
     <Version Major="1" Minor="2" Release="3" Build="1"/>
     <Files Count="10">
       <Item1>
-        <Filename Value="fonctions/fonctions_tableauframework.pas"/>
+        <Filename Value="manframes/fonctions_tableauframework.pas"/>
         <UnitName Value="fonctions_tableauframework"/>
       </Item1>
       <Item2>
-        <Filename Value="fonctions/unite_variables.pas"/>
+        <Filename Value="manframes/unite_variables.pas"/>
         <UnitName Value="unite_variables"/>
       </Item2>
       <Item3>
-        <Filename Value="composants/u_customframework.pas"/>
+        <Filename Value="manframes/u_customframework.pas"/>
         <UnitName Value="u_customframework"/>
       </Item3>
       <Item4>
-        <Filename Value="composants/u_searchcomponents.pas"/>
+        <Filename Value="manframes/u_searchcomponents.pas"/>
         <UnitName Value="u_searchcomponents"/>
       </Item4>
       <Item5>
-        <Filename Value="composants/u_fillcombobutton.pas"/>
+        <Filename Value="manframes/u_fillcombobutton.pas"/>
         <UnitName Value="u_fillcombobutton"/>
       </Item5>
       <Item6>
-        <Filename Value="forms/u_multidonnees.pas"/>
+        <Filename Value="manframes/u_multidonnees.pas"/>
         <UnitName Value="u_multidonnees"/>
       </Item6>
       <Item7>
-        <Filename Value="composants/u_man_reports_components.pas"/>
+        <Filename Value="manframes/u_man_reports_components.pas"/>
         <UnitName Value="u_man_reports_components"/>
       </Item7>
       <Item8>
-        <Filename Value="fonctions/fonctions_extdb.pas"/>
+        <Filename Value="manframes/fonctions_extdb.pas"/>
         <UnitName Value="fonctions_extdb"/>
       </Item8>
       <Item9>
-        <Filename Value="composants/u_formmaindb.pas"/>
+        <Filename Value="manframes/u_formmaindb.pas"/>
         <UnitName Value="u_formmaindb"/>
       </Item9>
       <Item10>
-        <Filename Value="forms/u_connection.pas"/>
+        <Filename Value="manframes/u_connection.pas"/>
         <UnitName Value="u_connection"/>
       </Item10>
     </Files>

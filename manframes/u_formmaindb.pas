@@ -1,4 +1,4 @@
-﻿unit u_formmaindb;
+unit u_formmaindb;
 // Unité de la Version 2 du projet FormMain
 // La version 1 TFormMain n'est pas sa fenêtre parente
 
@@ -142,7 +142,7 @@ uses fonctions_proprietes, fonctions_erreurs, TypInfo,
      AdoConEd, ADOInt,
 {$ENDIF}
 {$IFDEF ZEOS}
-     U_connection,
+     u_connection,
 {$ENDIF}
   {$IFDEF FPC}
   unite_messages,

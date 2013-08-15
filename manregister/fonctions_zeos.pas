@@ -1,4 +1,4 @@
-﻿unit fonctions_zeos;
+unit fonctions_zeos;
 
 {$IFDEF FPC}
 {$MODE Delphi}

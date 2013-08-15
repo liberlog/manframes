@@ -17,8 +17,8 @@
     </CompilerOptions>
     <Files Count="1">
       <Item1>
-        <Filename Value="fonctions/fonctions_dbnet.pas"/>
-        <UnitName Value="fonctions_zeos"/>
+        <Filename Value="manregister/fonctions_dbnet.pas"/>
+        <UnitName Value="fonctions_dbnet"/>
       </Item1>
     </Files>
     <Type Value="RunAndDesignTime"/>

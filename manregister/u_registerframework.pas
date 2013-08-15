@@ -1,11 +1,11 @@
 unit U_RegisterFrameWork;
 {
-Unité             U_RegisterDico
-Unité créant un projet form
+UnitÃ©             U_RegisterDico
+UnitÃ© crÃ©ant un projet form
 Classes :
-TF_FormMainIniModule : Module créant une form
+TF_FormMainIniModule : Module crÃ©ant une form
 TF_FormMainIniExpert : Expert enregistrant le module dans les nouveaux projets
-Rédigé par Matthieu Giroux le 1/12/2003
+RÃ©digÃ© par Matthieu Giroux le 1/12/2003
 }
 
 {$I ..\DLCompilers.inc}
@@ -37,8 +37,8 @@ uses DB, TypInfo,
 
 procedure Register ;
 begin // Enregistre le nouvel expert de projet
-  // Procédures à garder pour peut-être plus tard ( utilisation actuelle d'unités dépréciées)
-// Un register libère automatiquement la variable à la suppression
+  // ProcÃ©dures Ã  garder pour peut-Ãªtre plus tard ( utilisation actuelle d'unitÃ©s dÃ©prÃ©ciÃ©es)
+// Un register libÃ¨re automatiquement la variable Ã  la suppression
 {$IFDEF FPC}
 //  RegisterNoIcon([]);
 {$ELSE}

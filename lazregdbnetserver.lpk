@@ -5,7 +5,7 @@
     <CompilerOptions>
       <Version Value="11"/>
       <SearchPaths>
-        <OtherUnitFiles Value="fonctions;forms"/>
+        <OtherUnitFiles Value="manregister"/>
         <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
       <Other>
@@ -15,19 +15,15 @@
         <CompilerPath Value="$(CompPath)"/>
       </Other>
     </CompilerOptions>
-    <Files Count="3">
+    <Files Count="2">
       <Item1>
-        <Filename Value="fonctions/fonctions_dbnetserver.pas"/>
+        <Filename Value="manregister/fonctions_dbnetserver.pas"/>
         <UnitName Value="fonctions_dbnetserver"/>
       </Item1>
       <Item2>
-        <Filename Value="forms/u_moduledbnetserver.lfm"/>
-        <Type Value="LFM"/>
-      </Item2>
-      <Item3>
-        <Filename Value="forms/u_moduledbnetserver.pas"/>
+        <Filename Value="manregister/u_moduledbnetserver.pas"/>
         <UnitName Value="u_moduledbnetserver"/>
-      </Item3>
+      </Item2>
     </Files>
     <Type Value="RunAndDesignTime"/>
     <RequiredPkgs Count="3">

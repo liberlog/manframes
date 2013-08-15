@@ -5,8 +5,8 @@
     <CompilerOptions>
       <Version Value="11"/>
       <SearchPaths>
-        <OtherUnitFiles Value="fonctions"/>
-        <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)/"/>
+        <OtherUnitFiles Value="manregister"/>
+        <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
       <Other>
         <CompilerMessages>
@@ -17,7 +17,7 @@
     </CompilerOptions>
     <Files Count="1">
       <Item1>
-        <Filename Value="fonctions/fonctions_zeos.pas"/>
+        <Filename Value="manregister/fonctions_zeos.pas"/>
         <UnitName Value="fonctions_zeos"/>
       </Item1>
     </Files>

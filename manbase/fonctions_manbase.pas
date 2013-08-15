@@ -1,4 +1,4 @@
-﻿unit fonctions_manbase;
+unit fonctions_manbase;
 
 {$IFDEF FPC}
 {$mode Delphi}

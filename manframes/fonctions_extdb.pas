@@ -1,4 +1,4 @@
-﻿unit fonctions_extdb;
+unit fonctions_extdb;
 
 interface
 

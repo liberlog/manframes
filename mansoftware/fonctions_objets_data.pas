@@ -7,13 +7,13 @@ interface
 
 {
 
-Créée par Matthieu Giroux le 01-2004
+CrÃ©Ã©e par Matthieu Giroux le 01-2004
 
-Fonctionnalités :
+FonctionnalitÃ©s :
 
-Création de la barre d'accès
-Création du menu d'accès
-Création du volet d'accès
+CrÃ©ation de la barre d'accÃ¨s
+CrÃ©ation du menu d'accÃ¨s
+CrÃ©ation du volet d'accÃ¨s
 
 Utilisation des fonctions
 Administration
@@ -48,7 +48,7 @@ uses Forms, JvXPBar, DB, JvXPContainer,
   u_multidata,
   Graphics ;
 
-const // Champs utilisés
+const // Champs utilisÃ©s
       CST_SOMM_Niveau     = 'SOMM_Niveau' ;
       CST_SOUM_Clep       = 'SOUM_Clep' ;
       CST_SOUM_Bmp        = 'SOUM_Bmp' ;
@@ -72,17 +72,17 @@ const // Champs utilisés
       CST_FCT_MODE_FONCTIONS     = 'FONCTIONS' ;
       CST_FCT_MODE_SUPPRESSION   = 'SUPPRESSION' ;
       CST_FCT_MODE_CREATION      = 'CREATION' ;
-      // Mode de la fenêtre
+      // Mode de la fenÃªtre
       CST_FCT_MODE_NORMAL        = 'NORMAL' ;
       CST_FCT_MODE_ENFANT        = 'ENFANT' ;
       CST_FCT_MODE_DESSUS        = 'DESSUS' ;
 
 {$IFDEF VERSIONS}
-  gver_fonctions_Objets_Data : T_Version = ( Component : 'Gestion des objets dynamiques de données' ; FileUnit : 'fonctions_Objets_Dynamiques' ;
+  gver_fonctions_Objets_Data : T_Version = ( Component : 'Gestion des objets dynamiques de donnÃ©es' ; FileUnit : 'fonctions_Objets_Dynamiques' ;
               			                 Owner : 'Matthieu Giroux' ;
-              			                 Comment : 'Gestion des données des objets dynamiques du composant Fenêtre principale.' + #13#10 + 'Il comprend une création de menus' ;
+              			                 Comment : 'Gestion des donnÃ©es des objets dynamiques du composant FenÃªtre principale.' + #13#10 + 'Il comprend une crÃ©ation de menus' ;
               			                 BugsStory :  'Version 1.0.0.1 : No ExtToolBar on Lazarus.' + #13#10 +
-                                                             'Version 1.0.0.0 : Création de l''unité à partir de fonctions_objets_dynamiques.';
+                                                             'Version 1.0.0.0 : CrÃ©ation de l''unitÃ© Ã  partir de fonctions_objets_dynamiques.';
               			                 UnitType : 1 ;
               			                 Major : 1 ; Minor : 0 ; Release : 0 ; Build : 1 );
 {$ENDIF}
@@ -116,18 +116,18 @@ var   gq_User             ,
        //////////////////////////////////////////////////////////////////////////////////////
       // auto filled variables
      /////////////////////////////////////////////////////////////////////////////////////
-      gT_TableauFonctions : ARRAY of TFonction ; // tableau gérant les fonctions
-      gT_TableauMenus     : ARRAY of TUnMenu ;     // tableau gérant les menus
-      gs_SommaireEnCours      : string       ;   // Sommaire en cours MAJ régulièrement
-      gF_FormParent           : TForm        ;   // Form parent initialisée au create
+      gT_TableauFonctions : ARRAY of TFonction ; // tableau gÃ©rant les fonctions
+      gT_TableauMenus     : ARRAY of TUnMenu ;     // tableau gÃ©rant les menus
+      gs_SommaireEnCours      : string       ;   // Sommaire en cours MAJ rÃ©guliÃ¨rement
+      gF_FormParent           : TForm        ;   // Form parent initialisÃ©e au create
       gBmp_DefaultPicture     : TBitmap      ;   // Bmp apparaissant si il n'y a pas d'image
-      gWin_ParentContainer    : TScrollingWinControl  ;   // Volet d'accès
+      gWin_ParentContainer    : TScrollingWinControl  ;   // Volet d'accÃ¨s
       gIco_DefaultPicture     : TIcon        ;   // Ico apparaissant si il n'y a pas d'image
       gi_TailleUnPanel        ,                  // Taille d'un panel de dxbutton
-      gi_FinCompteurImages    : Integer      ;   // Un seul imagelist des menus donc efface après la dernière image
-      gBar_ToolBarParent      : {$IFDEF FPC}TCustomControl{$ELSE}TToolWindow{$ENDIF};   // Barre d'accès
-      gSep_ToolBarSepareDebut : TControl      ;   // Séparateur de début délimitant les boutons à effacer
-      gPan_PanelSepareFin     : TPanel       ;   // Panel      de fin   délimitant les boutons à effacer
+      gi_FinCompteurImages    : Integer      ;   // Un seul imagelist des menus donc efface aprÃ¨s la derniÃ¨re image
+      gBar_ToolBarParent      : {$IFDEF FPC}TCustomControl{$ELSE}TToolWindow{$ENDIF};   // Barre d'accÃ¨s
+      gSep_ToolBarSepareDebut : TControl      ;   // SÃ©parateur de dÃ©but dÃ©limitant les boutons Ã  effacer
+      gPan_PanelSepareFin     : TPanel       ;   // Panel      de fin   dÃ©limitant les boutons Ã  effacer
       gb_UtiliseSMenu         : Boolean      ;            // Utilise-t-on les sous-menus
       gMen_MenuVolet          ,
       gMen_MenuParent         : TMenuItem    ;
@@ -138,17 +138,17 @@ var   gq_User             ,
 {$IFDEF DELPHI_9_UP}
       gSQLWideStrings         : TWideStrings     ;
 {$ENDIF}
-// fonction qui recherche l'icône d'une fonction
-// as_Fonction : la clé de la fonction
-// lico_Icone  : l'icône à nil
+// fonction qui recherche l'icÃ´ne d'une fonction
+// as_Fonction : la clÃ© de la fonction
+// lico_Icone  : l'icÃ´ne Ã  nil
 procedure p_ChercheIconeFonction ( const as_Fonction           : String ; var lico_Icone : TBitmap           ) ; overload ;
 
-// Détruit le tableau des fonctions
+// DÃ©truit le tableau des fonctions
 procedure p_Detruit_TableauFonctions ;
 
-// fonction qui recherche l'icône d'une fonction
-// as_Fonction : la clé de la fonction
-// lico_Icone  : l'icône à nil
+// fonction qui recherche l'icÃ´ne d'une fonction
+// as_Fonction : la clÃ© de la fonction
+// lico_Icone  : l'icÃ´ne Ã  nil
 procedure p_ChercheIconeFonction ( const ai_Fonction           : Integer ; var lico_Icone : TBitmap  ; const  ab_ModeAdmin : Boolean         ) ; overload ;
 
 
@@ -167,17 +167,17 @@ procedure p_AjouteItemXPBar ( const aF_FormParent       : TCustomForm        ;
 
 procedure p_initialisationSommaire ( const as_SommaireEnCours      : String       );
 // Initialisations des composants en fonction :
-// aF_FormParent           : De la form Propriétaire
-// aCon_ParentContainer    : du Container XP de la form Propriétaire
-// aadoq_QueryFonctions    : Requête ADO des fonctions par menus et sous menus des utilisateurs
-// aIco_DefaultPicture     : De l'image par défaut si pas d'image
+// aF_FormParent           : De la form PropriÃ©taire
+// aCon_ParentContainer    : du Container XP de la form PropriÃ©taire
+// aadoq_QueryFonctions    : RequÃªte ADO des fonctions par menus et sous menus des utilisateurs
+// aIco_DefaultPicture     : De l'image par dÃ©faut si pas d'image
 // aMenuParent             : Le menu parent
 // as_SommaireEnCours      : Le Sommaire en cours
-// aF_FormParent           : De la form Propriétaire
-// gCon_ParentContainer    : du Container XP de la form Propriétaire
-// aadoq_QueryFonctions    : Requête ADO des fonctions par menus et sous menus des utilisateurs
-// aBmp_DefaultPicture     : De l'image par défaut si pas d'image
-// ai_BoutonClick          : Variable initialisée à partir du fihcier ini pour sauver la xpbar en cours
+// aF_FormParent           : De la form PropriÃ©taire
+// gCon_ParentContainer    : du Container XP de la form PropriÃ©taire
+// aadoq_QueryFonctions    : RequÃªte ADO des fonctions par menus et sous menus des utilisateurs
+// aBmp_DefaultPicture     : De l'image par dÃ©faut si pas d'image
+// ai_BoutonClick          : Variable initialisÃ©e Ã  partir du fihcier ini pour sauver la xpbar en cours
 // aIma_ImagesMenus        : La liste d'images du menu
 // ai_FinCompteurImages    : Le nombre de bitmaps d'origine
 
@@ -214,10 +214,10 @@ procedure  p_DetruitLeSommaire ;
 procedure  p_DetruitTout ( const ab_DetruitMenu : Boolean ) ;
 
 
-// Création du tableau des boutons d'accès aux menus dans le sommaire
-// aadoq_QueryFonctions : Le query déjà ouvert contenant les enregistrements
+// CrÃ©ation du tableau des boutons d'accÃ¨s aux menus dans le sommaire
+// aadoq_QueryFonctions : Le query dÃ©jÃ  ouvert contenant les enregistrements
 // ab_utiliseSousMenu   : Utilise-t-on les sous menus
-// aBmp_DefaultPicture  : L'image par défaut
+// aBmp_DefaultPicture  : L'image par dÃ©faut
 {
 procedure p_CreeBoutonsMenus ( const aadoq_QueryFonctions : TDataset ;
                                const ab_utiliseSousMenu   : Boolean   ;
@@ -245,14 +245,14 @@ function fi_ChercheFonction ( const as_Fonction           : String            ) 
 function fi_ChercheMenu ( const as_Menu           : String            ) : Integer ;
 
 
-// Création des composant JvXPButton en fonction :
+// CrÃ©ation des composant JvXPButton en fonction :
 // as_SommaireEnCours      : Le sommaire
 // aBar_ToolBarParent      : La tool barre parent
-// aSep_ToolBarSepareDebut : Le séparateur de début
-// aSep_ToolBarSepareFin   : Le séparateur de fin
+// aSep_ToolBarSepareDebut : Le sÃ©parateur de dÃ©but
+// aSep_ToolBarSepareFin   : Le sÃ©parateur de fin
 // ai_TailleUnPanel        : La taille d'un panel
-// aadoq_QueryFonctions    : Requête ADO des fonctions par menus et sous menus des utilisateurs
-// aIco_DefaultPicture     : l'image par défaut si pas d'image
+// aadoq_QueryFonctions    : RequÃªte ADO des fonctions par menus et sous menus des utilisateurs
+// aIco_DefaultPicture     : l'image par dÃ©faut si pas d'image
 
 function  fi_CreeSommaire (         const aF_FormMain             : TCustomForm  ;
                         			      const aF_FormParent           : TCustomForm  ;
@@ -267,17 +267,17 @@ function  fi_CreeSommaire (         const aF_FormMain             : TCustomForm 
                                     const ab_GestionGlobale       : Boolean      ) : Integer ;
 function  fi_CreeSommaireBlank : Integer ;
 
-// Création des composant XPBar en fonction :
+// CrÃ©ation des composant XPBar en fonction :
 // as_SommaireEnCours      : Le Sommaire en cours
 // as_LeMenu               : Le menu
-// aF_FormParent           : De la form Propriétaire
-// aCon_ParentContainer    : du Container XP de la form Propriétaire
+// aF_FormParent           : De la form PropriÃ©taire
+// aCon_ParentContainer    : du Container XP de la form PropriÃ©taire
 // aWin_BarreVolet         : La barre d'outils du volet d'exploration
-// aMen_MenuVolet          : LE Menu du volet à rendre visible ou non
-// aadoq_QueryFonctions    : Requête ADO des fonctions par menus et sous menus des utilisateurs
-// aIco_DefaultPicture     : De l'image par défaut si pas d'image
-// ab_AjouteEvement        : Ajoute-t-on les évènements
-// Sortie                  : a-t-on créé au moins une xp bar
+// aMen_MenuVolet          : LE Menu du volet Ã  rendre visible ou non
+// aadoq_QueryFonctions    : RequÃªte ADO des fonctions par menus et sous menus des utilisateurs
+// aIco_DefaultPicture     : De l'image par dÃ©faut si pas d'image
+// ab_AjouteEvement        : Ajoute-t-on les Ã©vÃ¨nements
+// Sortie                  : a-t-on crÃ©Ã© au moins une xp bar
 
 function fb_CreeXPButtons ( const as_SommaireEnCours      ,
                         			    as_LeMenu               : String      ;
@@ -290,18 +290,18 @@ function fb_CreeXPButtons ( const as_SommaireEnCours      ,
                             const aBmp_DefaultPicture     : TBitmap     ;
                             const ab_AjouteEvenement      : Boolean     ;
                             const aIma_ImagesXPBars       : TImageList  ): Boolean;
-// Création des composant XPBar en fonction :
+// CrÃ©ation des composant XPBar en fonction :
 
 // Destruction du menu
-// Le menu parent dont les descendants seront détruits
+// Le menu parent dont les descendants seront dÃ©truits
 procedure p_DetruitMenu (           const aMen_MenuParent          : TMenuItem    );
-// Création des composants MenuItem en fonction :
+// CrÃ©ation des composants MenuItem en fonction :
 // aMenuParent             : Le menu parent
 // as_SommaireEnCours      : Le Sommaire en cours
-// aF_FormParent           : De la form Propriétaire
-// gCon_ParentContainer    : du Container XP de la form Propriétaire
-// aadoq_QueryFonctions    : Requête ADO des fonctions par menus et sous menus des utilisateurs
-// aBmp_DefaultPicture     : De l'image par défaut si pas d'image
+// aF_FormParent           : De la form PropriÃ©taire
+// gCon_ParentContainer    : du Container XP de la form PropriÃ©taire
+// aadoq_QueryFonctions    : RequÃªte ADO des fonctions par menus et sous menus des utilisateurs
+// aBmp_DefaultPicture     : De l'image par dÃ©faut si pas d'image
 // aIma_ImagesMenus        : La liste d'images du menu
 // ai_FinCompteurImages    : Le nombre de bitmaps d'origine
 // ab_UtiliseSousMenu      : Utilise-t-on les sous menus 
@@ -347,9 +347,9 @@ uses u_formmaindb, U_FormMainIni, fonctions_string, SysUtils, TypInfo, Dialogs,
      fonctions_Objets_Dynamiques, u_multidonnees ;
 
 /////////////////////////////////////////////////////////////////////////
-// Procédure p_Loaddata
+// ProcÃ©dure p_Loaddata
 // Loading data link
-// Charge le lien de données
+// Charge le lien de donnÃ©es
 // axno_Node : xml data document
 /////////////////////////////////////////////////////////////////////////
 procedure p_LoadData ( const aif_IniFile : TIniFile ; const as_SectionName : String );
@@ -360,7 +360,7 @@ var li_i : LongInt ;
 Begin
   if not assigned ( aif_IniFile ) Then
    Exit;
-  // Le module M_Donnees n'est pas encore chargé
+  // Le module M_Donnees n'est pas encore chargÃ©
   ls_ConnectionClep := aif_IniFile.ReadString(as_SectionName,CST_MAN_INI_CONNECTION_NAME,'');
   lds_connection:= DMModuleSources.fds_FindConnection(ls_ConnectionClep, False);
   if assigned ( lds_connection ) Then
@@ -383,7 +383,7 @@ Begin
           DataURL := copy ( DataURL , li_pos + 2, length ( DataURL ) - li_pos - 1 );
           DataPort := 0;
           li_Pos := pos ( ':', DataURL );
-          // Récupération du port
+          // RÃ©cupÃ©ration du port
           if li_Pos > 0 Then
             try
               if pos ( '/', DataURL ) > 0 Then
@@ -423,8 +423,8 @@ Begin
 End;
 
 
-// Fonction à mettre dans l'évènement p_OnClickFonction de la form principale
-// aobj_Sender : L'objet cliqué pour exécuter sa fonction
+// Fonction Ã  mettre dans l'Ã©vÃ¨nement p_OnClickFonction de la form principale
+// aobj_Sender : L'objet cliquÃ© pour exÃ©cuter sa fonction
 procedure p_ExecuteFonction ( aobj_Sender                  : TObject            );
 var li_FonctionEnCours: Integer ;
 begin
@@ -434,8 +434,8 @@ begin
   ffor_ExecuteFonction ( li_FonctionEnCours, True );
 End ;
 
-// Fonction qui exécute une fonction à partir d'une clé de fonction
-// as_Fonction : la clé de la fonction
+// Fonction qui exÃ©cute une fonction Ã  partir d'une clÃ© de fonction
+// as_Fonction : la clÃ© de la fonction
 function ffor_ExecuteFonction ( const as_Fonction : String    ;
                               const ab_Ajuster  : Boolean        ) : TCustomForm;
 var li_FonctionEnCours: Integer ;
@@ -445,15 +445,15 @@ begin
   li_FonctionEnCours := fi_ChercheFonction ( as_Fonction );
   Result := ffor_ExecuteFonction ( li_FonctionEnCours, ab_Ajuster );
 End ;
-// Fonction qui exécute une fonction à partir d'un numéro de fonction
-// ai_FonctionEnCours : le numéro de la fonction
+// Fonction qui exÃ©cute une fonction Ã  partir d'un numÃ©ro de fonction
+// ai_FonctionEnCours : le numÃ©ro de la fonction
 function ffor_ExecuteFonction ( const ai_FonctionEnCours : Integer ; const ab_Ajuster : Boolean ): TCustomForm;
 var lico_Icon        : TIcon ;
     lbmp_Icon        : TBitmap ;
 begin
 
   lico_Icon := Nil ;
-  // si la fonction n'est pas trouvé
+  // si la fonction n'est pas trouvÃ©
   Result :=  ffor_ExecuteRegisteredFonction ( ai_FonctionEnCours, ab_Ajuster );
   if assigned ( Result )
   or ( ai_FonctionEnCours < low  ( gT_TableauFonctions ) )
@@ -461,7 +461,7 @@ begin
    Then
     Exit ;// On quitte
 
-    // Exécution de la fonction menus
+    // ExÃ©cution de la fonction menus
    if Uppercase ( gT_TableauFonctions [ ai_FonctionEnCours ].Types ) = CST_FCT_TYPE_MENU
     Then
       Begin
@@ -469,17 +469,17 @@ begin
       End;
 
    lbmp_Icon := TBitmap.create ;
-     // Exécution de la fonction administration
+     // ExÃ©cution de la fonction administration
    if ( gT_TableauFonctions [ ai_FonctionEnCours ].Types = CST_FCT_TYPE_ADMIN )
     Then
      Begin
-     // Fermeture du volet d'accès
+     // Fermeture du volet d'accÃ¨s
        if assigned ( gMen_MenuVolet )
        and gMen_MenuVolet.Checked
         Then
           gMen_MenuVolet.OnClick ( gMen_MenuVolet );
 
-       // Création se la form
+       // CrÃ©ation se la form
        if ( Application.MainForm is TF_FormMainDB )
         Then
           Begin
@@ -512,7 +512,7 @@ begin
             lico_Icon.Free ;
          End ;
 
-        // Si création initialisation des liens fonctions
+        // Si crÃ©ation initialisation des liens fonctions
        if assigned ( F_Administration ) Then
          with F_Administration Do
            Begin
@@ -576,7 +576,7 @@ begin
 End ;
 
 // Destruction des menus
-// aCom_ParentContainer : Le menu contenant les menus à détruire
+// aCom_ParentContainer : Le menu contenant les menus Ã  dÃ©truire
 procedure p_DetruitMenu (           const aMen_MenuParent          : TMenuItem    );
 
 var li_i : Integer ;
@@ -614,12 +614,12 @@ Begin
   gs_SommaireEnCours   := as_SommaireEnCours   ;
 End ;
 
-// Création des composant XPBar en fonction :
+// CrÃ©ation des composant XPBar en fonction :
 // as_SommaireEnCours      : Le Sommaire en cours
-// aF_FormParent           : De la form Propriétaire
-// aCon_ParentContainer    : du Container XP de la form Propriétaire
-// aadoq_QueryFonctions    : Requête ADO des fonctions par menus et sous menus des utilisateurs
-// aIco_DefaultPicture     : De l'image par défaut si pas d'image
+// aF_FormParent           : De la form PropriÃ©taire
+// aCon_ParentContainer    : du Container XP de la form PropriÃ©taire
+// aadoq_QueryFonctions    : RequÃªte ADO des fonctions par menus et sous menus des utilisateurs
+// aIco_DefaultPicture     : De l'image par dÃ©faut si pas d'image
 
 procedure p_initialisationBoutons ( const aF_FormParent           : TForm        ;
                         			      const aWin_PanelVolet         : TScrollingWinControl  ;
@@ -668,23 +668,23 @@ procedure p_initialisationBoutonToolBar ( const ai_BoutonClick           : Integ
 Begin
   gi_BoutonClick          := ai_BoutonClick          ;
 End ;
-// Initialisation du bouton toolbar à partir du fichier INI
-// Sortie          : Variable initialisée à partir du fihcier ini pour sauver la xpbar en cours
+// Initialisation du bouton toolbar Ã  partir du fichier INI
+// Sortie          : Variable initialisÃ©e Ã  partir du fihcier ini pour sauver la xpbar en cours
 function fi_RecupereBoutonToolBar : Integer       ;
 Begin
   Result         := gi_BoutonClick          ;
 End ;}
-// Création des composant XPBar en fonction :
+// CrÃ©ation des composant XPBar en fonction :
 // as_SommaireEnCours      : Le Sommaire en cours
 // as_LeMenu               : Le menu
-// aF_FormParent           : De la form Propriétaire
-// aCon_ParentContainer    : du Container XP de la form Propriétaire
+// aF_FormParent           : De la form PropriÃ©taire
+// aCon_ParentContainer    : du Container XP de la form PropriÃ©taire
 // aWin_BarreVolet         : La barre d'outils du volet d'exploration
-// aMen_MenuVolet          : LE Menu du volet à rendre visible ou non
-// aadoq_QueryFonctions    : Requête ADO des fonctions par menus et sous menus des utilisateurs
-// aIco_DefaultPicture     : De l'image par défaut si pas d'image
-// ab_AjouteEvement        : Ajoute-t-on les évènements
-// Sortie                  : a-t-on créé au moins une xp bar
+// aMen_MenuVolet          : LE Menu du volet Ã  rendre visible ou non
+// aadoq_QueryFonctions    : RequÃªte ADO des fonctions par menus et sous menus des utilisateurs
+// aIco_DefaultPicture     : De l'image par dÃ©faut si pas d'image
+// ab_AjouteEvement        : Ajoute-t-on les Ã©vÃ¨nements
+// Sortie                  : a-t-on crÃ©Ã© au moins une xp bar
 
 function fb_CreeXPButtons ( const as_SommaireEnCours      ,
                         			    as_LeMenu               : String      ;
@@ -707,10 +707,10 @@ var ldx_WinXpBar        : TJvXpBar ;  // Nouvelle barre xp
     ls_SMenu            , // Sous Menu en cours
     ls_Fonction         ,          // Fonction en cours
     ls_FonctionType     ,          // Type de Fonction en cours
-    ls_FonctionLibelle  ,          // Libellé de Fonction en cours
+    ls_FonctionLibelle  ,          // LibellÃ© de Fonction en cours
     ls_FonctionMode     ,          // Mode de Fonction en cours
     ls_FonctionNom      : string ; // Nom de la Fonction en cours
-    lbmp_FonctionImage  : TBitmap ;  // Icône de la Fonction en cours
+    lbmp_FonctionImage  : TBitmap ;  // IcÃ´ne de la Fonction en cours
     lb_UtiliseSMenu     : Boolean ; // Mode Sous Menu
     li_TopXPBar         : Integer ;
     aIma_ImagesTempo    : TImageList ;
@@ -724,7 +724,7 @@ Begin
    // destruction des composants du container
   p_DetruitXPBar ( aCon_ParentContainer );
   aIma_ImagesXPBars.Clear ;
-// Création de la requête des fonctions par menus et sous menus des utilisateurs
+// CrÃ©ation de la requÃªte des fonctions par menus et sous menus des utilisateurs
   if assigned ( aadoq_QueryFonctions )
    Then
     Begin
@@ -746,12 +746,12 @@ Begin
           End;
       try
         aadoq_QueryFonctions.Open  ;
-        // Connecté dans la form
+        // ConnectÃ© dans la form
         if ( aF_FormParent is TF_FormMainIni )
          Then
           ( aF_FormParent as TF_FormMainIni ).p_Connectee ;
       Except
-        // déconnecté dans la form
+        // dÃ©connectÃ© dans la form
         if ( aF_FormParent is TF_FormMainIni )
          Then
           ( aF_FormParent as TF_FormMainIni ).p_NoConnexion ;
@@ -761,7 +761,7 @@ Begin
       or ( aadoq_QueryFonctions.FieldByName( CST_SOMM_Niveau ).Value = Null )
        Then
         Begin
-        // PAs de champ trouvé : erreur
+        // PAs de champ trouvÃ© : erreur
     //      ShowMessage ( 'Le champ ' + CST_SOMM_Niveau + ' est Null !' );
           Exit ;
         End ;
@@ -787,7 +787,7 @@ Begin
       and lb_UtiliseSMenu
        Then
         Begin
-    //      ShowMessage ( 'Le menu passé en paramètres de la fonction p_CreeXPButtons est vide' );
+    //      ShowMessage ( 'Le menu passÃ© en paramÃ¨tres de la fonction p_CreeXPButtons est vide' );
           Exit ;
         End ;
 
@@ -832,12 +832,12 @@ Begin
           End;
       try
         aadoq_QueryFonctions.Open  ;
-        // Connecté dans la form
+        // ConnectÃ© dans la form
         if ( aF_FormParent is TF_FormMainIni )
          Then
           ( aF_FormParent as TF_FormMainIni ).p_Connectee ;
       Except
-        // déconnecté dans la form
+        // dÃ©connectÃ© dans la form
         if ( aF_FormParent is TF_FormMainIni )
          Then
           ( aF_FormParent as TF_FormMainIni ).p_NoConnexion ;
@@ -847,7 +847,7 @@ Begin
    lb_UtiliseSMenu := gb_UtiliseSMenu ;
 // Initialisation
   ldx_WinXpBar       := nil ;
-//  lBmp_FonctionImage := TBitmap.Create ; // A libérer à la fin
+//  lBmp_FonctionImage := TBitmap.Create ; // A libÃ©rer Ã  la fin
   if lb_UtiliseSMenu
    Then li_CompteurMenus     := fi_ChercheMenu ( as_LeMenu )
    Else li_CompteurMenus     := 0 ;
@@ -868,7 +868,7 @@ Begin
   aIma_ImagesTempo     .Width  := 32 ;
   aIma_ImagesTempo     .Height := 32 ;
   // Premier enregistrement
-  // Création des XPBars
+  // CrÃ©ation des XPBars
   // Rien alors pas de menu
   if ( assigned ( aadoq_QueryFonctions )
       and not   ( aadoq_QueryFonctions.Isempty ))
@@ -892,7 +892,7 @@ Begin
                 if ( aadoq_QueryFonctions.FindField   ( CST_MENU_Clep ) = nil )
                  Then
                   Begin
-                  // Enregistrement sans donnée valide on va au suivant
+                  // Enregistrement sans donnÃ©e valide on va au suivant
                     aadoq_QueryFonctions.Next ;
                     Continue ;
                   End ;
@@ -902,7 +902,7 @@ Begin
                 if ( gT_TableauMenus [ li_CompteurMenus ].Menu = '' )
                  Then
                   Begin
-                 // Enregistrement sans donnée valide on va au suivant
+                 // Enregistrement sans donnÃ©e valide on va au suivant
                     inc ( li_CompteurMenus );
                     Continue ;
                   End ;
@@ -913,13 +913,13 @@ Begin
                   Break ;
               End ;
             Result := True ;
-            // SI les sous-menus ou menus sont différents ou pas de sous menu alors création d''une xpbar
+            // SI les sous-menus ou menus sont diffÃ©rents ou pas de sous menu alors crÃ©ation d''une xpbar
             if (        assigned ( aadoq_QueryFonctions )
                   and (   (      aadoq_QueryFonctions.FieldByName ( CST_MENU_Clep  ).AsString <> ls_Menu  )
                        or (      lb_UtiliseSMenu
                            and (     ( aadoq_QueryFonctions.FieldByName ( CST_SOUM_Clep ).AsString <> ls_SMenu )
                                   or (  aadoq_QueryFonctions.FieldByName ( CST_SOUM_Clep ).IsNull )      )))
-            // SI les sous-menus ou menus sont différents ou pas de sous menu alors création d''une xpbar
+            // SI les sous-menus ou menus sont diffÃ©rents ou pas de sous menu alors crÃ©ation d''une xpbar
                   or (    ( not assigned ( aadoq_QueryFonctions ))
                       and (   ( gT_TableauMenus [ li_CompteurMenus ].Menu <> ls_Menu )
                            or (     lb_UtiliseSMenu
@@ -927,7 +927,7 @@ Begin
                                      or ( gT_TableauMenus [ li_CompteurMenus ].SousMenu = ''        ))))))
               Then
                Begin
-               // Si une fonction dans l'enregistrement précédent affectation dans l'ancienne xpbar
+               // Si une fonction dans l'enregistrement prÃ©cÃ©dent affectation dans l'ancienne xpbar
                  if ( li_CompteurFonctions = 1 )
                   Then
                    Begin
@@ -963,7 +963,7 @@ Begin
                        ls_SMenu := gT_TableauMenus [ li_CompteurMenus ].SousMenu ;
                     End ;
 
-                 // création d''une xpbar
+                 // crÃ©ation d''une xpbar
                  if assigned ( ldx_WinXpBar )
                   Then
                    Begin
@@ -1007,7 +1007,7 @@ Begin
                     Begin
                      if lb_UtiliseSMenu
                      and  ( aadoq_QueryFonctions.FieldByName ( CST_SOUM_Clep ).Value <> Null )
-                       // affectation du libellé du sous menu
+                       // affectation du libellÃ© du sous menu
                       Then
                        Begin
                          ldx_WinXpBar.Caption := aadoq_QueryFonctions.FieldByName ( CST_SOUM_Clep ).AsString ;
@@ -1018,7 +1018,7 @@ Begin
                          ldx_WinXpBar.Caption := aadoq_QueryFonctions.FieldByName ( CST_MENU_Clep ).AsString ;
                          ldx_WinXpBar.Tag := 1 ;
                        End ;
-                       // affectation du libellé du menu
+                       // affectation du libellÃ© du menu
                      if  (  lbmp_FonctionImage.Handle <> 0 )
                      and ( lbmp_FonctionImage.Width  = aIma_ImagesTempo.Width  )
                      and ( lbmp_FonctionImage.Height = aIma_ImagesTempo.Height )
@@ -1037,7 +1037,7 @@ Begin
                         End ;
                    End
                   Else
-                  // Gestion sans base de données
+                  // Gestion sans base de donnÃ©es
                    Begin
                      if gT_TableauMenus [ li_CompteurMenus ].SousMenu <> ''
                       Then ldx_WinXpBar.Caption := gT_TableauMenus [ li_CompteurMenus ].SousMenu
@@ -1057,11 +1057,11 @@ Begin
                        End ;
                    End ;
 
-                  // On remet le compteur des fonctions à 0
+                  // On remet le compteur des fonctions Ã  0
                  li_CompteurFonctions := 0 ;
 
                End ;
-            // A chaque fonction création d'une action dans la bar XP
+            // A chaque fonction crÃ©ation d'une action dans la bar XP
             if    assigned ( ldx_WinXpBar )
             and (      assigned ( aadoq_QueryFonctions )
                  and ( aadoq_QueryFonctions.FieldByName ( CST_FONC_Clep ).AsString <> '' ))
@@ -1072,7 +1072,7 @@ Begin
                 inc ( li_CompteurFonctions );
                 inc ( li_Compteur          );
                  // Affectation des valeurs
-                 // Compteur à 1 : Il n'y a pas de fonction de la file d'attente
+                 // Compteur Ã  1 : Il n'y a pas de fonction de la file d'attente
                 if ( li_CompteurFonctions = 1 )
                  Then
                   if assigned ( aadoq_QueryFonctions )
@@ -1139,7 +1139,7 @@ Begin
                         			            ab_AjouteEvenement  );
                   if assigned ( aadoq_QueryFonctions )
                    Then
-                   // Fonction dans la requête
+                   // Fonction dans la requÃªte
                     Begin
                       fb_AssignDBImage ( aadoq_QueryFonctions.FieldByName (  CST_FONC_Bmp     ), lbmp_FonctionImage, aBmp_DefaultPicture );
                         // Ajoute une fonction dans xpbar
@@ -1259,7 +1259,7 @@ Begin
      lbmp_FonctionImage.Free ;
    Finally
    End ;
-   // Libération de l'icône
+   // LibÃ©ration de l'icÃ´ne
 End ;
 
 function fb_CreeLesMenus ( ): Boolean ;
@@ -1275,13 +1275,13 @@ Begin
                            gb_UtiliseSMenu         );
   Result := fb_CreeXPButtons ( gs_SommaireEnCours, '', gF_FormParent, gF_FormParent, gWin_ParentContainer, gMen_Menuvolet, gq_QueryFunctions, gBmp_DefaultPicture  , True, gIma_ImagesXPBars   ) and Result;
 End ;
-// Création des composants MenuItem en fonction :
+// CrÃ©ation des composants MenuItem en fonction :
 // aMenuParent             : Le menu parent
 // as_SommaireEnCours      : Le Sommaire en cours
-// aF_FormParent           : De la form Propriétaire
-// gCon_ParentContainer    : du Container XP de la form Propriétaire
-// aadoq_QueryFonctions    : Requête ADO des fonctions par menus et sous menus des utilisateurs
-// aBmp_DefaultPicture     : De l'image par défaut si pas d'image
+// aF_FormParent           : De la form PropriÃ©taire
+// gCon_ParentContainer    : du Container XP de la form PropriÃ©taire
+// aadoq_QueryFonctions    : RequÃªte ADO des fonctions par menus et sous menus des utilisateurs
+// aBmp_DefaultPicture     : De l'image par dÃ©faut si pas d'image
 // aIma_ImagesMenus        : La liste d'images du menu
 // ai_FinCompteurImages    : Le nombre de bitmaps d'origine
 // ab_UtiliseSousMenu      : Utilise-t-on les sous menus
@@ -1304,13 +1304,13 @@ var lMen_Menu           ,
     ls_SMenu            : string ; // Sous Menu en cours
 {    ls_Fonction         ,          // Fonction en cours
     ls_FonctionType     ,          // Type de Fonction en cours
-    ls_FonctionLibelle  ,          // Libellé de Fonction en cours
+    ls_FonctionLibelle  ,          // LibellÃ© de Fonction en cours
     ls_FonctionMode     ,          // Mode de Fonction en cours
     ls_FonctionNom      : string ; // Nom de la Fonction en cours}
     lbmp_BitmapOrigine  : TBitmap ;  // bitmap en cours
 
     lb_AjouteBitmap     , // Utilise-t-on un bitmap
-//    lb_boutonsMenu    ,  // A-t-on ajouté les boutons d'accès au menu
+//    lb_boutonsMenu    ,  // A-t-on ajoutÃ© les boutons d'accÃ¨s au menu
     lb_ImageDefaut      : Boolean ; // Mode Sous Menu
     aIma_ImagesTempo    : TImagelist ;
 //const lbmp_Rectangle = ( 0, 0 , 16, 16 );
@@ -1325,7 +1325,7 @@ Begin
   lb_ImageDefaut := True ;
    // destruction des composants du container
   p_DetruitMenu ( aMen_MenuParent );
-  // Création de la requête des fonctions par menus et sous menus des utilisateurs
+  // CrÃ©ation de la requÃªte des fonctions par menus et sous menus des utilisateurs
   aadoq_QueryFonctions.Close ;
   gSQLStrings := fobj_getComponentStringsProperty ( aadoq_QueryFonctions, 'SQL' );
   if assigned ( gSQLStrings ) Then
@@ -1345,12 +1345,12 @@ Begin
 
   try
     aadoq_QueryFonctions.Open  ;
-    // Connecté dans la form
+    // ConnectÃ© dans la form
     if ( aF_FormParent is TF_FormMainIni )
      Then
       ( aF_FormParent as TF_FormMainIni ).p_Connectee ;
   Except
-    // déconnecté dans la form
+    // dÃ©connectÃ© dans la form
     if ( aF_FormParent is TF_FormMainIni )
      Then
       ( aF_FormParent as TF_FormMainIni ).p_NoConnexion ;
@@ -1416,12 +1416,12 @@ Begin
 
   try
     aadoq_QueryFonctions.Open  ;
-    // Connecté dans la form
+    // ConnectÃ© dans la form
     if ( aF_FormParent is TF_FormMainIni )
      Then
       ( aF_FormParent as TF_FormMainIni ).p_Connectee ;
   Except
-    // déconnecté dans la form
+    // dÃ©connectÃ© dans la form
     if ( aF_FormParent is TF_FormMainIni )
      Then
       ( aF_FormParent as TF_FormMainIni ).p_NoConnexion ;
@@ -1447,7 +1447,7 @@ Begin
 //  li_CompteurFonctions := 0 ;
 //  lb_BoutonsMenu       := True ;
 
-  lbmp_BitmapOrigine := TBitmap.Create ; // A libérer à la fin
+  lbmp_BitmapOrigine := TBitmap.Create ; // A libÃ©rer Ã  la fin
   lbmp_BitmapOrigine.Handle := 0 ;
   lbmp_BitmapOrigine.Assign ( aBmp_DefaultPicture );
 
@@ -1475,32 +1475,32 @@ Begin
   gb_ExisteFonctionMenu := False ;
 
 
-{  // Création des menus
+{  // CrÃ©ation des menus
   p_CreeBoutonsMenus ( aadoq_QueryFonctions ,
                        ab_utiliseSousMenu   ,
                        aBmp_DefaultPicture  );}
   // Premier enregistrement
   aadoq_QueryFonctions.FindFirst ;
-  // Création des menus
+  // CrÃ©ation des menus
   while not ( aadoq_QueryFonctions.Eof ) do
     Begin
       // Les sous-menus et menus doivent avoir des noms
       if ( aadoq_QueryFonctions.FindField   ( CST_MENU_Clep ) = nil )
       or (      ab_UtiliseSousMenu // Utilise-t-on les sous menu
-          and ( aadoq_QueryFonctions.FieldByName ( CST_SOUM_Clep ).Value <> Null )   ) // Ou alors pas de sous menu on crée la fonction
+          and ( aadoq_QueryFonctions.FieldByName ( CST_SOUM_Clep ).Value <> Null )   ) // Ou alors pas de sous menu on crÃ©e la fonction
         Then
          Begin
-         // Enregistrement sans donnée valide on va au suivant
+         // Enregistrement sans donnÃ©e valide on va au suivant
            aadoq_QueryFonctions.Next ;
            Continue ;
          End ;
         Result := True ;
-      // SI le menu existe et si il est différent création d'un menu
+      // SI le menu existe et si il est diffÃ©rent crÃ©ation d'un menu
            if  (   aadoq_QueryFonctions.FieldByName ( CST_MENU_Clep  ).Value <> Null )
            and (   aadoq_QueryFonctions.FieldByName ( CST_MENU_Clep  ).AsString <> ls_Menu  )
             Then
              begin
-{             // Si une fonction dans l'enregistrement précédent affectation dans l'ancienne xpbar
+{             // Si une fonction dans l'enregistrement prÃ©cÃ©dent affectation dans l'ancienne xpbar
                if ( li_CompteurFonctions = 1 )
                 Then
                  if ( lMen_MenuEnCours <> aMen_MenuParent ) // Si le menu en cours est un menu ou sous menu
@@ -1517,7 +1517,7 @@ Begin
                         			         lb_ImageDefaut       ,
                                        aIma_ImagesMenus     ,
                                        ai_FinCompteurImages )
-                 Else // Sinon c'est une fonction du sommaire à ajouter
+                 Else // Sinon c'est une fonction du sommaire Ã  ajouter
                   Begin
                     inc ( li_CompteurMenu );
                     p_AjouteFonctionMenu  ( aF_FormParent        ,
@@ -1536,7 +1536,7 @@ Begin
                   End ;}
                // compteur de nom
                inc ( li_CompteurMenu ); // compteur de nom
-                 // Création des menus
+                 // CrÃ©ation des menus
                lMen_MenuEnCours := TMenuItem.Create ( aF_FormParent );
                lMen_MenuEnCours.Bitmap.Handle := 0 ;
 
@@ -1549,13 +1549,13 @@ Begin
                  // Menu Parent
                lMen_Menu        := lMen_MenuEnCours ;
                ls_Menu  := aadoq_QueryFonctions.FieldByName ( CST_MENU_Clep ).AsString ;
-               // affectation du libellé du menu
+               // affectation du libellÃ© du menu
                lMen_MenuEnCours.Caption := aadoq_QueryFonctions.FieldByName ( CST_MENU_Clep ).AsString ;
                lMen_MenuEnCours.Hint    := aadoq_QueryFonctions.FieldByName ( CST_MENU_Clep ).AsString ;
                fb_AssignDBImage ( aadoq_QueryFonctions.FieldByName ( CST_MENU_Bmp ), lMen_MenuEnCours.Bitmap, aBmp_DefaultPicture );
 //               lMen_MenuEnCours.Bitmap  := aIma_ImagesMenus ;
 //               lMen_MenuEnCours.ImageIndex := fi_AjouteBmpAImages ( lbmp_BitmapOrigine, lb_AjouteBitmap, aIma_ImagesMenus );
-            // On remet le compteur des fonctions à 0
+            // On remet le compteur des fonctions Ã  0
 //               li_CompteurFonctions := 0 ;
              End ;
            // Repositionnenement du menu
@@ -1569,12 +1569,12 @@ Begin
            if ab_UtiliseSousMenu
            // Si un menu n'est pas null alors on ajoute un sous menu
            and (   aadoq_QueryFonctions.FieldByName ( CST_MENU_Clep  ).Value <> Null )
-           // Si un sous menu n'est pas null et différent alors on ajoute un sous menu
+           // Si un sous menu n'est pas null et diffÃ©rent alors on ajoute un sous menu
            and   (   aadoq_QueryFonctions.FieldByName ( CST_SOUM_Clep ).AsString <> ls_SMenu )
            and (   aadoq_QueryFonctions.FieldByName ( CST_SOUM_Clep ).Value <> Null )
               Then
                begin
-             // Si une fonction dans l'enregistrement précédent affectation dans l'ancienne xpbar
+             // Si une fonction dans l'enregistrement prÃ©cÃ©dent affectation dans l'ancienne xpbar
 {               if ( li_CompteurFonctions = 1 )
                 Then
                  if ( lMen_MenuEnCours <> aMen_MenuParent ) // Si le menu en cours est un menu ou sous menu
@@ -1591,7 +1591,7 @@ Begin
                                        lb_ImageDefaut       ,
                                        aIma_ImagesMenus     ,
                                        ai_FinCompteurImages )
-                 Else // Sinon c'est une fonction du sommaire à ajouter
+                 Else // Sinon c'est une fonction du sommaire Ã  ajouter
                   Begin
                     inc ( li_CompteurMenu );
                     p_AjouteFonctionMenu  ( aF_FormParent        ,
@@ -1609,7 +1609,7 @@ Begin
                         			              ai_FinCompteurImages );
                   End ;}
                  inc ( li_CompteurMenu ); // compteur de nom
-                 // Création des menus
+                 // CrÃ©ation des menus
                  lMen_MenuEnCours := TMenuItem.Create ( aF_FormParent );
 
                  //Gestion des raccourcis d'aide
@@ -1620,12 +1620,12 @@ Begin
                  lMen_MenuEnCours.Name := CST_MENU_NOM_DEBUT + IntToStr ( li_CompteurMenu );
                  // Menu Parent
                  lMen_Menu.Add ( lMen_MenuEnCours );
-                 // affectation du libellé du sous menu
+                 // affectation du libellÃ© du sous menu
                  lMen_MenuEnCours.Caption := aadoq_QueryFonctions.FieldByName ( CST_SOUM_Clep ).AsString ;
                  lMen_MenuEnCours.Hint    := aadoq_QueryFonctions.FieldByName ( CST_SOUM_Clep ).AsString ;
                  fb_AssignDBImage ( aadoq_QueryFonctions.FieldByName ( CST_SOUM_Bmp ), lMen_MenuEnCours.Bitmap, aBmp_DefaultPicture );
                  ls_SMenu := aadoq_QueryFonctions.FieldByName ( CST_SOUM_Clep ).AsString ;
-            // On remet le compteur des fonctions à 0
+            // On remet le compteur des fonctions Ã  0
 //                 li_CompteurFonctions := 0 ;
                End ;
 
@@ -1634,12 +1634,12 @@ Begin
        then
         Begin
 
-            // Le Menu où on ajoute les fonctions devient le menu Ouvrir
+            // Le Menu oÃ¹ on ajoute les fonctions devient le menu Ouvrir
           lMen_MenuEnCours := aMen_MenuParent ;
         End
        else // Si c'est une fonction ayant au moins un menu
         Begin
-         // Création d'un menu ou d'une fonction xp bouton
+         // CrÃ©ation d'un menu ou d'une fonction xp bouton
           SetLength ( gT_TableauMenus, High ( gT_TableauMenus ) + 2 );
           gT_TableauMenus [ high ( gT_TableauMenus )].Image := nil ;
         // Alors utilisation dans le tableau des menus pour les xp boutons
@@ -1663,7 +1663,7 @@ Begin
             gT_TableauMenus [ High ( gT_TableauMenus )].SousMenu := aadoq_QueryFonctions.FieldByName ( CST_SOUM_Clep ).AsString ;
           gT_TableauMenus [ High ( gT_TableauMenus )].Fonction   := StringReplace ( aadoq_QueryFonctions.FieldByName (  CST_FONC_Clep    ).AsString, '-', '_', [rfReplaceAll]);
         End ;
-      // A chaque fonction création d'une action dans la bar XP
+      // A chaque fonction crÃ©ation d'une action dans la bar XP
       if    assigned ( lMen_MenuEnCours )
       and ( aadoq_QueryFonctions.FieldByName ( CST_FONC_Clep ).AsString <> '' )
        Then
@@ -1671,7 +1671,7 @@ Begin
 //          inc ( li_CompteurFonctions );
           inc ( li_CompteurMenu );
            // Affectation des valeurs de la queue
-                // Chargement de la fonction à partir de la table des fonctions
+                // Chargement de la fonction Ã  partir de la table des fonctions
              lb_AjouteBitmap := fb_AssignDBImage ( aadoq_QueryFonctions.FieldByName ( CST_FONC_Bmp ), lbmp_BitmapOrigine, aBmp_DefaultPicture );
               // Ajoute une fonction dans un menu
               p_AjouteFonctionMenu  ( aF_FormParent        ,
@@ -1708,7 +1708,7 @@ Begin
   if not Result // Si pas de menu
    Then  aMen_MenuParent.Visible := False // Alors pas de menu ouvrir
    Else  aMen_MenuParent.Visible := True ; // Sinon menu ouvrir
-   // Libération du bitmap
+   // LibÃ©ration du bitmap
   if lbmp_BitmapOrigine.Handle <> 0
    Then
     Begin
@@ -1730,15 +1730,15 @@ Begin
                       gSep_ToolBarSepareDebut ,
                       gPan_PanelSepareFin     );
 End ;
-// Création des composant JvXPButton en fonction :
+// CrÃ©ation des composant JvXPButton en fonction :
 // as_SommaireEnCours      : Le sommaire
-// aF_FormParent           : la form Propriétaire
+// aF_FormParent           : la form PropriÃ©taire
 // aBar_ToolBarParent      : La tool barre parent
-// aSep_ToolBarSepareDebut : Le séparateur de début
-// aSep_ToolBarSepareFin   : Le séparateur de fin
+// aSep_ToolBarSepareDebut : Le sÃ©parateur de dÃ©but
+// aSep_ToolBarSepareFin   : Le sÃ©parateur de fin
 // ai_TailleUnPanel        : La taille d'un panel
-// aadoq_QueryFonctions    : Requête ADO des fonctions par menus et sous menus des utilisateurs
-// aIco_DefaultPicture     : l'image par défaut si pas d'image
+// aadoq_QueryFonctions    : RequÃªte ADO des fonctions par menus et sous menus des utilisateurs
+// aIco_DefaultPicture     : l'image par dÃ©faut si pas d'image
 
 function  fi_CreeSommaireBlank () : Integer ;
 Begin
@@ -1768,7 +1768,7 @@ function  fi_CreeSommaire (         const aF_FormMain             : TCustomForm 
                         			      const ab_GestionGlobale       : Boolean      ) : Integer ;
 
 var lbtn_ToolBarButton  : TJvXPButton  ;  // Nouveau bouton
-    lSep_ToolBarSepare  : TControl ; // Nouveau séparateur
+    lSep_ToolBarSepare  : TControl ; // Nouveau sÃ©parateur
     lPan_ToolBarPanel   : TPanel     ; // Nouveau panel
     lb_UtiliseSousMenu    ,
     lb_ExisteFonctionMenu : Boolean ;
@@ -1777,10 +1777,10 @@ var lbtn_ToolBarButton  : TJvXPButton  ;  // Nouveau bouton
     li_CompteurFonctions: Integer ; // Compteur fonctions
 {    ls_Fonction         ,          // Fonction en cours
     ls_FonctionType     ,          // Type de Fonction en cours
-    ls_FonctionLibelle  ,          // Libellé de Fonction en cours
+    ls_FonctionLibelle  ,          // LibellÃ© de Fonction en cours
     ls_FonctionMode     ,          // Mode de Fonction en cours
     ls_FonctionNom      : string ; // Nom de la Fonction en cours}
-    lico_FonctionBitmap : TBitmap ;  // Icône de la Fonction en cours
+    lico_FonctionBitmap : TBitmap ;  // IcÃ´ne de la Fonction en cours
     lSep_OldToolBarSepare : TControl;
 Begin
   Result := 0 ;
@@ -1816,12 +1816,12 @@ Begin
 
   try
     aadoq_QueryFonctions.Open  ;
-    // Connecté dans la form
+    // ConnectÃ© dans la form
     if ( aF_FormParent is TF_FormMainIni )
      Then
       ( aF_FormParent as TF_FormMainIni ).p_Connectee ;
   Except
-    // déconnecté dans la form
+    // dÃ©connectÃ© dans la form
     if ( aF_FormParent is TF_FormMainIni )
      Then
       ( aF_FormParent as TF_FormMainIni ).p_NoConnexion ;
@@ -1872,12 +1872,12 @@ Begin
 
   try
     aadoq_QueryFonctions.Open  ;
-    // Connecté dans la form
+    // ConnectÃ© dans la form
     if ( aF_FormMain is TF_FormMainIni )
      Then
       ( aF_FormMain as TF_FormMainIni ).p_Connectee ;
   Except
-    // déconnecté dans la form
+    // dÃ©connectÃ© dans la form
     if ( aF_FormMain is TF_FormMainIni )
      Then
       ( aF_FormMain as TF_FormMainIni ).p_NoConnexion ;
@@ -1887,14 +1887,14 @@ Begin
    or ( aadoq_QueryFonctions.FieldByName ( CST_SOMM_Niveau ).Value = Null )
    Then
     Begin
-    // PAs de champ trouvé : erreur
+    // PAs de champ trouvÃ© : erreur
 //      ShowMessage ( 'Le champ ' + CST_SOMM_Niveau + ' est Null !' );
       Exit ;
     End ;
 
   // Utilise-t-on les sous menus ?
   lb_UtiliseSousMenu := aadoq_QueryFonctions.Fields [ 0 ].AsBoolean ;
-// Requête sommaire
+// RequÃªte sommaire
   aadoq_QueryFonctions.Close ;
   gSQLStrings := fobj_getComponentStringsProperty ( aadoq_QueryFonctions, 'SQL' );
   if assigned ( gSQLStrings ) Then
@@ -1928,12 +1928,12 @@ Begin
 //  Showmessage ( aadoq_QueryFonctions.SQL.Text );
   try
     aadoq_QueryFonctions.Open  ;
-    // Connecté dans la form
+    // ConnectÃ© dans la form
     if ( aF_FormMain is TF_FormMainIni )
      Then
       ( aF_FormMain as TF_FormMainIni ).p_Connectee ;
   Except
-    // déconnecté dans la form
+    // dÃ©connectÃ© dans la form
     if ( aF_FormMain is TF_FormMainIni )
      Then
       ( aF_FormMain as TF_FormMainIni ).p_NoConnexion ;
@@ -1948,16 +1948,16 @@ Begin
       lSep_OldToolBarSepare := aSep_ToolBarSepareDebut;
       while not ( aadoq_QueryFonctions.Eof ) do
         Begin
-             // Incrmétation des fonctions en sortie
+             // IncrmÃ©tation des fonctions en sortie
           inc ( li_CompteurFonctions );
            // Affectation des valeurs
-           // création d''un panel d'un bouton d'un séparateur
+           // crÃ©ation d''un panel d'un bouton d'un sÃ©parateur
           lPan_ToolBarPanel   := TPanel       .Create ( aF_FormParent ); // Nouveau panel
           lbtn_ToolBarButton  := TJvXPButton  .Create ( aF_FormParent  );  // Nouveau bouton
-          lSep_ToolBarSepare  := fcom_CloneObject (aSep_ToolBarSepareDebut, aSep_ToolBarSepareDebut.Owner ) as TControl;// Nouveau séparateur
+          lSep_ToolBarSepare  := fcom_CloneObject (aSep_ToolBarSepareDebut, aSep_ToolBarSepareDebut.Owner ) as TControl;// Nouveau sÃ©parateur
 
           lPan_ToolBarPanel .Parent := aBar_ToolBarParent ; // Parent Barre  : Toolbar
-          lSep_ToolBarSepare.Parent := aBar_ToolBarParent ; // Parent séparateur : Toolbar
+          lSep_ToolBarSepare.Parent := aBar_ToolBarParent ; // Parent sÃ©parateur : Toolbar
           lbtn_ToolBarButton.Parent := lPan_ToolBarPanel  ; // Parent bouton : Panel
 
           lPan_ToolBarPanel .Align :=alLeft;
@@ -1991,7 +1991,7 @@ Begin
     //      lSep_ToolBarSepare.Align    := alClient ;
           lSep_ToolBarSepare.Left := lPan_ToolBarPanel.Left + lPan_ToolBarPanel.Width ;
           lSep_OldToolBarSepare := lSep_ToolBarSepare;
-                       // affectation du libellé du menu
+                       // affectation du libellÃ© du menu
           lbtn_ToolBarButton.Layout   := blGlyphRight ;
           lbtn_ToolBarButton.Caption  := '' ;
           lbtn_ToolBarButton.ShowHint := True ;
@@ -2041,11 +2041,11 @@ Begin
         End ;
     End ;
   // Si une fonction dans le dernier enregistrement affectation dans l'ancienne xpbar
-   // Libération de l'icône
+   // LibÃ©ration de l'icÃ´ne
   lico_FonctionBitmap.Free ;
 
   Result := li_CompteurFonctions ;
-  if not ab_GestionGlobale // On ne gère pas les variables globales
+  if not ab_GestionGlobale // On ne gÃ¨re pas les variables globales
    Then
     Exit ;
   if  lb_ExisteFonctionMenu // Si il y a une fonction menu
@@ -2062,7 +2062,7 @@ Begin
 
 End ;
 
-// Détruit le tableau des fonctions
+// DÃ©truit le tableau des fonctions
 procedure p_Detruit_TableauMenus ;
 var li_i : Integer ; // compteur
 Begin
@@ -2105,14 +2105,14 @@ Begin
   p_Detruit_TableauFonctions ;
 End ;
 
-// Cherche la fonction dans le tableau des fonctions à partir de l'objet
+// Cherche la fonction dans le tableau des fonctions Ã  partir de l'objet
 // aobj_Sender : l'objet
 function fi_ChercheFonction ( const aobj_Sender                  : TObject            ) : Integer ;
 var ls_NomFonction        : String ;
 begin
   Result := -1 ;
   ls_NomFonction := '' ;
-  // Si la propriété nom est valable et existe
+  // Si la propriÃ©tÃ© nom est valable et existe
   if      IsPublishedProp ( aObj_Sender   , 'Name' )
    Then
     ls_NomFonction := getPropValue ( aobj_Sender, 'Name' ) ;
@@ -2124,16 +2124,16 @@ begin
 
   ls_NomFonction := copy ( ls_NomFonction, 1, length ( ls_NomFonction ) - 1 );
 
-    // On cherche les fonction par rapport à l'objet
+    // On cherche les fonction par rapport Ã  l'objet
   Result := fi_ChercheFonction ( ls_NomFonction );
 End ;
 
-// Cherche le numéro de fonction dans le tableau des fonctions à partir de la fonction
+// Cherche le numÃ©ro de fonction dans le tableau des fonctions Ã  partir de la fonction
 // as_Fonction : La fonction
 function fi_ChercheFonction ( const as_Fonction           : String            ) : Integer ; overload ;
 var li_i               : Integer ;
 begin
-  // Résultat non trouvé
+  // RÃ©sultat non trouvÃ©
   Result := -1 ;
   // Pas de fonction donc pas de recherche
   if as_Fonction <> ''
@@ -2148,9 +2148,9 @@ begin
        End ;
 End ;
 
-// fonction qui recherche l'icône d'une fonction
-// as_Fonction : la clé de la fonction
-// lico_Icone  : l'icône à nil
+// fonction qui recherche l'icÃ´ne d'une fonction
+// as_Fonction : la clÃ© de la fonction
+// lico_Icone  : l'icÃ´ne Ã  nil
 procedure p_ChercheIconeFonction ( const ai_Fonction           : Integer ; var lico_Icone : TBitmap ; const ab_ModeAdmin : Boolean          ) ;
 var lima_Liste         : TImageList ;
     lbmp_Icon          : TBitmap ;
@@ -2213,7 +2213,7 @@ End ;
 function fi_ChercheMenu ( const as_Menu           : String            ) : Integer ;
 var li_i               : Integer ;
 begin
-  // Résultat non trouvé
+  // RÃ©sultat non trouvÃ©
   Result := -1 ;
 
   // Pas de menu donc pas de recherche
@@ -2231,8 +2231,8 @@ begin
      End ;
 End ;
 
-// Fonction qui exécute une fonction à partir d'un numéro de fonction
-// ai_FonctionEnCours : le numéro de la fonction
+// Fonction qui exÃ©cute une fonction Ã  partir d'un numÃ©ro de fonction
+// ai_FonctionEnCours : le numÃ©ro de la fonction
 function ffor_ExecuteRegisteredFonction ( const ai_FonctionEnCours : Integer ; const ab_Ajuster : Boolean ):TCustomForm;
 var lfs_newFormStyle : TFormStyle ;
     lico_Icon        : TIcon ;
@@ -2240,7 +2240,7 @@ var lfs_newFormStyle : TFormStyle ;
 begin
   Result := nil;
   lico_Icon := Nil ;
-  // si la fonction n'est pas trouvé
+  // si la fonction n'est pas trouvÃ©
   if ( ai_FonctionEnCours < low  ( gT_TableauFonctions ))
   or ( ai_FonctionEnCours > high ( gT_TableauFonctions ) )
    Then
@@ -2258,7 +2258,7 @@ begin
          Else if Uppercase ( gT_TableauFonctions [ ai_FonctionEnCours ].Mode ) = CST_FCT_MODE_NORMAL
            Then lfs_newFormStyle := fsNormal
            Else lfs_newFormStyle := fsMDIChild ;
-           //Création de la fiche
+           //CrÃ©ation de la fiche
        p_ChercheIconeFonction ( ai_FonctionEnCours, lbmp_Icon, False );
        if assigned ( lbmp_Icon ) then
          p_BitmapVersIco(lbmp_Icon, lico_Icon);
@@ -2288,10 +2288,10 @@ begin
 
 End ;
 
-// Ajoute un évènement dans un objet
-// aObj_Objet              : Propriétaire
+// Ajoute un Ã©vÃ¨nement dans un objet
+// aObj_Objet              : PropriÃ©taire
 // as_Fonction             : Fonction
-// as_FonctionLibelle      : Libellé de Fonction
+// as_FonctionLibelle      : LibellÃ© de Fonction
 // as_FonctionType         : Type de Fonction
 // as_FonctionMode         : Mode de la Fonction
 // as_FonctionNom          : Nom de la Fonction
@@ -2305,19 +2305,19 @@ procedure p_AjouteBitmap        ( const aF_FormParent       : TCustomForm       
                         		abmp_FonctionBmp      : TBitmap    );
 Var li_FonctionEnCours : Integer ;
 Begin
-  //création d'une action dans la bar XP
+  //crÃ©ation d'une action dans la bar XP
   if ( aF_FormParent.ClassNameIs ( 'TF_Administration' ))
    Then
     exit ;
 
-    //Gestion des erreurs : les fonctions enregistrées sont alors à modifier
+    //Gestion des erreurs : les fonctions enregistrÃ©es sont alors Ã  modifier
   try
     li_FonctionEnCours := -1 ;
 
   //Recherche si la fonction existe
     if assigned ( aobj_Objet ) Then
       li_FonctionEnCours := fi_ChercheFonction ( aobj_Objet );
-    // Si non création
+    // Si non crÃ©ation
     if ( li_FonctionEnCours = -1 )
      Then
       Begin
@@ -2344,9 +2344,9 @@ Begin
       gT_TableauFonctions [ li_FonctionEnCours ].Image := nil ;
 
   Except
-    //Gestion des erreurs : les fonctions enregistrées sont alors à modifier
-  // Message d'erreur : Mauvais type de méthode
-    ShowMessage ( 'Erreur à l''affectation du tableau de fonction : '    + #13#10
+    //Gestion des erreurs : les fonctions enregistrÃ©es sont alors Ã  modifier
+  // Message d'erreur : Mauvais type de mÃ©thode
+    ShowMessage ( 'Erreur Ã  l''affectation du tableau de fonction : '    + #13#10
                 + '- Ligne  ' + InttoStr ( high ( gT_TableauFonctions )) + #13#10
                 + '- Classe ' + aObj_Objet.ClassName                     + #13#10 );
   End
@@ -2379,7 +2379,7 @@ Begin
 End ;
 
 
-// Détruit le tableau des fonctions
+// DÃ©truit le tableau des fonctions
 procedure p_Detruit_TableauFonctions ;
 var li_i : Integer ; // compteur
 Begin
@@ -2405,9 +2405,9 @@ Begin
   SetLength ( gT_TableauFonctions, 0 );
 End ;
 
-// fonction qui recherche l'icône d'une fonction
-// as_Fonction : la clé de la fonction
-// lico_Icone  : l'icône à nil
+// fonction qui recherche l'icÃ´ne d'une fonction
+// as_Fonction : la clÃ© de la fonction
+// lico_Icone  : l'icÃ´ne Ã  nil
 procedure p_ChercheIconeFonction ( const as_Fonction           : String ; var lico_Icone : TBitmap           ) ;
 var li_i               : Integer ;
 begin
@@ -2417,10 +2417,10 @@ begin
   p_ChercheIconeFonction ( li_i, lico_Icone, False );
 End ;
 
-// Ajoute un évènement dans un objet xpbar
+// Ajoute un Ã©vÃ¨nement dans un objet xpbar
 // adx_WinXpBar            : Parent
 // as_Fonction             : Fonction
-// as_FonctionLibelle      : Libellé de Fonction
+// as_FonctionLibelle      : LibellÃ© de Fonction
 // as_FonctionType         : Type de Fonction
 // as_FonctionMode         : Mode de la Fonction
 // as_FonctionNom          : Nom de la Fonction
@@ -2452,7 +2452,7 @@ Begin
                       abmp_FonctionBmp    ,
                       aBmp_DefaultPicture ,
                       ai_CompteurNom  );
- //création d'une action dans la bar XP
+ //crÃ©ation d'une action dans la bar XP
   if ab_AjouteEvenement
    Then
     p_AjouteEvenementBitmap     ( aF_FormParent         ,
@@ -2468,11 +2468,11 @@ End ;
 // Modifie une xpbar
 // adx_WinXpBar            : Parent
 // as_Fonction             : Fonction
-// as_FonctionLibelle      : Libellé de Fonction
+// as_FonctionLibelle      : LibellÃ© de Fonction
 // as_FonctionType         : Type de Fonction
 // as_FonctionMode         : Mode de la Fonction
 // as_FonctionNom          : Nom de la Fonction
-// aIco_Picture            : Icône de la fonction à utiliser
+// aIco_Picture            : IcÃ´ne de la fonction Ã  utiliser
 // ai_Compteur             : Compteur de nom
 procedure p_ModifieMenuItem(const aF_FormParent        : TForm        ;
                             const aMen_MenuItem        : TMenuItem ;
@@ -2487,7 +2487,7 @@ procedure p_ModifieMenuItem(const aF_FormParent        : TForm        ;
                             const aIma_ImagesMenus     : TImageList  ;
                             const ai_FinCompteurImages : Integer    );
 Begin
-  //création d'une action dans la bar XP
+  //crÃ©ation d'une action dans la bar XP
   aMen_MenuItem.Caption := as_FonctionLibelle ;
   if ab_AjouteBitmap
   or ab_ImageDefaut

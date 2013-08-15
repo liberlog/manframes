@@ -7,8 +7,8 @@
     <CompilerOptions>
       <Version Value="11"/>
       <SearchPaths>
-        <IncludeFiles Value="composants;forms"/>
-        <OtherUnitFiles Value="composants;fonctions;classes;forms"/>
+        <IncludeFiles Value="mansoftware"/>
+        <OtherUnitFiles Value="mansoftware"/>
         <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
       <Parsing>
@@ -26,43 +26,39 @@
     <Description Value="Full management software RAD Framework"/>
     <License Value="LGPL"/>
     <Version Minor="9" Release="4" Build="2"/>
-    <Files Count="9">
+    <Files Count="8">
       <Item1>
-        <Filename Value="forms/u_acces.pas"/>
+        <Filename Value="mansoftware/u_acces.pas"/>
         <UnitName Value="U_Acces"/>
       </Item1>
       <Item2>
-        <Filename Value="forms/u_administration.pas"/>
+        <Filename Value="mansoftware/u_administration.pas"/>
         <UnitName Value="U_Administration"/>
       </Item2>
       <Item3>
-        <Filename Value="forms/u_fenetreprincipale.pas"/>
+        <Filename Value="mansoftware/u_fenetreprincipale.pas"/>
         <UnitName Value="U_FenetrePrincipale"/>
       </Item3>
       <Item4>
-        <Filename Value="forms/U_MotPasse.lfm"/>
-        <Type Value="LFM"/>
+        <Filename Value="mansoftware/u_motpasse.pas"/>
+        <UnitName Value="U_MotPasse"/>
       </Item4>
       <Item5>
-        <Filename Value="forms/U_MotPasse.pas"/>
-        <UnitName Value="U_MotPasse"/>
+        <Filename Value="mansoftware/fonctions_objets_data.pas"/>
+        <UnitName Value="fonctions_Objets_Data"/>
       </Item5>
       <Item6>
-        <Filename Value="fonctions/fonctions_Objets_Data.pas"/>
-        <UnitName Value="fonctions_Objets_Data"/>
+        <Filename Value="mansoftware/u_formauto.pas"/>
+        <UnitName Value="u_formauto"/>
       </Item6>
       <Item7>
-        <Filename Value="composants/u_formauto.pas"/>
-        <UnitName Value="u_formauto"/>
+        <Filename Value="mansoftware/u_formdico.pas"/>
+        <UnitName Value="u_formdico"/>
       </Item7>
       <Item8>
-        <Filename Value="composants/u_formdico.pas"/>
-        <UnitName Value="u_formdico"/>
-      </Item8>
-      <Item9>
-        <Filename Value="composants/u_propform.pas"/>
+        <Filename Value="mansoftware/u_propform.pas"/>
         <UnitName Value="u_propform"/>
-      </Item9>
+      </Item8>
     </Files>
     <i18n>
       <EnableI18N Value="True"/>

@@ -1,4 +1,4 @@
-﻿unit u_searchcomponents;
+unit u_searchcomponents;
 
 {$I ..\extends.inc}
 {$I ..\DLCompilers.inc}

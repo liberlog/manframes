@@ -7,7 +7,7 @@
     <CompilerOptions>
       <Version Value="11"/>
       <SearchPaths>
-        <OtherUnitFiles Value="composants"/>
+        <OtherUnitFiles Value="manregister"/>
         <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
       <Other>
@@ -19,28 +19,31 @@
     <Version Major="1" Build="2"/>
     <Files Count="2">
       <Item1>
-        <Filename Value="composants/U_RegisterFrameWork.pas"/>
+        <Filename Value="manregister/u_registerframework.pas"/>
         <HasRegisterProc Value="True"/>
         <UnitName Value="U_RegisterFrameWork"/>
       </Item1>
       <Item2>
-        <Filename Value="composants/u_register_forms.pas"/>
+        <Filename Value="manregister/u_register_forms.pas"/>
         <HasRegisterProc Value="True"/>
         <UnitName Value="u_register_forms"/>
       </Item2>
     </Files>
     <Type Value="RunAndDesignTime"/>
-    <RequiredPkgs Count="3">
+    <RequiredPkgs Count="4">
       <Item1>
-        <PackageName Value="lazcustforms"/>
+        <PackageName Value="lazmansoftware"/>
       </Item1>
       <Item2>
-        <PackageName Value="lazmanframes"/>
+        <PackageName Value="lazcustforms"/>
       </Item2>
       <Item3>
+        <PackageName Value="lazmanframes"/>
+      </Item3>
+      <Item4>
         <PackageName Value="FCL"/>
         <MinVersion Major="1" Valid="True"/>
-      </Item3>
+      </Item4>
     </RequiredPkgs>
     <UsageOptions>
       <UnitPath Value="$(PkgOutDir)"/>

@@ -7,8 +7,8 @@
     <CompilerOptions>
       <Version Value="11"/>
       <SearchPaths>
-        <IncludeFiles Value="fonctions;forms"/>
-        <OtherUnitFiles Value="fonctions;forms"/>
+        <IncludeFiles Value="mansoft"/>
+        <OtherUnitFiles Value="mansoft"/>
         <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
       <Parsing>
@@ -26,23 +26,19 @@
     <Description Value="Full management software RAD Framework"/>
     <License Value="LGPL"/>
     <Version Minor="9" Release="4" Build="8"/>
-    <Files Count="4">
+    <Files Count="3">
       <Item1>
-        <Filename Value="fonctions/fonctions_Objets_Dynamiques.pas"/>
+        <Filename Value="mansoft/fonctions_objets_dynamiques.pas"/>
         <UnitName Value="fonctions_Objets_Dynamiques"/>
       </Item1>
       <Item2>
-        <Filename Value="fonctions/fonctions_fenetreprincipale.pas"/>
+        <Filename Value="mansoft/fonctions_fenetreprincipale.pas"/>
         <UnitName Value="fonctions_FenetrePrincipale"/>
       </Item2>
       <Item3>
-        <Filename Value="forms/U_Splash.lfm"/>
-        <Type Value="LFM"/>
-      </Item3>
-      <Item4>
-        <Filename Value="forms/U_Splash.pas"/>
+        <Filename Value="mansoft/u_splash.pas"/>
         <UnitName Value="U_Splash"/>
-      </Item4>
+      </Item3>
     </Files>
     <i18n>
       <EnableI18N Value="True"/>

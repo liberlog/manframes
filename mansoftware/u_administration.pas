@@ -65,7 +65,7 @@ uses
 {$IFDEF TNT}
   TntDBCtrls, TntDBGrids, TntStdCtrls,
 {$ENDIF}
-  U_FormDico, U_ExtDBImage,
+  u_formdico, U_ExtDBImage,
   u_extdbgrid, u_buttons_defs,
   U_ExtDBNavigator, Graphics,
   JvXPButtons, u_framework_components,

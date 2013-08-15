@@ -10,13 +10,13 @@ interface
 
 {
 
-Créée par Matthieu Giroux le 01-2004
+CrÃ©Ã©e par Matthieu Giroux le 01-2004
 
-Fonctionnalités :
+FonctionnalitÃ©s :
 
-Création de la barre d'accès
-Création du menu d'accès
-Création du volet d'accès
+CrÃ©ation de la barre d'accÃ¨s
+CrÃ©ation du menu d'accÃ¨s
+CrÃ©ation du volet d'accÃ¨s
 
 Utilisation des fonctions
 Administration
@@ -45,18 +45,18 @@ uses Forms, JvXPBar, JvXPContainer,
   fonctions_string ;
 
 var
-      gb_ExisteFonctionMenu   : Boolean      ;   // Existe-t-il une fonction d'accès au menu
+      gb_ExisteFonctionMenu   : Boolean      ;   // Existe-t-il une fonction d'accÃ¨s au menu
 
-const // Evènements gérés
+const // EvÃ¨nements gÃ©rÃ©s
   CST_EVT_STANDARD    = 'OnCLick' ;
-  // Nom par défaut des composants
+  // Nom par dÃ©faut des composants
   CST_XPBAR_NOM_DEBUT  = 'xpb_Menu' ;
   CST_MENU_NOM_DEBUT   = 'men_Menu' ;
-  CST_XPITEM_NOM_DEBUT = 'xpi_SMenu' ; // Nom par défaut du xp item
+  CST_XPITEM_NOM_DEBUT = 'xpi_SMenu' ; // Nom par dÃ©faut du xp item
   CST_DBT_NOM_DEBUT    = 'dbt_Sommaire' ;
   CST_SEP_NOM_DEBUT    = 'tbsep_Sommaire' ;
   CST_PANEL_NOM_DEBUT    = 'pan_Sommaire' ;
-  // Types de fonctions gérées
+  // Types de fonctions gÃ©rÃ©es
   CST_FCT_TYPE_MENU   = 'MENU' ;
   CST_FCT_TYPE_FICHE  = 'FICHE' ;
   CST_FCT_MODE_MODAL  = 'MODAL' ;
@@ -67,22 +67,22 @@ const // Evènements gérés
 {$IFDEF VERSIONS}
   gver_fonctions_Objets_Dynamiques : T_Version = ( Component : 'Gestion des objets dynamiques' ; FileUnit : 'fonctions_Objets_Dynamiques' ;
               			                 Owner : 'Matthieu Giroux' ;
-              			                 Comment : 'Gestion des objets dynamiques du composant Fenêtre principale.' + #13#10 + 'Il comprend une création de menus' ;
+              			                 Comment : 'Gestion des objets dynamiques du composant FenÃªtre principale.' + #13#10 + 'Il comprend une crÃ©ation de menus' ;
               			                 BugsStory : 'Version 1.3.0.2 : No ExtToolBar.' + #13#10 +
                                                  'Version 1.3.0.1 : No ExtToolBar on Lazarus.' + #13#10 +
-                                                 'Version 1.3.0.0 : Création fonction_objets_data' + #13#10 +
-                                                 'Version 1.2.0.0 : Passage en générique' + #13#10 +
-                                                 'Version 1.1.2.0 : raccourcis d''aide répétés.' + #13#10 +
+                                                 'Version 1.3.0.0 : CrÃ©ation fonction_objets_data' + #13#10 +
+                                                 'Version 1.2.0.0 : Passage en gÃ©nÃ©rique' + #13#10 +
+                                                 'Version 1.1.2.0 : raccourcis d''aide rÃ©pÃ©tÃ©s.' + #13#10 +
                                                  'Version 1.1.1.1 : Ne pas utiliser HandleAllocated mais Handle <> 0.' + #13#10 +
-                                                 'Version 1.1.1.0 : Sauvegarde de la visibilité des barres de menus.' + #13#10 +
+                                                 'Version 1.1.1.0 : Sauvegarde de la visibilitÃ© des barres de menus.' + #13#10 +
                                                  'Version 1.1.0.0 : Passage en Jedi 3, Utilisation de la JvXPBar.' + #13#10 +
-                                                 'Version 1.0.1.3 : Mises à jour sur la destruction.' + #13#10 +
-                                                 'Version 1.0.1.2 : Handle à 0 après FreeImage.' + #13#10 +
-                                                 'Version 1.0.1.1 : Suppression du RealeaseHandle après FreeImage.' + #13#10 +
-                                                 'Version 1.0.1.0 : Toutes les fonctions peuvent être appelées.' + #13#10 +
-                                                 'Version 1.0.0.2 : Gestion des caractères accentuées.' + #13#10 +
-                                                 'Version 1.0.0.1 : Meilleure gestion des images, problèmes de rafraichissement.' + #13#10 +
-                                                 'Version 1.0.0.0 : La création est utilisée par Fenêtre Principale.';
+                                                 'Version 1.0.1.3 : Mises Ã  jour sur la destruction.' + #13#10 +
+                                                 'Version 1.0.1.2 : Handle Ã  0 aprÃ¨s FreeImage.' + #13#10 +
+                                                 'Version 1.0.1.1 : Suppression du RealeaseHandle aprÃ¨s FreeImage.' + #13#10 +
+                                                 'Version 1.0.1.0 : Toutes les fonctions peuvent Ãªtre appelÃ©es.' + #13#10 +
+                                                 'Version 1.0.0.2 : Gestion des caractÃ¨res accentuÃ©es.' + #13#10 +
+                                                 'Version 1.0.0.1 : Meilleure gestion des images, problÃ¨mes de rafraichissement.' + #13#10 +
+                                                 'Version 1.0.0.0 : La crÃ©ation est utilisÃ©e par FenÃªtre Principale.';
               			                 UnitType : 1 ;
               			                 Major : 1 ; Minor : 3 ; Release : 0 ; Build : 2 );
 {$ENDIF}
@@ -215,8 +215,8 @@ begin
 //    cbLanguage.ItemIndex := 0;
 end;
 
-// Change les boutons du navigateur bookmark en boutons de déplacements d'enregistrement
-// anav_Navigateur : Le navigateur à modifier
+// Change les boutons du navigateur bookmark en boutons de dÃ©placements d'enregistrement
+// anav_Navigateur : Le navigateur Ã  modifier
 procedure p_InitButtons ( const anav_Navigateur : TDBNavigator );
 begin
 
@@ -234,18 +234,18 @@ begin
   ( anav_Navigateur.Controls [ 12 ] as TAdvNavButton ).GlyphDisabled.LoadFromResourceName(ResInstance,'NAVBOOKNEXTD');
   ( anav_Navigateur.Controls [ 12 ] as TAdvNavButton ).GlyphHot     .LoadFromResourceName(ResInstance,'NAVBOOKNEXTH');
   if anav_Navigateur.Hints.Count <= 11
-   Then  anav_Navigateur.Hints.Add ( 'Déplacer l''enregistrement vers le haut' )
-   Else  anav_Navigateur.Hints.Strings [ 11 ] := 'Déplacer l''enregistrement vers le haut' ;
+   Then  anav_Navigateur.Hints.Add ( 'DÃ©placer l''enregistrement vers le haut' )
+   Else  anav_Navigateur.Hints.Strings [ 11 ] := 'DÃ©placer l''enregistrement vers le haut' ;
   if anav_Navigateur.Hints.Count <= 12
-   Then  anav_Navigateur.Hints.Add ( 'Déplacer l''enregistrement vers le bas' )
-   Else anav_Navigateur.Hints.Strings [ 12 ] := 'Déplacer l''enregistrement vers le bas' ;
+   Then  anav_Navigateur.Hints.Add ( 'DÃ©placer l''enregistrement vers le bas' )
+   Else anav_Navigateur.Hints.Strings [ 12 ] := 'DÃ©placer l''enregistrement vers le bas' ;
    }
 end;
 
 
-// Récupère l'icône du bouton de la fonction et le renvoie
-// En entrée : le bouton en objet
-// En sortie : L'icône récupéré
+// RÃ©cupÃ¨re l'icÃ´ne du bouton de la fonction et le renvoie
+// En entrÃ©e : le bouton en objet
+// En sortie : L'icÃ´ne rÃ©cupÃ©rÃ©
 
 function fIco_getIcon ( const aobj_Sender : Tobject ): TIcon;
 var
@@ -320,7 +320,7 @@ Begin
   End ;
 End ;
 // Destruction des xpbuttons
-// aCom_ParentContainer : Le composant dont les composants et sous composants buttons doivent se détruire
+// aCom_ParentContainer : Le composant dont les composants et sous composants buttons doivent se dÃ©truire
 procedure p_DetruitXPBar ( const   aCom_Parent    : TScrollingWinControl );
 
 var li_i : Integer ;
@@ -329,7 +329,7 @@ Begin
   if not assigned ( aCom_Parent   )
    Then
     Exit ;
-    //Recherche des composants à détruire
+    //Recherche des composants Ã  dÃ©truire
 
   For li_i := aCom_Parent.ControlCount - 1 downto 0 do
     Begin
@@ -350,7 +350,7 @@ Begin
     End ;
 End ;
 // Destruction des menus
-// aCom_ParentContainer : Le menu à détruire
+// aCom_ParentContainer : Le menu Ã  dÃ©truire
 procedure p_DetruitMenus ( const aMen_MenuParent : TMenuItem ; aMen_MenuDetruit  : TMenuItem  ; const ab_DestroyAll : Boolean  );
 
 var li_i : Integer ;
@@ -396,10 +396,10 @@ begin
       p_DetruitComposantsDescendant ( aMen_MenuParent.Components [ li_i ] );
 End ;
 }
-// Ajoute un évènement dans un objet xpbar
+// Ajoute un Ã©vÃ¨nement dans un objet xpbar
 // adx_WinXpBar            : Parent
 // as_Fonction             : Fonction
-// as_FonctionLibelle      : Libellé de Fonction
+// as_FonctionLibelle      : LibellÃ© de Fonction
 // as_FonctionType         : Type de Fonction
 // as_FonctionMode         : Mode de la Fonction
 // as_FonctionNom          : Nom de la Fonction
@@ -419,7 +419,7 @@ function fmen_AjouteFonctionMenu  ( const aF_FormParent        : TForm     ;
                         			    const ai_FinCompteurImages : Integer     ):TMenuItem;
 var lbmp_Tempo          : TBitmap ; // Bitmap temporaire pour garder la taille originale
 Begin
-  //création d'une action dans le menu ou sous menu
+  //crÃ©ation d'une action dans le menu ou sous menu
   Result := TMenuItem.Create( aF_FormParent );
 
   //Gestion des raccourcis d'aide
@@ -463,10 +463,10 @@ Begin
   End ;
 End ;
 
-// Ajoute un évènement dans un objet xpbar
+// Ajoute un Ã©vÃ¨nement dans un objet xpbar
 // adx_WinXpBar            : Parent
 // as_Fonction             : Fonction
-// as_FonctionLibelle      : Libellé de Fonction
+// as_FonctionLibelle      : LibellÃ© de Fonction
 // as_FonctionType         : Type de Fonction
 // as_FonctionMode         : Mode de la Fonction
 // as_FonctionNom          : Nom de la Fonction
@@ -485,7 +485,7 @@ Begin
   for li_i := 0 to high ( gt_TableauSommaire ) do
     Begin
       inc ( ai_Compteur );
-      //création d'une action dans le menu ou sous menu
+      //crÃ©ation d'une action dans le menu ou sous menu
       lMen_MenuEnfant := TMenuItem.Create( aF_FormParent );
       aMen_MenuParent.Add ( lMen_MenuEnfant );
       lMen_MenuEnfant.Name    := CST_MENU_NOM_DEBUT + IntToStr ( ai_Compteur );
@@ -525,11 +525,11 @@ End ;
 // Modifie une xpbar
 // adx_WinXpBar            : Parent
 // as_Fonction             : Fonction
-// as_FonctionLibelle      : Libellé de Fonction
+// as_FonctionLibelle      : LibellÃ© de Fonction
 // as_FonctionType         : Type de Fonction
 // as_FonctionMode         : Mode de la Fonction
 // as_FonctionNom          : Nom de la Fonction
-// aIco_Picture            : Icône de la fonction à utiliser
+// aIco_Picture            : IcÃ´ne de la fonction Ã  utiliser
 // ai_Compteur             : Compteur de nom
 procedure p_ModifieXPBar  ( const aF_FormParent       : TCustomForm        ;
                             const adx_WinXpBar        : TJvXpBar ;
@@ -544,7 +544,7 @@ procedure p_ModifieXPBar  ( const aF_FormParent       : TCustomForm        ;
                             const ab_AjouteEvenement   : Boolean   );
 var lbmp_Bitmap : TBitmap ;
 Begin
-  //création d'une action dans la bar XP
+  //crÃ©ation d'une action dans la bar XP
 // Transformation d'un champ bitmap en TIcon
   adx_WinXpBar.Caption := as_FonctionLibelle ;
   adx_WinXpBar.ShowRollButton := False ;
@@ -595,16 +595,16 @@ procedure p_initialisationBoutonToolBar ( const ai_BoutonClick           : Integ
 Begin
   gi_BoutonClick          := ai_BoutonClick          ;
 End ;
-// Initialisation du bouton toolbar à partir du fichier INI
-// Sortie          : Variable initialisée à partir du fihcier ini pour sauver la xpbar en cours
+// Initialisation du bouton toolbar Ã  partir du fichier INI
+// Sortie          : Variable initialisÃ©e Ã  partir du fihcier ini pour sauver la xpbar en cours
 function fi_RecupereBoutonToolBar : Integer       ;
 Begin
   Result         := gi_BoutonClick          ;
 End ;}
 // Destruction du sommaire
 // aBar_ToolBarParent      : La tool barre parent
-// aSep_ToolBarSepareDebut : Le séparateur de début
-// aSep_ToolBarSepareFin   : Le séparateur de fin
+// aSep_ToolBarSepareDebut : Le sÃ©parateur de dÃ©but
+// aSep_ToolBarSepareFin   : Le sÃ©parateur de fin
 
 procedure  p_DetruitSommaire (      const aBar_ToolBarParent      : {$IFDEF FPC}TCustomControl{$ELSE}TToolWindow{$ENDIF} ;
                                     const aSep_ToolBarSepareDebut : TControl;
@@ -632,8 +632,8 @@ Begin
 End ;
 // ReValide les boutons du sommaire
 // aBar_ToolBarParent      : La tool barre parent
-// aSep_ToolBarSepareDebut : Le séparateur de début
-// aSep_ToolBarSepareFin   : Le séparateur de fin
+// aSep_ToolBarSepareDebut : Le sÃ©parateur de dÃ©but
+// aSep_ToolBarSepareFin   : Le sÃ©parateur de fin
 
 procedure  p_EnableSommaire (       const aBar_ToolBarParent      : {$IFDEF FPC}TCustomControl{$ELSE}TToolWindow{$ENDIF}   ;
                                     const aSep_ToolBarSepareDebut : TControl;
@@ -653,27 +653,27 @@ Begin
       aBar_ToolBarParent.Controls [ li_i ].Enabled := True ;
 End ;
 
-// Message d'erreur sur l'affectation de la fonction en propriété
+// Message d'erreur sur l'affectation de la fonction en propriÃ©tÃ©
 
-// as_Fonction          : la fonction en propriété
-// as_MethodeType       : Le type demandé correct
-// as_MethodeParametres : Les paramètres du type de la méthode
-// aF_FormParentClasse  : Le type immédiat de la classe form  Propriété CLassName
+// as_Fonction          : la fonction en propriÃ©tÃ©
+// as_MethodeType       : Le type demandÃ© correct
+// as_MethodeParametres : Les paramÃ¨tres du type de la mÃ©thode
+// aF_FormParentClasse  : Le type immÃ©diat de la classe form  PropriÃ©tÃ© CLassName
 
 procedure p_ShowMessageMethode ( const as_Fonction          ,
                                        as_Evenement         ,
                                        aF_FormParentClasse  ,
                                        aCom_ComposantClasse : String );
 Begin
-  ShowMessage ( 'La méthode propriété ' + as_Fonction + ' de ' + aF_FormParentClasse + ' doit être du même type  que ' + #13#10
-              + 'l''évènement ' +  as_Evenement + ' de ' + aCom_ComposantClasse + '.'  );
+  ShowMessage ( 'La mÃ©thode propriÃ©tÃ© ' + as_Fonction + ' de ' + aF_FormParentClasse + ' doit Ãªtre du mÃªme type  que ' + #13#10
+              + 'l''Ã©vÃ¨nement ' +  as_Evenement + ' de ' + aCom_ComposantClasse + '.'  );
 
 End ;
 
-// Ajoute un évènement dans un objet xpbar
+// Ajoute un Ã©vÃ¨nement dans un objet xpbar
 // adx_WinXpBar            : Parent
 // as_Fonction             : Fonction
-// as_FonctionLibelle      : Libellé de Fonction
+// as_FonctionLibelle      : LibellÃ© de Fonction
 // as_FonctionType         : Type de Fonction
 // as_FonctionMode         : Mode de la Fonction
 // as_FonctionNom          : Nom de la Fonction
@@ -691,7 +691,7 @@ function fdxi_AddItemXPBar  ( const aF_FormParent       : TCustomForm        ;
                         			const ai_CompteurNom      : integer     ): TJvXpBarItem ;
 var lbmp_Tempo          : TBitmap ; // Bitmap temporaire pour garder la taille originale
 Begin
-  //création d'une action dans la bar XP
+  //crÃ©ation d'une action dans la bar XP
 //  adx_WinXpBar.RollMode := rmFixed;
   Result := TJvXpBarItem.Create( adx_WinXpBar.Items );
   Result.Name := fs_getComponentNameXPBar(adx_WinXpBar,as_Fonction);
@@ -731,10 +731,10 @@ Begin
   Finally
   End ;
 End ;
-// Ajoute un évènement dans un objet
-// aObj_Objet              : Propriétaire
+// Ajoute un Ã©vÃ¨nement dans un objet
+// aObj_Objet              : PropriÃ©taire
 // as_Fonction             : Fonction
-// as_FonctionLibelle      : Libellé de Fonction
+// as_FonctionLibelle      : LibellÃ© de Fonction
 // as_FonctionType         : Type de Fonction
 // as_FonctionMode         : Mode de la Fonction
 // as_FonctionNom          : Nom de la Fonction
@@ -753,25 +753,25 @@ Begin
       ls_ObjetNom := fs_getComponentName( aF_FormParent, as_Fonction );
       p_SetComponentProperty ( aObj_Objet as TComponent, 'Name', ls_ObjetNom );
     end;
-  //création d'une action dans la bar XP
+  //crÃ©ation d'une action dans la bar XP
   if ( aF_FormParent.ClassNameIs ( 'TF_Administration' )) or (aF_FormParent.ClassNameIs ( 'TF_DBEAdministration' ))
    Then
     exit ;
 
-    //Gestion des erreurs : les fonctions enregistrées sont alors à modifier
+    //Gestion des erreurs : les fonctions enregistrÃ©es sont alors Ã  modifier
   ls_MessageErreur := 'Erreur !'  + #13#10;
   if assigned ( aObj_Objet ) Then
     Begin
       lMet_MethodForm.Data := aF_FormParent;
       if not assigned ( aF_FormParent.MethodAddress ( as_EventForm ))
        Then
-        ls_MessageErreur :=  ls_MessageErreur + 'Méthode ' + as_EventForm + ' de ' + aF_FormParent.ClassName + ' inexistante.' + #13#10 ;
+        ls_MessageErreur :=  ls_MessageErreur + 'MÃ©thode ' + as_EventForm + ' de ' + aF_FormParent.ClassName + ' inexistante.' + #13#10 ;
 
       if not IsPublishedProp ( aObj_Objet    , as_Evenement           )
        Then
-        ls_MessageErreur := ls_MessageErreur + 'Evènement ' + as_Evenement + ' de ' + aObj_Objet.ClassName + ' non publiée.' +  #13#10
+        ls_MessageErreur := ls_MessageErreur + 'EvÃ¨nement ' + as_Evenement + ' de ' + aObj_Objet.ClassName + ' non publiÃ©e.' +  #13#10
        else if not PropIsType      ( aObj_Objet    , as_Evenement, tkMethod )
-        Then ls_MessageErreur :=  'Propriété ' + as_Evenement + ' de ' + aObj_Objet.ClassName + ' n''est pas une méthode.' + #13#10 ;
+        Then ls_MessageErreur :=  'PropriÃ©tÃ© ' + as_Evenement + ' de ' + aObj_Objet.ClassName + ' n''est pas une mÃ©thode.' + #13#10 ;
       if  assigned ( aF_FormParent.MethodAddress ( as_EventForm ))
       and IsPublishedProp ( aObj_Objet    , as_Evenement           )
       and PropIsType      ( aObj_Objet    , as_Evenement, tkMethod )
@@ -780,17 +780,17 @@ Begin
           lMet_MethodForm.Code := aF_FormParent.MethodAddress ( as_EventForm );
           SetMethodProp ( aObj_Objet, as_Evenement, lMet_MethodForm );
         Except
-        // Message d'erreur : Mauvais type de méthode
+        // Message d'erreur : Mauvais type de mÃ©thode
           p_ShowMessageMethode ( as_EventForm, as_Evenement, aF_FormParent.ClassName , aObj_Objet.ClassName );
         End
       else
-        //Gestion des erreurs : les fonctions enregistrées sont alors à modifier
+        //Gestion des erreurs : les fonctions enregistrÃ©es sont alors Ã  modifier
          ShowMessage ( ls_MessageErreur );
     End ;
 End ;
 
 // Recherche d'un composant avec un nom
-// En rapport avec la Procedure d'affection d'un nom contenant la clé d'une fonction leonardi avec un chiffre de taille 1
+// En rapport avec la Procedure d'affection d'un nom contenant la clÃ© d'une fonction leonardi avec un chiffre de taille 1
 function fcom_FindComponent ( const as_Name : String ; const AOwner : TComponent ): TComponent;
 var li_i, li_j, li_Max : Longint ;
     lcom_Component  : TComponent ;
@@ -813,12 +813,12 @@ End;
 
 
 
-// Procedure d'affection d'un nom contenant la clé d'une fonction leonardi avec un chiffre de taille 1
+// Procedure d'affection d'un nom contenant la clÃ© d'une fonction leonardi avec un chiffre de taille 1
 procedure p_setComponentName ( const acom_Component : TComponent ; const as_Name : String );
 Begin
   acom_Component.Name := fs_getComponentName ( acom_Component.owner, as_Name );
 End;
-// Fonction de création d'un nom contenant la clé d'une fonction leonardi avec un chiffre de taille 1
+// Fonction de crÃ©ation d'un nom contenant la clÃ© d'une fonction leonardi avec un chiffre de taille 1
 function fs_getComponentName ( const acom_Owner : TComponent ; const as_Name : String ):String;
 var lcom_Component      : TComponent ;
 Begin
@@ -838,7 +838,7 @@ Begin
     End
 End;
 
-// Fonction de création d'un nom contenant la clé d'une fonction leonardi avec un chiffre de taille 1
+// Fonction de crÃ©ation d'un nom contenant la clÃ© d'une fonction leonardi avec un chiffre de taille 1
 function fs_getComponentNameXPBar ( const adx_WinXpBar        : TJvXpBar ; const as_Name : String ):String;
 //var lxpi_Item      : TJvXpBarItem ;
 Begin
@@ -858,10 +858,10 @@ Begin
     End}
 End;
 
-// Ajoute un évènement dans un objet xpbar
+// Ajoute un Ã©vÃ¨nement dans un objet xpbar
 // adx_WinXpBar            : Parent
 // as_Fonction             : Fonction
-// as_FonctionLibelle      : Libellé de Fonction
+// as_FonctionLibelle      : LibellÃ© de Fonction
 // as_FonctionType         : Type de Fonction
 // as_FonctionMode         : Mode de la Fonction
 // as_FonctionNom          : Nom de la Fonction
