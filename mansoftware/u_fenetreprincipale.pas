@@ -63,7 +63,8 @@ const
        			                 FileUnit : 'U_FenetrePrincipale' ;
        			                 Owner : 'Matthieu Giroux' ;
        			                 Comment : 'Fenêtre principale utilisée pour la gestion automatisée à partir du fichier INI, avec des menus composés à partir des données.' + #13#10 + 'Elle dépend du composant Fenêtre principale qui lui n''est pas lié à l''application.' ;
-      			                 BugsStory : 'Version 3.1.0.6 : UTF 8.' + #13#10
+      			                 BugsStory : 'Version 3.1.1.0 : Beautiful messages.' + #13#10
+                                                   + 'Version 3.1.0.6 : UTF 8.' + #13#10
                                                    + 'Version 3.1.0.5 : A Left Toolbar to Panel.' + #13#10
                                                    + 'Version 3.1.0.4 : Adding and modifying customized menu Toolbar.' + #13#10 +
                                                      'Version 3.1.0.3 : No ExtToolbar.' + #13#10 +
@@ -95,7 +96,7 @@ const
 			                	   + '3.0.0.1 : Bug AutoScroll sur le TScrollBox.' + #13#10
 			                	   + '3.0.0.0 : Gestion de l''INI par application.';
 			                 UnitType : CST_TYPE_UNITE_FICHE ;
-			                 Major : 3 ; Minor : 1 ; Release : 0 ; Build : 5 );
+			                 Major : 3 ; Minor : 1 ; Release : 1 ; Build : 0 );
 {$ENDIF}
 
 type
@@ -253,6 +254,7 @@ uses
   unite_variables, unite_messages,
   U_Acces, fonctions_dbcomponents,
   fonctions_FenetrePrincipale,
+  u_form_msg,
   fonctions_system,
   U_FormMainIni, fonctions_forms,
   fonctions_proprietes, fonctions_languages ;
@@ -366,7 +368,7 @@ begin
   except
     On e:Exception do
       Begin
-        MessageDlg( GS_PB_CONNEXION + ':'+#13#10+e.Message, mtWarning, [mbOk], 0);
+        MyMessageDlg( GS_PB_CONNEXION + ':'+#13#10+e.Message, mtWarning, [mbOk], 0);
         p_pbConnexion;
         gb_AbortConnexion := True;
         Exit;
@@ -455,7 +457,7 @@ begin
   except
     On e:Exception do
       Begin
-        MessageDlg( GS_PB_CONNEXION + ':'+#13#10+e.Message, mtWarning, [mbOk], 0);
+        MyMessageDlg( GS_PB_CONNEXION + ':'+#13#10+e.Message, mtWarning, [mbOk], 0);
         p_pbConnexion;
         Exit;
       End;
@@ -623,7 +625,7 @@ end;
 procedure TF_FenetrePrincipale.dbt_identClick(Sender: TObject);
 begin
   if lb_MsgDeconnexion
-  and ( MessageDlg ( GS_DECONNECTER, mtConfirmation, [ mbYes, mbNo ], 0 ) = mrNo ) Then
+  and ( MyMessageDlg ( GS_DECONNECTER, mtConfirmation, [ mbYes, mbNo ], 0 ) = mrNo ) Then
     Exit ;
   // (Ré)initialisation de l'application
   Screen.Cursor := crSQLWait;
@@ -661,7 +663,7 @@ begin
     except
       on e:exception do
         Begin
-          MessageDlg( GS_PB_CONNEXION + ':'+#13#10+e.Message, mtWarning, [mbOk], 0);
+          MyMessageDlg( GS_PB_CONNEXION + ':'+#13#10+e.Message, mtWarning, [mbOk], 0);
           p_PbConnexion;
           Abort;
         End;
@@ -760,9 +762,9 @@ begin
 
       except
         if gi_niveau_priv < CST_ADMIN Then
-          MessageDlg( GS_PB_CONNEXION, mtError, [mbOk], 0)
+          MyMessageDlg( GS_PB_CONNEXION, mtError, [mbOk], 0)
         Else
-          MessageDlg( GS_PB_CONNEXION + #13#10 + #13#10 + GS_ADMINISTRATION_SEULEMENT, mtError, [mbOk], 0);
+          MyMessageDlg( GS_PB_CONNEXION + #13#10 + #13#10 + GS_ADMINISTRATION_SEULEMENT, mtError, [mbOk], 0);
 
         p_SetLedColor ( False );
         br_statusbar.Panels[2].Text  := GS_LBL_PB;

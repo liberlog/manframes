@@ -108,6 +108,7 @@ uses
   DB,
   fonctions_aide,
 {$ENDIF}
+  u_form_msg,
   unite_variables, unite_messages,
   fonctions_proprietes ;
 
@@ -185,7 +186,7 @@ end;
 function fb_Fermeture ( const af_FormMainini : TF_FormMainIni ) : Boolean ;
 begin
   Result := False ;
-  if MessageDlg ( GS_FERMER_APPLICATION, mtConfirmation, [ mbYes, mbNo ], 0 ) = mrYes Then
+  if MyMessageDlg ( GS_FERMER_APPLICATION, mtConfirmation, [ mbYes, mbNo ], 0 ) = mrYes Then
     Begin
       Result := True ;
       // Sauvegarde de la position des fenêtres filles

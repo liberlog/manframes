@@ -835,6 +835,7 @@ uses fonctions_string,
   {$ENDIF}
      fonctions_dbcomponents, u_extcomponent,
      u_extdbgrid, u_multidonnees,
+     u_form_msg,
      fonctions_numedit, unite_variables,
      u_buttons_appli, fonctions_languages,
      U_ExtColorCombos, ActnList, unite_messages,
@@ -4902,7 +4903,7 @@ begin
     and assigned ( fobj_getComponentObjectProperty ( anav_Objet, 'DataSource' ))
     and assigned (( TDataSource ( fobj_getComponentObjectProperty ( anav_Objet, 'DataSource' ))).DataSet )
     and not ( TDataSource ( fobj_getComponentObjectProperty ( anav_Objet, 'DataSource' ))).DataSet.IsEmpty Then
-      if MessageDlg ( GS_SUPPRIMER_QUESTION, mtConfirmation, [mbYes,mbNo], CST_HC_SUPPRIMER ) = mrYes Then
+      if MyMessageDlg ( GS_SUPPRIMER_QUESTION, mtConfirmation, [mbYes,mbNo], CST_HC_SUPPRIMER ) = mrYes Then
           Try
             ( TDataSource ( fobj_getComponentObjectProperty ( anav_Objet, 'DataSource' ))).DataSet.Delete ;
           Except
@@ -5403,7 +5404,7 @@ begin
   if gb_CloseMessage
   and gb_SauverModifications
    Then
-    Case MessageDlg(GS_ConfirmOnClose, mtConfirmation, mbYesNoCancel, 0) of
+    Case MyMessageDlg(GS_ConfirmOnClose, mtConfirmation, mbYesNoCancel, 0) of
       MrCancel:Result := false; // Cancel
       MrYes: Begin
             // yes
@@ -6328,8 +6329,8 @@ Begin
            Begin
             lt_Arg [0] := ls_Message ;
             if li_Compteur = 1
-              Then  MessageDlg ( {$IFDEF FPC}GS_SAISIR_ANNULER,{$ENDIF} fs_RemplaceMsg ( GS_ZONE_OBLIGATOIRE  , lt_Arg ), mtWarning, [mbOk], 0)
-              Else  MessageDlg ( {$IFDEF FPC}GS_SAISIR_ANNULER,{$ENDIF} fs_RemplaceMsg ( GS_ZONES_OBLIGATOIRES, lt_Arg ), mtWarning, [mbOk], 0);
+              Then  MyMessageDlg ( {$IFDEF FPC}GS_SAISIR_ANNULER,{$ENDIF} fs_RemplaceMsg ( GS_ZONE_OBLIGATOIRE  , lt_Arg ), mtWarning, [mbOk], 0)
+              Else  MyMessageDlg ( {$IFDEF FPC}GS_SAISIR_ANNULER,{$ENDIF} fs_RemplaceMsg ( GS_ZONES_OBLIGATOIRES, lt_Arg ), mtWarning, [mbOk], 0);
            End ;
           Abort;
          End ;
@@ -6338,8 +6339,8 @@ Begin
        Begin
          lt_Arg [0] := ls_Message2 ;
          if li_Compteur2 = 1
-           Then  MessageDlg ( {$IFDEF FPC}GS_SAISIR_ANNULER,{$ENDIF} fs_RemplaceMsg ( GS_ZONE_UNIQUE  , lt_Arg ), mtWarning, [mbOk], 0)
-           Else  MessageDlg ( {$IFDEF FPC}GS_SAISIR_ANNULER,{$ENDIF} fs_RemplaceMsg ( GS_ZONES_UNIQUES, lt_Arg ), mtWarning, [mbOk], 0);
+           Then  MyMessageDlg ( {$IFDEF FPC}GS_SAISIR_ANNULER,{$ENDIF} fs_RemplaceMsg ( GS_ZONE_UNIQUE  , lt_Arg ), mtWarning, [mbOk], 0)
+           Else  MyMessageDlg ( {$IFDEF FPC}GS_SAISIR_ANNULER,{$ENDIF} fs_RemplaceMsg ( GS_ZONES_UNIQUES, lt_Arg ), mtWarning, [mbOk], 0);
          Abort;
        End ;
     End ;

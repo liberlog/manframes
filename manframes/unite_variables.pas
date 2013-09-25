@@ -13,23 +13,26 @@ uses
 {$IFDEF VERSIONS}
      fonctions_version,
 {$ENDIF}
-     Classes, Graphics, Controls ;
+     Classes, Graphics,
+     fonctions_string,
+     Controls ;
 
 const
 {$IFDEF VERSIONS}
   gVer_unite_messages : T_Version = ( Component : 'Constantes messages' ; FileUnit : 'unite_messages' ;
                         			                 Owner : 'Matthieu Giroux' ;
                         			                 Comment : 'Constantes et variables messages.' ;
-                        			                 BugsStory : 'Version 1.0.4.0 : Message d''erreur de sauvegarde ini.' + #13#10
-                        			                	         + 'Version 1.0.3.3 : Message GS_MC_ERREUR_CONNEXION.' + #13#10
-                        			                	         + 'Version 1.0.3.2 : Modifs GS_MC_VALEUR_UTILISEE et GS_MC_VALEURS_UTILISEES, ajout de GS_MC_DETAILS_TECHNIQUES.' + #13#10
-                        			                	         + 'Version 1.0.3.1 : Constante message Form Dico.' + #13#10
-                        			                	         + 'Version 1.0.3.0 : Constantes INI.' + #13#10
-                        			                	         + 'Version 1.0.2.0 : Plus de messages dans l''unité.' + #13#10
-                        			                	         + 'Version 1.0.1.0 : Plus de messages dans l''unité.' + #13#10
+                        			                 BugsStory : 'Version 1.0.5.0 : forgotten password Message.' + CST_ENDOFLINE
+                        			                	     'Version 1.0.4.0 : Message d''erreur de sauvegarde ini.' + CST_ENDOFLINE
+                        			                	         + 'Version 1.0.3.3 : Message GS_MC_ERREUR_CONNEXION.' + CST_ENDOFLINE
+                        			                	         + 'Version 1.0.3.2 : Modifs GS_MC_VALEUR_UTILISEE et GS_MC_VALEURS_UTILISEES, ajout de GS_MC_DETAILS_TECHNIQUES.' + CST_ENDOFLINE
+                        			                	         + 'Version 1.0.3.1 : Constante message Form Dico.' + CST_ENDOFLINE
+                        			                	         + 'Version 1.0.3.0 : Constantes INI.' + CST_ENDOFLINE
+                        			                	         + 'Version 1.0.2.0 : Plus de messages dans l''unité.' + CST_ENDOFLINE
+                        			                	         + 'Version 1.0.1.0 : Plus de messages dans l''unité.' + CST_ENDOFLINE
                         			                	         + 'Version 1.0.0.0 : Gestion des messages des fenêtres.';
                         			                 UnitType : 1 ;
-                        			                 Major : 1 ; Minor : 0 ; Release : 4 ; Build : 0 );
+                        			                 Major : 1 ; Minor : 0 ; Release : 5 ; Build : 0 );
 
 {$ENDIF}
   CST_ACCES_UTILISATEUR_Clep     = 'UTIL_Clep' ;
@@ -120,6 +123,8 @@ var
   Gi_CONNECTION_TIMEOUT_DEFAUT : Integer = 15 ;
 
 resourcestring
+  GS_BAD_PASSWORD_REDO_TYPE_PASSWORD = 'Mot de passe invalide' + CST_ENDOFLINE
+     				         + 'Veuillez resaisir votre mot de passe';
   GS_LOGIN    = 'Login';
   gs_TestOk  = 'Test OK' ;
   gs_TestBad  = 'Error' ;
@@ -128,9 +133,9 @@ resourcestring
   GS_LBL_PB        = 'Pb. connexion';
   Gs_InvalidComponentName = 'Ce nom de composant est invalide : ' ;
   GS_LBL_PCONN     = 'Non connecté';
-  GS_mot_passe_invalide = 'Mot de passe invalide.' + #13 + #10
+  GS_mot_passe_invalide = 'Mot de passe invalide.' + CST_ENDOFLINE
 	 + 'Veuillez resaisir votre mot de passe.' ;
-  GS_Nom_Utilisateur_Invalide = 'Nom d''utilisateur invalide.' + #13 + #10
+  GS_Nom_Utilisateur_Invalide = 'Nom d''utilisateur invalide.' + CST_ENDOFLINE
 				 + 'Choisissez un nom d''utilisateur.' ;
   GS_aucune_connexion = 'Pas de connexion aux données de l''application.' ;
   GS_administration_seule = 'Seule la fonction d''Administration est accessible...';
@@ -142,39 +147,39 @@ resourcestring
   GS_ADMINISTRATION_SEULEMENT = 'Seule la fonction d''Administration est accessible...';
   GS_DECONNECTER = 'Etes-vous sûr(e) de vouloir vous déconnecter ?';
   GS_ENREGISTRER = 'Voulez-vous enregistrer les modifications apportées ?';
-  GS_METTRE_A_JOUR_FICHE = 'L''enregistrement a été effacé ou modifié par un autre utilisateur.' + #13 + #13
+  GS_METTRE_A_JOUR_FICHE = 'L''enregistrement a été effacé ou modifié par un autre utilisateur.' + CST_ENDOFLINE
                         			+ 'La fiche va être mise à jour.' ;
   GS_ERREUR_MODIFICATION_MAJ = 'Impossible de supprimer cet enregistrement. ' + #13
                + 'Il est utilisé dans une autre fonction.';
-  GS_ERREUR_CONNEXION = 'Un problème est survenu pour la connexion aux données.' + #13#10
+  GS_ERREUR_CONNEXION = 'Un problème est survenu pour la connexion aux données.' + CST_ENDOFLINE
                         	 + 'Réessayez d''ouvrir la fiche.' ;
-  GS_ERREUR_RESEAU = 'Erreur réseau.' + #13#10
+  GS_ERREUR_RESEAU = 'Erreur réseau.' + CST_ENDOFLINE
                         + 'Vérifier la connexion réseau.' ;
 
-                        //GS_CHANGEMENTS_SAUVER = 'Des changements ont été effectués.' + #13#10 +' Le trie nécessite alors une sauvegarde.'  + #13#10 + 'Voulez-vous enregistrer les changements effectués ?' ;
+                        //GS_CHANGEMENTS_SAUVER = 'Des changements ont été effectués.' + CST_ENDOFLINE +' Le trie nécessite alors une sauvegarde.'  + CST_ENDOFLINE + 'Voulez-vous enregistrer les changements effectués ?' ;
        /////////////////////
       // Aide du message //
      /////////////////////
-  GS_ERREUR_NOMBRE_GRAND = 'Problème à la validation du nombre :' + #13#10
-                   + 'Un nombre saisi est trop grand.' + #13#10
+  GS_ERREUR_NOMBRE_GRAND = 'Problème à la validation du nombre :' + CST_ENDOFLINE
+                   + 'Un nombre saisi est trop grand.' + CST_ENDOFLINE
                    + 'Modifier la saisie ou annuler.' ;
-  GS_VALEUR_UTILISEE   = 'La valeur @ARG est déjà utilisée.' + #13 + #13
+  GS_VALEUR_UTILISEE   = 'La valeur @ARG est déjà utilisée.' + CST_ENDOFLINE
                         		+ 'Saisir une valeur différente, annuler ou réeffectuer la validation si une valeur n''est pas modifiable.' ;
-  GS_VALEURS_UTILISEES = 'Les valeurs @ARG sont déjà utilisées.' + #13 + #13
+  GS_VALEURS_UTILISEES = 'Les valeurs @ARG sont déjà utilisées.' + CST_ENDOFLINE
                         		+ 'Saisir des valeurs différentes, annuler ou réeffectuer la validation si une valeur n''est pas modifiable.' ;
-  GS_ZONE_OBLIGATOIRE = 'La zone @ARG ne peut pas être vide.' + #13 + #13
+  GS_ZONE_OBLIGATOIRE = 'La zone @ARG ne peut pas être vide.' + CST_ENDOFLINE
                         	+ 'Effectuer une saisie ou annuler.';
-  GS_ZONES_OBLIGATOIRES = 'Les zones suivantes ne peuvent pas être vides : @ARG .' + #13 + #13
+  GS_ZONES_OBLIGATOIRES = 'Les zones suivantes ne peuvent pas être vides : @ARG .' + CST_ENDOFLINE
                         		+ 'Effectuer une saisie ou annuler.';
-  GS_ZONE_UNIQUE = 'La zone @ARG est unique.' + #13 + #13
+  GS_ZONE_UNIQUE = 'La zone @ARG est unique.' + CST_ENDOFLINE
                         	+ 'Modifier ce champ, réessayer, ou annuler.';
-  GS_ZONES_UNIQUES = 'Les zones suivantes sont uniques : @ARG .' + #13 + #13
+  GS_ZONES_UNIQUES = 'Les zones suivantes sont uniques : @ARG .' + CST_ENDOFLINE
                         		+ 'Modifier ces champs, réessayer, ou annuler.';
   GS_FORM_TABLE_NON_RENSEIGNEE = 'Le composant @ARG et la fiche @ARG doivent sélectionner une table dans le dictionnaire.' ;
   GS_FORM_SELECTION_ADO_DATASET = 'Le composant @ARG en tant que composant ADO et la fiche @ARG doivent sélectionner une table.' ;
   GS_FORM_ERREUR_CHARGE_COLONNES = 'Erreur au chargement des colonnes de @ARG...' ;
   GS_FORM_PAS_CONNEXION = 'Pas de connexion ADO pour les DataSources propriétés de la fiche.' ;
-  GS_FORM_PAS_QUERY_DICO = 'Il faut affecter un Query vide à DatasourceQuery et DatasourceQuerySearch.' + #13 + #13 +
+  GS_FORM_PAS_QUERY_DICO = 'Il faut affecter un Query vide à DatasourceQuery et DatasourceQuerySearch.' + CST_ENDOFLINE +
                                     'Ou alors la propriété Datasource doit etre un Query.' ;
   GS_FORM_PAS_BONNE_COLONNE = 'Un champ dans la table est mal renseigné' ;
 
@@ -207,12 +212,12 @@ resourcestring
   GS_CONNECTION_TIMEOUT = 'Connection TimeOut' ;
 
       // Modifier ici les textes d'interaction avec l'utilisateur
-      GS_CHANGE_CONNEXION    = 'Vous ne pouvez pas changer le code et l''utilisateur de cette connexion :' + #13#10 + ' C''est une connexion obligatoire.' ;
-      GS_CHANGE_UTILISATEUR  = 'Vous ne pouvez changer ni le nom, ni le sommaire, ni la connexion de cet utilisateur :' + #13#10 + ' C''est un utilisateur obligatoire.' ;
-      GS_CHANGE_PAS_SOMMAIRE = 'Vous ne pouvez pas changer le libellé de ce sommaire :' + #13#10 + ' C''est un sommaire obligatoire.' ;
-      GS_PAS_CE_SOMMAIRE     = 'Vous ne pouvez pas effacer ce sommaire :' + #13#10 + ' C''est un sommaire obligatoire.' ;
-      GS_PAS_CETTE_FONCTION  = 'Vous ne pouvez pas effacer cette fonction :' + #13#10 + ' C''est une fonction obligatoire dans ce sommaire.' ;
-      GS_PAS_CET_UTILISATEUR = 'Vous ne pouvez pas effacer cet utilisateur :' + #13#10 + ' C''est un utilisateur obligatoire.' ;
+      GS_CHANGE_CONNEXION    = 'Vous ne pouvez pas changer le code et l''utilisateur de cette connexion :' + CST_ENDOFLINE + ' C''est une connexion obligatoire.' ;
+      GS_CHANGE_UTILISATEUR  = 'Vous ne pouvez changer ni le nom, ni le sommaire, ni la connexion de cet utilisateur :' + CST_ENDOFLINE + ' C''est un utilisateur obligatoire.' ;
+      GS_CHANGE_PAS_SOMMAIRE = 'Vous ne pouvez pas changer le libellé de ce sommaire :' + CST_ENDOFLINE + ' C''est un sommaire obligatoire.' ;
+      GS_PAS_CE_SOMMAIRE     = 'Vous ne pouvez pas effacer ce sommaire :' + CST_ENDOFLINE + ' C''est un sommaire obligatoire.' ;
+      GS_PAS_CETTE_FONCTION  = 'Vous ne pouvez pas effacer cette fonction :' + CST_ENDOFLINE + ' C''est une fonction obligatoire dans ce sommaire.' ;
+      GS_PAS_CET_UTILISATEUR = 'Vous ne pouvez pas effacer cet utilisateur :' + CST_ENDOFLINE + ' C''est un utilisateur obligatoire.' ;
       GS_EDITION_SOMMAIRE    = 'Edition du sommaire ' ;
       GS_EDITION_MENU        = 'Edition d''un menu ' ;
       GS_EDITION_SOUSMENU    = 'Edition d'' un sous menu' ;
@@ -243,7 +248,6 @@ resourcestring
 
 implementation
 
-uses fonctions_string;
 initialization
 {$IFDEF VERSIONS}
   p_ConcatVersion ( gVer_unite_messages );

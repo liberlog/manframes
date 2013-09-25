@@ -39,14 +39,15 @@ const
                                           FileUnit : 'fonctions_administration' ;
                         			           Owner : 'Matthieu Giroux' ;
                         			           Comment : 'Gère les sommaires, les connexions, les utilisateurs.' ;
-                        			           BugsStory   : 'Version 1.1.0.4 : Code validation mot de passe refait.' + #13#10 +
-                        			                	       'Version 1.1.0.3 : Bug fb_ChargeIcoBmp (pas besoin d''image à afficher quand on utilise un DBimage).' + #13#10 +
-                        			                	       'Version 1.1.0.2 : Suppression du rafraîchissement utilisateur car dans dico.' + #13#10 +
-                        			                	       'Version 1.1.0.1 : Bug retaillage au centre.' + #13#10 +
-                        			                	       'Version 1.1.0.0 : Passage en Jedi 3.' + #13#10 +
-                        			                	       'Version 1.0.0.0 : Mot de passe en varbinary.'  ;
+                        			           BugsStory   : 'Version 1.1.1.0 : Beautiful messages.' + #13#10 +
+                        			                	 'Version 1.1.0.4 : Code validation mot de passe refait.' + #13#10 +
+                        			                	 'Version 1.1.0.3 : Bug fb_ChargeIcoBmp (pas besoin d''image à afficher quand on utilise un DBimage).' + #13#10 +
+                        			                	 'Version 1.1.0.2 : Suppression du rafraîchissement utilisateur car dans dico.' + #13#10 +
+                        			                	 'Version 1.1.0.1 : Bug retaillage au centre.' + #13#10 +
+                        			                	 'Version 1.1.0.0 : Passage en Jedi 3.' + #13#10 +
+                        			                	 'Version 1.0.0.0 : Mot de passe en varbinary.'  ;
                         			           UnitType : 1 ;
-                        			           Major : 1 ; Minor : 1 ; Release : 0 ; Build : 4 );
+                        			           Major : 1 ; Minor : 1 ; Release : 1 ; Build : 0 );
 
 // Evènement de sélection des fonctions
 // Entrées : Obligatoire pour créer l'évènement
@@ -445,7 +446,9 @@ const
 implementation
 
 uses fonctions_images, fonctions_string,
-     SysUtils, U_FormMainIni, Variants, JvXPBar, Windows, ADOConEd, fonctions_db,
+     u_form_msg,
+     SysUtils, U_FormMainIni, Variants,
+     JvXPBar, Windows, ADOConEd, fonctions_db,
      unite_messages, fonctions_dbcomponents ;
 
 
@@ -532,14 +535,14 @@ begin
          or (  ( Dataset.FieldByName ( CST_UTIL__SOMM ).AsString ) <>  ( CST_SOMM_Administrateur )))
      Then
       Begin
-        MessageDlg ( GS_CHANGE_UTILISATEUR, mtWarning, [mbOk], 0);
+        MyMessageDlg ( GS_CHANGE_UTILISATEUR, mtWarning, [mbOk], 0);
         Abort ;
       End ;
     if ( Trim ( Dataset.FieldByName ( CST_UTIL_Clep  ).Asstring ) = '' )
     or ( Dataset.FieldByName ( CST_UTIL__SOMM ).Value = Null )
     or ( Dataset.FieldByName ( CST_UTIL__PRIV ).Value = Null ) Then
       Begin
-        MessageDlg ( GS_UTIL_VIDE + #13#10 + GS_SAISIR_ANNULER, mtWarning, [mbOk], 0);
+        MyMessageDlg ( GS_UTIL_VIDE + #13#10 + GS_SAISIR_ANNULER, mtWarning, [mbOk], 0);
         Abort ;
       End ;
     if  lb_MotPasseModifie
@@ -551,7 +554,7 @@ begin
 {        if dbe_MotPasse.Text = ''
          Then
            Begin
-             MessageDlg ( GS_PAS_MOT_PASSE, mtWarning, [mbOk], 0);
+             MyMessageDlg ( GS_PAS_MOT_PASSE, mtWarning, [mbOk], 0);
              Abort ;
              Exit ;
            End ;}
@@ -647,7 +650,7 @@ begin
   if  ( ls_FonctionClep = '' )
    Then
     Begin
-      MessageDlg ( GS_CHOISIR_FONCTION , mtWarning, [mbOk], 0);
+      MyMessageDlg ( GS_CHOISIR_FONCTION , mtWarning, [mbOk], 0);
 
       Abort ;
       Exit ;
@@ -656,7 +659,7 @@ begin
   if  (    SommaireClep = '' )
    Then
     Begin
-      MessageDlg ( GS_CHOISIR_SOMMAIRE , mtWarning, [mbOk], 0);
+      MyMessageDlg ( GS_CHOISIR_SOMMAIRE , mtWarning, [mbOk], 0);
       Abort ;
       Exit ;
     End ;
@@ -678,7 +681,7 @@ begin
           if MenuClep = ''
            then
             Begin
-              MessageDlg ( GS_CHOISIR_MENU , mtWarning, [mbOk], 0);
+              MyMessageDlg ( GS_CHOISIR_MENU , mtWarning, [mbOk], 0);
               Abort ;
               adoq_TreeUser.SQL.EndUpdate ; // Mise à jour faite
               Exit ;
@@ -695,7 +698,7 @@ begin
           if ( SousMenuClep = '' )
            then
             Begin
-              MessageDlg ( GS_CHOISIR_SOUS_MENU , mtWarning, [mbOk], 0);
+              MyMessageDlg ( GS_CHOISIR_SOUS_MENU , mtWarning, [mbOk], 0);
               adoq_TreeUser.SQL.EndUpdate ; // Mise à jour faite
               Abort ;
               Exit ;
@@ -703,7 +706,7 @@ begin
           if (     MenuClep = '' )
            then
             Begin
-              MessageDlg ( GS_CHOISIR_MENU , mtWarning, [mbOk], 0);
+              MyMessageDlg ( GS_CHOISIR_MENU , mtWarning, [mbOk], 0);
               adoq_TreeUser.SQL.EndUpdate ; // Mise à jour faite
               Exit ;
             End ;
@@ -751,7 +754,7 @@ begin
           if MenuClep = ''
            Then
             Begin
-              MessageDlg ( GS_CHOISIR_MENU , mtWarning, [mbOk], 0);
+              MyMessageDlg ( GS_CHOISIR_MENU , mtWarning, [mbOk], 0);
               Abort ;
               Exit ;
             End ;
@@ -766,14 +769,14 @@ begin
           if MenuClep = ''
            Then
             Begin
-              MessageDlg ( GS_CHOISIR_MENU , mtWarning, [mbOk], 0);
+              MyMessageDlg ( GS_CHOISIR_MENU , mtWarning, [mbOk], 0);
               Abort ;
               Exit ;
             End ;
           if SousMenuClep = ''
            Then
             Begin
-              MessageDlg ( GS_CHOISIR_SOUS_MENU , mtWarning, [mbOk], 0);
+              MyMessageDlg ( GS_CHOISIR_SOUS_MENU , mtWarning, [mbOk], 0);
               Abort ;
               Exit ;
             End ;
@@ -1033,7 +1036,7 @@ end;
 
 procedure p_NoConnexion;
 begin
-//  MessageDlg(GS_PB_CONNEXION, mtWarning, [mbOk], 0);
+//  MyMessageDlg(GS_PB_CONNEXION, mtWarning, [mbOk], 0);
   If Application.MainForm is TF_FormMainIni
    Then
      ( Application.MainForm as TF_FormMainIni ).p_NoConnexion ;
@@ -1051,7 +1054,7 @@ function fb_EffaceEnregistrements ( const as_Message : String ; const as_Enregis
 begin
   Result := False ;
 //  lbmk_GardeEnregistrement := aDat_Dataset.Bookmark ;
-  if MessageDlg ( as_Message + #13#10 + GS_EFFACE_1 + GS_EFFACE_2 + #13#10  + #13#10 + ' - ' + as_Enregistrement, mtWarning, [mbOk,mbCancel], 0) = mrOk
+  if MyMessageDlg ( as_Message + #13#10 + GS_EFFACE_1 + GS_EFFACE_2 + #13#10  + #13#10 + ' - ' + as_Enregistrement, mtWarning, [mbOk,mbCancel], 0) = mrOk
    Then  // Ce delete va supprimer les associations
     Begin
       if aDat_Dataset = adot_Sommaire  // Effacement d'un menu et de ses descendants
@@ -1133,7 +1136,7 @@ begin
           if adot_Utilisateurs.IsEmpty  // Effacement d'un sommaire et de ses descendants
            Then ab_efface := fb_EffaceEnregistrements ( GS_EFFACE_SOMMAIRE, adot_Sommaire.FieldByName ( CST_SOMM_Clep ).AsString, aDat_Dataset )
         // Si il y a au moins un utilisateur on affiche un message
-           Else MessageDlg ( GS_EFFACE_PAS_SOMMAIRE, mtWarning, [mbOk], 0);
+           Else MyMessageDlg ( GS_EFFACE_PAS_SOMMAIRE, mtWarning, [mbOk], 0);
 //          adot_Utilisateurs.Close ;
           adot_Utilisateurs.Filtered := False ;
 //          adot_Utilisateurs.Open ;
@@ -1676,7 +1679,7 @@ begin
     and ( ls_FonctionClep = CST_Fonc_V_1_Admin )
      Then
       Begin
-        MessageDlg ( GS_PAS_CETTE_FONCTION , mtWarning, [mbOk], 0);
+        MyMessageDlg ( GS_PAS_CETTE_FONCTION , mtWarning, [mbOk], 0);
         Exit ;
       End ;
     // Initialisation de la requête
@@ -1817,7 +1820,7 @@ begin
     if adot_Menus.FieldByName ( CST_MENU_Clep ).AsString = ''
      Then
       Begin
-        MessageDlg ( GS_MENU_VIDE + #13#10 + GS_SAISIR_ANNULER, mtWarning, [mbOk], 0);
+        MyMessageDlg ( GS_MENU_VIDE + #13#10 + GS_SAISIR_ANNULER, mtWarning, [mbOk], 0);
         Abort ;
       End ;
     if Dataset.State = dsInsert
@@ -1840,7 +1843,7 @@ begin
     if adot_SousMenus.FieldByName ( CST_SOUM_Clep ).AsString = ''
      Then
       Begin
-        MessageDlg ( GS_SOUSMENU_VIDE + #13#10 + GS_SAISIR_ANNULER, mtWarning, [mbOk], 0);
+        MyMessageDlg ( GS_SOUSMENU_VIDE + #13#10 + GS_SAISIR_ANNULER, mtWarning, [mbOk], 0);
         Abort ;
       End ;
     if Dataset.State = dsInsert
@@ -2064,7 +2067,7 @@ begin
   if adot_Sommaire.FieldByName ( CST_SOMM_Clep ).AsString = ''
    Then
     Begin
-      MessageDlg ( GS_SOMMAIRE_VIDE + #13#10 + GS_SAISIR_ANNULER, mtWarning, [mbOk], 0);
+      MyMessageDlg ( GS_SOMMAIRE_VIDE + #13#10 + GS_SAISIR_ANNULER, mtWarning, [mbOk], 0);
       Abort ;
     End ;
   if ( Dataset.State = dsEdit )
@@ -2072,7 +2075,7 @@ begin
             and ( ( adot_Sommaire.FieldByName ( CST_SOMM_Clep ).AsString ) <> ( CST_SOMM_Administrateur ))))
    Then
     Begin
-      MessageDlg ( GS_CHANGE_PAS_SOMMAIRE , mtWarning, [mbOk], 0);
+      MyMessageDlg ( GS_CHANGE_PAS_SOMMAIRE , mtWarning, [mbOk], 0);
       Abort ;
     End ;
   fb_ValidePostDelete( Dataset, CST_SOMMAIRE, lstl_CleSommaire, nil, True );
@@ -2150,7 +2153,7 @@ begin
    Then
     p_EffaceEnregistrements (( Sender as TExtDBNavigator ).DataSource.DataSet )
    Else
-    MessageDlg ( GS_PAS_CE_SOMMAIRE , mtWarning, [mbOk], 0);
+    MyMessageDlg ( GS_PAS_CE_SOMMAIRE , mtWarning, [mbOk], 0);
 end;
 
 procedure btn_insereClick(Sender: TObject);
@@ -2523,7 +2526,7 @@ begin
             if  (    SommaireClep = '' )
              Then
               Begin
-                MessageDlg ( GS_CHOISIR_SOMMAIRE , mtWarning, [mbOk], 0);
+                MyMessageDlg ( GS_CHOISIR_SOMMAIRE , mtWarning, [mbOk], 0);
                 Abort ;
                 Exit ;
               End ;
@@ -2537,7 +2540,7 @@ begin
             if (     MenuClep = '' )
              then
               Begin
-                MessageDlg ( GS_CHOISIR_MENU , mtWarning, [mbOk], 0);
+                MyMessageDlg ( GS_CHOISIR_MENU , mtWarning, [mbOk], 0);
                 Abort ;
                 adoq_TreeUser.SQL.EndUpdate ; // Mise à jour faite
                 Exit ;
@@ -2546,7 +2549,7 @@ begin
              Then
               Begin
                 Abort ;
-                MessageDlg ( GS_CHOISIR_SOMMAIRE , mtWarning, [mbOk], 0);
+                MyMessageDlg ( GS_CHOISIR_SOMMAIRE , mtWarning, [mbOk], 0);
                 Exit ;
               End ;
             adoq_TreeUser.SQL.Add ( 'SELECT * FROM SOUS_MENUS' );
@@ -2579,7 +2582,7 @@ begin
           and fb_ExisteEnregistrementATable ( ai_NoTable )
            Then
             Begin
-              MessageDlg ( CST_SOMM_Clep_EN_DOUBLE + #13#10 + GS_CHANGER_ANNULER, mtWarning, [mbOk], 0);
+              MyMessageDlg ( CST_SOMM_Clep_EN_DOUBLE + #13#10 + GS_CHANGER_ANNULER, mtWarning, [mbOk], 0);
               // non validation des données
               Abort ;
             End ;
@@ -2590,7 +2593,7 @@ begin
           and fb_ExisteEnregistrementATable ( ai_NoTable )
            Then
             Begin
-              MessageDlg ( CST_MENU_Clep_EN_DOUBLE + #13#10 + GS_CHANGER_ANNULER, mtWarning, [mbOk], 0);
+              MyMessageDlg ( CST_MENU_Clep_EN_DOUBLE + #13#10 + GS_CHANGER_ANNULER, mtWarning, [mbOk], 0);
               // non validation des données
               Abort ;
             End ;
@@ -2601,7 +2604,7 @@ begin
           and fb_ExisteEnregistrementATable ( ai_NoTable )
            Then
             Begin
-              MessageDlg ( CST_SOUM_Clep_EN_DOUBLE + #13#10 + GS_CHANGER_ANNULER, mtWarning, [mbOk], 0);
+              MyMessageDlg ( CST_SOUM_Clep_EN_DOUBLE + #13#10 + GS_CHANGER_ANNULER, mtWarning, [mbOk], 0);
               // non validation des données
               Abort ;
             End ;
@@ -3080,10 +3083,10 @@ end;
 procedure nav_UtilisateurBtnDelete(Sender: TObject);
 begin
   if adot_Utilisateurs.FieldByName(CST_UTIL_Clep).AsString = UpperCase ( CST_UTIL_Administrateur ) then
-    MessageDlg(GS_PAS_CET_UTILISATEUR, mtWarning, [mbOk], 0)
+    MyMessageDlg(GS_PAS_CET_UTILISATEUR, mtWarning, [mbOk], 0)
   else
     Try
-      if MessageDlg ( GS_SUPPRIMER_QUESTION, mtConfirmation, [mbYes,mbNo], CST_HC_SUPPRIMER ) = mrYes Then
+      if MyMessageDlg ( GS_SUPPRIMER_QUESTION, mtConfirmation, [mbYes,mbNo], CST_HC_SUPPRIMER ) = mrYes Then
         adot_Utilisateurs.Delete;
     Except
       on e: Exception do
@@ -3150,7 +3153,7 @@ procedure F_FormDicoCloseQuery(Sender: TObject;
 var li_i : Integer ;
 begin
   if gb_SauverModifications then
-      Case MessageDlg(GS_ENREGISTRER,mtwarning,mbYesNoCancel,0) of
+      Case MyMessageDlg(GS_ENREGISTRER,mtwarning,mbYesNoCancel,0) of
         MrCancel : CanClose := false; // Annuler
         MrYes : begin                 // Oui
             if bt_enregistre.Enabled then

@@ -16,6 +16,7 @@ uses
 {$ELSE}
   Windows, JvExControls,
 {$ENDIF}
+  u_form_msg,
   u_multidonnees,
   Classes, Graphics, Forms, Controls, StdCtrls, Buttons, ExtCtrls,
   Dialogs, SysUtils, DBCtrls, fonctions_string, u_framework_components,
@@ -31,10 +32,11 @@ const
       			 FileUnit : 'U_MotPasse' ;
                                Owner : 'Matthieu Giroux' ;
                                Comment : 'Fenêtre de validation du Mot de passe.' ;
-      			 BugsStory : 'Version 1.1.0.0 : Passage en non ADO' + #13#10
-                                         + '1.0.0.0 : Gestion du mot de passe plus simple.';
+      			 BugsStory : 'Version 1.1.1.0 : Beautiful and multi-languages messages.' + #13#10
+                                   + 'Version 1.1.0.0 : Passage en non ADO' + #13#10
+                                   + 'Version 1.0.0.0 : Gestion du mot de passe plus simple.';
                                UnitType : 2 ;
-      			 Major : 1 ; Minor : 1 ; Release : 0 ; Build : 0 );
+      			 Major : 1 ; Minor : 1 ; Release : 1 ; Build : 0 );
 {$ENDIF}
 type
   TF_MotPasse = class(TForm)
@@ -72,14 +74,6 @@ procedure TF_MotPasse.btn_okClick(Sender: TObject);
 begin
   // Utilisateur obligatoire
       // Vérification du MDP
-{      if fb_stringVide(tx_mdp.Text) then
-        begin
-        	MessageDlg('Mot de passe invalide' + #13 + #13
-        				     + 'Veuillez saisir votre mot de passe', mtError, [mbOk], 0);
-        	tx_mdp.SetFocus;
-        end
-      else
-        begin}
         	// Le mot de passe est comparé à celui dans l'edit
 
         	if (tx_mdp.Text = fs_stringDeCrypte(gq_user.FieldByName( CST_UTIL_Mdp).Asstring ) ) then
@@ -89,8 +83,7 @@ begin
         		end
         	else
         		begin
-        			MessageDlg('Mot de passe invalide' + #13 + #13
-        				         + 'Veuillez resaisir votre mot de passe',
+        			MyMessageDlg(GS_BAD_PASSWORD_REDO_TYPE_PASSWORD,
         				         mtError, [mbOk], 0);
         			tx_mdp.SetFocus;
         		end;

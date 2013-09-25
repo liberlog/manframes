@@ -34,7 +34,8 @@ const
                                FileUnit : 'U_Acces' ;
                                Owner : 'Matthieu Giroux' ;
                                Comment : 'Répertorie les composants.' ;
-                               BugsStory : 'Version 1.3.0.2 : UTF 8.' + #13#10
+                               BugsStory : 'Version 1.3.1.0 : Beautiful messages.' + #13#10
+                                         + 'Version 1.3.0.2 : UTF 8.' + #13#10
                                          + 'Version 1.3.0.1 : Making comments.' + #13#10
                                          + 'Version 1.3.0.0 : Passage en LAZARUS' + #13#10
                                          + 'Version 1.2.0.0 : Passage en non ADO' + #13#10
@@ -43,7 +44,7 @@ const
                                          + 'Version 1.0.1.0 : Gestion utilisateur par défaut ( voir U_FenetrePrincipale )' + #13#10
                                          + 'Version 1.0.0.0 : Gestion accès multiple.';
                                UnitType : 2 ;
-                               Major : 1 ; Minor : 3 ; Release : 0 ; Build : 2 );
+                               Major : 1 ; Minor : 3 ; Release : 1 ; Build : 0 );
 
 {$ENDIF}
 
@@ -99,6 +100,7 @@ uses fonctions_images,
   SQLExpr,
 {$ENDIF}
   unite_variables, fonctions_extdb,
+  u_form_msg,
   fonctions_db, fonctions_dbcomponents,
   fonctions_proprietes,
   fonctions_Objets_Data;
@@ -148,7 +150,7 @@ begin
   if fb_stringVide(cbx_user.Text ) then
 //  {$ENDIF}
     begin
-      MessageDlg(gs_Nom_Utilisateur_Invalide, mtWarning, [mbOk], 0);
+      MyMessageDlg(gs_Nom_Utilisateur_Invalide, mtWarning, [mbOk], 0);
       cbx_user.SetFocus;
     end
   else
@@ -170,7 +172,7 @@ begin
       if fb_stringVide({$IFDEF ZEOS}lsts_Connect.Text{$ELSE}ls_conn{$ENDIF}) then
        with Application.MainForm as TF_FormMainIni do
         begin
-        	MessageDlg(GS_aucune_connexion + #13 + #13
+        	MyMessageDlg(GS_aucune_connexion + #13 + #13
         				     + GS_administration_seule, mtError, [mbOk], 0);
         	cbx_user.SetFocus;
 {$IFNDEF CSV}
@@ -240,7 +242,7 @@ begin
         end
       else
         begin
-          MessageDlg( GS_mot_passe_invalide , mtWarning, [mbOk], 0);
+          MyMessageDlg( GS_mot_passe_invalide , mtWarning, [mbOk], 0);
           tx_mdp.SetFocus;
         end;
     end;
