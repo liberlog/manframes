@@ -16,7 +16,7 @@ uses
 {$ELSE}
   Windows, JvExControls,
 {$ENDIF}
-  u_form_msg,
+  fonctions_dialogs,
   u_multidonnees,
   Classes, Graphics, Forms, Controls, StdCtrls, Buttons, ExtCtrls,
   Dialogs, SysUtils, DBCtrls, fonctions_string, u_framework_components,

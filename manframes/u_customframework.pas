@@ -835,7 +835,7 @@ uses fonctions_string,
   {$ENDIF}
      fonctions_dbcomponents, u_extcomponent,
      u_extdbgrid, u_multidonnees,
-     u_form_msg,
+     fonctions_dialogs,
      fonctions_numedit, unite_variables,
      u_buttons_appli, fonctions_languages,
      U_ExtColorCombos, ActnList, unite_messages,

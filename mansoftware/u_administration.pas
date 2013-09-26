@@ -67,7 +67,7 @@ uses
 {$ENDIF}
   u_formdico, U_ExtDBImage,
   u_extdbgrid, u_buttons_defs,
-  u_form_msg,
+  fonctions_dialogs,
   U_ExtDBNavigator, Graphics,
   JvXPButtons, u_framework_components,
   u_framework_dbcomponents, u_buttons_appli, ImgList, ToolWin;

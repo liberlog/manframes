@@ -446,7 +446,7 @@ const
 implementation
 
 uses fonctions_images, fonctions_string,
-     u_form_msg,
+     fonctions_dialogs,
      SysUtils, U_FormMainIni, Variants,
      JvXPBar, Windows, ADOConEd, fonctions_db,
      unite_messages, fonctions_dbcomponents ;

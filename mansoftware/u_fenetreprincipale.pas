@@ -254,7 +254,7 @@ uses
   unite_variables, unite_messages,
   U_Acces, fonctions_dbcomponents,
   fonctions_FenetrePrincipale,
-  u_form_msg,
+  fonctions_dialogs,
   fonctions_system,
   U_FormMainIni, fonctions_forms,
   fonctions_proprietes, fonctions_languages ;

@@ -108,7 +108,7 @@ uses
   DB,
   fonctions_aide,
 {$ENDIF}
-  u_form_msg,
+  fonctions_dialogs,
   unite_variables, unite_messages,
   fonctions_proprietes ;
 

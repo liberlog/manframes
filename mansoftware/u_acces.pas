@@ -100,7 +100,7 @@ uses fonctions_images,
   SQLExpr,
 {$ENDIF}
   unite_variables, fonctions_extdb,
-  u_form_msg,
+  fonctions_dialogs,
   fonctions_db, fonctions_dbcomponents,
   fonctions_proprietes,
   fonctions_Objets_Data;
