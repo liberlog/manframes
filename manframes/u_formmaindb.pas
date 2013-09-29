@@ -18,11 +18,8 @@ interface
 {$ENDIF}
 
 uses
-{$IFDEF SFORM}
-  CompSuperForm,
-{$ENDIF}
 {$IFDEF FPC}
-  LCLIntf, LCLType, lmessages,
+  LCLType,
 {$ELSE}
   Windows, OleDb, Messages,
 {$ENDIF}
@@ -32,10 +29,8 @@ uses
 {$IFDEF TNT}
   TNTForms,
 {$ENDIF}
-  fonctions_extdb,
-  SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  U_FormMainIni,
-  Dialogs, ExtCtrls, fonctions_init, IniFiles;
+  fonctions_extdb, Classes, Controls, Forms,
+  U_FormMainIni, fonctions_init, IniFiles;
 
 {$IFDEF VERSIONS}
   const
@@ -134,22 +129,9 @@ type
 
 implementation
 
-uses fonctions_proprietes, fonctions_erreurs, TypInfo,
-{$IFDEF DBEXPRESS}
-     SQLExpr,
-{$ENDIF}
-{$IFDEF EADO}
-     AdoConEd, ADOInt,
-{$ENDIF}
-{$IFDEF ZEOS}
+uses fonctions_proprietes,
      u_connection,
-{$ENDIF}
-  {$IFDEF FPC}
-  unite_messages,
-  {$ELSE}
-  unite_messages_delphi,
-  {$ENDIF}
- fonctions_system, fonctions_forms;
+     fonctions_system, fonctions_forms;
 
 
 function fs_IniSetConnection ( const accx_Connection : TComponent ) : String ;

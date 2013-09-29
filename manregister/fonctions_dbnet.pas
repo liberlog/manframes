@@ -8,7 +8,7 @@ unit fonctions_dbnet;
 interface
 
 uses
-  Classes, SysUtils,
+  Classes,
   {$IFDEF VERSIONS}
   fonctions_version,
   {$ENDIF}
@@ -30,9 +30,7 @@ procedure p_CreateOnLineconnection ( const AOwner : TComponent ; var adtt_Datase
 implementation
 
 uses
-    StdCtrls,
     OnLineQuery,
-    ClientProc,
     NetConnection,
     fonctions_dbcomponents;
 
