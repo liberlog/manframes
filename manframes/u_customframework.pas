@@ -171,11 +171,10 @@ type
   End;
 
  { TFWSource }
-  TFWSource = class(TCollectionItem)
+  TFWSource = class(TFWTable)
   private
      e_Scroll         : TDatasetNotifyEvent ;
      FPanels : TFWPanels;
-     FFieldsDefs : TFWFieldColumns;
      FLinked : TFWSourcesChilds;
      FForm : TF_CustomFrameWork;
      gd_Grid : TCustomDBGrid ;
@@ -185,8 +184,7 @@ type
      ddl_DataLink : TDicoColumnDatalink ;
      gs_title      ,
      s_Cle         ,
-     s_LookFields  ,
-     s_Table       : String ;
+     s_LookFields  : String ;
 
      im_FlecheBasse,
      im_FlecheHaute : TImage ;
@@ -231,8 +229,6 @@ type
     function  fwct_getCtrl_Focus: TWinControl ;
     procedure p_SetDBGrid (  const a_Value: TCustomDBGrid );
     function  fcdg_getDBGrid: TCustomDBGrid ;
-    procedure p_setDataTable ( const a_Value: String );
-    function  fs_getDataTable: String;
     procedure p_setDataKey (  const a_Value: String );
     function  fs_getDataKey: String;
     procedure p_SetLookupField ( const a_value : String );
@@ -246,7 +242,6 @@ type
     procedure p_setConnectionKey(const AValue: String);
     procedure p_setLinked(const AValue: TFWSourcesChilds);
     procedure p_setPanels(const AValue: TFWPanels);
-    procedure p_setFieldDefs(const AValue: TFWFieldColumns);
 
   protected
     ds_DataSourcesWork : TDataSource;
@@ -279,14 +274,11 @@ type
     property FieldsBegin : Longint read i_DebutTableau write i_DebutTableau;
     // Datasource principal en recherche uniquement
     property DatasourceSearch : TDataSource read ds_recherche write ds_recherche;
-    property FieldsDefs : TFWFieldColumns read FFieldsDefs write p_setFieldDefs;
     property Counters [Index: Integer] : TFWCounter read GetCounter write SetCounter ;
     property CSVDefs  [Index: Integer] : TFWCsvDef read GetCsvDef write SetCsvDef ;
     property Connection : TDSSource read gr_Connection write p_setConnection;
   published
     property ConnectKey : String read gs_ConnectionKey write p_setConnectionKey;
-    // Table du Datasource de travail
-    property Table : string read fs_getDataTable write p_setDataTable;
     // Title of report
     property Title : string read gs_title write gs_title;
     // Table du Datasource de travail
@@ -1340,10 +1332,6 @@ begin
   FPanels.Assign(AValue);
 end;
 
-procedure TFWSource.p_setFieldDefs(const AValue: TFWFieldColumns);
-begin
-  FFieldsDefs.Assign(AValue);
-end;
 
 ////////////////////////////////////////////////////////////////////////////////
 // procedure SetCsvDef
@@ -1426,7 +1414,7 @@ begin
   if  assigned ( ddl_DataLink.Dataset )
   and ( fs_getComponentProperty (ddl_DataLink.Dataset, 'TableName' ) <> '' )
    Then
-    s_Table := fs_getComponentProperty (ddl_DataLink.Dataset, 'TableName' ) ;
+    Table := fs_getComponentProperty (ddl_DataLink.Dataset, 'TableName' ) ;
 end;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1496,7 +1484,6 @@ begin
   FPanels := TFWPanels.Create(Self,TFWPanelColumn);
   FLinked := TFWSourcesChilds.Create(Self,TFWSourceChild);
   ddl_DataLink := TDicoColumnDatalink.Create(Self,FForm);
-  FFieldsDefs := TFWFieldColumns.Create ( Self, TFWFieldColumn );
   b_ShowPrint := True;
 
 
@@ -1575,18 +1562,6 @@ begin
 
 end;
 
-
-procedure TFWSource.p_setDataTable( const a_Value: String);
-begin
-  s_Table := a_value;
-
-end;
-
-function TFWSource.fs_getDataTable: String;
-begin
-  Result := s_Table;
-
-end;
 
 
 procedure TFWSource.p_setDataKey( const a_Value: String);
@@ -2006,11 +1981,11 @@ Begin
         gdat_DatasetPrinc := ddl_DataLink.Dataset ;
         p_LoadSearchingAndQuery ;
         p_ChargeEvenementsDatasourcePrinc;
-        if ( Trim ( s_Table ) <> '' )
+        if ( Trim ( Table ) <> '' )
         and gb_DicoUseFormField
         and not fb_ChargementNomCol ( gFWSources [CST_FRAMEWORK_DATASOURCE_PRINC], 0 ) then
           begin
-            lt_Arg [ 0 ] :=  s_Table ;
+            lt_Arg [ 0 ] :=  Table ;
             lt_Arg [ 1 ] :=  ddl_DataLink.DataSet.Name;
             lt_Arg [ 2 ] :=  Self.Name;
             ShowMessage ( fs_RemplaceMsg ( GS_FORM_ERREUR_CHARGE_COLONNES + #13#10 + GS_FORM_TABLE_NON_RENSEIGNEE, lt_Arg ));
@@ -2194,11 +2169,11 @@ Begin
             End;
           ds_recherche := ddl_DataLink.DataSource;
 
-          if ( Trim ( s_Table ) <> '' )
+          if ( Trim ( Table ) <> '' )
           and not gb_DicoKeyFormPresent
           and not fb_ChargementNomCol ( gFWSources [li_i], li_i ) then
             begin
-              lt_Arg [ 0 ] :=  s_Table ;
+              lt_Arg [ 0 ] :=  Table ;
               lt_Arg [ 1 ] :=  ddl_DataLink.DataSet.Name;
               lt_Arg [ 2 ] :=  Self.Name;
               ShowMessage ( fs_RemplaceMsg ( GS_FORM_ERREUR_CHARGE_COLONNES + #13#10 + GS_FORM_TABLE_NON_RENSEIGNEE, lt_Arg ));
@@ -4929,7 +4904,7 @@ begin
   for li_j := 0 to DBSources.Count - 1 do
    with DBSources [ li_j ] do
     for li_i := 0 to FieldsDefs.Count - 1 do
-      if  ( as_Table = FieldsDefs [ li_i ].TableName )
+      if  ( as_Table = Table )
       and ( as_Champ = FieldsDefs [ li_i ].FieldName )Then
         Begin
           Result := FieldsDefs [ li_i ] ;
@@ -5835,7 +5810,7 @@ begin
       if li_i < ahea_Header.Columns.Count Then
         Begin
           for li_j := 0 to FieldsDefs.Count - 1 do
-            if  ( FieldsDefs [ li_j ].TableName  = aws_Table )
+            if  ( Table  = aws_Table )
             and ( FieldsDefs [ li_j ].FieldName = alst_Fields [ li_i ] ) Then
               Begin
                 ahea_Header.Columns [ li_i ].Text := FieldsDefs [ li_j ].CaptionName ;
@@ -5883,7 +5858,7 @@ Begin
       if li_i < alv_ListeView.Columns.Count Then
         Begin
           for li_j := 0 to FieldsDefs.Count - 1 do
-            if  ( FieldsDefs [ li_j ].TableName  = aws_Table )
+            if  ( Table  = aws_Table )
             and ( FieldsDefs [ li_j ].FieldName = alst_Fields [ li_i ] ) Then
               Begin
                 alv_ListeView.Columns [ li_i ].Caption := FieldsDefs [ li_j ].CaptionName;

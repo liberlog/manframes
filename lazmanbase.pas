@@ -2,19 +2,19 @@
   This source is only used to compile and install the package.
  }
 
-unit lazmanbase; 
+unit lazmanbase;
 
 interface
 
 uses
-  fonctions_manbase, u_multidata, LazarusPackageIntf;
+  fonctions_manbase, u_multidata, fonctions_create, LazarusPackageIntf;
 
 implementation
 
-procedure Register; 
+procedure Register;
 begin
-end; 
+end;
 
 initialization
-  RegisterPackage('lazmanbase', @Register); 
+  RegisterPackage('lazmanbase', @Register);
 end.
