@@ -22,7 +22,7 @@
       </Other>
     </CompilerOptions>
     <Version Major="1" Minor="1" Release="1"/>
-    <Files Count="3">
+    <Files Count="4">
       <Item1>
         <Filename Value="manbase/fonctions_manbase.pas"/>
         <UnitName Value="fonctions_manbase"/>
@@ -35,6 +35,10 @@
         <Filename Value="manbase/fonctions_create.pas"/>
         <UnitName Value="fonctions_create"/>
       </Item3>
+      <Item4>
+        <Filename Value="manbase/u_multidonnees.pas"/>
+        <UnitName Value="u_multidonnees"/>
+      </Item4>
     </Files>
     <i18n>
       <OutDir Value="fonctions"/>

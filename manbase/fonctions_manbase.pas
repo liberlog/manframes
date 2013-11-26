@@ -7,12 +7,18 @@ unit fonctions_manbase;
 interface
 
 uses
-  Classes, u_multidata, SysUtils,
+  Classes, SysUtils,
   {$IFDEF VERSIONS}
     fonctions_version,
   {$ENDIF}
   StdCtrls,
-  DB, Controls;
+  u_multidata,
+  DB,
+  Controls;
+
+//////////////////////////////////////////////////////////////////////
+// Matthieu GIROUX 2013
+// No Form please
 
 const
 {$IFDEF VERSIONS}
@@ -239,7 +245,7 @@ type
      function  GetOptionString   ( const Index : TFWFieldOption ):String;
      procedure SetOptionSelected ( const Index : TFWFieldOption; const Avalue : Boolean );
    protected
-     procedure CreateCollections; virtual;
+     function CreateCollectionFieldOptions: TFWFieldDataOptions; virtual;
    public
     constructor Create(ACollection: TCollection); override; overload;
     constructor Create; virtual; overload;
@@ -297,7 +303,7 @@ type
     gfw_FieldOld : TFWFieldData;
   protected
     procedure SetFieldOld(const Avalue: TFWFieldData); virtual;
-    procedure CreateCollections; override;
+    function CreateOldField: TFWFieldData; virtual;
   public
    constructor Create(ACollection: TCollection); override; overload;
    function   Clone ( const ACollection : TFWFieldColumns ) : TFWFieldColumn; override;
@@ -310,23 +316,35 @@ type
   TFWMiniFieldColumnClass = class of TFWMiniFieldColumn;
 
   { TFWMiniFieldColumns }
-   TFWMiniFieldColumns = class(TCollection)
-   private
-     FColumn: TCollectionItem;
-     function GetColumnField(const Index: Integer): TFWMiniFieldColumn;
-     procedure SetColumnField(const Index: Integer; Value: TFWMiniFieldColumn);
-   public
-     constructor Create(const Column: TCollectionItem; const ColumnClass: TFWMiniFieldColumnClass); virtual;
-     function indexOf ( const as_FieldName : String ) : Integer;
-     procedure Add ( const ToAdd: TFWMiniFieldColumn );
-     function Add: TFWMiniFieldColumn; virtual;
-     property Column : TCollectionItem read FColumn;
+
+   { TFWBaseFieldColumns }
+
+   TFWBaseFieldColumns = class(TCollection)
+    private
+      function GetColumnField(const Index: Integer): TFWMiniFieldColumn;
+      procedure SetColumnField(const Index: Integer; Value: TFWMiniFieldColumn);
+    public
+     function GetString: String; virtual;
+     procedure Add ( const ToAdd: TFWMiniFieldColumn ); virtual; overload;
+     function Add: TFWMiniFieldColumn; virtual; overload;
+     function indexOf ( const as_FieldName : String ) : Integer; virtual;
+     function byName  ( const as_FieldName : String ) : TFWMiniFieldColumn;
+    published
      property Items[CST_BASE_INDEX: Integer]: TFWMiniFieldColumn read GetColumnField write SetColumnField; default;
    End;
 
+   { TFWMiniFieldColumns }
+    TFWMiniFieldColumns = class(TFWBaseFieldColumns)
+    private
+      FColumn: TCollectionItem;
+    public
+      constructor Create(const Column: TCollectionItem; const ColumnClass: TFWMiniFieldColumnClass); virtual;
+      property Column : TCollectionItem read FColumn;
+    End;
+
 
    { TFWFieldColumns }
-    TFWFieldColumns = class(TCollection)
+    TFWFieldColumns = class(TFWBaseFieldColumns)
     private
       FColumn: TCollectionItem;
       function GetColumnField(const Index: Integer): TFWFieldColumn;
@@ -335,9 +353,6 @@ type
       procedure GetTables ( var ATables : TList );
     public
       constructor Create(const Column: TCollectionItem; const ColumnClass: TFWFieldColumnClass); virtual;
-      function indexOf ( const as_FieldName : String ) : Integer;
-      function byName  ( const as_FieldName : String ) : TFWFieldColumn;
-      procedure Add ( const ToAdd: TFWFieldColumn );
       function Add: TFWFieldColumn; virtual;
       property Column : TCollectionItem read FColumn;
       property Items[CST_BASE_INDEX: Integer]: TFWFieldColumn read GetColumnField write SetColumnField; default;
@@ -357,7 +372,7 @@ type
    gfc_FieldColumns: TFWFieldColumns;
    procedure SetFields(const AValue: TFWFieldColumns);
   public
-    constructor Create(AOwner: TComponent); overload;
+    constructor Create(ACollection: TCollection); override;
     destructor Destroy; override;
 
     procedure Assign(Source: TPersistent); override;
@@ -388,19 +403,19 @@ type
     property Items[CST_BASE_INDEX: Integer]: TFWTable read GetTable write SetTable; default;
   End;
 
-  { TFWTables }
-
   { TFWIndexes }
 
   TFWIndexes = class(TCollection)
   private
     FColumn: TCollectionItem;
+    gb_Changed : Boolean;
     function GetIndex( const Index: Integer): TFWIndex;
     procedure SetIndex( const Index: Integer; const Value: TFWIndex);
   protected
     function GetOwner: TPersistent; override;
   public
     constructor Create(const Column: TCollectionItem; const ColumnClass: TFWIndexClass); virtual; overload;
+    property Changed : Boolean read gb_Changed;
     function indexOf ( const as_IndexName : String ) : Integer;
     function Add: TFWIndex; virtual;
     function Insert ( const AIndex : Integer ): TFWIndex; virtual;
@@ -428,12 +443,34 @@ type
      property Items[CST_BASE_INDEX: Integer]: TFWRelation read GetRelation write SetRelation; default;
    End;
 
+   // Lien de données et gestion des évènements de mise à jour
+
+   { TFWColumnDatalink }
+
+   TFWColumnDatalink = Class(TDataLink)
+   Private
+   // Parent propriétaire des évènements liés au lien de données
+     gFc_FormColumn: TFWTable;
+     gF_FormFrame: TComponent ;
+   protected
+     function GetFormColumn:TFWTable; virtual;
+   Public
+     Constructor Create( const aTFc_FormColumn : TFWTable; const af_Frame : TComponent);
+   Protected
+     property FormColumn : TFWTable read GetFormColumn;
+     property Owner : TComponent read gF_FormFrame;
+   End;
+
   // -----------------------------------------------
   // Declaration of the EER Table Object
 
   TFWTable = class(TFWBaseObject)
   private
     { Private declarations }
+    gs_key : String;
+    gi_KeyColumn : Integer;
+    gs_ConnectionKey : String;
+    gr_Connection : TDSSource;
     gb_StandardInserts,
     gb_IsLinkedObject,
     gb_nmTable: Boolean;
@@ -449,6 +486,7 @@ type
 
     gsl_TableOptions,gsl_StandardInserts: TStrings;
     gfc_FieldColumns: TFWFieldColumns;
+    ddl_DataLink : TFWColumnDatalink ;
     // properties functions
     function GetnmTableStatus: Boolean;
     procedure SetnmTableStatus(const isnmTable: Boolean);
@@ -456,13 +494,26 @@ type
     procedure SetRelationBegin(const AValue: TFWRelations );
     procedure SetRelationEnd(const AValue: TFWRelations);
     procedure SetFieldColumns(const AValue: TFWFieldColumns);
+    procedure p_SetDataSource ( const a_Value: TDataSource );
+    function  fds_GetDataSource  : TDataSource ;
+  protected
+    procedure p_WorkDataScroll;virtual;
+    procedure p_setConnection(const AValue: TDSSource); virtual;
+    procedure p_setConnectionKey(const AValue: String); virtual;
+    function  CreateDataLink : TFWColumnDatalink; virtual;
+    function CreateCollectionFields: TFWFieldColumns; virtual;
+    function CreateCollectionRelBegin: TFWRelations; virtual;
+    function CreateCollectionRelEnd: TFWRelations; virtual;
+    procedure Notification(AComponent: TComponent; Operation: TOperation);{$IFDEF FPC} virtual{$ELSE}override{$ENDIF};
   public
     { Public declarations }
     constructor Create(Collection: TCollection); override;
     destructor Destroy; override;
+    function GetKey: TFWFieldColumns; virtual;
+    function GetKeyString: String; virtual;
+    function GetKeyCount: Integer; virtual;
 
     procedure Assign(Source: TPersistent); override;
-    procedure CreateCollections; virtual;
     function GetSQLCreateCode(const DefinePK: Boolean=True;
       const CreateIndexes: Boolean=True; const DefineFK: Boolean=False;
       const TblOptions: Boolean=True; StdInserts: Boolean=False;
@@ -506,7 +557,12 @@ type
     function GetSQLInsertCode: string; virtual;
     function getSqlComment: string; override;
 
+    property Connection : TDSSource read gr_Connection write p_setConnection;
+    property Datalink : TFWColumnDatalink read ddl_DataLink write ddl_DataLink;
   published
+    // Datasource principal édité
+    property Datasource : TDataSource read fds_GetDataSource write p_SetDataSource;
+    property ConnectKey : String read gs_ConnectionKey write p_setConnectionKey;
     property Indexes : TFWIndexes read gfwi_Indexes write SetIndexes;
     property RelationBegin : TFWRelations read gr_relationBegin write SetRelationBegin;
     property RelationEnd : TFWRelations read gr_relationEnd write SetRelationEnd;
@@ -542,7 +598,7 @@ type
    glo_LinkOptionDelete : TFWLinkOption;
    procedure SetFKFields ( const AValue : TFWMiniFieldColumns );
   protected
-   procedure CreateCollections; virtual;
+   function CreateCollectionFields: TFWMiniFieldColumns; virtual;
   public
     constructor Create(Collection : TCollection); virtual;
     destructor Destroy; override;
@@ -576,6 +632,7 @@ implementation
 uses fonctions_dbcomponents,
      fonctions_proprietes,
      fonctions_string,
+     u_multidonnees,
      typinfo,
      fonctions_languages;
 
@@ -665,13 +722,15 @@ begin
   gfc_FieldColumns:=TFWFieldColumns.Create(self,TFWFieldColumn);
 end;
 
-constructor TFWIndex.Create(AOwner: TComponent);
+constructor TFWIndex.Create(ACollection: TCollection);
 begin
-
+  Inherited Create(ACollection);
+  ( Collection as TFWIndexes ).gb_Changed:=True;
 end;
 
 destructor TFWIndex.Destroy;
 begin
+  ( Collection as TFWIndexes ).gb_Changed:=True;
   inherited Destroy;
 end;
 
@@ -756,6 +815,7 @@ constructor TFWIndexes.Create(const Column: TCollectionItem; const ColumnClass: 
 begin
   Inherited Create ( ColumnClass );
   FColumn:=Column;
+  gb_Changed:=False;
 end;
 
 function TFWIndexes.indexOf(const as_IndexName: String): Integer;
@@ -775,7 +835,6 @@ end;
 function TFWIndexes.Add: TFWIndex;
 begin
   Result := TFWIndex(inherited Add);
-
 end;
 
 function TFWIndexes.Insert(const AIndex: Integer): TFWIndex;
@@ -783,8 +842,60 @@ begin
   Result:=TFWIndex(Inherited Insert(AIndex));
 end;
 
+
+
+{ TFWColumnDatalink }
+
+//////////////////////////////////////////////////////////////////////////////
+// Constructeur : Création du lien de données géré par form dico
+// Description  : Gestion du scroll et de l'activation des dataset des Datasource, Datasource2, DatasourceGridLookup
+// Paramètres : aTF_FormFrameWork la form dico
+//////////////////////////////////////////////////////////////////////////////
+
+function TFWColumnDatalink.GetFormColumn: TFWTable;
+begin
+  Result:=gFc_FormColumn;
+end;
+
+constructor TFWColumnDatalink.Create ( const aTFc_FormColumn : TFWTable; const af_Frame : TComponent );
+begin
+  inherited Create;
+  gFc_FormColumn := aTFc_FormColumn ;
+  gF_FormFrame    := aF_Frame ;
+end;
+
 // -----------------------------------------------
-// Implementation of the EER-Table
+// Implementation of the TFWTable
+
+function TFWTable.GetKeyString: String;
+var li_j : integer;
+    lb_first : Boolean;
+begin
+  if ( gs_key > '' )
+  and not Indexes.gb_Changed Then
+    Begin
+     Result:=gs_key;
+     Exit;
+    end;
+  lb_first:=True;
+  Result := '';
+  if  ( Indexes.Count > 0 )
+  and ( Indexes [ 0 ].IndexKind=ikPrimary )
+   Then
+    Begin
+     Result:=Indexes[0].FieldsDefs.GetString;
+    end;
+  Indexes.gb_Changed:=False;
+end;
+
+function TFWTable.GetKeyCount: Integer;
+var li_i : integer;
+begin
+  if Indexes.Count > 0
+   Then  Result := Indexes [ 0 ].FieldsDefs.Count
+   Else  Result := 0;
+end;
+
 
 destructor TFWTable.Destroy;
 var i: integer;
@@ -794,6 +905,14 @@ begin
   gfwi_Indexes  .Destroy;
   gsl_TableOptions.Destroy;
   gsl_StandardInserts.Destroy;
+  ddl_DataLink.Destroy;
+end;
+
+function TFWTable.GetKey: TFWFieldColumns;
+begin
+  if GetKeyCount > 0
+   Then Result:=Indexes [ 0 ].FieldsDefs
+   Else Result:= nil;
 end;
 
 function TFWTable.CheckPrimaryIndex: integer;
@@ -957,17 +1076,19 @@ begin
 
   //gfc_FieldColumns
   for i:=0 to gfc_FieldColumns.Count-1 do
-  begin
-    //colname
-    if i>0 then
-     begin
-      s:=s+',';
-      s:=s+#13#10;
-     end;
+   with gfc_FieldColumns [ i ] do
+    if IsSourceTable Then
+      begin
+        //colname
+        if i>0 then
+         begin
+          s:=s+',';
+          s:=s+#13#10;
+         end;
 
-    s:=s+'  '+gfc_FieldColumns [ i ].GetSQLColumnCreateDefCode(FieldOnGeneratorOrSequence,HideNullField, DefaultBeforeNotNull, OutputComments);
+        s:=s+'  '+GetSQLColumnCreateDefCode(FieldOnGeneratorOrSequence,HideNullField, DefaultBeforeNotNull, OutputComments);
 
-  end;
+      end;
 
   //create column to store record changes
   if CreateLastChage then
@@ -1012,21 +1133,23 @@ begin
     end;
 
     for j:=0 to gfc_FieldColumns.Count-1 do
-    begin
-      sIndex:=sIndex+DBQuote+gfc_FieldColumns[j].FieldName+DBQuote;
+     with gfc_FieldColumns[j] do
+      if IsSourceTable Then
+        begin
+          sIndex:=sIndex+DBQuote+FieldName+DBQuote;
 
-      if(gfc_FieldColumns[j].Parameter >'')then
-        sIndex:=sIndex+'('+gfc_FieldColumns[j].Parameter+')';
+          if(gfc_FieldColumns[j].Parameter >'')then
+            sIndex:=sIndex+'('+Parameter+')';
 
-      if(j<gfc_FieldColumns.Count-1)then
-        sIndex:=sIndex+', ';
+          if(j<gfc_FieldColumns.Count-1)then
+            sIndex:=sIndex+', ';
 
-      //Hold PKs
-      if IndexKind = ikPrimary then
-      begin
-        PkColumns.Add(gfc_FieldColumns[j].FieldName);
-      end;
-    end;
+          //Hold PKs
+          if IndexKind = ikPrimary then
+          begin
+            PkColumns.Add(FieldName);
+          end;
+        end;
 
     sIndex:=sIndex+')';
 
@@ -1417,12 +1540,13 @@ begin
 
   for i:=0 to gfc_FieldColumns.Count-1 do
   with gfc_FieldColumns [ i ] do
-   begin
-    s:=s+DBQuote+FieldName+DBQuote;
+   if IsSourceTable Then
+     begin
+      s:=s+DBQuote+FieldName+DBQuote;
 
-    if(i<gfc_FieldColumns.Count-1)then
-      s:=s+', ';
-   end;
+      if(i<gfc_FieldColumns.Count-1)then
+        s:=s+', ';
+     end;
 
   s:=s+') VALUES(';
 
@@ -1474,6 +1598,79 @@ begin
   gfc_FieldColumns.Assign(AValue);
 end;
 
+// Affectation du composant dans la propriété
+// test si n'existe pas
+procedure TFWTable.p_SetDataSource(const a_Value: TDataSource);
+begin
+   ( Collection.Owner as TComponent ).ReferenceInterface ( DataSource, opRemove );
+    if ddl_DataLink.Datasource <> a_Value then
+      ddl_DataLink.Datasource := a_Value ;
+   ( Collection.Owner as TComponent ).ReferenceInterface ( DataSource, opInsert );
+    if  assigned ( ddl_DataLink.Dataset )
+    and ( fs_getComponentProperty (ddl_DataLink.Dataset, 'TableName' ) <> '' )
+     Then
+      Table := fs_getComponentProperty (ddl_DataLink.Dataset, 'TableName' ) ;
+end;
+
+function TFWTable.fds_GetDataSource: TDataSource;
+begin
+  if assigned ( ddl_DataLink )
+   Then
+    Result := ddl_DataLink.DataSource
+   Else
+    Result := nil;
+
+end;
+
+procedure TFWTable.p_WorkDataScroll;
+begin
+
+end;
+
+// procedure p_setConnection
+// Setting XML Column Form connection
+// AValue : The data module connection
+procedure TFWTable.p_setConnection(const AValue: TDSSource);
+begin
+  p_setMiniConnectionTo ( AValue, gr_Connection );
+end;
+
+procedure TFWTable.p_setConnectionKey(const AValue: String);
+var li_i : Integer;
+begin
+  if AValue <> gs_ConnectionKey Then
+   Begin
+     gs_ConnectionKey := AValue;
+     with DMModuleSources.Sources do
+     for li_i := 0 to Count - 1 do
+      if Items[li_i].PrimaryKey = AValue Then
+       Begin
+         gr_Connection:=Items[li_i];
+         Break;
+       end;
+   end;
+end;
+
+function TFWTable.CreateDataLink : TFWColumnDatalink;
+begin
+  Result := TFWColumnDatalink.Create(Self,Collection.Owner as TComponent);
+
+end;
+
+procedure TFWTable.Notification(AComponent: TComponent; Operation: TOperation);
+begin
+  Inherited;
+  if ( Operation <> opRemove )
+  or ( csDestroying in (Collection.Owner as TComponent).ComponentState ) Then
+    Exit;
+
+  if    Assigned   ( Datasource )
+  and ( AComponent = Datasource )
+   then
+    Datasource := nil;
+
+end;
+
 constructor TFWTable.Create(Collection: TCollection );
 begin
   Inherited Create ( Collection );
@@ -1483,14 +1680,27 @@ begin
   gb_nmTable   := False;
   gsl_StandardInserts:= TStringList.Create;
   gsl_TableOptions   := TStringList.Create;
-  CreateCollections;
+  gfc_FieldColumns   := CreateCollectionFields;
+  gr_relationBegin   := CreateCollectionRelBegin;
+  gr_relationEnd     := CreateCollectionRelEnd;
+  ddl_DataLink := CreateDataLink;
+  gs_key:='';
+  gi_KeyColumn := -1;
 end;
 
-procedure TFWTable.CreateCollections;
+function TFWTable.CreateCollectionFields : TFWFieldColumns;
 Begin
-  gfc_FieldColumns   := TFWFieldColumns.Create(Self,TFWFieldColumn);
-  gr_relationBegin   := TFWRelations.Create(Self,TFWRelation);
-  gr_relationEnd     := TFWRelations.Create(Self,TFWRelation);
+  Result   := TFWFieldColumns.Create(Self,TFWFieldColumn);
+end;
+
+function TFWTable.CreateCollectionRelBegin:TFWRelations;
+Begin
+  Result   := TFWRelations.Create(Self,TFWRelation);
+end;
+
+function TFWTable.CreateCollectionRelEnd:TFWRelations;
+Begin
+  Result   := TFWRelations.Create(Self,TFWRelation);
 end;
 
 procedure TFWTable.Assign(Source: TPersistent);
@@ -1535,16 +1745,16 @@ begin
 end;
 
 // -----------------------------------------------
-// Implementation of the EER-Rel
+// Implementation of the TFWRelation
 
 procedure TFWRelation.SetFKFields(const AValue: TFWMiniFieldColumns);
 begin
   gf_FKFields.Assign(AValue);
 end;
 
-procedure TFWRelation.CreateCollections;
+function TFWRelation.CreateCollectionFields:TFWMiniFieldColumns;
 begin
-  gf_FKFields := TFWMiniFieldColumns.Create(Self,TFWMiniFieldColumn);
+  Result := TFWMiniFieldColumns.Create(Self,TFWMiniFieldColumn);
 end;
 
 constructor TFWRelation.Create(Collection : TCollection);
@@ -1554,7 +1764,7 @@ begin
   OptionalEnd:=False;
 
   CreateRefDef:=gr_Model.ActivateRefDefForNewRelations;
-
+  gf_FKFields := CreateCollectionFields;
 end;
 
 destructor TFWRelation.Destroy;
@@ -1751,9 +1961,9 @@ begin
   gafo_OptionSelected [ index ] := Avalue;
 end;
 
-procedure TFWFieldData.CreateCollections;
+function TFWFieldData.CreateCollectionFieldOptions:TFWFieldDataOptions;
 begin
-  gdo_Options := TFWFieldDataOptions.Create(self,TFWFieldDataOption);
+  Result := TFWFieldDataOptions.Create(self,TFWFieldDataOption);
 end;
 
 constructor TFWFieldData.Create(ACollection: TCollection);
@@ -1790,7 +2000,7 @@ begin
   gb_ParamRequired      := False;
   gb_PhysicalMapping    := False;
   gfo_Options := [];
-  CreateCollections;
+  gdo_Options := CreateCollectionFieldOptions;
 end;
 
 procedure TFWFieldData.Erase;
@@ -1823,16 +2033,81 @@ begin
   gfw_FieldOld.Destroy;
 end;
 
-procedure TFWFieldColumn.CreateCollections;
+function TFWFieldColumn.CreateOldField:TFWFieldData;
 begin
-  inherited;
-  gfw_FieldOld:=TFWFieldData.Create;
+  Result:=TFWFieldData.Create;
 end;
 
 constructor TFWFieldColumn.Create(ACollection: TCollection);
 begin
   inherited Create(ACollection);
   gb_IsSourceTable:=True;
+  gfw_FieldOld := CreateOldField;
+end;
+
+{ TFWBaseFieldColumns }
+
+procedure TFWBaseFieldColumns.Add(const ToAdd: TFWMiniFieldColumn);
+begin
+  (TFWMiniFieldColumn(Add)).Assign(ToAdd);
+end;
+
+function TFWBaseFieldColumns.GetColumnField(const Index: Integer): TFWMiniFieldColumn;
+begin
+  Result := TFWMiniFieldColumn(inherited Items[Index]);
+end;
+
+procedure TFWBaseFieldColumns.SetColumnField(const Index: Integer;
+  Value: TFWMiniFieldColumn);
+begin
+  Items[Index].Assign(Value);
+end;
+
+
+function TFWBaseFieldColumns.GetString: String;
+var li_j : integer;
+    lb_first : Boolean;
+begin
+  lb_first:=True;
+  Result := '';
+  for li_j := 0 to Count - 1 do
+    if lb_first Then
+      Begin
+       Result:=Items[li_j].FieldName;
+       lb_first:=False;
+      end
+     Else
+      AppendStr(Result,','+Items[li_j].FieldName);
+end;
+
+
+function TFWBaseFieldColumns.indexOf(const as_FieldName: String): Integer;
+var af_field : TFWFieldColumn ;
+begin
+  af_field := TFWFieldColumn (byName(as_FieldName));
+  if af_field = nil
+   Then Result := -1
+   Else Result := af_field.index;
+end;
+
+function TFWBaseFieldColumns.byName(const as_FieldName: String
+  ): TFWMiniFieldColumn;
+var li_i : Integer ;
+begin
+  Result := nil;
+  for li_i := 0 to Count -1 do
+   with Items [ li_i ] do
+    if FieldName = as_FieldName Then
+     Begin
+      Result := Items [ li_i ];
+      Break;
+     end;
+
+end;
+
+function TFWBaseFieldColumns.Add: TFWMiniFieldColumn;
+begin
+  Result := TFWMiniFieldColumn(inherited Add);
 end;
 
 
@@ -1845,41 +2120,6 @@ Begin
   FColumn := Column;
 End;
 
-function TFWMiniFieldColumns.indexOf(const as_FieldName: String): Integer;
-var li_i : Integer ;
-begin
-  Result := -1;
-  for li_i := 0 to Count -1 do
-   with Items [ li_i ] do
-    if FieldName = as_FieldName Then
-     Begin
-      Result := Index;
-      Break;
-     end;
-
-end;
-
-function TFWMiniFieldColumns.GetColumnField(const Index: Integer): TFWMiniFieldColumn;
-begin
-  Result := TFWMiniFieldColumn(inherited Items[Index]);
-end;
-
-procedure TFWMiniFieldColumns.SetColumnField(const Index: Integer;
-  Value: TFWMiniFieldColumn);
-begin
-  Items[Index].Assign(Value);
-end;
-
-
-function TFWMiniFieldColumns.Add: TFWMiniFieldColumn;
-begin
-  Result := TFWMiniFieldColumn(inherited Add);
-end;
-
-procedure TFWMiniFieldColumns.Add(const ToAdd: TFWMiniFieldColumn);
-begin
-  Add.Assign(ToAdd);
-end;
 
 { TFWFieldDataOptions }
 
@@ -1931,29 +2171,6 @@ Begin
   FColumn := Column;
 End;
 
-function TFWFieldColumns.indexOf(const as_FieldName: String): Integer;
-var af_field : TFWFieldColumn ;
-begin
-  af_field := byName(as_FieldName);
-  if af_field = nil
-   Then Result := -1
-   Else Result := af_field.index;
-end;
-
-function TFWFieldColumns.byName(const as_FieldName: String): TFWFieldColumn;
-var li_i : Integer ;
-begin
-  Result := nil;
-  for li_i := 0 to Count -1 do
-   with Items [ li_i ] do
-    if FieldName = as_FieldName Then
-     Begin
-      Result := Items [ li_i ];
-      Break;
-     end;
-
-end;
-
 function TFWFieldColumns.GetColumnField(const Index: Integer): TFWFieldColumn;
 begin
   Result := TFWFieldColumn(inherited Items[Index]);
@@ -1971,10 +2188,6 @@ begin
   Result := TFWFieldColumn(inherited Add);
 end;
 
-procedure TFWFieldColumns.Add(const ToAdd: TFWFieldColumn);
-begin
-  Add.Assign(ToAdd);
-end;
 
 procedure TFWFieldColumns.GetTables(var ATables: TList);
 begin

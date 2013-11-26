@@ -23,7 +23,7 @@
     <Description Value="Child Form data management and relationships"/>
     <License Value="LGPL"/>
     <Version Major="1" Minor="3" Release="1" Build="2"/>
-    <Files Count="10">
+    <Files Count="9">
       <Item1>
         <Filename Value="manframes/fonctions_tableauframework.pas"/>
         <UnitName Value="fonctions_tableauframework"/>
@@ -45,25 +45,21 @@
         <UnitName Value="u_fillcombobutton"/>
       </Item5>
       <Item6>
-        <Filename Value="manframes/u_multidonnees.pas"/>
-        <UnitName Value="u_multidonnees"/>
-      </Item6>
-      <Item7>
         <Filename Value="manframes/u_man_reports_components.pas"/>
         <UnitName Value="u_man_reports_components"/>
-      </Item7>
-      <Item8>
+      </Item6>
+      <Item7>
         <Filename Value="manframes/fonctions_extdb.pas"/>
         <UnitName Value="fonctions_extdb"/>
-      </Item8>
-      <Item9>
+      </Item7>
+      <Item8>
         <Filename Value="manframes/u_formmaindb.pas"/>
         <UnitName Value="u_formmaindb"/>
-      </Item9>
-      <Item10>
+      </Item8>
+      <Item9>
         <Filename Value="manframes/u_connection.pas"/>
         <UnitName Value="u_connection"/>
-      </Item10>
+      </Item9>
     </Files>
     <i18n>
       <EnableI18N Value="True"/>

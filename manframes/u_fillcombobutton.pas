@@ -114,7 +114,7 @@ begin
           Begin
             Result := mrOk;
             Field.DataSet.Edit;
-            Field.Value := Datasource.DataSet.FieldByName ( Key ).Value;
+            Field.Value := Datasource.DataSet.FieldByName ( GetKeyString ).Value;
           end;
      end;
   if assigned ( FOnSet ) Then

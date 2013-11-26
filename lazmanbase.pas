@@ -7,7 +7,8 @@ unit lazmanbase;
 interface
 
 uses
-  fonctions_manbase, u_multidata, fonctions_create, LazarusPackageIntf;
+  fonctions_manbase, u_multidata, fonctions_create, u_multidonnees, 
+  LazarusPackageIntf;
 
 implementation
 
