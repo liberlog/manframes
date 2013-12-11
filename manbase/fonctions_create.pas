@@ -23,8 +23,8 @@ const
     FileUnit: 'fonctions_create';
     Owner: 'Matthieu Giroux';
     Comment: 'Creating tables from form.';
-    BugsStory: '0.9.0.1 : ' +
-    #13#10 + '0.9.0.0 : base not tested'
+    BugsStory: '' +
+               #13#10 + '0.9.0.0 : base not tested'
     ;
     UnitType: 3;
     Major: 0; Minor: 9; Release: 0; Build: 0);

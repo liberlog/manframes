@@ -80,7 +80,8 @@ const
                                       FileUnit : 'U_CustomFrameWork' ;
                                       Owner : 'Matthieu Giroux' ;
                                       Comment : 'Fiche personnalisée avec méthodes génériques et gestion de données.' ;
-                                      BugsStory : '1.1.0.5 : Removing IsImplementorOf.' +
+                                      BugsStory : '1.2.0.0 : auto create with SQL.' +
+                                                  '1.1.0.5 : Removing IsImplementorOf.' +
                                                   '1.1.0.4 : Centrelazing from XML Frames.' + #13#10
                                                 + '1.1.0.3 : UTF 8.' + #13#10
                                                 + '1.1.0.2 : Add procedure to add group view.' + #13#10
@@ -95,7 +96,7 @@ const
                                                 + '0.1.1.1 : Gestion mieux centralisée sur Datasource, Datasource2,etc.' + #13#10
                                                 + '0.1.0.1 : Version non testée' + #13#10 ;
                                        UnitType : 3 ;
-                                       Major : 1 ; Minor : 1 ; Release : 0; Build : 5 );
+                                       Major : 1 ; Minor : 2 ; Release : 0; Build : 0 );
 
 {$ENDIF}
   ge_LoadMainDataset : TSpecialProcDataset = nil;

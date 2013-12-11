@@ -26,10 +26,11 @@ const
                                       FileUnit : 'fonctions_manbase' ;
                                       Owner : 'Matthieu Giroux' ;
                                       Comment : 'Base de la Fiche personnalisée avec méthodes génériques et gestion de données.' ;
-                                      BugsStory :  '0.9.0.1 : Tested and centralizing from XML Frames' + #13#10 +
+                                      BugsStory :  '0.9.9.0 : Addinq auto create sql' + #13#10 +
+                                                   '0.9.0.1 : Tested and centralizing from XML Frames' + #13#10 +
                                                    '0.9.0.0 : base not tested'  ;
                                        UnitType : 3 ;
-                                       Major : 0 ; Minor : 9 ; Release : 0; Build : 1 );
+                                       Major : 0 ; Minor : 9 ; Release : 9; Build : 0 );
 
 {$ENDIF}
     CST_COMPONENTS_DATASOURCE_BEGIN   = 'ds_' ;
