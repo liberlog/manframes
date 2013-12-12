@@ -40,6 +40,7 @@ uses
   fonctions_version,
 {$ENDIF}
   fonctions_erreurs,
+  fonctions_manbase,
   fonctions_init, ExtCtrls,
   u_formauto;
 
@@ -49,7 +50,8 @@ const
                                       FileUnit : 'U_FormDico' ;
                                       Owner : 'Matthieu Giroux' ;
                                       Comment : 'Fiche personnalisée avec méthodes génériques et gestion de données liées à une table DICO.' ;
-                                      BugsStory : '1.2.0.0 : Automating.' + #13#10 +
+                                      BugsStory : '1.2.0.1 : Create SQL adapting.' + #13#10 +
+                                                  '1.2.0.0 : Automating.' + #13#10 +
                                                   '1.1.0.1 : Chanching Columns to Sources, optimising.' + #13#10 +
                                                   '1.1.0.0 : Création de la propriété Columns.' + #13#10 +
                                                   '1.0.1.3 : Bug DatasourceQuery non trouvé enlevé.' + #13#10 +
@@ -58,7 +60,7 @@ const
                                                   '1.0.1.0 : Gestion FrameWork pour tous Datasources testée.' + #13#10 +
                                                   '1.0.0.0 : Gestion FrameWork avec ADO non testée' ;
                                        UnitType : 3 ;
-                                       Major : 1 ; Minor : 2 ; Release : 0 ; Build : 0 );
+                                       Major : 1 ; Minor : 2 ; Release : 0 ; Build : 1 );
 {$ENDIF}
 
 
@@ -67,7 +69,7 @@ type
 
   TF_FormDico = class( TF_FormAuto)
   private
-    function fstl_getDataKeyList ( Index : Longint ):TStringList;
+    function fstl_getDataKeyList ( Index : Longint ):TFWFieldColumns;
     procedure p_ChargeTable( const aq_dico : TDataSource; const astl_SQL : TStrings ;
     {$IFDEF DELPHI_9_UP} const awst_SQL : TWideStrings ;{$ENDIF}
       const as_Table: String);
@@ -81,7 +83,7 @@ type
      // Méthode abstraite virtuelle
      procedure BeforeCreateFrameWork(Sender: TComponent); override;
     // Clé primaire du DataSource
-    property DataKeyList [ Index :  integer ] : TstringList read fstl_getDataKeyList;
+    property DataKeyList [ Index :  integer ] : TFWFieldColumns read fstl_getDataKeyList;
    published
     procedure p_OrderEdit ( Edit : TObject );
 
@@ -132,11 +134,11 @@ uses unite_variables,
 
 { TF_FormDico }
 
-function TF_FormDico.fstl_getDataKeyList ( Index : Longint ):TStringList;
+function TF_FormDico.fstl_getDataKeyList ( Index : Longint ):TFWFieldColumns;
 Begin
   Result := nil;
   if Index < DBSources.Count then
-    Result := DBSources.Items[ Index ].KeyList;
+    Result := DBSources.Items[ Index ].GetKey;
 End;
 
 // Réinitialisation des colonnes pour n'afficher que celles visibles dans le dico
@@ -233,7 +235,7 @@ begin
               End;
            with dataset, lfwc_Column.FieldsDefs.Add do
             begin
-              TableName    := Fields[0].AsString;
+              IsSourceTable    := Fields[0].AsString = lfwc_Column.Table;
               NumTag      := Fields[1].AsInteger;
               FieldName   := Fields[2].AsString;
               CaptionName  := Fields[3].AsString;

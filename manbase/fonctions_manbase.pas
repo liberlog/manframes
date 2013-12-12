@@ -911,9 +911,13 @@ end;
 
 function TFWTable.GetKey: TFWFieldColumns;
 begin
-  if GetKeyCount > 0
-   Then Result:=Indexes [ 0 ].FieldsDefs
-   Else Result:= nil;
+  if ( GetKeyCount = 0 )
+  or ( Indexes [ 0 ].IndexKind <> ikPrimary )
+   Then with Indexes.Insert(0) do
+     Begin
+      IndexKind:=ikPrimary;
+     end;
+ Result:=Indexes [ 0 ].FieldsDefs;
 end;
 
 function TFWTable.CheckPrimaryIndex: integer;
