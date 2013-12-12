@@ -12,7 +12,7 @@ unit u_multidata;
 {$MODE Delphi}
 {$ENDIF}
 
-{$I ..\DLCompilers.inc}
+{$I ..\dlcompilers.inc}
 {$I ..\extends.inc}
 
 interface

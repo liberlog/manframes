@@ -11,6 +11,8 @@ uses
   {$IFDEF VERSIONS}
   fonctions_version,
   {$ENDIF}
+  fonctions_system,
+  IBIntf,
   u_multidata, DB;
 
 {$IFDEF VERSIONS}
@@ -50,7 +52,43 @@ Begin
 
 End ;
 
+procedure p_ExecuteSQLCommand ( const as_SQL : {$IFDEF DELPHI_9_UP} String {$ELSE} WideString{$ENDIF}  );
+Begin
+  fs_ExecuteProcess({$IFDEF WINDOWS}'.'+DirectorySeparator+{$ENDIF}'isql'{$IFDEF WINDOWS}+'.exe'{$ENDIF}, as_SQL, False);
+
+End ;
+
+procedure p_setLibrary (var libname: string);
+var Alib : String;
+    version : String;
+Begin
+  {$IFDEF WINDOWS}
+  libname:= 'fbclient'+CST_EXTENSION_LIBRARY;
+  {$ELSE}
+  if not Assigned ( gci_context )
+     or  (    ( pos ( DEFAULT_FIREBIRD_SERVER_DIR, gci_context.PathFileNameBdd ) <> 1 )
+          and ( gci_context.PathFileNameBdd <> '' )
+          and ( gci_context.PathFileNameBdd [1] = '/' ))
+  Then Begin Alib := 'libfbembed';  version := '.2.5'; End
+  Else Begin Alib := 'libfbclient'; version := '.2'; End ;
+  libname:= ExtractFileDir(Application.ExeName)+DirectorySeparator+Alib+CST_EXTENSION_LIBRARY;
+  if not FileExistsUTF8(libname)
+    Then libname:='/usr/lib/'+Alib + CST_EXTENSION_LIBRARY + version;
+  if not FileExistsUTF8(libname)
+    Then libname:='/usr/lib/'+Alib + CST_EXTENSION_LIBRARY;
+  if not FileExistsUTF8(libname)
+    Then libname:='/usr/lib/i386-linux-gnu/'+Alib + CST_EXTENSION_LIBRARY + version;
+  if not FileExistsUTF8(libname)
+    Then libname:='/usr/lib/x86_64-linux-gnu/'+Alib + CST_EXTENSION_LIBRARY + version;
+  if FileExistsUTF8(libname)
+  and FileExistsUTF8(ExtractFileDir(Application.ExeName)+DirectorySeparator+'exec.sh"') Then
+     fs_ExecuteProcess('sh',' "'+ExtractFileDir(Application.ExeName)+DirectorySeparator+'exec.sh"');
+  {$ENDIF}
+end;
 initialization
+ {$IFDEF FPC}
+ OnGetLibraryName:= TOnGetLibraryName( p_setLibrary);
+ {$ENDIF}
  ge_onCreateConnection := TCreateConnection ( p_CreateIBXconnection );
  ge_OnExecuteQuery:=TOnExecuteQuery(p_ExecuteIBXQuery);
  {$IFDEF VERSIONS}
