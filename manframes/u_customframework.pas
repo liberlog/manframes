@@ -318,7 +318,7 @@ type
    End;
 
  { TFWSources }
-  TFWSources = class(TCollection)
+  TFWSources = class(TFWTables)
   private
     FForm: TF_CustomFrameWork;
     function GetColumn( Index: Integer): TFWSource;
@@ -372,6 +372,7 @@ type
 
   TF_CustomFrameWork = class(TF_FormAdapt, IFWFormVerify)
   private
+    fs_Getconnection: String;
     gs_connection         : String;
     gb_PasUtiliserProps   : Boolean;
     gds_Query1            : TDataSource ;
@@ -568,11 +569,10 @@ type
     procedure p_AfterColumnFrameShow( const aFWColumn : TFWSource ); virtual; abstract;
     function fb_ChargementNomCol ( const AFWColumn : TFWSource ; const ai_NumSource : Integer ) : Boolean; virtual; abstract;
 
-    function ffws_CreateSource(const as_Table: String;
-      const av_Connection: Variant): TFWSource;
     procedure p_VerifyColumnBeforeValidate(const afwc_Source: TFWSource; const adat_Dataset : TDataset ); virtual;
     procedure p_ScruteComposantsFiche (); virtual;
     function fb_False : Boolean; virtual;
+    function fs_connection : String;virtual;
     {$IFDEF RX}
     procedure gd_GridTitleBtnClick(Sender: TObject; ACol: Integer; Field: TField); virtual;
     {$ENDIF}
@@ -712,7 +712,7 @@ type
     property Shown    : Boolean read gb_EnableDoShow ;
     property AsynchronousFetches : Boolean read gb_Fetching ;
     property AsynchronousWait   : TEvent read ge_FetchEvent ;
-    property ConnectionName : String read gs_connection write gs_connection;
+    property ConnectionName : String read fs_Getconnection;
 
     function fb_PeutMettreAjourDatasource ( const ads_Datasource : TDatasource): Boolean; virtual;
     function fb_PeutAfficherChamp ( const as_Champ, as_Table : String ) : Boolean ; virtual;
@@ -781,7 +781,6 @@ var gb_doublebuffer : Boolean = True ;
     gb_DicoGroupementMontreCaption : Boolean = True ;
 
 function  ffws_ParentEstPanel( const aFWColumns : TFWSources ; const acon_Control: TControl): TFWSource;
-function fs_getFileNameOfTableColumn ( const afws_Source    : TFWSource ): String;
 function  fdat_GetDataset ( const aFWColumns : TFWSources ; const aobj_Sender : Tobject ): TDataset;
 function  ffws_GetDataWork ( const aFWColumns : TFWSources ; const aobj_Sender : TControl ;var ai_Delete : Integer ):TFWSource;
 function  fi_GetDataWorkFromDataSet ( const aFWColumns : TFWSources ; const adat_DataSet : TDataset ):Integer;
@@ -821,13 +820,6 @@ uses fonctions_string,
      fonctions_proprietes, fonctions_variant ;
 
 {Fonctions et procédures}
-
-// Function fs_getFileNameOfTableColumn
-// return the XML file name from the table column name
-function fs_getFileNameOfTableColumn ( const afws_Source    : TFWSource ): String;
-begin
-  Result := afws_Source.Connection.dataURL + afws_Source.Table + gs_DataExtension ;
-end;
 
 
 function fs_getListSelect ( const afc_FieldsDefs : TFWFieldColumns ; const as_listOrigin : string = '*' ): String;
@@ -1937,24 +1929,6 @@ Begin
 End;
 
 
-function TF_CustomFrameWork.ffws_CreateSource(const as_Table: String ; const av_Connection: Variant): TFWSource;
-var lds_Connection : TDSSource;
-begin
-  if av_Connection = Null Then
-       lds_Connection:=DMModuleSources.fds_FindConnection( gs_Connection, True )
-  Else lds_Connection:=DMModuleSources.fds_FindConnection( av_Connection, True );
-  with lds_Connection do
-    Begin
-      Result := DBSources.Add as TFWSource;
-      Result.Connection := lds_Connection;
-      Result.Datasource := fds_CreateDataSourceAndTable ( as_Table, DataBase + IntToStr ( lds_Connection.Index ), IntToStr ( DBSources.Count - 1 ), DatasetType, QueryCopy, Self);
-      Result.Table := as_Table;
-      if DatasetType = dtCSV Then
-        Begin
-          p_setComponentProperty ( Result.Datasource.dataset, 'Filename', fs_getFileNameOfTableColumn ( Result ));
-        End;
-    End;
-End;
 // procedure TF_CustomFrameWork.p_AffecteEvenementsWorkDatasources
 // Renseignements des évènements des datasources
 procedure TF_CustomFrameWork.p_AffecteEvenementsWorkDatasources ( );
@@ -2209,6 +2183,16 @@ End ;
 function TF_CustomFrameWork.fb_False: Boolean;
 begin
   Result := False;
+end;
+
+function TF_CustomFrameWork.fs_connection: String;
+begin
+  if gs_connection > ''
+   Then Result:=gs_connection
+   Else
+    Begin
+     Result := '';
+    end;
 end;
 
 

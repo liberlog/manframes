@@ -36,17 +36,6 @@ const
     CST_COMPONENTS_DATASOURCE_BEGIN   = 'ds_' ;
     CST_COMPONENTS_DATASET_BEGIN      = 'dat_' ;
 
-function fds_CreateDataSourceAndDataset ( const as_Table, as_NameEnd : String  ; const adat_QueryCopy : TDataset ; const acom_Owner : TComponent): TDatasource;
-function fds_CreateDataSourceAndTable ( const as_Table, as_NameEnd, as_DataURL : String  ; const adtt_DatasetType : TDatasetType ; const adat_QueryCopy : TDataset ; const acom_Owner : TComponent): TDatasource;
-procedure p_SetComboProperties ( const acom_combo : TControl;
-                                 const acom_Owner : TComponent;
-                                 const ads_Connection : TDSSource;
-                                 ads_ListSource : TDataSource;
-                                 const as_Table, as_FieldsID,
-                                       as_FieldsDisplay, as_Name : String;
-                                 const alis_IdRelation : TList;
-                                 const ai_FieldCounter, ai_Counter : Integer);
-
 type
   {CSV Counters}
   {Data record counter}
@@ -96,6 +85,7 @@ type
                TRIGGER_EVENT_MODE   : TFWEventStrings;
                NOT_NULL        : string;
              end;
+
 
 const CST_BASE_INDEX_PRIMARY = 'PRIMARY';
       CST_BASE_TRIGGER = '@TRIGGER';
@@ -390,16 +380,13 @@ type
 
   TFWTables = class(TCollection)
   private
-    FColumn: TCollectionItem;
     function GetTable( const Index: Integer): TFWTable;
     procedure SetTable( const Index: Integer; Value: TFWTable);
   protected
     function GetOwner: TPersistent; override;
   public
-    constructor Create(const Column: TCollectionItem; const ColumnClass: TFWTableClass); virtual;
     function indexOf ( const as_TableName : String ) : Integer;
     function Add: TFWTable; virtual;
-    property Column : TCollectionItem read FColumn;
   published
     property Items[CST_BASE_INDEX: Integer]: TFWTable read GetTable write SetTable; default;
   End;
@@ -625,8 +612,25 @@ type
 
     property DestTbl: TFWTable read gst_DestTbl write gst_DestTbl;
   end;
+  TOnGetFileFromTable = function ( const ATable : TFWTable ):String;
+
+function ffws_CreateSource ( const ADBSources : TFWTables; const as_connection, as_Table: String ;
+                             const av_Connection: Variant; const acom_Owner : TComponent ): TFWTable;
+function fds_CreateDataSourceAndDataset ( const as_Table, as_NameEnd : String  ; const adat_QueryCopy : TDataset ; const acom_Owner : TComponent): TDatasource;
+function fs_getFileNameOfTableColumn ( const afws_Source    : TFWTable ): String;
+function fds_CreateDataSourceAndTable ( const as_Table, as_NameEnd, as_DataURL : String  ; const adtt_DatasetType : TDatasetType ; const adat_QueryCopy : TDataset ; const acom_Owner : TComponent): TDatasource;
+procedure p_SetComboProperties ( const acom_combo : TControl;
+                                 const acom_Owner : TComponent;
+                                 const ads_Connection : TDSSource;
+                                 ads_ListSource : TDataSource;
+                                 const as_Table, as_FieldsID,
+                                       as_FieldsDisplay, as_Name : String;
+                                 const alis_IdRelation : TList;
+                                 const ai_FieldCounter, ai_Counter : Integer);
+
 var
   GS_Data_Extension : String = '.csv';
+const ge_OnGetFileFromTable : TOnGetFileFromTable = nil;
 
 implementation
 
@@ -765,11 +769,6 @@ begin
   Result:=inherited GetOwner;
 end;
 
-constructor TFWTables.Create(const Column: TCollectionItem;const ColumnClass: TFWTableClass);
-begin
-  Inherited Create ( ColumnClass );
-  FColumn:=Column;
-end;
 
 function TFWTables.indexOf(const as_TableName: String): Integer;
 var li_i : Integer;
@@ -2275,6 +2274,35 @@ begin
   End;
 end;
 
+// Function fs_getFileNameOfTableColumn
+// return the XML file name from the table column name
+function fs_getFileNameOfTableColumn ( const afws_Source    : TFWTable ): String;
+begin
+  if assigned ( ge_OnGetFileFromTable )
+   Then Result := ge_OnGetFileFromTable ( afws_Source )
+   Else Result := afws_Source.Connection.dataURL + afws_Source.Table + gs_DataExtension ;
+end;
+
+function ffws_CreateSource ( const ADBSources : TFWTables; const as_connection, as_Table: String ;
+                             const av_Connection: Variant; const acom_Owner : TComponent ): TFWTable;
+var lds_Connection : TDSSource;
+begin
+  if av_Connection = Null Then
+       lds_Connection:=DMModuleSources.fds_FindConnection( as_connection, True )
+  Else lds_Connection:=DMModuleSources.fds_FindConnection( av_Connection, True );
+  with lds_Connection do
+    Begin
+      Result := ADBSources.Add;
+      Result.Connection := lds_Connection;
+      Result.Datasource := fds_CreateDataSourceAndTable ( as_Table, DataBase + IntToStr ( lds_Connection.Index ),
+                             IntToStr ( ADBSources.Count - 1 ), DatasetType, QueryCopy, acom_Owner);
+      Result.Table := as_Table;
+      if DatasetType = dtCSV Then
+        Begin
+          p_setComponentProperty ( Result.Datasource.dataset, 'Filename', fs_getFileNameOfTableColumn ( Result ));
+        End;
+    End;
+End;
 
 {$IFDEF VERSIONS}
 initialization
