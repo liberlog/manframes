@@ -21,9 +21,10 @@ const
                                          FileUnit : 'fonctions_ibx' ;
                         		 Owner : 'Matthieu Giroux' ;
                         		 Comment : 'Just add the package.' ;
-                        		 BugsStory   : 'Version 1.0.0.0 : ZEOS Version.'  ;
+                        		 BugsStory   : 'Version 1.0.0.1 : Testing IBX.' +#10
+                                                     + 'Version 1.0.0.0 : IBX Version.';
                         		 UnitType : 1 ;
-                        		 Major : 1 ; Minor : 0 ; Release : 0 ; Build : 0 );
+                        		 Major : 1 ; Minor : 0 ; Release : 0 ; Build : 1 );
 {$ENDIF}
 
 procedure p_CreateIBXconnection ( const AOwner : TComponent ; var adtt_DatasetType : TDatasetType ; var AQuery : TDataset; var AConnection : TComponent );
@@ -59,8 +60,10 @@ Begin
 End ;
 
 procedure p_setLibrary (var libname: string);
+{$IFNDEF WINDOWS}
 var Alib : String;
     version : String;
+{$ENDIF}
 Begin
   {$IFDEF WINDOWS}
   libname:= 'fbclient'+CST_EXTENSION_LIBRARY;
@@ -90,7 +93,8 @@ initialization
  OnGetLibraryName:= TOnGetLibraryName( p_setLibrary);
  {$ENDIF}
  ge_onCreateConnection := TCreateConnection ( p_CreateIBXconnection );
- ge_OnExecuteQuery:=TOnExecuteQuery(p_ExecuteIBXQuery);
+ ge_OnExecuteQuery  :=TOnExecuteQuery(p_ExecuteIBXQuery);
+ ge_OnExecuteCommand:=TOnExecuteCommand(p_ExecuteSQLCommand);
  {$IFDEF VERSIONS}
  p_ConcatVersion ( gver_fonctions_ibx );
  {$ENDIF}
