@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XMI xmi.version="1.0">
+<XMI.header>
+<XMI.metamodel xmi.name="UML" xmi.version="1.3"/>
+<XMI.documentation>
+<XMI.exporter>Eldean ESS-Model</XMI.exporter>
+<XMI.exporterVersion>2.2</XMI.exporterVersion>
+</XMI.documentation>
+</XMI.header>
+<XMI.content>
+<Model_Management.Model>
+<Model_Management.Package xmi.id="xmi_1">
+<Foundation.Core.ModelElement.name></Foundation.Core.ModelElement.name>
+<Foundation.Core.ModelElement.visibility xmi.value="private"/>
+<Model_Management.Package xmi.id="xmi_2">
+<Foundation.Core.ModelElement.name>((Unknown))</Foundation.Core.ModelElement.name>
+<Foundation.Core.ModelElement.visibility xmi.value="private"/>
+<Foundation.Core.Class xmi.id="xmi_3">
+<Foundation.Core.ModelElement.name>TDataModule</Foundation.Core.ModelElement.name>
+<Foundation.Core.ModelElement.visibility xmi.value="private"/>
+<Foundation.Core.GeneralizableElement.specialization>
+<Foundation.Core.Generalization xmi.idref="xmi_4"/>
+</Foundation.Core.GeneralizableElement.specialization>
+</Foundation.Core.Class>
+<Foundation.Core.DataType xmi.id="xmi_6">
+<Foundation.Core.ModelElement.name>byte</Foundation.Core.ModelElement.name>
+<Foundation.Core.ModelElement.visibility xmi.value="private"/>
+</Foundation.Core.DataType>
+<Foundation.Core.DataType xmi.id="xmi_7">
+<Foundation.Core.ModelElement.name>PChar</Foundation.Core.ModelElement.name>
+<Foundation.Core.ModelElement.visibility xmi.value="private"/>
+</Foundation.Core.DataType>
+<Foundation.Core.DataType xmi.id="xmi_8">
+<Foundation.Core.ModelElement.name>TServerSockQuery</Foundation.Core.ModelElement.name>
+<Foundation.Core.ModelElement.visibility xmi.value="private"/>
+</Foundation.Core.DataType>
+<Foundation.Core.DataType xmi.id="xmi_9">
+<Foundation.Core.ModelElement.name>TNetProcString</Foundation.Core.ModelElement.name>
+<Foundation.Core.ModelElement.visibility xmi.value="private"/>
+</Foundation.Core.DataType>
+<Foundation.Core.DataType xmi.id="xmi_10">
+<Foundation.Core.ModelElement.name>TLogonStyle</Foundation.Core.ModelElement.name>
+<Foundation.Core.ModelElement.visibility xmi.value="private"/>
+</Foundation.Core.DataType>
+<Foundation.Core.DataType xmi.id="xmi_11">
+<Foundation.Core.ModelElement.name>TObject</Foundation.Core.ModelElement.name>
+<Foundation.Core.ModelElement.visibility xmi.value="private"/>
+</Foundation.Core.DataType>
+<Foundation.Core.DataType xmi.id="xmi_12">
+<Foundation.Core.ModelElement.name>string</Foundation.Core.ModelElement.name>
+<Foundation.Core.ModelElement.visibility xmi.value="private"/>
+</Foundation.Core.DataType>
+<Foundation.Core.Generalization xmi.id="xmi_4">
+<Foundation.Core.Generalization.child>
+<Foundation.Core.Class xmi.idref="xmi_5"/>
+</Foundation.Core.Generalization.child>
+<Foundation.Core.Generalization.parent>
+<Foundation.Core.Class xmi.idref="xmi_3"/>
+</Foundation.Core.Generalization.parent>
+</Foundation.Core.Generalization>
+</Model_Management.Package>
+<Model_Management.Package xmi.id="xmi_13">
+<Foundation.Core.ModelElement.name>lazregdbnetserver</Foundation.Core.ModelElement.name>
+<Foundation.Core.ModelElement.visibility xmi.value="private"/>
+<Foundation.Core.ModelElement.documentation>
+This file was automatically created by Lazarus. Do not edit!
+  This source is only used to compile and install the package.
+ 
+</Foundation.Core.ModelElement.documentation>
+</Model_Management.Package>
+<Model_Management.Package xmi.id="xmi_14">
+<Foundation.Core.ModelElement.name>fonctions_dbnetserver</Foundation.Core.ModelElement.name>
+<Foundation.Core.ModelElement.visibility xmi.value="private"/>
+</Model_Management.Package>
+<Model_Management.Package xmi.id="xmi_15">
+<Foundation.Core.ModelElement.name>u_moduledbnetserver</Foundation.Core.ModelElement.name>
+<Foundation.Core.ModelElement.visibility xmi.value="private"/>
+<Foundation.Core.Class xmi.id="xmi_5">
+<Foundation.Core.ModelElement.name>TDataModuleServer</Foundation.Core.ModelElement.name>
+<Foundation.Core.ModelElement.visibility xmi.value="public"/>
+<Foundation.Core.ModelElement.documentation>
+TDataModuleServer 
+</Foundation.Core.ModelElement.documentation>
+<Foundation.Core.Classifier.feature>
+<Foundation.Core.Operation xmi.id="xmi_16">
+<Foundation.Core.ModelElement.name>ZeosDataServerCustInternalCall</Foundation.Core.ModelElement.name>
+<Foundation.Core.ModelElement.visibility xmi.value="public"/>
+<Foundation.Core.ModelElement.documentation>
+TDataModuleServer 
+</Foundation.Core.ModelElement.documentation>
+<Foundation.Core.BehavioralFeature.parameter>
+<Foundation.Core.Parameter>
+<Foundation.Core.Parameter.kind xmi.value="return"/>
+<Foundation.Core.Parameter.type>
+<Foundation.Core.DataType xmi.idref="xmi_9"/>
+</Foundation.Core.Parameter.type>
+</Foundation.Core.Parameter>
+<Foundation.Core.Parameter xmi.id="xmi_17">
+<Foundation.Core.ModelElement.name>CustInstruc</Foundation.Core.ModelElement.name>
+<Foundation.Core.ModelElement.visibility xmi.value="private"/>
+<Foundation.Core.Parameter.type>
+<Foundation.Core.DataType xmi.idref="xmi_6"/>
+</Foundation.Core.Parameter.type>
+</Foundation.Core.Parameter>
+<Foundation.Core.Parameter xmi.id="xmi_18">
+<Foundation.Core.ModelElement.name>CustSubInstruc</Foundation.Core.ModelElement.name>
+<Foundation.Core.ModelElement.visibility xmi.value="private"/>
+<Foundation.Core.Parameter.type>
+<Foundation.Core.DataType xmi.idref="xmi_6"/>
+</Foundation.Core.Parameter.type>
+</Foundation.Core.Parameter>
+<Foundation.Core.Parameter xmi.id="xmi_19">
+<Foundation.Core.ModelElement.name>CliParam</Foundation.Core.ModelElement.name>
+<Foundation.Core.ModelElement.visibility xmi.value="private"/>
+<Foundation.Core.Parameter.type>
+<Foundation.Core.DataType xmi.idref="xmi_7"/>
+</Foundation.Core.Parameter.type>
+</Foundation.Core.Parameter>
+<Foundation.Core.Parameter xmi.id="xmi_20">
+<Foundation.Core.ModelElement.name>DataQuery</Foundation.Core.ModelElement.name>
+<Foundation.Core.ModelElement.visibility xmi.value="private"/>
+<Foundation.Core.Parameter.type>
+<Foundation.Core.DataType xmi.idref="xmi_8"/>
+</Foundation.Core.Parameter.type>
+</Foundation.Core.Parameter>
+<Foundation.Core.Parameter xmi.id="xmi_21">
+<Foundation.Core.ModelElement.name>DataSQLProc</Foundation.Core.ModelElement.name>
+<Foundation.Core.ModelElement.visibility xmi.value="private"/>
+<Foundation.Core.Parameter.type>
+<Foundation.Core.DataType xmi.idref="xmi_8"/>
+</Foundation.Core.Parameter.type>
+</Foundation.Core.Parameter>
+<Foundation.Core.Parameter xmi.id="xmi_22">
+<Foundation.Core.ModelElement.name>DataStoredProc</Foundation.Core.ModelElement.name>
+<Foundation.Core.ModelElement.visibility xmi.value="private"/>
+<Foundation.Core.Parameter.type>
+<Foundation.Core.DataType xmi.idref="xmi_8"/>
+</Foundation.Core.Parameter.type>
+</Foundation.Core.Parameter>
+<Foundation.Core.Parameter xmi.id="xmi_23">
+<Foundation.Core.ModelElement.name>User</Foundation.Core.ModelElement.name>
+<Foundation.Core.ModelElement.visibility xmi.value="private"/>
+<Foundation.Core.Parameter.type>
+<Foundation.Core.DataType xmi.idref="xmi_9"/>
+</Foundation.Core.Parameter.type>
+</Foundation.Core.Parameter>
+<Foundation.Core.Parameter xmi.id="xmi_24">
+<Foundation.Core.ModelElement.name>SubFunctions</Foundation.Core.ModelElement.name>
+<Foundation.Core.ModelElement.visibility xmi.value="private"/>
+<Foundation.Core.Parameter.type>
+<Foundation.Core.DataType xmi.idref="xmi_9"/>
+</Foundation.Core.Parameter.type>
+</Foundation.Core.Parameter>
+</Foundation.Core.BehavioralFeature.parameter>
+</Foundation.Core.Operation>
+<Foundation.Core.Operation xmi.id="xmi_25">
+<Foundation.Core.ModelElement.name>ZeosDataServerUserLogonCall</Foundation.Core.ModelElement.name>
+<Foundation.Core.ModelElement.visibility xmi.value="public"/>
+<Foundation.Core.BehavioralFeature.parameter>
+<Foundation.Core.Parameter>
+<Foundation.Core.Parameter.kind xmi.value="return"/>
+<Foundation.Core.Parameter.type>
+<Foundation.Core.DataType xmi.idref="xmi_10"/>
+</Foundation.Core.Parameter.type>
+</Foundation.Core.Parameter>
+<Foundation.Core.Parameter xmi.id="xmi_26">
+<Foundation.Core.ModelElement.name>UserName</Foundation.Core.ModelElement.name>
+<Foundation.Core.ModelElement.visibility xmi.value="private"/>
+<Foundation.Core.Parameter.type>
+<Foundation.Core.DataType xmi.idref="xmi_9"/>
+</Foundation.Core.Parameter.type>
+</Foundation.Core.Parameter>
+<Foundation.Core.Parameter xmi.id="xmi_27">
+<Foundation.Core.ModelElement.name>Password</Foundation.Core.ModelElement.name>
+<Foundation.Core.ModelElement.visibility xmi.value="private"/>
+<Foundation.Core.Parameter.type>
+<Foundation.Core.DataType xmi.idref="xmi_9"/>
+</Foundation.Core.Parameter.type>
+</Foundation.Core.Parameter>
+</Foundation.Core.BehavioralFeature.parameter>
+</Foundation.Core.Operation>
+<Foundation.Core.Operation xmi.id="xmi_28">
+<Foundation.Core.ModelElement.name>ZConnectionLogin</Foundation.Core.ModelElement.name>
+<Foundation.Core.ModelElement.visibility xmi.value="public"/>
+<Foundation.Core.BehavioralFeature.parameter>
+<Foundation.Core.Parameter xmi.id="xmi_29">
+<Foundation.Core.ModelElement.name>Sender</Foundation.Core.ModelElement.name>
+<Foundation.Core.ModelElement.visibility xmi.value="private"/>
+<Foundation.Core.Parameter.type>
+<Foundation.Core.DataType xmi.idref="xmi_11"/>
+</Foundation.Core.Parameter.type>
+</Foundation.Core.Parameter>
+<Foundation.Core.Parameter xmi.id="xmi_30">
+<Foundation.Core.ModelElement.name>Username</Foundation.Core.ModelElement.name>
+<Foundation.Core.ModelElement.visibility xmi.value="private"/>
+<Foundation.Core.Parameter.type>
+<Foundation.Core.DataType xmi.idref="xmi_12"/>
+</Foundation.Core.Parameter.type>
+</Foundation.Core.Parameter>
+<Foundation.Core.Parameter xmi.id="xmi_31">
+<Foundation.Core.ModelElement.name>Password</Foundation.Core.ModelElement.name>
+<Foundation.Core.ModelElement.visibility xmi.value="private"/>
+<Foundation.Core.Parameter.type>
+<Foundation.Core.DataType xmi.idref="xmi_12"/>
+</Foundation.Core.Parameter.type>
+</Foundation.Core.Parameter>
+</Foundation.Core.BehavioralFeature.parameter>
+</Foundation.Core.Operation>
+</Foundation.Core.Classifier.feature>
+<Foundation.Core.GeneralizableElement.generalization>
+<Foundation.Core.Generalization xmi.idref="xmi_4"/>
+</Foundation.Core.GeneralizableElement.generalization>
+</Foundation.Core.Class>
+</Model_Management.Package>
+</Model_Management.Package>
+</Model_Management.Model>
+</XMI.content>
+</XMI>

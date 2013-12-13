@@ -1,0 +1,10 @@
+object F_PropertiesForm: TF_PropertiesForm
+  Left = 479
+  Height = 240
+  Top = 222
+  Width = 320
+  Caption = 'F_PropertiesForm'
+  LCLVersion = '1.0.1.3'
+  DBSources = <>
+  Version = '1.1.0.4'
+end

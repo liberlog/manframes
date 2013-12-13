@@ -1,0 +1,125 @@
+object F_Acces: TF_Acces
+  Left = 382
+  Height = 240
+  Top = 413
+  Width = 349
+  Caption = 'F_Acces'
+  ClientHeight = 240
+  ClientWidth = 349
+  FormStyle = fsStayOnTop
+  OnCreate = FormCreate
+  Position = poMainFormCenter
+  LCLVersion = '0.9.30'
+  object pa_1: TPanel
+    Left = 0
+    Height = 240
+    Top = 0
+    Width = 349
+    Align = alClient
+    ClientHeight = 240
+    ClientWidth = 349
+    TabOrder = 0
+    object lb_user: TFWLabel
+      Left = 15
+      Height = 18
+      Top = 64
+      Width = 69
+      AutoSize = False
+      Caption = 'Utilisateur'
+      Font.Color = clBlack
+      ParentColor = False
+      ParentFont = False
+      ColorFocus = clMaroon
+    end
+    object lb_mdp: TFWLabel
+      Left = 15
+      Height = 18
+      Top = 96
+      Width = 88
+      AutoSize = False
+      Caption = 'Mot de passe'
+      Font.Color = clBlack
+      ParentColor = False
+      ParentFont = False
+      ColorFocus = clMaroon
+    end
+    object lb_nomresto: TFWLabel
+      Left = 96
+      Height = 18
+      Top = 24
+      Width = 151
+      AutoSize = False
+      Caption = 'Veuillez vous identifiez'
+      Font.Color = clBlack
+      ParentColor = False
+      ParentFont = False
+      ColorFocus = clMaroon
+    end
+    object Label1: TFWLabel
+      Left = 15
+      Height = 18
+      Top = 136
+      Width = 39
+      AutoSize = False
+      Caption = 'Accès'
+      Font.Color = clBlack
+      ParentColor = False
+      ParentFont = False
+      ColorFocus = clMaroon
+    end
+    object tx_mdp: TEdit
+      Left = 120
+      Height = 26
+      Top = 91
+      Width = 199
+      EchoMode = emPassword
+      MaxLength = 50
+      PasswordChar = '*'
+      TabOrder = 0
+    end
+    object cbx_Connexion: TFWDBLookupCombo
+      Left = 120
+      Height = 28
+      Top = 128
+      Width = 199
+      Color = clMoneyGreen
+      KeyField = 'CONN_Clep'
+      ListField = 'CONN_Clep'
+      ListFieldIndex = 0
+      LookupCache = False
+      TabOrder = 4
+    end
+    object cbx_User: TFWDBLookupCombo
+      Left = 120
+      Height = 28
+      Top = 56
+      Width = 199
+      Color = clMoneyGreen
+      KeyField = 'UTIL_Clep'
+      ListField = 'UTIL_Clep'
+      ListFieldIndex = 0
+      LookupCache = False
+      OnChange = cbx_userChange
+      TabOrder = 1
+    end
+    object btn_cancel: TFWCancel
+      Left = 184
+      Height = 32
+      Top = 192
+      Width = 96
+      UseDockManager = False
+      TabOrder = 2
+      OnClick = btn_cancelClick
+    end
+    object btn_ok: TFWOK
+      Left = 60
+      Height = 32
+      Top = 192
+      Width = 96
+      UseDockManager = False
+      Caption = 'OK'
+      TabOrder = 3
+      OnMouseUp = btn_okMouseUp
+    end
+  end
+end

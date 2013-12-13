@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<CONFIG>
+  <Package Version="4">
+    <Name Value="lazregmanframes"/>
+    <AddToProjectUsesSection Value="True"/>
+    <Author Value="Matthieu GIROUX"/>
+    <CompilerOptions>
+      <Version Value="11"/>
+      <SearchPaths>
+        <OtherUnitFiles Value="manregister"/>
+        <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
+      </SearchPaths>
+      <Other>
+        <CompilerPath Value="$(CompPath)"/>
+      </Other>
+    </CompilerOptions>
+    <Description Value="registering manframes components"/>
+    <License Value="LGPL"/>
+    <Version Major="1" Build="2"/>
+    <Files Count="2">
+      <Item1>
+        <Filename Value="manregister/u_registerframework.pas"/>
+        <HasRegisterProc Value="True"/>
+        <UnitName Value="U_RegisterFrameWork"/>
+      </Item1>
+      <Item2>
+        <Filename Value="manregister/u_register_forms.pas"/>
+        <HasRegisterProc Value="True"/>
+        <UnitName Value="u_register_forms"/>
+      </Item2>
+    </Files>
+    <Type Value="RunAndDesignTime"/>
+    <RequiredPkgs Count="4">
+      <Item1>
+        <PackageName Value="lazmansoftware"/>
+      </Item1>
+      <Item2>
+        <PackageName Value="lazcustforms"/>
+      </Item2>
+      <Item3>
+        <PackageName Value="lazmanframes"/>
+      </Item3>
+      <Item4>
+        <PackageName Value="FCL"/>
+        <MinVersion Major="1" Valid="True"/>
+      </Item4>
+    </RequiredPkgs>
+    <UsageOptions>
+      <UnitPath Value="$(PkgOutDir)"/>
+    </UsageOptions>
+    <PublishOptions>
+      <Version Value="2"/>
+    </PublishOptions>
+    <CustomOptions Items="ExternHelp" Version="2">
+      <_ExternHelp Items="Count"/>
+    </CustomOptions>
+  </Package>
+</CONFIG>

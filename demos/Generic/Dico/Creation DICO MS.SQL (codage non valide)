@@ -1,0 +1,9 @@
+USE DEMO
+go
+
+TRUNCATE TABLE DICO
+GO
+INSERT INTO DICO VALUES('F_Affectation', 'AFFECTATION', 1, 'AFFE__CLIE', 'AFFE__CLIE', 'Aide ...', 0, NULL, 1000, NULL, NULL, NULL, 0)
+INSERT INTO DICO VALUES('F_Affectation', 'AFFECTATION', 2, 'AFFE_Clep', 'AFFE_Clep', 'Aide ...', 0, NULL, 1000, NULL, NULL, NULL, 0)
+INSERT INTO DICO VALUES('F_Affectation', 'AFFECTATION', 3, 'AFFE_Libelle', 'Nom de la zone', 'Aide ...', 1, 0, 1000, NULL, NULL, NULL, 1)
+GO

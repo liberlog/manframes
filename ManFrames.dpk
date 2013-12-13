@@ -1,0 +1,98 @@
+package ManFrames;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DESCRIPTION 'Composants ManFrames : FrameWork amélioré'}
+{$IMPLICITBUILD ON}
+{$DEFINE DBEXPRESS}
+{$DEFINE ADO}
+{$DEFINE DBEXPRESS}
+
+requires
+  rtl,
+  vcl,
+  dbrtl,
+  vclactnband,
+  vclx,
+  bdertl,
+  vcldb,
+  adortl,
+  VirtualTreesD10,
+  VclSmp,
+  dclstd,
+  designide,
+  designdgm,
+  vcldesigner,
+  dcldb,
+  JvStdCtrlsD10R,
+  vcljpg,
+  JclVcl,
+  Jcl,
+  JvCoreD10R,
+  JvSystemD10R,
+  JvDBD10R,
+  JvCtrlsD10R,
+  JvDlgsD10R,
+  JvPageCompsD10R,
+  dclado,
+  JvXPCtrlsD10R,
+  dbexpress,
+  ExtComponents,
+  JvHMID10R,
+  JvGlobusD10R,
+  rxbde,
+  rxdb,
+  xmlrtl,
+  JvCustomD10R,
+  JvXPCtrlsD10D,
+  JvCoreD10D,
+  rxctl,
+  JvCmpD10R,
+  VampyreImagingPackage,
+  ZComponent,
+  ZParseSql,
+  ZCore,
+  ZDbc,
+  ZPlain,
+  dmenutoolbar,
+  TntUnicodeVcl_R90,
+  dsnap,
+  dcldklang10,
+  dklang10,
+  TntUnicodeVcl_D90;
+
+contains
+  fonctions_manbase in 'manbase\fonctions_manbase.pas',
+  u_multidata in 'manbase\u_multidata.pas',
+  fonctions_tableauframework in 'manframes\fonctions_tableauframework.pas',
+  u_connection in 'manframes\u_connection.pas',
+  u_customframework in 'manframes\u_customframework.pas',
+  u_fillcombobutton in 'manframes\u_fillcombobutton.pas',
+  u_formmaindb in 'manframes\u_formmaindb.pas',
+  u_man_reports_components in 'manframes\u_man_reports_components.pas',
+  u_multidonnees in 'manframes\u_multidonnees.pas',
+  u_searchcomponents in 'manframes\u_searchcomponents.pas',
+  unite_variables in 'manframes\unite_variables.pas',
+  fonctions_extdb in 'manframes\fonctions_extdb.pas';
+
+end.

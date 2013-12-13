@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<CONFIG>
+  <Package Version="4">
+    <Name Value="lazmanbase"/>
+    <AddToProjectUsesSection Value="True"/>
+    <CompilerOptions>
+      <Version Value="11"/>
+      <SearchPaths>
+        <IncludeFiles Value="manbase"/>
+        <OtherUnitFiles Value="manbase"/>
+        <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
+      </SearchPaths>
+      <Parsing>
+        <SyntaxOptions>
+          <CStyleOperator Value="False"/>
+          <CPPInline Value="False"/>
+          <UseAnsiStrings Value="False"/>
+        </SyntaxOptions>
+      </Parsing>
+      <Other>
+        <CompilerPath Value="$(CompPath)"/>
+      </Other>
+    </CompilerOptions>
+    <Version Major="1" Minor="1" Release="1"/>
+    <Files Count="4">
+      <Item1>
+        <Filename Value="manbase/fonctions_manbase.pas"/>
+        <UnitName Value="fonctions_manbase"/>
+      </Item1>
+      <Item2>
+        <Filename Value="manbase/u_multidata.pas"/>
+        <UnitName Value="u_multidata"/>
+      </Item2>
+      <Item3>
+        <Filename Value="manbase/fonctions_create.pas"/>
+        <UnitName Value="fonctions_create"/>
+      </Item3>
+      <Item4>
+        <Filename Value="manbase/u_multidonnees.pas"/>
+        <UnitName Value="u_multidonnees"/>
+      </Item4>
+    </Files>
+    <i18n>
+      <OutDir Value="fonctions"/>
+    </i18n>
+    <Type Value="RunAndDesignTime"/>
+    <RequiredPkgs Count="3">
+      <Item1>
+        <PackageName Value="lazextinit"/>
+      </Item1>
+      <Item2>
+        <PackageName Value="lazextcomponents"/>
+      </Item2>
+      <Item3>
+        <PackageName Value="FCL"/>
+        <MinVersion Major="1" Valid="True"/>
+      </Item3>
+    </RequiredPkgs>
+    <UsageOptions>
+      <UnitPath Value="$(PkgOutDir)"/>
+    </UsageOptions>
+    <PublishOptions>
+      <Version Value="2"/>
+      <IgnoreBinaries Value="False"/>
+    </PublishOptions>
+    <CustomOptions Items="ExternHelp" Version="2">
+      <_ExternHelp Items="Count"/>
+    </CustomOptions>
+  </Package>
+</CONFIG>

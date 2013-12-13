@@ -1,0 +1,7 @@
+{ Ceci est un fichier ressource généré automatiquement par Lazarus }
+
+LazarusResources.Add('TF_CustomFrameWork','FORMDATA',[
+  'TPF0'#18'TF_CustomFrameWork'#17'F_CustomFrameWork'#4'Left'#3#129#0#6'Height'
+  +#3#240#0#3'Top'#3':'#2#5'Width'#3'@'#1#7'Caption'#6#17'F_CustomFrameWork'#10
+  +'LCLVersion'#6#8'0.9.26.2'#0#0
+]);
