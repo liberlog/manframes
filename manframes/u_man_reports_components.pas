@@ -12,13 +12,11 @@ uses
 {$IFNDEF FPC}
   Windows, Messages,
 {$ENDIF}
-  Classes,
 {$IFDEF VERSIONS}
   fonctions_version,
 {$ENDIF}
-  DBGrids, u_reportform,
-  u_buttons_appli, RLFilters,
-  RLReport, RLPreview,
+  Classes,
+  RLReport,
   fonctions_reports,
   u_reports_components,
   u_customframework;
@@ -61,8 +59,7 @@ implementation
 uses unite_variables,
      fonctions_string,
      fonctions_proprietes,
-     sysutils,
-     Forms, Menus;
+     sysutils, Menus;
 
 { TFWPrintSources }
 

@@ -209,7 +209,6 @@ type
      s_FieldName: String;
      i_NumTag : Integer ;
      i_ShowCol, i_ShowSearch, i_ShowSort, i_HelpIdx, i_FieldSize, i_LookupSource : Integer ;
-     s_LookupTable, s_LookupKey, s_LookupDisplay: String;
      b_ColMain, b_ColCreate, b_ColUnique, b_colSelect, b_colPrivate : Boolean;
      gi_SynonymGroup,
      gi_decimal,                     // optional numbers after comma
@@ -264,6 +263,7 @@ type
      property OptionSelected[Index:TFWFieldOption]: Boolean read GetOptionSelected write SetOptionSelected;
      property EditParamsAsString: Boolean read gb_EditParamsAsString write gb_EditParamsAsString default False;  // for ENUM and SET Types
      property SynonymGroup: integer read gi_SynonymGroup write gi_SynonymGroup default 0;
+     property Decimal: integer read gi_decimal write gi_decimal default 0;
      property PhysicalMapping: Boolean read gb_PhysicalMapping write gb_PhysicalMapping default False;
      property PhysicalTypeName: string read gs_PhysicalTypeName write gs_PhysicalTypeName;
      property FieldName : String read s_FieldName write s_FieldName;
@@ -292,11 +292,12 @@ type
   private
     gb_IsSourceTable : Boolean;
     gfw_FieldOld : TFWFieldData;
+    gc_DummyCollection : TCollection;
   protected
     procedure SetFieldOld(const Avalue: TFWFieldData); virtual;
     function CreateOldField: TFWFieldData; virtual;
   public
-   constructor Create(ACollection: TCollection); override; overload;
+   constructor Create(ACollection: TCollection); override;
    function   Clone ( const ACollection : TFWFieldColumns ) : TFWFieldColumn; override;
    destructor Destroy; override;
   published
@@ -340,8 +341,6 @@ type
       FColumn: TCollectionItem;
       function GetColumnField(const Index: Integer): TFWFieldColumn;
       procedure SetColumnField(const Index: Integer; Value: TFWFieldColumn);
-    protected
-      procedure GetTables ( var ATables : TList );
     public
       constructor Create(const Column: TCollectionItem; const ColumnClass: TFWFieldColumnClass); virtual;
       function Add: TFWFieldColumn; virtual;
@@ -367,7 +366,6 @@ type
     destructor Destroy; override;
 
     procedure Assign(Source: TPersistent); override;
-    function ObjIsEqualTo(Source: TObject): Boolean;
   published
     property IndexName: string read gs_Name write gs_Name;
     property Pos: integer read gi_Pos write gi_Pos default 0;              //Position
@@ -380,11 +378,14 @@ type
 
   TFWTables = class(TCollection)
   private
+    FOwner : TPersistent;
     function GetTable( const Index: Integer): TFWTable;
     procedure SetTable( const Index: Integer; Value: TFWTable);
   protected
     function GetOwner: TPersistent; override;
   public
+    constructor Create(const AOwner: TPersistent; const ColumnClass: TFWTableClass); virtual; overload;
+    constructor Create(const ColumnClass: TFWTableClass); virtual; overload;
     function indexOf ( const as_TableName : String ) : Integer;
     function Add: TFWTable; virtual;
   published
@@ -462,10 +463,9 @@ type
     gb_StandardInserts,
     gb_IsLinkedObject,
     gb_nmTable: Boolean;
-    // Lists of Relations
-    gfwr_Relations: TFWRelations;
     gfwi_Indexes: TFWIndexes;
     gs_NomTable, gs_OldNomTable : String;
+    // Lists of Relations
     gr_relationBegin,
     gr_relationEnd  : TFWRelations;
     gtt_TableType,
@@ -489,6 +489,7 @@ type
     procedure p_setConnection(const AValue: TDSSource); virtual;
     procedure p_setConnectionKey(const AValue: String); virtual;
     function  CreateDataLink : TFWColumnDatalink; virtual;
+    function CreateCollectionIndexes: TFWIndexes; virtual;
     function CreateCollectionFields: TFWFieldColumns; virtual;
     function CreateCollectionRelBegin: TFWRelations; virtual;
     function CreateCollectionRelEnd: TFWRelations; virtual;
@@ -615,7 +616,8 @@ type
   TOnGetFileFromTable = function ( const ATable : TFWTable ):String;
 
 function ffws_CreateSource ( const ADBSources : TFWTables; const as_connection, as_Table: String ;
-                             const av_Connection: Variant; const acom_Owner : TComponent ): TFWTable;
+                             const av_Connection: Variant; const acom_Owner : TComponent ;
+                             const ab_createDS : Boolean = True ): TFWTable;
 function fds_CreateDataSourceAndDataset ( const as_Table, as_NameEnd : String  ; const adat_QueryCopy : TDataset ; const acom_Owner : TComponent): TDatasource;
 function fs_getFileNameOfTableColumn ( const afws_Source    : TFWTable ): String;
 function fds_CreateDataSourceAndTable ( const as_Table, as_NameEnd, as_DataURL : String  ; const adtt_DatasetType : TDatasetType ; const adat_QueryCopy : TDataset ; const acom_Owner : TComponent): TDatasource;
@@ -654,12 +656,14 @@ end;
 
 function TFWRelations.GetRelation(Index: Integer): TFWRelation;
 begin
-  Result:=Items[Index];
+  if  ( Index > -1 )
+  and ( Index < Count ) Then
+    Result:=Inherited Items[Index] as TFWRelation;
 end;
 
 procedure TFWRelations.SetRelation(Index: Integer; Value: TFWRelation);
 begin
-  items [ Index ] := Value;
+  items [ Index ].Assign(Value);
 end;
 
 constructor TFWRelations.Create(Column: TCollectionItem;
@@ -744,18 +748,13 @@ begin
   inherited Assign(Source);
 end;
 
-function TFWIndex.ObjIsEqualTo(Source: TObject): Boolean;
-begin
-
-end;
-
 { TFWTables }
 
 function TFWTables.GetTable(const Index: Integer): TFWTable;
 begin
   if  ( Index > -1 )
   and ( Index < Count ) Then
-    Result := Items [ Index ];
+    Result := Inherited Items [ Index ] as TFWTable;
 
 end;
 
@@ -766,7 +765,20 @@ end;
 
 function TFWTables.GetOwner: TPersistent;
 begin
-  Result:=inherited GetOwner;
+  Result:=FOwner;
+end;
+
+constructor TFWTables.Create(const AOwner: TPersistent;
+  const ColumnClass: TFWTableClass);
+begin
+  Inherited Create(ColumnClass);
+  FOwner:=AOwner;
+end;
+
+constructor TFWTables.Create(const ColumnClass: TFWTableClass);
+begin
+  Inherited Create( ColumnClass);
+  FOwner:=nil;
 end;
 
 
@@ -901,11 +913,12 @@ destructor TFWTable.Destroy;
 var i: integer;
 begin
   inherited;
-  gfwr_Relations.Destroy;
   gfwi_Indexes  .Destroy;
   gsl_TableOptions.Destroy;
   gsl_StandardInserts.Destroy;
   ddl_DataLink.Destroy;
+  gr_relationBegin.Destroy;
+  gr_relationEnd.Destroy;
 end;
 
 function TFWTable.GetKey: TFWFieldColumns;
@@ -1056,8 +1069,11 @@ begin
 
   //Get relSum
   relSum:=0;
-  for i:=0 to gfwr_Relations.Count-1 do
-    if gfwr_Relations[i].CreateRefDef then
+  for i:=0 to gr_relationBegin.Count-1 do
+    if gr_relationBegin[i].CreateRefDef then
+      inc(relSum);
+  for i:=0 to gr_relationEnd.Count-1 do
+    if gr_relationEnd[i].CreateRefDef then
       inc(relSum);
 
   theTableType:=gtt_TableType;
@@ -1602,14 +1618,16 @@ end;
 // test si n'existe pas
 procedure TFWTable.p_SetDataSource(const a_Value: TDataSource);
 begin
+  if assigned ( Collection.Owner ) Then
    ( Collection.Owner as TComponent ).ReferenceInterface ( DataSource, opRemove );
-    if ddl_DataLink.Datasource <> a_Value then
-      ddl_DataLink.Datasource := a_Value ;
+  if ddl_DataLink.Datasource <> a_Value then
+    ddl_DataLink.Datasource := a_Value ;
+  if assigned ( Collection.Owner ) Then
    ( Collection.Owner as TComponent ).ReferenceInterface ( DataSource, opInsert );
-    if  assigned ( ddl_DataLink.Dataset )
-    and ( fs_getComponentProperty (ddl_DataLink.Dataset, 'TableName' ) <> '' )
-     Then
-      Table := fs_getComponentProperty (ddl_DataLink.Dataset, 'TableName' ) ;
+  if  assigned ( ddl_DataLink.Dataset )
+  and ( fs_getComponentProperty (ddl_DataLink.Dataset, 'TableName' ) <> '' )
+   Then
+    Table := fs_getComponentProperty (ddl_DataLink.Dataset, 'TableName' ) ;
 end;
 
 function TFWTable.fds_GetDataSource: TDataSource;
@@ -1657,6 +1675,11 @@ begin
 
 end;
 
+function TFWTable.CreateCollectionIndexes: TFWIndexes;
+begin
+  Result:=TFWIndexes.Create(Self,TFWIndex);
+end;
+
 procedure TFWTable.Notification(AComponent: TComponent; Operation: TOperation);
 begin
   Inherited;
@@ -1680,6 +1703,7 @@ begin
   gb_nmTable   := False;
   gsl_StandardInserts:= TStringList.Create;
   gsl_TableOptions   := TStringList.Create;
+  gfwi_Indexes       := CreateCollectionIndexes;
   gfc_FieldColumns   := CreateCollectionFields;
   gr_relationBegin   := CreateCollectionRelBegin;
   gr_relationEnd     := CreateCollectionRelEnd;
@@ -1704,7 +1728,7 @@ Begin
 end;
 
 procedure TFWTable.Assign(Source: TPersistent);
-var i: integer;
+var
   theSourceTbl: TFWTable;
   theColumn: TFWFieldColumn;
   theIndex: TFWIndex;
@@ -1991,6 +2015,7 @@ begin
 
   gi_SynonymGroup := 0;
   gi_id           := 0;
+  gi_decimal      := 0;
   gi_group        := 0;
   gs_PhysicalTypeName := '';
   gs_TypeName         := '';
@@ -2030,12 +2055,13 @@ end;
 destructor TFWFieldColumn.Destroy;
 begin
   inherited Destroy;
-  gfw_FieldOld.Destroy;
+  gc_DummyCollection.Destroy;
 end;
 
 function TFWFieldColumn.CreateOldField:TFWFieldData;
 begin
-  Result:=TFWFieldData.Create;
+  gc_DummyCollection := TCollection.Create(TFWFieldData);
+  Result:=gc_DummyCollection.add as TFWFieldData;
 end;
 
 constructor TFWFieldColumn.Create(ACollection: TCollection);
@@ -2189,12 +2215,6 @@ begin
 end;
 
 
-procedure TFWFieldColumns.GetTables(var ATables: TList);
-begin
-
-end;
-
-
 { functions }
 
 procedure p_SetComboProperties ( const acom_combo : TControl;
@@ -2284,18 +2304,21 @@ begin
 end;
 
 function ffws_CreateSource ( const ADBSources : TFWTables; const as_connection, as_Table: String ;
-                             const av_Connection: Variant; const acom_Owner : TComponent ): TFWTable;
+                             const av_Connection: Variant; const acom_Owner : TComponent ;
+                             const ab_createDS : Boolean = True ): TFWTable;
 var lds_Connection : TDSSource;
 begin
   if av_Connection = Null Then
        lds_Connection:=DMModuleSources.fds_FindConnection( as_connection, True )
   Else lds_Connection:=DMModuleSources.fds_FindConnection( av_Connection, True );
+  if Assigned(lds_Connection) Then
   with lds_Connection do
     Begin
       Result := ADBSources.Add;
       Result.Connection := lds_Connection;
-      Result.Datasource := fds_CreateDataSourceAndTable ( as_Table, DataBase + IntToStr ( lds_Connection.Index ),
-                             IntToStr ( ADBSources.Count - 1 ), DatasetType, QueryCopy, acom_Owner);
+      if ab_createDS Then
+        Result.Datasource := fds_CreateDataSourceAndTable ( as_Table, '_' + PrimaryKey + IntToStr ( lds_Connection.Index ),
+                               IntToStr ( ADBSources.Count - 1 ), DatasetType, QueryCopy, acom_Owner);
       Result.Table := as_Table;
       if DatasetType = dtCSV Then
         Begin
