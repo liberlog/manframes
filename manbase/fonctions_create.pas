@@ -58,7 +58,6 @@ uses variants,fonctions_string,fonctions_db,fonctions_erreurs;
 function fb_SyncFielddataType ( const DMDB : TDataSet; const thefield : TFWFieldColumn ; const DatatypeName, DatatypeParams : String ):Boolean;
 var theDatatype : TFWFieldData;
     fo_i : TFWFieldOption;
-    i : Integer;
 Begin
   //-------------------------------
   //Get Model Datatype

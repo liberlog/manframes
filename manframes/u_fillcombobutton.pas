@@ -77,7 +77,7 @@ type
 
 implementation
 
-uses fonctions_images, U_FormMainIni, fonctions_proprietes, fonctions_db,
+uses fonctions_images, U_FormMainIni, fonctions_proprietes,
      unite_messages, unite_variables, fonctions_forms,
      fonctions_dbcomponents;
 

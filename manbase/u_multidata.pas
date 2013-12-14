@@ -368,13 +368,15 @@ end;
 
 procedure p_setMiniConnectionTo ( const ar_Source : TDSSource; var ar_Destination : TDSSource );
 Begin
-  with ar_Destination do
-    Begin
-      FClep           := ar_Source.FClep;
-      Fcom_Connection := ar_Source.Fcom_Connection;
-      Fdat_QueryCopy  := ar_Source.Fdat_QueryCopy;
-      Fs_dataURL      := ar_Source.Fs_dataURL;
-    end;
+  ar_Destination := ar_Source;
+{   Else
+    with ar_Destination do
+      Begin
+        FClep           := ar_Source.FClep;
+        Fcom_Connection := ar_Source.Fcom_Connection;
+        Fdat_QueryCopy  := ar_Source.Fdat_QueryCopy;
+        Fs_dataURL      := ar_Source.Fs_dataURL;
+      end;}
 end;
 
 

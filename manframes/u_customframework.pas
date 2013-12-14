@@ -22,11 +22,11 @@ interface
 {$R *.res}
 {$ENDIF}
 uses
-{$IFDEF SFORM} CompSuperForm,
+{$IFDEF SFORM}
 {$ENDIF}
 {$IFDEF FPC}
    LCLIntf, LCLType, lmessages,
-   SQLDB, lresources, BufDataset,
+   SQLDB, lresources,
 {$IFDEF RX}
    RxDBGrid,
 {$ENDIF}
@@ -57,7 +57,7 @@ uses
   WideStrings,
   {$ENDIF}
   fonctions_tableauframework, u_searchcomponents,
-  U_FormMainIni, Buttons, Forms, DBCtrls, Grids,
+  U_FormMainIni, Forms, DBCtrls, Grids,
   DBGrids, ComCtrls, StdCtrls, SysUtils, U_ExtDBNavigator,
   TypInfo, Variants, fonctions_manbase,
 {$IFDEF VERSIONS}
@@ -70,7 +70,7 @@ uses
   fonctions_db,
   U_GroupView,
   U_FormAdapt,
-  SyncObjs, fonctions_init,
+  SyncObjs,
   u_framework_components,
   u_multidata;
 
@@ -320,11 +320,9 @@ type
  { TFWSources }
   TFWSources = class(TFWTables)
   private
-    FForm: TF_CustomFrameWork;
     function GetColumn( Index: Integer): TFWSource;
     procedure SetColumn( Index: Integer; Value: TFWSource);
-  protected
-    function GetOwner: TPersistent; override;
+    function fF_GetForm : TF_CustomFrameWork;
   public
     constructor Create(Form: TF_CustomFrameWork; ColumnClass: TFWSourceClass); virtual;
     function Add: TFWSource;
@@ -332,7 +330,7 @@ type
     procedure LoadFromStream(S: TStream); virtual;
     procedure SaveToFile(const Filename: string); virtual;
     procedure SaveToStream(S: TStream); virtual;
-    property Form: TF_CustomFrameWork read FForm;
+    property Form: TF_CustomFrameWork read fF_GetForm;
   {$IFDEF FPC}
   published
   {$ENDIF}
@@ -810,14 +808,12 @@ uses fonctions_string,
      JvDBDateTimePicker, JvDateTimePicker, JvMemoryDataset, JvDBSpinEdit,
      JvToolEdit , JvDbControls,
   {$ENDIF}
-     fonctions_dbcomponents, u_extcomponent,
-     u_extdbgrid, u_multidonnees,
+     fonctions_dbcomponents,
+     u_extdbgrid,
      fonctions_dialogs,
      fonctions_create,
-     fonctions_numedit, unite_variables,
-     u_buttons_appli, fonctions_languages,
-     U_ExtColorCombos, ActnList, unite_messages,
-     fonctions_proprietes, fonctions_variant ;
+     fonctions_numedit, unite_variables, unite_messages,
+     fonctions_proprietes;
 
 {Fonctions et procédures}
 
@@ -1401,7 +1397,7 @@ end;
 constructor TFWSource.Create(Collection: TCollection);
 begin
   inherited;
-  FForm := (TFWSources(Collection)).FForm;
+  FForm := (TFWSources(Collection)).Form;
   FPanels := TFWPanels.Create(Self,TFWPanelColumn);
   FLinked := TFWSourcesChilds.Create(Self,TFWSourceChild);
   b_ShowPrint := True;
@@ -1547,18 +1543,12 @@ end;
 
 constructor TFWSources.Create(Form: TF_CustomFrameWork; ColumnClass: TFWSourceClass);
 begin
-  inherited Create(ColumnClass);
-  FForm := form;
+  inherited Create(Form,ColumnClass);
 end;
 
 function TFWSources.GetColumn(Index: Integer): TFWSource;
 begin
   Result := TFWSource(inherited Items[Index]);
-end;
-
-function TFWSources.GetOwner: TPersistent;
-begin
-  Result := FForm;
 end;
 
 procedure TFWSources.LoadFromFile(const Filename: string);
@@ -1587,7 +1577,7 @@ var
 begin
   Wrapper := TColumnsWrapper.Create(nil);
   try
-    Wrapper.Sources := FForm.CreateSources;
+    Wrapper.Sources := ff_getForm.CreateSources;
     S.ReadComponent(Wrapper);
     Assign(Wrapper.Sources);
   finally
@@ -1625,6 +1615,11 @@ end;
 procedure TFWSources.SetColumn(Index: Integer; Value: TFWSource);
 begin
   Items[Index].Assign(Value);
+end;
+
+function TFWSources.fF_GetForm;
+begin
+  Result := GetOwner as TF_CustomFrameWork;
 end;
 
 function TFWSources.Add: TFWSource;
