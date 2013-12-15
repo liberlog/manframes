@@ -69,7 +69,7 @@ type
   TFWModel = Record
                TablePrefix : Array of String ;
                SynonymGroup : Integer;
-               GetPhysicalTypeName,
+               PhysicalTypeName,
                DBQuoteCharacter : String;
                DoNotUseRelNameInRefDef,
                EncloseCharacters : Boolean;
@@ -204,6 +204,7 @@ type
    End;
    TFWFieldData = class(TFWMiniFieldColumn)
    private
+     gs_PhysicalTypeName: string;
      s_CaptionName, s_HintName: WideString;
      gs_DefaultValue,
      s_FieldName: String;
@@ -211,21 +212,18 @@ type
      i_ShowCol, i_ShowSearch, i_ShowSort, i_HelpIdx, i_FieldSize, i_LookupSource : Integer ;
      b_ColMain, b_ColCreate, b_ColUnique, b_colSelect, b_colPrivate : Boolean;
      gi_SynonymGroup,
-     gi_decimal,                     // optional numbers after comma
+     gi_length,                     // optional numbers after comma
+     gi_decimals,                     // optional numbers after comma
      gi_group: integer;         //number of group
      ft_FieldType : TFieldType ;
      gs_Parameter,
-     gs_PhysicalTypeName,
-     gs_TypeName,               //Name of the Datatype (INTEGER)
-     gs_description,
-     gs_DatatypeParams : string;    //the description
+     gs_description : string;    //the description
      gas_Param,                  //Params [(length,decimals)]
      gas_Options: Array[0..5] of string;
      god_OptionDefaults: TFWOptionDefaults; //stores default selection
      gb_NotNull,
      gb_EditParamsAsString,  // for ENUM and SET Types
-     gb_ParamRequired, //stores whether the Params are required or not
-     gb_PhysicalMapping: Boolean;
+     gb_ParamRequired : Boolean; //stores whether the Params are required or not
      gfo_Options : TFWFieldOptions;
      gafo_OptionSelected : array [ TFWFieldOption ] of Boolean;
      gdo_Options : TFWFieldDataOptions;
@@ -234,6 +232,9 @@ type
      function  GetOptionExists   ( const Index : TFWFieldOption ):Boolean;
      function  GetOptionString   ( const Index : TFWFieldOption ):String;
      procedure SetOptionSelected ( const Index : TFWFieldOption; const Avalue : Boolean );
+     function getSqlComment: string; override;
+     function fs_DatatypeParams : String;
+     function fs_TypeName : String;
    protected
      function CreateCollectionFieldOptions: TFWFieldDataOptions; virtual;
    public
@@ -242,17 +243,15 @@ type
     procedure Erase; virtual;
     function IsErased:Boolean; virtual;
     procedure Init; virtual;
-    function GetPhysicalTypeName: string;
     function Clone ( const ACollection : TFWFieldColumns ) : TFWFieldData; override;
     function GetSQLColumnCreateDefCode(
        var TableFieldGen: string; const HideNullField: boolean = False;
        const DefaultBeforeNotNull: boolean = True; const OutputComments: boolean = True): string; virtual;
     property OptionExists[Index:TFWFieldOption]: Boolean read GetOptionExists;
     property OptionString[Index:TFWFieldOption]: String read GetOptionString;
-
+    property TypeName   : string read fs_TypeName;
    published
      property group: integer read gi_group write gi_group default 0;
-     property TypeName   : string read gs_TypeName write gs_TypeName;
      property DefaultValue   : string read gs_DefaultValue write gs_DefaultValue;
      property Parameter   : string read gs_Parameter write gs_Parameter;
      property description: string read gs_description write gs_description;
@@ -263,12 +262,11 @@ type
      property OptionSelected[Index:TFWFieldOption]: Boolean read GetOptionSelected write SetOptionSelected;
      property EditParamsAsString: Boolean read gb_EditParamsAsString write gb_EditParamsAsString default False;  // for ENUM and SET Types
      property SynonymGroup: integer read gi_SynonymGroup write gi_SynonymGroup default 0;
-     property Decimal: integer read gi_decimal write gi_decimal default 0;
-     property PhysicalMapping: Boolean read gb_PhysicalMapping write gb_PhysicalMapping default False;
-     property PhysicalTypeName: string read gs_PhysicalTypeName write gs_PhysicalTypeName;
+     property Decimals: integer read gi_decimals write gi_decimals default 0;
+     property FieldLength: integer read gi_length write gi_length default -1;
      property FieldName : String read s_FieldName write s_FieldName;
      property FieldType : TFieldType read ft_FieldType write ft_FieldType;
-     property DatatypeParams : String read gs_DatatypeParams write gs_DatatypeParams;
+     property DatatypeParams : String read fs_DatatypeParams;
      property CaptionName : WideString read s_CaptionName write s_CaptionName;
      property HintName : WideString read s_HintName write s_HintName;
      property NumTag : Integer read i_NumTag write i_NumTag;
@@ -361,6 +359,9 @@ type
    gik_IndexKind: TFWIndexKind;
    gfc_FieldColumns: TFWFieldColumns;
    procedure SetFields(const AValue: TFWFieldColumns);
+  protected
+   function getSqlComment: string; override;
+   function CreateFieldColumns : TFWFieldColumns; virtual;
   public
     constructor Create(ACollection: TCollection); override;
     destructor Destroy; override;
@@ -470,6 +471,7 @@ type
     gr_relationEnd  : TFWRelations;
     gtt_TableType,
     gi_TablePrefix: integer;
+    gb_IsMain   ,
     gb_Temporary: Boolean;
 
     gsl_TableOptions,gsl_StandardInserts: TStrings;
@@ -559,6 +561,7 @@ type
     property TableOptions : TStrings read gsl_TableOptions write gsl_TableOptions;
     property StandardInserts : TStrings read gsl_StandardInserts write gsl_StandardInserts;
     property UseStandardInserts: Boolean read gb_StandardInserts write gb_StandardInserts default False;
+    property IsMain: Boolean read gb_IsMain write gb_IsMain default False;
     property IsLinkedObject: Boolean read gb_IsLinkedObject write gb_IsLinkedObject default False;
     property TableType : Integer read gtt_TableType write gtt_TableType default 0;
     property TablePrefix : Integer read gi_TablePrefix write gi_TablePrefix default 0;
@@ -588,6 +591,7 @@ type
    procedure SetFKFields ( const AValue : TFWMiniFieldColumns );
   protected
    function CreateCollectionFields: TFWMiniFieldColumns; virtual;
+   function getSqlComment: string; override;
   public
     constructor Create(Collection : TCollection); virtual;
     destructor Destroy; override;
@@ -731,10 +735,21 @@ begin
   gfc_FieldColumns:=TFWFieldColumns.Create(self,TFWFieldColumn);
 end;
 
+function TFWIndex.getSqlComment: string;
+begin
+  Result := 'Index ' + IndexName + ' on ' + FieldsDefs.GetString ;
+end;
+
+function TFWIndex.CreateFieldColumns: TFWFieldColumns;
+begin
+  Result := TFWFieldColumns.Create(Self,TFWFieldColumn);
+end;
+
 constructor TFWIndex.Create(ACollection: TCollection);
 begin
   Inherited Create(ACollection);
   ( Collection as TFWIndexes ).gb_Changed:=True;
+  gfc_FieldColumns:=CreateFieldColumns;
 end;
 
 destructor TFWIndex.Destroy;
@@ -809,7 +824,7 @@ function TFWIndexes.GetIndex(const Index: Integer): TFWIndex;
 begin
   if  ( Index > -1 )
   and ( Index < Count ) Then
-    Result := Items [ Index ];
+    Result := inherited Items [ Index ] as TFWIndex;
 
 end;
 
@@ -923,9 +938,15 @@ end;
 
 function TFWTable.GetKey: TFWFieldColumns;
 begin
-  if GetKeyCount > 0
-   Then Result:=Indexes [ 0 ].FieldsDefs
-   Else Result:= nil;
+  with Indexes do
+   Begin
+    if ( Count = 0 )
+     Then Add.IndexKind := ikPrimary
+     Else
+      if ( Items [ 0 ].IndexKind <> ikPrimary ) Then
+       Insert(0).IndexKind := ikPrimary;
+    Result:=Items [ 0 ].FieldsDefs;
+   end;
 end;
 
 function TFWTable.CheckPrimaryIndex: integer;
@@ -997,7 +1018,7 @@ begin
 
   //Table, ignore DEFAULT
   if TablePrefix > 0 Then
-  s:=s+DBQuote+gr_Model.TablePrefix[TablePrefix]+DBQuote+'.';
+    s:=s+DBQuote+gr_Model.TablePrefix[TablePrefix]+DBQuote+'.';
 
   s:=s+DBQuote+gs_NomTable+DBQuote;
 
@@ -1351,7 +1372,7 @@ end;
 
 function TFWTable.getSqlComment: string;
 begin
-  Result:=Table;
+  Result:='Table ' + Table;
 end;
 
 function TFWTable.getTriggerForSequences(SeqName, PrefixName,
@@ -1700,6 +1721,7 @@ begin
   gtt_TableType    := 0;
   gi_TablePrefix   := 0;
   gb_Temporary := False;
+  gb_IsMain    := False;
   gb_nmTable   := False;
   gsl_StandardInserts:= TStringList.Create;
   gsl_TableOptions   := TStringList.Create;
@@ -1781,6 +1803,11 @@ begin
   Result := TFWMiniFieldColumns.Create(Self,TFWMiniFieldColumn);
 end;
 
+function TFWRelation.getSqlComment: string;
+begin
+  Result := 'RelationShip ' +  FKFields.GetString;
+end;
+
 constructor TFWRelation.Create(Collection : TCollection);
 begin
   inherited Create(Collection);
@@ -1824,14 +1851,6 @@ begin
 end;
 
 
-function TFWFieldData.GetPhysicalTypeName: string;
-begin
-  if(gb_PhysicalMapping)and(gs_PhysicalTypeName>'')then
-    Result:=gs_PhysicalTypeName
-  else
-    Result:=gs_TypeName;
-end;
-
 function TFWFieldData.Clone ( const ACollection : TFWFieldColumns ): TFWFieldData;
 begin
   Result:= TFWFieldData (Inherited Clone(ACollection));
@@ -1842,14 +1861,12 @@ begin
   Result.b_colPrivate:=b_colPrivate;
   Result.b_colSelect:=b_colSelect;
   Result.b_ColUnique:=b_ColUnique;
-  Result.TypeName:=TypeName;
   Result.CaptionName:=CaptionName;
   Result.ft_FieldType:=ft_FieldType;
   Result.EditParamsAsString:=EditParamsAsString;
   Result.gas_Options:=gas_Options;
   Result.gas_Param:=gas_Param;
   Result.gb_ParamRequired:=gb_ParamRequired;
-  Result.gb_PhysicalMapping:=gb_PhysicalMapping;
 end;
 
 function TFWFieldData.GetSQLColumnCreateDefCode(var TableFieldGen: string;
@@ -1878,7 +1895,7 @@ begin
     end else
     begin
       //Datatype name (INTEGER)
-      s:=s+GetPhysicalTypeName;
+      s:=s+TypeName;
 
       //Datatype parameters (10, 2)
       if(DatatypeParams>'')then
@@ -1985,6 +2002,42 @@ begin
   gafo_OptionSelected [ index ] := Avalue;
 end;
 
+function TFWFieldData.getSqlComment: string;
+begin
+  Result := 'Field ' + FieldName + ' - ';
+  WriteStr(Result,FieldType);
+end;
+
+function TFWFieldData.fs_DatatypeParams: String;
+begin
+  case FieldType of
+    ftString  : if FieldLength = -1
+                 Then Result := '(30)'
+                 Else Result := '('+IntToStr(FieldLength)+')';
+    ftBoolean : Result := '(1)';
+    ftInteger : Begin
+                 if FieldLength>-1 Then Result:='('+IntToStr(FieldLength)+')';
+                End;
+    ftFloat   : if gi_Decimals > 0 Then Result := '('+IntToStr(FieldLength)+','+IntToStr(Decimals)+')';
+  end;
+
+end;
+
+function TFWFieldData.fs_TypeName: String;
+begin
+  case FieldType of
+    ftString  : Result := 'VARCHAR';
+    ftMemo,ftBlob    : Result := 'BLOB';
+    ftBoolean : Result := 'TINYINT';
+    ftInteger : Begin
+                 Result := 'INTEGER' ;
+                End;
+    ftFloat   : if gi_Decimals = 0
+                 Then Result := 'DOUBLE'
+                 Else Result := 'DECIMAL';
+  end;
+end;
+
 function TFWFieldData.CreateCollectionFieldOptions:TFWFieldDataOptions;
 begin
   Result := TFWFieldDataOptions.Create(self,TFWFieldDataOption);
@@ -2015,15 +2068,14 @@ begin
 
   gi_SynonymGroup := 0;
   gi_id           := 0;
-  gi_decimal      := 0;
+  gi_decimals      := 0;
+  gi_length       := -1;
   gi_group        := 0;
   gs_PhysicalTypeName := '';
-  gs_TypeName         := '';
   gs_description      := '';
   god_OptionDefaults  := [];
   gb_EditParamsAsString := False;
   gb_ParamRequired      := False;
-  gb_PhysicalMapping    := False;
   gfo_Options := [];
   gdo_Options := CreateCollectionFieldOptions;
 end;
