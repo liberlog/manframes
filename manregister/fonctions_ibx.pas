@@ -13,10 +13,12 @@ uses
   {$ENDIF}
   fonctions_system,
   IBIntf,
-  u_multidata, DB;
+  u_multidata,
+  u_multidonnees,
+  DB;
 
+const DEFAULT_FIREBIRD_SERVER_DIR = '/var/lib/firebird/2.5/';
 {$IFDEF VERSIONS}
-const
       gver_fonctions_ibx : T_Version = ( Component : 'IBX Connect package.' ;
                                          FileUnit : 'fonctions_ibx' ;
                         		 Owner : 'Matthieu Giroux' ;
@@ -31,7 +33,10 @@ procedure p_CreateIBXconnection ( const AOwner : TComponent ; var adtt_DatasetTy
 
 implementation
 
-uses IBQuery,IBDatabase, fonctions_dbcomponents;
+uses IBQuery,
+     IBDatabase,
+     FileUtil,
+     fonctions_dbcomponents;
 
 procedure p_CreateIBXconnection ( const AOwner : TComponent ; var adtt_DatasetType : TDatasetType ; var AQuery : TDataset; var AConnection : TComponent );
 Begin
@@ -68,13 +73,13 @@ Begin
   {$IFDEF WINDOWS}
   libname:= 'fbclient'+CST_EXTENSION_LIBRARY;
   {$ELSE}
-  if not Assigned ( gci_context )
-     or  (    ( pos ( DEFAULT_FIREBIRD_SERVER_DIR, gci_context.PathFileNameBdd ) <> 1 )
-          and ( gci_context.PathFileNameBdd <> '' )
-          and ( gci_context.PathFileNameBdd [1] = '/' ))
+  if     ( DMModuleSources.Sources.Count = 0 )
+      or (    ( pos ( DEFAULT_FIREBIRD_SERVER_DIR, DMModuleSources.Sources [ 0 ].DataBase ) <> 1 )
+          and ( DMModuleSources.Sources [ 0 ].DataBase <> '' )
+          and ( DMModuleSources.Sources [ 0 ].DataBase [1] = '/' ))
   Then Begin Alib := 'libfbembed';  version := '.2.5'; End
   Else Begin Alib := 'libfbclient'; version := '.2'; End ;
-  libname:= ExtractFileDir(Application.ExeName)+DirectorySeparator+Alib+CST_EXTENSION_LIBRARY;
+  libname:= fs_getSoftDir+Alib+CST_EXTENSION_LIBRARY;
   if not FileExistsUTF8(libname)
     Then libname:='/usr/lib/'+Alib + CST_EXTENSION_LIBRARY + version;
   if not FileExistsUTF8(libname)
@@ -84,8 +89,8 @@ Begin
   if not FileExistsUTF8(libname)
     Then libname:='/usr/lib/x86_64-linux-gnu/'+Alib + CST_EXTENSION_LIBRARY + version;
   if FileExistsUTF8(libname)
-  and FileExistsUTF8(ExtractFileDir(Application.ExeName)+DirectorySeparator+'exec.sh"') Then
-     fs_ExecuteProcess('sh',' "'+ExtractFileDir(Application.ExeName)+DirectorySeparator+'exec.sh"');
+  and FileExistsUTF8(fs_getSoftDir+'exec.sh"') Then
+     fs_ExecuteProcess('sh',' "'+fs_getSoftDir+'exec.sh"');
   {$ENDIF}
 end;
 initialization
