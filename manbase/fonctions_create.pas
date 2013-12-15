@@ -64,22 +64,22 @@ Begin
   theDatatype := theField.FieldOld;
   Result:=False;
     //if the datatype doesn't match
-  if (theDatatype.GetPhysicalTypeName>'') then
-   if (theField.GetPhysicalTypeName <> theDatatype.GetPhysicalTypeName) then
+  if (theDatatype.TypeName>'') then
+   if (theField.TypeName <> theDatatype.TypeName) then
     begin
       //Check the SynonymGroup also
       if (not ((gr_Model.SynonymGroup = theDatatype.SynonymGroup) and
         (theDatatype.SynonymGroup > 0))) then
       begin
         //Check if there is an user defined datatype
-        if (Comparetext(gr_Model.GetPhysicalTypeName +
-          theField.DatatypeParams, theDatatype.GetPhysicalTypeName +
+        if (Comparetext(gr_Model.PhysicalTypeName +
+          theField.DatatypeParams, theDatatype.TypeName +
           DatatypeParams) <> 0) then
         begin
           try
             //Ignore the MySQL silent column changes Varchar(<4) -> char(<4)
-            if (Comparetext(gr_model.GetPhysicalTypeName,
-              'VARCHAR') = 0) and (Comparetext(theDatatype.GetPhysicalTypeName,
+            if (Comparetext(gr_model.PhysicalTypeName,
+              'VARCHAR') = 0) and (Comparetext(theDatatype.TypeName,
               'CHAR') = 0) then
             begin
               if (not
@@ -90,7 +90,7 @@ Begin
             //Ignore tinyint(1)=BOOL
             if (Comparetext(DatatypeName, 'tinyint') = 0) and
               (DatatypeParams = '(1)') and
-              (Comparetext(gr_model.GetPhysicalTypeName,
+              (Comparetext(gr_model.PhysicalTypeName,
               'BOOL') = 0) then
             begin
               //This is ok.
@@ -113,8 +113,8 @@ Begin
       //int(10) unsigned = INTEGER oder int
       //bigint(20) = BIGINT
       if ((DatatypeName = 'int') and (DatatypeParams = '(10)') and
-        ((CompareText(gr_model.GetPhysicalTypeName, 'INTEGER') = 0) or
-        (CompareText(gr_model.GetPhysicalTypeName, 'INT') = 0))) then
+        ((CompareText(gr_model.PhysicalTypeName, 'INTEGER') = 0) or
+        (CompareText(gr_model.PhysicalTypeName, 'INT') = 0))) then
       begin
         //Check unsigned
         if ((Pos(UpperCase(theDatatype.OptionString[foUnsigned]),
@@ -122,24 +122,24 @@ Begin
           theField.OptionSelected[foUnsigned]) then
           Result := True;
 
-        //ShowMessage('Tolerate int without params: '+DatatypeName+DatatypeParams+'='+gr_model.GetPhysicalTypeName)
+        //ShowMessage('Tolerate int without params: '+DatatypeName+DatatypeParams+'='+gr_model.PhysicalTypeName)
       end
       else if ((DatatypeName = 'int') and (DatatypeParams = '(11)') and
-        ((CompareText(gr_model.GetPhysicalTypeName, 'INTEGER') = 0) or
-        (CompareText(gr_model.GetPhysicalTypeName, 'INT') = 0))) then
+        ((CompareText(gr_model.PhysicalTypeName, 'INTEGER') = 0) or
+        (CompareText(gr_model.PhysicalTypeName, 'INT') = 0))) then
       //tolerate int(11) = INTEGER or int
-      //ShowMessage('tolerate int(11) = INTEGER or int: '+DatatypeName+DatatypeParams+'='+gr_model.GetPhysicalTypeName)
-      else if (Comparetext(gr_model.GetPhysicalTypeName +
-        theField.DatatypeParams, theDatatype.GetPhysicalTypeName + DatatypeParams) = 0) then
+      //ShowMessage('tolerate int(11) = INTEGER or int: '+DatatypeName+DatatypeParams+'='+gr_model.PhysicalTypeName)
+      else if (Comparetext(gr_model.PhysicalTypeName +
+        theField.DatatypeParams, theDatatype.TypeName + DatatypeParams) = 0) then
       //tolerate dataTypeName+DatatypeParams match
-      //ShowMessage('tolerate dataTypeName+DatatypeParams: '+DatatypeName+DatatypeParams+'='+gr_model.GetPhysicalTypeName)
+      //ShowMessage('tolerate dataTypeName+DatatypeParams: '+DatatypeName+DatatypeParams+'='+gr_model.PhysicalTypeName)
       else if ((DatatypeName = 'bigint') and (DatatypeParams = '(20)') and
-        (CompareText(gr_model.GetPhysicalTypeName, 'BIGINT') = 0)) then
+        (CompareText(gr_model.PhysicalTypeName, 'BIGINT') = 0)) then
       //tolerate bigint(20) = bigint
-      //ShowMessage('tolerate bigint(20) = bigint: '+DatatypeName+DatatypeParams+'='+gr_model.GetPhysicalTypeName)
+      //ShowMessage('tolerate bigint(20) = bigint: '+DatatypeName+DatatypeParams+'='+gr_model.PhysicalTypeName)
       else if ((Comparetext(DatatypeName, 'tinyint') = 0) and
         (DatatypeParams = '(1)') and
-        (Comparetext(gr_model.GetPhysicalTypeName, 'BOOL') = 0)) then
+        (Comparetext(gr_model.PhysicalTypeName, 'BOOL') = 0)) then
       //tolerate tinyint(1)=BOOL
       else
         Result := True;
@@ -355,10 +355,7 @@ var
           for k := 0 to FieldsDefs.Count - 1 do
           with FieldsDefs [ k ] do
           begin
-            s := s + FieldName;
-
-            if (DatatypeParams > '') then
-              s := s + '(' + DatatypeParams + ')';
+            s := s + FieldName + DatatypeParams;
 
             if (k < FieldsDefs.Count - 1) then
               s := s + ', ';
