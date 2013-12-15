@@ -77,7 +77,8 @@ const
   gver_F_Administration : T_Version = ( Component : 'Fenêtre de gestion de droits (ADO et ZEOS)' ; FileUnit : 'U_Administration' ;
       			           Owner : 'Matthieu Giroux' ;
       			           Comment : 'Gère les sommaires, les connexions, les utilisateurs.' ;
-      			           BugsStory   : 'Version 2.0.1.0 : Beautiful messages.' + #13#10 +
+      			           BugsStory   : 'Version 2.0.1.1 : Create SQL adapting.' + #13#10 +
+                                                 'Version 2.0.1.0 : Beautiful messages.' + #13#10 +
                                                  'Version 2.0.0.5 : UTF 8.' + #13#10 +
                                                  'Version 2.0.0.4 : No Data Glyph to abort.' + #13#10 +
                                                  'Version 2.0.0.3 : No ExtToolBar on Lazarus.' + #13#10 +
@@ -91,7 +92,7 @@ const
      			                	 'Version 1.1.0.0 : Passage en Jedi 3.' + #13#10 +
      			                	 'Version 1.0.0.0 : Mot de passe en varbinary.'  ;
       			           UnitType : 2 ;
-      			           Major : 2 ; Minor : 0 ; Release : 1 ; Build : 0 );
+      			           Major : 2 ; Minor : 0 ; Release : 1 ; Build : 1 );
 {$ENDIF}
 
 
@@ -2070,7 +2071,7 @@ begin
   with DBSources.Add do
     Begin
       Table := 'UTILISATEURS';
-      Key := 'UTIL_Clep' ;
+      GetKey.Add.FieldName := 'UTIL_Clep' ;
       ControlFocus := dbe_Nom ;
       Grid := gd_utilisateurs ;
       Navigator := nv_navigue ;
@@ -2081,7 +2082,7 @@ begin
   with DBSources.Add do
     Begin
       Table := 'CONNEXION' ;
-      Key := 'CONN_Clep';
+      GetKey.Add.FieldName := 'CONN_Clep';
       ControlFocus := ed_code;
       Grid := gd_connexion;
       Navigator := nv_connexion ;
@@ -2091,7 +2092,7 @@ begin
   with DBSources.Add do
     Begin
       Table := 'SOMMAIRE';
-      Key := 'SOMM_Clep';
+      GetKey.Add.FieldName := 'SOMM_Clep';
       ControlFocus := dbe_Edition ;
       Grid := dbg_Sommaire ;
       Navigator := nav_Sommaire ;
@@ -2100,7 +2101,7 @@ begin
   with DBSources.Add do
     Begin
       Table := 'SOMM_FONCTIONS' ;
-      Key := 'SOFC__FONC' ;
+      GetKey.Add.FieldName := 'SOFC__FONC' ;
       ControlFocus := dbe_Edition ;
       Grid := dbg_SommaireFonctions;
       Navigator := nav_NavigateurSommaireFonctions ;
@@ -2109,7 +2110,7 @@ begin
   with DBSources.Add do
     Begin
       Table := 'MENUS' ;
-      Key := 'MENU_Clep' ;
+      GetKey.Add.FieldName := 'MENU_Clep' ;
       ControlFocus := dbe_Edition ;
       Grid := dbg_Menu ;
       Navigator := nav_NavigateurMenu ;
@@ -2118,7 +2119,7 @@ begin
   with DBSources.Add do
     Begin
       Table := 'MENU_FONCTIONS' ;
-      Key := 'MEFC__FONC' ;
+      GetKey.Add.FieldName := 'MEFC__FONC' ;
       ControlFocus := dbe_Edition ;
       Grid := dbg_MenuFonctions ;
       Navigator := nav_NavigateurMenuFonctions ;
@@ -2127,7 +2128,7 @@ begin
   with DBSources.Add do
     Begin
       Table := 'SOUS_MENUS' ;
-      Key := 'SOUM_Clep' ;
+      GetKey.Add.FieldName := 'SOUM_Clep' ;
       ControlFocus := dbe_Edition ;
       Grid := dbg_SousMenu ;
       Navigator := nav_NavigateurSousMenu ;
@@ -2136,7 +2137,7 @@ begin
   with DBSources.Add do
     Begin
       Table := 'SOUM_FONCTIONS' ;
-      Key := 'SMFC__FONC' ;
+      GetKey.Add.FieldName := 'SMFC__FONC' ;
       ControlFocus := dbe_Edition ;
       Grid := dbg_SousMenuFonctions ;
       Navigator := nav_NavigateurSousMenuFonctions;

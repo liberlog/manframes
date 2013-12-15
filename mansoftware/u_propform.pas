@@ -44,9 +44,10 @@ uses
                                       FileUnit : 'U_PropForm' ;
                                       Owner : 'Matthieu Giroux' ;
                                       Comment : 'Fiche personnalisée avec méthodes génériques et gestion de données renseignée par les propriétés.' ;
-                                      BugsStory : '0.1.0.0 : Creating Form from FormDico' ;
+                                      BugsStory : '0.1.0.1 : Create SQL adapting' + #10
+                                                + '0.1.0.0 : Creating Form from FormDico';
                                        UnitType : 3 ;
-                                       Major : 0 ; Minor : 1 ; Release : 0 ; Build : 0 );
+                                       Major : 0 ; Minor : 1 ; Release : 0 ; Build : 1 );
 {$ENDIF}
 
 
@@ -66,7 +67,7 @@ type
     function fb_False : Boolean;
     procedure p_SetLabels(const a_Value: Boolean);
 
-    function fstl_getDataKeyList ( Index : Longint ):TStringList;
+    function fstl_getDataKeyList ( Index : Longint ):TFWFieldColumns;
     procedure p_ChargeTable( const aq_dico : TDataSource; const astl_SQL : TStrings ;
     {$IFDEF DELPHI_9_UP} const awst_SQL : TWideStrings ;{$ENDIF}
       const as_Table: String);
@@ -78,14 +79,14 @@ type
                                    const ai_NumSource : Integer ) : Boolean; override;
    public
     function fb_InsereCompteur ( const adat_Dataset : TDataset ;
-                                 const astl_Cle : TStringlist ;
+                                 const astl_Cle : TFWFieldColumns ;
                                  const as_ChampCompteur, as_Table, as_PremierLettrage : String ;
                                  const ach_DebutLettrage, ach_FinLettrage : Char ;
                                  const ali_Debut, ali_LimiteRecherche : Int64 ): Boolean; override;
      // Méthode abstraite virtuelle
      procedure BeforeCreateFrameWork(Sender: TComponent); override;
      // Clé primaire du DataSource
-     property DataKeyList [ Index :  integer ] : TstringList read fstl_getDataKeyList;
+     property DataKeyList [ Index :  integer ] : TFWFieldColumns read fstl_getDataKeyList;
 
    published
 
@@ -135,16 +136,17 @@ uses fonctions_db, unite_variables,
      fonctions_array,
 {$ENDIF}
      fonctions_variant, fonctions_proprietes,
+     fonctions_create,
      fonctions_dbcomponents;
 
 { TF_FormFrameWork }
 
 
-function TF_PropForm.fstl_getDataKeyList ( Index : Longint ):TStringList;
+function TF_PropForm.fstl_getDataKeyList ( Index : Longint ):TFWFieldColumns;
 Begin
   Result := nil;
   if ( Index > 0 ) and ( Index < DBSources.Count ) then
-    Result := DBSources.Items[ Index ].KeyList;
+    Result := DBSources.Items[ Index ].GetKey;
 End;
 
 // Réinitialisation des colonnes pour n'afficher que celles visibles dans le dico
@@ -203,12 +205,12 @@ End;
 //              ali_LimiteRecherche : Le maximum du champ compteur
 /////////////////////////////////////////////////////////////////////////////////
 function TF_PropForm.fb_InsereCompteur ( const adat_Dataset : TDataset ;
-                                              const astl_Cle : TStringlist ;
+                                              const astl_Cle : TFWFieldColumns ;
                                               const as_ChampCompteur, as_Table, as_PremierLettrage : String ;
                                               const ach_DebutLettrage, ach_FinLettrage : Char ;
                                               const ali_Debut, ali_LimiteRecherche : Int64 ): Boolean;
 Begin
-  Result := fonctions_dbcomponents.fb_InsereCompteur ( adat_Dataset, gds_SourceWork.Dataset, astl_Cle, as_ChampCompteur, as_Table, as_PremierLettrage, ach_DebutLettrage, ach_FinLettrage, 0, 0, gb_DBMessageOnError );
+  Result := fonctions_create.fb_InsereCompteur ( adat_Dataset, gds_SourceWork.Dataset, astl_Cle, as_ChampCompteur, as_Table, as_PremierLettrage, ach_DebutLettrage, ach_FinLettrage, 0, 0, gb_DBMessageOnError );
 End ;
 
 procedure TF_PropForm.p_ChargeTable ( const aq_dico : TDataSource; const astl_SQL : TStrings; {$IFDEF DELPHI_9_UP} const awst_SQL : TWideStrings ;{$ENDIF} const as_Table : String );
