@@ -17,8 +17,13 @@ uses
   LazLogger,
   SysUtils;
 
-{$IFDEF VERSIONS}
+type
+  TOnGetSQL = function : String;
+  TOnCreateDatabase = function ( const as_base, as_user, as_password : String ) : String;
+
+
 const
+{$IFDEF VERSIONS}
   gVer_fonctions_create: T_Version = (Component: 'Creating tables from form';
     FileUnit: 'fonctions_create';
     Owner: 'Matthieu Giroux';
@@ -30,6 +35,9 @@ const
     Major: 0; Minor: 9; Release: 0; Build: 0);
 
 {$ENDIF}
+  ge_OnBeginCreateAlter: TOnGetSQL = nil;
+  ge_OnEndCreateAlter: TOnGetSQL = nil;
+  ge_OnCreateDatabase: TOnCreateDatabase = nil;
 
 procedure p_SyncDB(const DMDB : TDataSet;const ModelTables: TList; const DBConn: TComponent;
   var Log: TLazLoggerFile; const KeepExTbls, StdInsertsOnCreate, StdInsertsSync: boolean);
@@ -50,6 +58,9 @@ function fb_InsereCompteur ( const adat_Dataset, adat_DatasetQuery : TDataset ;
                              const ach_DebutLettrage, ach_FinLettrage : Char ;
                              const ali_Debut, ali_LimiteRecherche     : Int64 ;
                              const ab_DBMessageOnError  : Boolean ): Boolean;
+function fs_CreateDatabase  ( const as_base, as_user, as_password : String ):String;
+function fs_BeginAlterCreate :String;
+function fs_EndAlterCreate :String;
 
 implementation
 
@@ -1257,6 +1268,27 @@ begin
       f_GereExceptionEvent ( E, adat_DatasetQuery, nil, not ab_DBMessageOnError );
   End ;
 end;
+
+function fs_BeginAlterCreate :String;
+Begin
+  if assigned ( ge_OnBeginCreateAlter )
+   Then Result := ge_OnBeginCreateAlter
+   Else Result := '';
+End;
+
+function fs_EndAlterCreate :String;
+Begin
+  if assigned ( ge_OnEndCreateAlter )
+   Then Result := ge_OnEndCreateAlter
+   Else Result := '';
+End;
+
+function fs_CreateDatabase  ( const as_base, as_user, as_password : String ):String;
+Begin
+  if assigned ( ge_OnCreateDatabase )
+   Then Result := ge_OnCreateDatabase (  as_base, as_user, as_password )
+   Else Result := '';
+End;
 
 
 {$IFDEF VERSIONS}
