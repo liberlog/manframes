@@ -49,12 +49,14 @@ const
 type
   TSetConnectComponents = procedure ( const cbx_Protocol: TComboBox;  const ch_ServerConnect: TCheckBox; const ed_Base, ed_Host, ed_Password, ed_User, ed_Catalog, ed_Collation: TEdit );
 
-  { TF_ZConnectionWindow }
+  { TF_ConnectionWindow }
 
-  TF_ZConnectionWindow = class(TForm)
+  TF_ConnectionWindow = class(TForm)
     cbx_Protocol: TComboBox;
     ch_ServerConnect: TCheckBox;
+    ed_Password2: TEdit;
     Label7: TLabel;
+    Label8: TLabel;
     quit: TButton;
     Save: TButton;
     quitall: TButton;
@@ -86,6 +88,7 @@ type
     { private declarations }
     Connexion : TComponent ;
     Inifile : TCustomInifile;
+    function fb_VerifyPassword : Boolean;
   public
     { public declarations }
     constructor Create(AOwner: TComponent); override;
@@ -93,7 +96,7 @@ type
   end;
 
 var
-  F_ZConnectionWindow: TF_ZConnectionWindow = nil;
+  F_ConnectionWindow: TF_ConnectionWindow = nil;
 
 procedure p_ShowConnectionWindow ( const Connexion : TComponent ; const Inifile : TCustomInifile );
 procedure p_InitComponent ( const Connexion : TComponent ; const Inifile : TCustomInifile ; const Test : Boolean );
@@ -104,58 +107,66 @@ const
 
 implementation
 
-uses fonctions_init,Types, fonctions_db, fonctions_dbcomponents,
-     fonctions_components, fonctions_proprietes;
+uses fonctions_init,Types,
+     fonctions_db,
+     fonctions_dialogs,
+     unite_variables,
+     fonctions_dbcomponents,
+     fonctions_components,
+     fonctions_proprietes;
 
 
 // Init connexion with inifile
 procedure p_InitComponent ( const Connexion : TComponent ; const Inifile : TCustomInifile ; const Test : Boolean );
 Begin
   p_InitZComponent ( Connexion, IniFile, Test );
-  if ( fs_getComponentProperty( Connexion, CST_ZDATABASE ) = '' )
-  or not ( fb_TestZComponent ( Connexion, Test )) Then
+  if ( fs_getComponentProperty( Connexion, CST_DATABASE ) = '' )
+  or not ( fb_TestConnection ( Connexion, Test )) Then
     Begin
       p_ShowConnectionWindow ( Connexion, Inifile );
     End ;
 End ;
-{ TF_ZConnectionWindow }
+{ TF_ConnectionWindow }
 
 // Test Mode
-procedure TF_ZConnectionWindow.TestClick(Sender: TObject);
+procedure TF_ConnectionWindow.TestClick(Sender: TObject);
 begin
-  p_SetComponentProperty ( Connexion, CST_ZDATABASE, ed_Base     .Text );
-  p_SetComponentProperty ( Connexion, CST_ZPROTOCOL, cbx_Protocol.Text );
-  p_SetComponentProperty ( Connexion, CST_ZHOSTNAME, ed_Host     .Text );
-  p_SetComponentProperty ( Connexion, CST_ZPASSWORD, ed_Password .Text );
-  p_SetComponentProperty ( Connexion, CST_ZUSER    , ed_User     .Text );
-  p_SetComponentProperty ( Connexion, CST_ZCATALOG , ed_Catalog  .Text );
-  fb_TestZComponent ( Connexion, True );
+  if not fb_VerifyPassword Then Exit;
+  p_SetComponentProperty ( Connexion, CST_DATABASE, ed_Base     .Text );
+  p_SetComponentProperty ( Connexion, CST_PROTOCOL, cbx_Protocol.Text );
+  p_SetComponentProperty ( Connexion, CST_HOSTNAME, ed_Host     .Text );
+  p_SetComponentProperty ( Connexion, CST_PASSWORD, ed_Password .Text );
+  p_SetComponentProperty ( Connexion, CST_USER    , ed_User     .Text );
+  p_SetComponentProperty ( Connexion, CST_CATALOG , ed_Catalog  .Text );
+  fb_TestConnection ( Connexion, True );
 end;
 
 
 // Getting Drivers Names
-constructor TF_ZConnectionWindow.Create(AOwner: TComponent);
+constructor TF_ConnectionWindow.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   if assigned ( ge_SetConnectComponentsOnCreate ) Then
     ge_SetConnectComponentsOnCreate ( cbx_Protocol, ch_ServerConnect, ed_Base, ed_Host, ed_Password, ed_User, ed_Catalog, ed_Collation );
 end;
 
-procedure TF_ZConnectionWindow.DoShow;
+procedure TF_ConnectionWindow.DoShow;
 begin
-  ed_Base     .Text := fs_getComponentProperty( Connexion, CST_ZDATABASE );
-  cbx_Protocol.Text := fs_getComponentProperty( Connexion, CST_ZPROTOCOL );
-  ed_Host     .Text := fs_getComponentProperty( Connexion, CST_ZHOSTNAME );
-  ed_Password .Text := fs_getComponentProperty( Connexion, CST_ZPASSWORD );
-  ed_User     .Text := fs_getComponentProperty( Connexion, CST_ZUSER     );
-  ed_Catalog  .Text := fs_getComponentProperty( Connexion, CST_ZCATALOG  );
+  ed_Base     .Text := fs_getComponentProperty( Connexion, CST_DATABASE );
+  cbx_Protocol.Text := fs_getComponentProperty( Connexion, CST_PROTOCOL );
+  ed_Host     .Text := fs_getComponentProperty( Connexion, CST_HOSTNAME );
+  ed_Password .Text := fs_getComponentProperty( Connexion, CST_PASSWORD );
+  ed_User     .Text := fs_getComponentProperty( Connexion, CST_USER     );
+  ed_Catalog  .Text := fs_getComponentProperty( Connexion, CST_CATALOG  );
+  ed_Password2.Text := ed_Password.Text;
   inherited DoShow;
 end;
 
 
 // Saving to IniFile
-procedure TF_ZConnectionWindow.SaveClick(Sender: TObject);
+procedure TF_ConnectionWindow.SaveClick(Sender: TObject);
 begin
+  if not fb_VerifyPassword Then Exit;
   if assigned ( IniFile )
     Then
       Begin
@@ -173,13 +184,13 @@ begin
 end;
 
 // Quit application
-procedure TF_ZConnectionWindow.quitallClick(Sender: TObject);
+procedure TF_ConnectionWindow.quitallClick(Sender: TObject);
 begin
   Application.Terminate;
 end;
 
 // Close Window
-procedure TF_ZConnectionWindow.quitClick(Sender: TObject);
+procedure TF_ConnectionWindow.quitClick(Sender: TObject);
 begin
   Close;
 end;
@@ -191,47 +202,54 @@ end;
 // Show The Window ( automatic )
 procedure p_ShowConnectionWindow ( const Connexion : TComponent ; const Inifile : TCustomInifile );
 Begin
-  if not assigned ( F_ZConnectionWindow )
+  if not assigned ( F_ConnectionWindow )
     Then
-      Application.CreateForm ( TF_ZConnectionWindow, F_ZConnectionWindow );
-  F_ZConnectionWindow.Connexion := Connexion;
-  F_ZConnectionWindow.Inifile := Inifile;
-  F_ZConnectionWindow.ShowModal ;
+      Application.CreateForm ( TF_ConnectionWindow, F_ConnectionWindow );
+  F_ConnectionWindow.Connexion := Connexion;
+  F_ConnectionWindow.Inifile := Inifile;
+  F_ConnectionWindow.ShowModal ;
 End ;
 
-procedure TF_ZConnectionWindow.ed_HostEnter(Sender: TObject);
+procedure TF_ConnectionWindow.ed_HostEnter(Sender: TObject);
 begin
   p_ComponentSelectAll ( Sender );
 end;
 
-procedure TF_ZConnectionWindow.ed_BaseEnter(Sender: TObject);
-begin
-  p_ComponentSelectAll ( Sender );
-
-end;
-
-procedure TF_ZConnectionWindow.ed_UserEnter(Sender: TObject);
+procedure TF_ConnectionWindow.ed_BaseEnter(Sender: TObject);
 begin
   p_ComponentSelectAll ( Sender );
 
 end;
 
-procedure TF_ZConnectionWindow.ed_PasswordEnter(Sender: TObject);
+procedure TF_ConnectionWindow.ed_UserEnter(Sender: TObject);
 begin
   p_ComponentSelectAll ( Sender );
 
 end;
 
-procedure TF_ZConnectionWindow.ed_CatalogEnter(Sender: TObject);
+procedure TF_ConnectionWindow.ed_PasswordEnter(Sender: TObject);
 begin
   p_ComponentSelectAll ( Sender );
 
 end;
 
-procedure TF_ZConnectionWindow.ed_CollationEnter(Sender: TObject);
+procedure TF_ConnectionWindow.ed_CatalogEnter(Sender: TObject);
 begin
   p_ComponentSelectAll ( Sender );
 
+end;
+
+procedure TF_ConnectionWindow.ed_CollationEnter(Sender: TObject);
+begin
+  p_ComponentSelectAll ( Sender );
+
+end;
+
+function TF_ConnectionWindow.fb_VerifyPassword: Boolean;
+begin
+  Result := ed_Password.Text=ed_Password2.Text;
+  if not Result Then
+    MyMessageDlg(GS_mot_passe_invalide,mtError,[mbOk],0,Self);
 end;
 
 initialization

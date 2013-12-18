@@ -19,7 +19,7 @@ uses
 
 type
   TOnGetSQL = function : String;
-  TOnCreateDatabase = function ( const as_base, as_user, as_password : String ) : String;
+  TOnSetDatabase = function ( const as_base, as_user, as_password : String ) : String;
 
 
 const
@@ -36,8 +36,8 @@ const
 
 {$ENDIF}
   ge_OnBeginCreateAlter: TOnGetSQL = nil;
-  ge_OnEndCreateAlter: TOnGetSQL = nil;
-  ge_OnCreateDatabase: TOnCreateDatabase = nil;
+  ge_OnEndCreate: TOnSetDatabase = nil;
+  ge_OnCreateDatabase: TOnSetDatabase = nil;
 
 procedure p_SyncDB(const DMDB : TDataSet;const ModelTables: TList; const DBConn: TComponent;
   var Log: TLazLoggerFile; const KeepExTbls, StdInsertsOnCreate, StdInsertsSync: boolean);
@@ -60,7 +60,7 @@ function fb_InsereCompteur ( const adat_Dataset, adat_DatasetQuery : TDataset ;
                              const ab_DBMessageOnError  : Boolean ): Boolean;
 function fs_CreateDatabase  ( const as_base, as_user, as_password : String ):String;
 function fs_BeginAlterCreate :String;
-function fs_EndAlterCreate :String;
+function fs_EndCreate  ( const as_base, as_user, as_password : String ) :String;
 
 implementation
 
@@ -1276,10 +1276,10 @@ Begin
    Else Result := '';
 End;
 
-function fs_EndAlterCreate :String;
+function fs_EndCreate  ( const as_base, as_user, as_password : String ) :String;
 Begin
-  if assigned ( ge_OnEndCreateAlter )
-   Then Result := ge_OnEndCreateAlter
+  if assigned ( ge_OnEndCreate )
+   Then Result := ge_OnEndCreate (  as_base, as_user, as_password )
    Else Result := '';
 End;
 
