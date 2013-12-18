@@ -71,6 +71,7 @@ type
                SynonymGroup : Integer;
                PhysicalTypeName,
                DBQuoteCharacter : String;
+               DefaultFieldLength : Integer;
                DoNotUseRelNameInRefDef,
                EncloseCharacters : Boolean;
                EncloseNames : Boolean;
@@ -143,7 +144,7 @@ const CST_BASE_INDEX_PRIMARY = 'PRIMARY';
       CST_MYSQL_TABLE_TYPE : Array [ 1..5 ] of String =('InnoDB','HEAP','BDB','ISAM','MERGE');
 
 var gbm_DatabaseToGenerate : TFWBaseMode = bmFirebird;
-    gr_Model : TFWModel = (DBQuoteCharacter :'''';EncloseNames:False;ActivateRefDefForNewRelations:False;AddQuotesToDefVals:False;CreateSQLforLinkedObjects:False);
+    gr_Model : TFWModel = (DBQuoteCharacter :'''';DefaultFieldLength:30;EncloseNames:False;ActivateRefDefForNewRelations:False;AddQuotesToDefVals:False;CreateSQLforLinkedObjects:False);
 
 type
   TFWFieldColumn = class;
@@ -2012,7 +2013,7 @@ function TFWFieldData.fs_DatatypeParams: String;
 begin
   case FieldType of
     ftString  : if FieldLength = -1
-                 Then Result := '(30)'
+                 Then Result := '('+IntToStr(gr_Model.DefaultFieldLength)+')'
                  Else Result := '('+IntToStr(FieldLength)+')';
     ftBoolean : Result := '(1)';
     ftInteger : Begin
