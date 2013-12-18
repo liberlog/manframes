@@ -54,7 +54,7 @@ procedure p_SetCaractersZEOSConnector(const azco_Connect : TComponent ; const as
 function  fs_InitZConnection ( const Connexion : TComponent ; const Inifile : TCustomInifile ; const Test : Boolean ) : String;
 procedure p_InitZComponent ( const Connexion : TComponent ; const Inifile : TCustomInifile ; const Test : Boolean );
 function fs_CollationEncode ( const Connexion : TComponent ; const as_StringsProp : String ) : String;
-function fb_TestZComponent ( const Connexion : TComponent ; const lb_ShowMessage : Boolean ) : Boolean;
+function fb_TestConnection ( const Connexion : TComponent ; const lb_ShowMessage : Boolean ) : Boolean;
 function fs_IniSetConnection ( const accx_Connection : TComponent ) : String ;
 
 const
@@ -62,13 +62,13 @@ const
         CST_ADOCONNECTION_STRING ='ConnectionString';
         CST_CONNECTED   = 'Connected';
         CST_ZCONNECTION = 'TZConnection';
-        CST_ZDATABASE   = 'Database';
-        CST_ZPROTOCOL   = 'Protocol';
-        CST_ZHOSTNAME   = 'HostName';
-        CST_ZPASSWORD   = 'Password';
-        CST_ZUSER       = 'User';
-        CST_ZCATALOG    = 'Catalog';
-        CST_ZPROPERTIES = 'Properties';
+        CST_DATABASE   = 'Database';
+        CST_PROTOCOL   = 'Protocol';
+        CST_HOSTNAME   = 'HostName';
+        CST_PASSWORD   = 'Password';
+        CST_USER       = 'User';
+        CST_CATALOG    = 'Catalog';
+        CST_PROPERTIES = 'Properties';
 var
   gs_DataDriverIni : String = 'Driver' ;
   gs_DataBaseNameIni : String = 'Database Name' ;
@@ -137,7 +137,7 @@ End;
 ////////////////////////////////////////////////////////////////////////////////
 
 // Open connexion and erros
-function fb_TestZComponent ( const Connexion : TComponent ; const lb_ShowMessage : Boolean ) : Boolean;
+function fb_TestConnection ( const Connexion : TComponent ; const lb_ShowMessage : Boolean ) : Boolean;
 Begin
   Result := False ;
   try
@@ -162,13 +162,13 @@ End ;
 function fs_InitZConnection ( const Connexion : TComponent ; const Inifile : TCustomInifile ; const Test : Boolean ) : String;
 Begin
   p_IniTZComponent ( Connexion, Inifile, Test );
-  Result := gs_DataHostIni      + ' = ' +  fs_getComponentProperty( Connexion, CST_ZHOSTNAME )  + #13#10
-          + gs_DataProtocolIni  + ' = ' +  fs_getComponentProperty( Connexion, CST_ZPROTOCOL ) + #13#10
-          + gs_DataBaseNameIni  + ' = ' +  fs_getComponentProperty( Connexion, CST_ZDATABASE ) + #13#10
-          + gs_DataUserNameIni  + ' = ' +  fs_getComponentProperty( Connexion, CST_ZUSER     ) + #13#10
-          + gs_DataPasswordIni  + ' = ' +  fs_getComponentProperty( Connexion, CST_ZPASSWORD ) + #13#10
-          + gs_DataCatalogIni   + ' = ' +  fs_getComponentProperty( Connexion, CST_ZCATALOG  ) + #13#10
-          + gs_DataCollationIni + ' = ' +  fs_CollationEncode ( Connexion, CST_ZPROPERTIES )   + #13#10 ;
+  Result := gs_DataHostIni      + ' = ' +  fs_getComponentProperty( Connexion, CST_HOSTNAME )  + #13#10
+          + gs_DataProtocolIni  + ' = ' +  fs_getComponentProperty( Connexion, CST_PROTOCOL ) + #13#10
+          + gs_DataBaseNameIni  + ' = ' +  fs_getComponentProperty( Connexion, CST_DATABASE ) + #13#10
+          + gs_DataUserNameIni  + ' = ' +  fs_getComponentProperty( Connexion, CST_USER     ) + #13#10
+          + gs_DataPasswordIni  + ' = ' +  fs_getComponentProperty( Connexion, CST_PASSWORD ) + #13#10
+          + gs_DataCatalogIni   + ' = ' +  fs_getComponentProperty( Connexion, CST_CATALOG  ) + #13#10
+          + gs_DataCollationIni + ' = ' +  fs_CollationEncode ( Connexion, CST_PROPERTIES )   + #13#10 ;
 End ;
 
 // Init connexion with inifile
@@ -177,12 +177,12 @@ Begin
   if assigned ( Inifile )
   and assigned ( Connexion ) Then
     Begin
-      p_SetComponentProperty ( Connexion, CST_ZDATABASE, Inifile.ReadString ( gs_DataSectionIni, gs_DataBaseNameIni, '' ));
-      p_SetComponentProperty ( Connexion, CST_ZPROTOCOL, Inifile.ReadString ( gs_DataSectionIni, gs_DataProtocolIni , '' ));
-      p_SetComponentProperty ( Connexion, CST_ZHOSTNAME, Inifile.ReadString ( gs_DataSectionIni, gs_DataHostIni    , '' ));
-      p_SetComponentProperty ( Connexion, CST_ZPASSWORD, Inifile.ReadString ( gs_DataSectionIni, gs_DataPasswordIni, '' ));
-      p_SetComponentProperty ( Connexion, CST_ZUSER    , Inifile.ReadString ( gs_DataSectionIni, gs_DataUserNameIni, '' ));
-      p_SetComponentProperty ( Connexion, CST_ZCATALOG , Inifile.ReadString ( gs_DataSectionIni, gs_DataCatalogIni    , '' ));
+      p_SetComponentProperty ( Connexion, CST_DATABASE, Inifile.ReadString ( gs_DataSectionIni, gs_DataBaseNameIni, '' ));
+      p_SetComponentProperty ( Connexion, CST_PROTOCOL, Inifile.ReadString ( gs_DataSectionIni, gs_DataProtocolIni , '' ));
+      p_SetComponentProperty ( Connexion, CST_HOSTNAME, Inifile.ReadString ( gs_DataSectionIni, gs_DataHostIni    , '' ));
+      p_SetComponentProperty ( Connexion, CST_PASSWORD, Inifile.ReadString ( gs_DataSectionIni, gs_DataPasswordIni, '' ));
+      p_SetComponentProperty ( Connexion, CST_USER    , Inifile.ReadString ( gs_DataSectionIni, gs_DataUserNameIni, '' ));
+      p_SetComponentProperty ( Connexion, CST_CATALOG , Inifile.ReadString ( gs_DataSectionIni, gs_DataCatalogIni    , '' ));
       p_SetCaractersZEOSConnector(Connexion, Inifile.ReadString ( gs_DataSectionIni, gs_DataCollationIni    , Inifile.ReadString ( gs_DataSectionIni, gs_DataCollationIni    , 'UTF8' )));
 
 
@@ -219,7 +219,7 @@ var
     astl_Strings : TStrings ;
     {$IFDEF DELPHI_9_UP}awst_Strings : TWideStrings;{$ENDIF}
 Begin
-  if  fb_GetStrings (azco_Connect, CST_ZPROPERTIES, astl_Strings{$IFDEF DELPHI_9_UP}, awst_Strings {$ENDIF}) Then
+  if  fb_GetStrings (azco_Connect, CST_PROPERTIES, astl_Strings{$IFDEF DELPHI_9_UP}, awst_Strings {$ENDIF}) Then
     with  astl_Strings do
       begin
         Clear;
@@ -233,7 +233,7 @@ Begin
   Result := True ;
   p_SetComponentBoolProperty ( asqc_Connection, CST_CONNECTED, False );
   fs_InitZConnection( asqc_Connection, IniFile, False );
-  if fs_getComponentProperty ( asqc_Connection, CST_ZDATABASE ) = '' Then
+  if fs_getComponentProperty ( asqc_Connection, CST_DATABASE ) = '' Then
     Result := False ;
 End;
 {$ENDIF}

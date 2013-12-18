@@ -1,4 +1,4 @@
-object F_ZConnectionWindow: TF_ZConnectionWindow
+object F_ConnectionWindow: TF_ConnectionWindow
   Left = 448
   Height = 337
   Top = 218
@@ -13,7 +13,7 @@ object F_ZConnectionWindow: TF_ZConnectionWindow
   Font.Height = -11
   Font.Name = 'Tahoma'
   Position = poScreenCenter
-  LCLVersion = '1.0.2.0'
+  LCLVersion = '1.0.12.0'
   object Label1: TLabel
     Left = 24
     Height = 15
@@ -100,7 +100,7 @@ object F_ZConnectionWindow: TF_ZConnectionWindow
   end
   object ed_Base: TEdit
     Left = 284
-    Height = 22
+    Height = 24
     Top = 135
     Width = 376
     OnEnter = ed_BaseEnter
@@ -108,7 +108,7 @@ object F_ZConnectionWindow: TF_ZConnectionWindow
   end
   object ed_Host: TEdit
     Left = 284
-    Height = 22
+    Height = 24
     Top = 111
     Width = 376
     OnEnter = ed_HostEnter
@@ -117,15 +117,17 @@ object F_ZConnectionWindow: TF_ZConnectionWindow
   end
   object ed_Password: TEdit
     Left = 284
-    Height = 22
+    Height = 24
     Top = 183
-    Width = 376
+    Width = 160
+    EchoMode = emPassword
     OnEnter = ed_PasswordEnter
+    PasswordChar = '*'
     TabOrder = 2
   end
   object ed_Catalog: TEdit
     Left = 284
-    Height = 22
+    Height = 24
     Top = 207
     Width = 376
     OnEnter = ed_CatalogEnter
@@ -133,7 +135,7 @@ object F_ZConnectionWindow: TF_ZConnectionWindow
   end
   object ed_User: TEdit
     Left = 284
-    Height = 22
+    Height = 24
     Top = 159
     Width = 376
     OnEnter = ed_UserEnter
@@ -186,7 +188,7 @@ object F_ZConnectionWindow: TF_ZConnectionWindow
   end
   object ed_Collation: TEdit
     Left = 284
-    Height = 22
+    Height = 24
     Top = 231
     Width = 376
     OnEnter = ed_CollationEnter
@@ -206,5 +208,25 @@ object F_ZConnectionWindow: TF_ZConnectionWindow
     ParentColor = False
     ParentFont = False
     TabOrder = 11
+  end
+  object ed_Password2: TEdit
+    Left = 500
+    Height = 24
+    Top = 183
+    Width = 160
+    EchoMode = emPassword
+    OnEnter = ed_PasswordEnter
+    PasswordChar = '*'
+    TabOrder = 12
+  end
+  object Label8: TLabel
+    Left = 448
+    Height = 15
+    Top = 189
+    Width = 42
+    Caption = 'Vérifier'
+    Color = clWindow
+    ParentColor = False
+    Transparent = False
   end
 end

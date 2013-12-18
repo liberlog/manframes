@@ -134,8 +134,8 @@ initialization
  ge_onCreateConnection := TCreateConnection ( p_CreateIBXconnection );
  ge_OnExecuteQuery  :=TOnExecuteQuery(p_ExecuteIBXQuery);
  ge_OnBeginCreateAlter  :=TOnGetSQL( fs_CreateAlterBeginSQL);
- ge_OnEndCreateAlter  :=TOnGetSQL( fs_CreateAlterEndSQL);
- ge_OnCreateDatabase  :=TOnCreateDatabase( fs_CreateDatabase);
+ ge_OnEndCreate       :=TOnSetDatabase( fs_CreateAlterEndSQL);
+ ge_OnCreateDatabase  :=TOnSetDatabase( fs_CreateDatabase);
  ge_OnExecuteCommand:=TOnExecuteCommand(p_ExecuteSQLCommand);
  {$IFDEF VERSIONS}
  p_ConcatVersion ( gver_fonctions_ibx );

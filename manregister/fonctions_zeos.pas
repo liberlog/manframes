@@ -34,6 +34,7 @@ uses
     ZAbstractRODataset,
     u_connection,
     StdCtrls,
+    fonctions_create,
     ZCompatibility,
     ZDbcIntfs,
     Types,
@@ -115,9 +116,24 @@ begin
   End;
 End;
 
+function fs_BeginCreateDatabase  ( const as_base, as_user, as_password : String ):String;
+Begin
+  Result := 'CREATE DATABASE '+as_base+';'+#10;
+  Result := 'USE '+as_base+';'+#10;
+End;
+
+function fs_EndCreateDatabase  ( const as_base, as_user, as_password : String ):String;
+Begin
+  Result := 'GRANT ALL ON '+as_base+'.* TO '''+as_user+'''@''''%'''' IDENTIFIED BY '+as_password+''';'+#10;
+End;
+
+
+
 initialization
  ge_onCreateConnection := TCreateConnection ( {$IFNDEF FPC}@{$ENDIF}p_CreateZeosconnection );
  ge_OnExecuteQuery:=TOnExecuteQuery({$IFNDEF FPC}@{$ENDIF}p_ExecuteZEOSQuery);
+ ge_OnCreateDatabase :=TOnSetDatabase(fs_BeginCreateDatabase);
+ ge_OnEndCreate :=TOnSetDatabase(fs_EndCreateDatabase);
  ge_SetConnectComponentsOnCreate := TSetConnectComponents({$IFNDEF FPC}@{$ENDIF}p_setZEOSConnectionOnCreation);
  {$IFDEF VERSIONS}
  p_ConcatVersion ( gVer_fonctions_zeos );
