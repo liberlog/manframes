@@ -36,6 +36,11 @@ implementation
 uses IBQuery,
      IBDatabase,
      FileUtil,
+     fonctions_init,
+     fonctions_file,
+     fonctions_dialogs,
+     Dialogs,
+     fonctions_db,
      fonctions_dbcomponents;
 
 procedure p_CreateIBXconnection ( const AOwner : TComponent ; var adtt_DatasetType : TDatasetType ; var AQuery : TDataset; var AConnection : TComponent );
@@ -59,9 +64,19 @@ Begin
 End ;
 
 procedure p_ExecuteSQLCommand ( const as_SQL : {$IFDEF DELPHI_9_UP} String {$ELSE} WideString{$ENDIF}  );
+var ls_File : String;
+    lh_handleFile : THandle;
 Begin
-  fs_ExecuteProcess({$IFDEF WINDOWS}'.'+DirectorySeparator+{$ENDIF}'isql'{$IFDEF WINDOWS}+'.exe'{$ENDIF}, as_SQL, False);
-
+  MyMessageDlg('SQL',as_SQL,mtError,mbOKCancel);
+  ls_File := fs_GetIniDir+'sql-firebird';
+  if FileExistsUTF8(ls_File+CST_EXTENSION_SQL_FILE) Then DeleteFileUTF8(ls_File+CST_EXTENSION_SQL_FILE);
+  lh_handleFile := FileCreateUTF8(ls_File+CST_EXTENSION_SQL_FILE);
+  try
+    FileWriteln(lh_handleFile,as_SQL);
+  finally
+    FileClose(lh_handleFile);
+  end;
+  fs_ExecuteProcess({$IFDEF WINDOWS}'.'+DirectorySeparator+'isql.exe'{$ELSE}'fb-isql'{$ENDIF}, '-i '+ ls_File+CST_EXTENSION_SQL_FILE + ' -o ' + ls_File+CST_EXTENSION_LOG_FILE, False);
 End ;
 
 procedure p_setLibrary (var libname: string);
