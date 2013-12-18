@@ -17,6 +17,9 @@ uses
   u_multidonnees,
   DB;
 
+resourcestring
+   Gs_Names_Charset =   'UNICODE_FSS';
+
 const DEFAULT_FIREBIRD_SERVER_DIR = '/var/lib/firebird/2.5/';
 {$IFDEF VERSIONS}
       gver_fonctions_ibx : T_Version = ( Component : 'IBX Connect package.' ;
@@ -43,6 +46,16 @@ uses IBQuery,
      fonctions_db,
      fonctions_dbcomponents;
 
+function fs_CreateAlterBeginSQL :String;
+Begin
+  Result := 'SET SQL DIALECT 3;' + #10+ 'SET NAMES ' + Gs_Names_Charset +';'+ #10;
+end;
+
+function fs_CreateAlterEndSQL :String;
+Begin
+  Result := 'COMMIT;'+ #10;
+end;
+
 procedure p_CreateIBXconnection ( const AOwner : TComponent ; var adtt_DatasetType : TDatasetType ; var AQuery : TDataset; var AConnection : TComponent );
 Begin
   adtt_DatasetType := dtIBX;
@@ -62,6 +75,11 @@ Begin
     ( adat_Dataset as TIBQuery ).ExecSQL;
 
 End ;
+function fs_CreateDatabase  ( const as_base, as_user, as_password : String ):String;
+Begin
+  Result := 'CREATE DATABASE '''+as_base+''' USER '''+as_user+''' PASSWORD '''+as_password+''' PAGE_SIZE 16384 DEFAULT CHARACTERSET '+Gs_Names_Charset+';'+#10
+          + 'USE '+as_base+';'+#10;
+End;
 
 procedure p_ExecuteSQLCommand ( const as_SQL : {$IFDEF DELPHI_9_UP} String {$ELSE} WideString{$ENDIF}  );
 var ls_File : String;
@@ -114,6 +132,9 @@ initialization
  {$ENDIF}
  ge_onCreateConnection := TCreateConnection ( p_CreateIBXconnection );
  ge_OnExecuteQuery  :=TOnExecuteQuery(p_ExecuteIBXQuery);
+ ge_OnBeginCreateAlter  :=TOnGetSQL( fs_CreateAlterBeginSQL);
+ ge_OnEndCreateAlter  :=TOnGetSQL( fs_CreateAlterEndSQL);
+ ge_OnCreateDatabase  :=TOnCreateDatabase( fs_CreateDatabase);
  ge_OnExecuteCommand:=TOnExecuteCommand(p_ExecuteSQLCommand);
  {$IFDEF VERSIONS}
  p_ConcatVersion ( gver_fonctions_ibx );
