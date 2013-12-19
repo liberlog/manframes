@@ -35,6 +35,7 @@ uses
     u_connection,
     StdCtrls,
     fonctions_create,
+    fonctions_manbase,
     ZCompatibility,
     ZDbcIntfs,
     Types,
@@ -118,8 +119,8 @@ End;
 
 function fs_BeginCreateDatabase  ( const as_base, as_user, as_password : String ):String;
 Begin
-  Result := 'CREATE DATABASE '+as_base+';'+#10;
-  Result := 'USE '+as_base+';'+#10;
+  Result := 'CREATE DATABASE '+as_base+';'+#10+
+            'USE '+as_base+';'+#10;
 End;
 
 function fs_EndCreateDatabase  ( const as_base, as_user, as_password : String ):String;
@@ -135,6 +136,7 @@ initialization
  ge_OnCreateDatabase :=TOnSetDatabase(fs_BeginCreateDatabase);
  ge_OnEndCreate :=TOnSetDatabase(fs_EndCreateDatabase);
  ge_SetConnectComponentsOnCreate := TSetConnectComponents({$IFNDEF FPC}@{$ENDIF}p_setZEOSConnectionOnCreation);
+ gbm_DatabaseToGenerate := bmMySQL;
  {$IFDEF VERSIONS}
  p_ConcatVersion ( gVer_fonctions_zeos );
  {$ENDIF}

@@ -652,7 +652,7 @@ begin
 
 
             //check not null
-            if (theColumn.NotNull <> (DMDB.Fields[2].AsString <> 'Y')) then
+            if (theColumn.ColMain or theColumn.ColUnique ) <> (DMDB.Fields[2].AsString <> 'Y') then
               ColumnChanged := True;
 
             //theColumn.AutoInc:=False;
