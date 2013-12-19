@@ -22,16 +22,22 @@
       </Item1>
     </Files>
     <Type Value="RunAndDesignTime"/>
-    <RequiredPkgs Count="3">
+    <RequiredPkgs Count="5">
       <Item1>
-        <PackageName Value="ibexpress"/>
+        <PackageName Value="lazextbuttons"/>
       </Item1>
       <Item2>
-        <PackageName Value="lazmanbase"/>
+        <PackageName Value="ExtCopy"/>
       </Item2>
       <Item3>
-        <PackageName Value="FCL"/>
+        <PackageName Value="ibexpress"/>
       </Item3>
+      <Item4>
+        <PackageName Value="lazmanbase"/>
+      </Item4>
+      <Item5>
+        <PackageName Value="FCL"/>
+      </Item5>
     </RequiredPkgs>
     <UsageOptions>
       <UnitPath Value="$(PkgOutDir)"/>
