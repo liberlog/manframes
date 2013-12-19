@@ -208,12 +208,13 @@ type
    End;
    TFWFieldData = class(TFWMiniFieldColumn)
    private
+     b_colHidden: Boolean;
      s_CaptionName, s_HintName: WideString;
      gs_DefaultValue,
      s_FieldName: String;
      i_NumTag : Integer ;
      i_ShowCol, i_ShowSearch, i_ShowSort, i_HelpIdx, i_FieldSize, i_LookupSource : Integer ;
-     b_ColMain, b_ColCreate, b_ColUnique, b_colSelect, b_colPrivate : Boolean;
+     b_ColMain, b_ColCreate, b_ColUnique, b_colSelect, b_colPrivate: Boolean;
      gi_SynonymGroup,
      gi_length,                     // optional numbers after comma
      gi_decimals,                     // optional numbers after comma
@@ -244,6 +245,7 @@ type
     constructor Create; virtual; overload;
     procedure Erase; virtual;
     function IsErased:Boolean; virtual;
+    function ColHidden:Boolean; virtual;
     procedure Init; virtual;
     function Clone ( const ACollection : TFWFieldColumns ) : TFWFieldData; override;
     function GetSQLColumnCreateDefCode(
@@ -1929,7 +1931,7 @@ begin
     end;
 
     //Set not null
-    if ColMain or ColUnique then
+    if b_ColMain or b_ColUnique then
     begin
       NullTag:=Not_NULL;
     end
@@ -1957,7 +1959,7 @@ begin
     end;
 
     // auto increment
-    if(b_ColUnique and b_colPrivate)then
+    if(b_ColUnique and ColHidden)then
       case gbm_DatabaseToGenerate of
        bmMySQL:
         begin
@@ -2105,6 +2107,11 @@ end;
 function TFWFieldData.IsErased: Boolean;
 begin
   Result:=(s_FieldName='');
+end;
+
+function TFWFieldData.ColHidden: Boolean;
+begin
+  Result:=i_ShowCol=-1;
 end;
 
 { TFWFieldColumn }

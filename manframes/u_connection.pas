@@ -249,7 +249,7 @@ function TF_ConnectionWindow.fb_VerifyPassword: Boolean;
 begin
   Result := ed_Password.Text=ed_Password2.Text;
   if not Result Then
-    MyMessageDlg(GS_mot_passe_invalide,mtError,[mbOk],0,Self);
+    MyMessageDlg(GS_mot_passe_invalide,mtError,[mbOk],Self);
 end;
 
 initialization

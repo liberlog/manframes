@@ -186,7 +186,7 @@ end;
 function fb_Fermeture ( const af_FormMainini : TF_FormMainIni ) : Boolean ;
 begin
   Result := False ;
-  if MyMessageDlg ( GS_FERMER_APPLICATION, mtConfirmation, [ mbYes, mbNo ], 0 ) = mrYes Then
+  if MyMessageDlg ( GS_FERMER_APPLICATION, mtConfirmation, [ mbYes, mbNo ] ) = mrYes Then
     Begin
       Result := True ;
       // Sauvegarde de la position des fenêtres filles
