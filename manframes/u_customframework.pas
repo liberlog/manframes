@@ -4692,7 +4692,7 @@ begin
     and assigned ( fobj_getComponentObjectProperty ( anav_Objet, 'DataSource' ))
     and assigned (( TDataSource ( fobj_getComponentObjectProperty ( anav_Objet, 'DataSource' ))).DataSet )
     and not ( TDataSource ( fobj_getComponentObjectProperty ( anav_Objet, 'DataSource' ))).DataSet.IsEmpty Then
-      if MyMessageDlg ( GS_SUPPRIMER_QUESTION, mtConfirmation, [mbYes,mbNo], CST_HC_SUPPRIMER ) = mrYes Then
+      if MyMessageDlg ( GS_SUPPRIMER_QUESTION, mtConfirmation, [mbYes,mbNo] ) = mrYes Then
           Try
             ( TDataSource ( fobj_getComponentObjectProperty ( anav_Objet, 'DataSource' ))).DataSet.Delete ;
           Except
@@ -5193,7 +5193,7 @@ begin
   if gb_CloseMessage
   and gb_SauverModifications
    Then
-    Case MyMessageDlg(GS_ConfirmOnClose, mtConfirmation, mbYesNoCancel, 0) of
+    Case MyMessageDlg(GS_ConfirmOnClose, mtConfirmation, mbYesNoCancel) of
       MrCancel:Result := false; // Cancel
       MrYes: Begin
             // yes
