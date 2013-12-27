@@ -3,6 +3,7 @@
   <Package Version="4">
     <Name Value="lazmanbase"/>
     <AddToProjectUsesSection Value="True"/>
+    <Author Value="Matthieu GIROUX"/>
     <CompilerOptions>
       <Version Value="11"/>
       <SearchPaths>
@@ -21,7 +22,10 @@
         <CompilerPath Value="$(CompPath)"/>
       </Other>
     </CompilerOptions>
-    <Version Major="1" Minor="1" Release="1"/>
+    <Description Value="Data part of manfrmase
+No control please"/>
+    <License Value="LGPL"/>
+    <Version Major="1" Minor="2"/>
     <Files Count="4">
       <Item1>
         <Filename Value="manbase/fonctions_manbase.pas"/>

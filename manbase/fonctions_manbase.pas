@@ -26,7 +26,7 @@ const
                                       FileUnit : 'fonctions_manbase' ;
                                       Owner : 'Matthieu Giroux' ;
                                       Comment : 'Base de la Fiche personnalisée avec méthodes génériques et gestion de données.' ;
-                                      BugsStory :  '0.9.9.0 : Addinq auto create sql' + #13#10 +
+                                      BugsStory :  '0.9.9.0 : Adding auto create sql' + #13#10 +
                                                    '0.9.0.1 : Tested and centralizing from XML Frames' + #13#10 +
                                                    '0.9.0.0 : base not tested'  ;
                                        UnitType : 3 ;
@@ -49,12 +49,12 @@ type
                  FieldName : String ;
                  Min,Max : Double;
                End;
-  TRelationBind = Array of Record
+ { TRelationBind = Array of Record
                             ClassName  : String;
                             GroupField : String;
-                           End;
+                           End;}
   TFWOptionDefault = ( od0, od1, od2, od3, od4, od5 );
-  TFWFieldOption = ( foUnsigned, foZeroFill, foAutoIncrement );
+  TFWFieldOption = ( foUnsigned, foZeroFill, foAutoIncrement, foChoice );
   TFWIndexKind = ( ikPrimary, ikSecondary, ikIndex, ikUniqueIndex, ikFullTextIndex );
   TFWLinkOption = ( loRestrict, loCascade, loSetNull, loNoAction, loSetDefault );
   TFWSQLEvent = ( sqeBefore, sqeAfter );
@@ -65,7 +65,7 @@ type
   TFWSQLEventStrings = Array [ TFWSQLEvent ] of String;
   TFWEventStrings = Array [ TFWEventMode ] of String;
   TFWFieldOptions = set of TFWFieldOption;
-  TFWFieldOptionStrings = Array [ TFWFieldOption ] of String;
+  TFWFieldOptionStrings = Array [ foUnsigned  .. foAutoIncrement ] of String;
   TFWModel = Record
                TablePrefix : Array of String ;
                SynonymGroup : Integer;
@@ -149,6 +149,8 @@ var gbm_DatabaseToGenerate : TFWBaseMode = bmFirebird;
 type
   TFWFieldColumn = class;
   TFWFieldColumns = class;
+  TFWRelations = class;
+  TFWRelation = class;
 
   { TFWBaseObject }
 
@@ -213,14 +215,16 @@ type
      gs_DefaultValue,
      s_FieldName: String;
      i_NumTag : Integer ;
-     i_ShowCol, i_ShowSearch, i_ShowSort, i_HelpIdx, i_FieldSize, i_LookupSource : Integer ;
+     i_ShowCol, i_ShowSearch, i_ShowSort, i_HelpIdx, i_FieldSize : Integer ;
      b_ColMain, b_ColCreate, b_ColUnique, b_colSelect, b_colPrivate: Boolean;
+     gr_relations : TFWRelations;
      gi_SynonymGroup,
      gi_length,                     // optional numbers after comma
      gi_decimals,                     // optional numbers after comma
      gi_group: integer;         //number of group
      ft_FieldType : TFieldType ;
      gs_Parameter,
+     gs_Directory,
      gs_description : string;    //the description
      gas_Param,                  //Params [(length,decimals)]
      gas_Options: Array[0..5] of string;
@@ -237,12 +241,15 @@ type
      procedure SetOptionSelected ( const Index : TFWFieldOption; const Avalue : Boolean );
      function getSqlComment: string; override;
      function fs_DatatypeParams : String;
+     function fr_GetRelation : TFWRelation;
+     procedure p_setRelation ( const AValue : TFWRelation );
      function fs_TypeName : String;
    protected
-     function CreateCollectionFieldOptions: TFWFieldDataOptions; virtual;
+   function CreateCollectionFieldOptions: TFWFieldDataOptions; virtual;
+   function CreateCollectionRelations: TFWRelations; virtual;
    public
-    constructor Create(ACollection: TCollection); override; overload;
-    constructor Create; virtual; overload;
+    constructor Create(ACollection: TCollection); override;
+    destructor Destroy; override;
     procedure Erase; virtual;
     function IsErased:Boolean; virtual;
     function ColHidden:Boolean; virtual;
@@ -257,6 +264,7 @@ type
    published
      property group: integer read gi_group write gi_group default 0;
      property DefaultValue   : string read gs_DefaultValue write gs_DefaultValue;
+     property Directory  : string read gs_Directory write gs_Directory;
      property Parameter   : string read gs_Parameter write gs_Parameter;
      property description: string read gs_description write gs_description;
      property ParamRequired: Boolean read gb_ParamRequired write gb_ParamRequired default False;
@@ -278,7 +286,7 @@ type
      property ShowSearch : Integer read i_ShowSearch write i_ShowSearch default -1;
      property ShowSort : Integer read i_ShowSort write i_ShowSort default -1;
      property HelpIdx : Integer read i_HelpIdx write i_HelpIdx default -1;
-     property LookupSource : Integer read i_LookupSource write i_LookupSource;
+     property Relation : TFWRelation read fr_GetRelation write p_setRelation;
      property ColMain : Boolean read b_ColMain write b_ColMain;
      property ColCreate : Boolean read b_ColCreate write b_ColCreate;
      property ColPrivate : Boolean read b_ColPrivate write b_ColPrivate default False;
@@ -329,9 +337,8 @@ type
     TFWMiniFieldColumns = class(TFWBaseFieldColumns)
     private
       FColumn: TCollectionItem;
-    protected
-     function toString : String; virtual;
     public
+      function toString ( const ab_comma : Boolean = True ) : String; virtual;
       constructor Create(const Column: TCollectionItem; const ColumnClass: TFWMiniFieldColumnClass); virtual;
       property Column : TCollectionItem read FColumn;
     End;
@@ -385,8 +392,8 @@ type
     procedure SetTable( const Index: Integer; Value: TFWTable);
   protected
    function GetOwner: TPersistent; override;
-   function toString: String; virtual;
   public
+    function toString ( const ab_comma : Boolean = True ): String; virtual;
     constructor Create(const AOwner: TPersistent; const ColumnClass: TFWTableClass); virtual; overload;
     constructor Create(const ColumnClass: TFWTableClass); virtual; overload;
     function indexOf ( const as_TableName : String ) : Integer;
@@ -416,7 +423,6 @@ type
    property Items[CST_BASE_INDEX: Integer]: TFWIndex read GetIndex write SetIndex; default;
   End;
 
-  TFWRelation = class;
   TFWRelationClass = class of TFWRelation;
   { TFWFieldColumns }
 
@@ -616,7 +622,7 @@ type
 
     property RelKind: integer read grk_RelKind write grk_RelKind default 0;
 
-    property DestTables: TFWTables read gt_DestTables write p_setDestTables;
+    property TablesDest: TFWTables read gt_DestTables write p_setDestTables;
   end;
   TOnGetFileFromTable = function ( const ATable : TFWTable ):String;
 
@@ -786,15 +792,15 @@ begin
   Result:=FOwner;
 end;
 
-function TFWTables.toString: String;
+function TFWTables.toString ( const ab_comma : Boolean = True ): String;
 var li_i : Integer;
 begin
   Result:='';
   for li_i := 0 to Count-1 do
    Begin
-    if li_i = 0
-     Then Result:=Items[li_i].Table
-     Else Result:=Result+','+Items[li_i].Table;
+    if (li_i = 0) or not ab_comma
+     Then AppendStr(Result,Items[li_i].Table)
+     Else AppendStr(Result,','+Items[li_i].Table);
    end;
 end;
 
@@ -1856,7 +1862,7 @@ begin
 
     RelKind:=theSourceRel.RelKind;
 
-    DestTables.Assign(theSourceRel.DestTables);
+    gt_DestTables.Assign(theSourceRel.gt_DestTables);
 
     FieldsFK.Assign(theSourceRel.FieldsFK);
 
@@ -2041,6 +2047,16 @@ begin
 
 end;
 
+function TFWFieldData.fr_GetRelation: TFWRelation;
+begin
+  Result:=gr_relations [ 0 ];
+end;
+
+procedure TFWFieldData.p_setRelation(const AValue: TFWRelation);
+begin
+  gr_relations [ 0 ].Assign(AValue);
+end;
+
 function TFWFieldData.fs_TypeName: String;
 begin
   case FieldType of
@@ -2064,21 +2080,27 @@ begin
   Result := TFWFieldDataOptions.Create(self,TFWFieldDataOption);
 end;
 
+function TFWFieldData.CreateCollectionRelations: TFWRelations;
+begin
+  Result:=TFWRelations.Create(self,TFWRelation);
+  Result.Add;
+end;
+
 constructor TFWFieldData.Create(ACollection: TCollection);
 begin
   inherited Create(ACollection);
   Init;
 end;
 
-constructor TFWFieldData.Create;
+destructor TFWFieldData.Destroy;
 begin
-  inherited Create ( nil);
-  Init;
+  inherited Destroy;
+  gr_relations.Destroy;
+  gdo_Options.Destroy;
 end;
 
 procedure TFWFieldData.Init;
 begin
-  i_LookupSource := -1;
   i_ShowCol :=-1;
   i_ShowSearch :=-1;
   i_ShowSort :=-1;
@@ -2097,6 +2119,7 @@ begin
   gb_ParamRequired      := False;
   gfo_Options := [];
   gdo_Options := CreateCollectionFieldOptions;
+  gr_relations := CreateCollectionRelations;
 end;
 
 procedure TFWFieldData.Erase;
@@ -2221,15 +2244,15 @@ Begin
   FColumn := Column;
 End;
 
-function TFWMiniFieldColumns.toString: String;
+function TFWMiniFieldColumns.toString ( const ab_comma : Boolean = True ): String;
 var li_i : Integer ;
 begin
   Result:='';
   for li_i := 0 to Count-1 do
    Begin
-    if li_i = 0
-     Then Result:=Items[li_i].FieldName
-     Else Result:=Result+','+Items[li_i].FieldName;
+    if (li_i = 0) or not ab_comma
+     Then AppendStr(Result,Items[li_i].FieldName)
+     Else AppendStr(Result,','+Items[li_i].FieldName);
    end;
 end;
 
