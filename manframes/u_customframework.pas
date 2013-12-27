@@ -58,6 +58,7 @@ uses
   {$ENDIF}
   fonctions_tableauframework, u_searchcomponents,
   U_FormMainIni, Forms, DBCtrls, Grids,
+  U_GroupView,
   DBGrids, ComCtrls, StdCtrls, SysUtils, U_ExtDBNavigator,
   TypInfo, Variants, fonctions_manbase,
 {$IFDEF VERSIONS}
@@ -68,7 +69,6 @@ uses
 {$ENDIF}
   fonctions_erreurs,
   fonctions_db,
-  U_GroupView,
   U_FormAdapt,
   SyncObjs,
   u_framework_components,
@@ -155,6 +155,17 @@ type
   published
     property Source : Integer  read FSource write FSource ;
     property LookupFields : string read s_FieldsChilds write s_FieldsChilds;
+  end;
+
+  { TFWRelationGroup }
+
+  TFWRelationGroup = class(TFWRelation)
+  private
+    FGroupView : TDBGroupView;
+  protected
+    procedure Notification(AComponent: TComponent; Operation: TOperation);{$IFDEF FPC} virtual{$ELSE}override{$ENDIF};
+  published
+    property GroupView : TDBGroupView  read FGroupView write FGroupView ;
   end;
   TFWSourceChildClass = class of TFWSourceChild;
 
@@ -264,6 +275,7 @@ type
     function  CreateDataLink : TFWColumnDatalink; override;
     property IsStored: Boolean read FStored write FStored default True;
     function fb_ChangeDataSourceWork : Boolean ; virtual;
+    function CreateCollectionRelations: TFWRelations; virtual;
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
   public
 
@@ -428,7 +440,6 @@ type
      twin_edition   : TWinControl; // DBEdit de gestion de la tabulation, du Focus et
                              // de certaines propriétés graphiques
 
-    gt_Groupes    : array of TDBGroupView ;
                // DataSource de recherche non dynamique
     ds_DicoFrameWork ,
     gds_recherche : TDatasource ;
@@ -579,7 +590,6 @@ type
                              var ads_DataSource : TDataSource ;
                              var ai_Tag : Longint ):TFWFieldColumn; virtual;
     procedure p_InitOpenedDatasets; virtual;
-    procedure p_AddGroupView ( const adgv_GroupViewToAdd : TDBGroupView ); virtual;
     function  CreateSources: TFWSources; virtual;
     procedure p_CreateColumns; virtual;
     procedure p_MontreCacheColonne ( const adbgd_DataGrid : TCustomDBGrid; const adbgd_DataGridDataSource : TDatasource; const adbgd_DataGridColumns : TDBGridColumns; const aFWColumn : TFWSource );virtual;
@@ -1188,6 +1198,23 @@ begin
       End;
 End;
 
+{ TFWRelationGroup }
+
+procedure TFWRelationGroup.Notification(AComponent: TComponent;
+  Operation: TOperation);
+begin
+  Inherited;
+  if ( Operation <> opRemove )
+  or ( csDestroying in ((Collection.Owner as TCollectionItem).Collection.Owner as TComponent).ComponentState ) Then
+    Exit;
+
+  if    Assigned   ( FGroupView )
+  and ( AComponent = FGroupView )
+   then
+    FGroupView := nil;
+
+end;
+
 { TFWSourceChild }
 
 constructor TFWSourceChild.Create(Collection: TCollection);
@@ -1416,6 +1443,11 @@ begin
   and fb_ChangeEnregistrement ( var_Enregistrement, Datalink.DataSet, GetKeyString, False )
     Then
       Result := True ;
+end;
+
+function TFWSource.CreateCollectionRelations: TFWRelations;
+begin
+  Result:=TFWRelations.Create(Self,TFWRelationGroup);
 end;
 
 procedure TFWSource.Notification(AComponent: TComponent; Operation: TOperation);
@@ -1817,7 +1849,6 @@ Begin
   gi_CreateWidth  := Width ;
   gi_CreateHeight := Height ;
   gb_JustCreated := true ;
-  SetLength ( gt_Groupes, 0 );
 
   gb_Show := False ;
 
@@ -2089,11 +2120,6 @@ Begin
         End ;
 
      p_ChargeIndicateurs ( Components [ li_i ] );
-     if ( Components [ li_i ] is TDBGroupView ) Then
-       Begin
-         p_AddGroupView( Components [ li_i ] as TDBGroupView );
-         Continue ;
-       End ;
      if  ( Components [ li_i ] is TCustomPanel)
      and ( fobj_getComponentObjectProperty ( Components [ li_i ], 'DataSource' ) is TDatasource )
      and ( fi_GetDataWorkFromDataSource ( gFWSources, fobj_getComponentObjectProperty ( Components [ li_i ], 'DataSource' ))= -1) then
@@ -3756,27 +3782,26 @@ Begin
       End;
 End;
 
-procedure TF_CustomFrameWork.p_AddGroupView(
-  const adgv_GroupViewToAdd: TDBGroupView);
-begin
-  SetLength(gt_Groupes, high ( gt_Groupes ) + 2 );
-  gt_Groupes [ high ( gt_Groupes )] := adgv_GroupViewToAdd;
-end;
-
 // Mise à jour du datasource
 function TF_CustomFrameWork.fb_MAJDatasource ( const ads_Datasource : TDatasource; const as_ClePrimaire : String ; const avar_Enregistrement : Variant ):Boolean;
 var lvar_Enregistrement : Variant ;
-    li_i                : Integer ;
+    li_i                ,
+    li_j                : Integer ;
+    function fb_VerifyGroupView ( const adg_GroupView : TDBGroupView ):Boolean;
+    Begin
+      with adg_GroupView do
+      Result := ( DatasourceOwner = ads_Datasource )
+                and assigned  ( ButtonRecord )
+                and ( ButtonRecord.Enabled );
+    end;
 
 Begin
   Result := True ;
-  for li_i := 0 to high ( gt_Groupes ) do
-    if  ( gt_Groupes [ li_i ].DatasourceOwner = ads_Datasource )
-    and assigned  ( gt_Groupes [ li_i ].ButtonRecord )
-    and ( gt_Groupes [ li_i ].ButtonRecord.Enabled ) Then
-      Begin
-        Exit ;
-      End ;
+  for li_i := 0 to gFWSources.Count - 1 do
+    with gFWSources [ li_i ] do
+     for li_j := 0 to Relations.Count - 1 do
+       if fb_VerifyGroupView (( Relations [ li_j ] as TFWRelationGroup ).GroupView) Then
+         Exit;
   if   ( not ads_Datasource.DataSet.Active or ( ads_Datasource.DataSet.State = dsBrowse ))
   and  ( ads_Datasource <> gFWSources [CST_FRAMEWORK_DATASOURCE_PRINC].Datalink.DataSource )
   { or not assigned ( gstl_ChampsFieldLookup ) or ( gstl_ChampsFieldLookup.Count = 0 )
@@ -3846,13 +3871,28 @@ End ;
 
 // Ferme-t-on à l'activation
 procedure TF_CustomFrameWork.Activate;
-var li_i : Integer ;
+var li_i, li_j : Integer ;
     ds_Liste : TDataSource ;
     lobj_Liste : TObject;
     lb_close2 : Boolean ;
 {$IFDEF EADO}
     ls_Sort : String ;
 {$ENDIF}
+  procedure p_majGroupView ( const AGroupView : TDBGroupView );
+  Begin
+    with AGroupView do
+          // Vérifications avant mise  à jour
+      if  assigned ( Datasource )
+      and assigned ( Datasource.Dataset )
+      // Si le DatasourceWoner n'est pas renseigné c'est une gestion de groupes sans relation avec les autres fiches
+      // Le Datasource est en effet le même que le Datasource principal de la fiche
+      and assigned ( DatasourceOwner )
+      and assigned ( DatasourceOwner.Dataset )
+      and Datasource.Dataset.Active Then
+        fb_MAJDatasource ( Datasource.Dataset );
+
+  end;
+
 begin
   gb_RafraichitForm := False;
   if ( csDesigning in ComponentState )
@@ -3909,23 +3949,20 @@ begin
                   gb_Close :=  lb_close2 and gb_Close ;
                 End ;
           // Mise à jour des composants groupes et affectations
-          for li_i := 0 to high ( gt_Groupes ) do
-            Begin
-              // Vérifications avant mise  à jour
-              if  assigned ( gt_Groupes [ li_i ].Datasource )
-              and assigned ( gt_Groupes [ li_i ].Datasource.Dataset )
-              // Si le DatasourceWoner n'est pas renseigné c'est une gestion de groupes sans relation avec les autres fiches
-              // Le Datasource est en effet le même que le Datasource principal de la fiche
-              and assigned ( gt_Groupes [ li_i ].DatasourceOwner )
-              and assigned ( gt_Groupes [ li_i ].DatasourceOwner.Dataset )
-              and gt_Groupes [ li_i ].Datasource.Dataset.Active Then
-                fb_MAJDatasource ( gt_Groupes [ li_i ].Datasource.Dataset );
-            End ;
+          for li_i := 0 to gFWSources.Count - 1 do
+           with gFWSources [ li_i ] do
+            for li_j := 0 to Relations.Count - 1 do
+             with Relations [ li_j ] as TFWRelationGroup do
+              Begin
+                p_majGroupView ( GroupView );
+                p_majGroupView ( GroupView.DataListOpposite );
+              End ;
           // Met à jour les listes des DatasourceWork
           for li_i := 0 to gFWSources.Count - 1 do
-            if  assigned ( gFWSources.items [ li_i ].Datalink )
-            and assigned ( gFWSources.items [ li_i ].Datalink.DataSet ) Then
-              fb_MAJDatasource ( gFWSources.items [ li_i ].Datalink.DataSet );
+           with gFWSources [ li_i ] do
+            if  assigned ( Datalink )
+            and assigned ( Datalink.DataSet ) Then
+              fb_MAJDatasource ( Datalink.DataSet );
 
           // Met à jour les listes des tcombo et tlist
           for li_i := 0 to ComponentCount - 1 do
@@ -4569,7 +4606,7 @@ end;
 
 // Vérifie si la fiche est toujours en modifications
 procedure TF_CustomFrameWork.VerifyModifying ;
-var li_i : Integer ;
+var li_i, li_j : Integer ;
 begin
   gb_SauverModifications := True ;
 
@@ -4581,11 +4618,14 @@ begin
       Exit ;
 
   // Les groupes sont-ils en modifications ?
-  for li_i := low ( gt_Groupes ) to high ( gt_Groupes ) do
-    if  assigned ( gt_Groupes [ li_i ].ButtonRecord )
-    and gt_Groupes [ li_i ].ButtonRecord.Enabled Then
-    // oui on quitte
-      Exit ;
+  for li_i := 0 to gFWSources.Count - 1 do
+    with gFWSources [ li_i ] do
+      for li_j := 0 to Relations.Count-1 do
+        with (Relations [ li_j ] as TFWRelationGroup).GroupView do
+          if  assigned ( ButtonRecord )
+          and ButtonRecord.Enabled Then
+          // oui on quitte
+            Exit ;
 
   // On n'est alors plus en modifications si on n'a pas quitté
   gb_SauverModifications := False ;
@@ -5175,7 +5215,7 @@ end;
 
 // affectation de la variable gb_CloseQuery
 function TF_CustomFrameWork.CloseQuery: Boolean;
-var li_i : Integer ;
+var li_i, li_j : Integer ;
 begin
   gb_CloseQuery := True ;
   Result := inherited CloseQuery ;
@@ -5216,40 +5256,45 @@ begin
                       Result := False ;
                     End ;
                  end;
-              for li_i := 0 to high ( gt_Groupes ) do
-               with gt_Groupes [ li_i ] do
-                if  assigned ( ButtonRecord )
-                and ButtonRecord.Enabled
-                Then
-                  Begin
-                    SendMessage ( ButtonRecord.Handle, {$IFDEF FPC}LM_LBUTTONDOWN{$ELSE}WM_LBUTTONDOWN{$ENDIF},0,0);
-                    SendMessage ( ButtonRecord.Handle, {$IFDEF FPC}LM_LBUTTONUP{$ELSE}WM_LBUTTONUP{$ENDIF},0,0);
-                  End;
+              for li_i := 0 to gFWSources.Count-1 do
+               with gFWSources [ li_i ] do
+                for li_j := 0 to Relations.Count-1 do
+                 with (Relations [ li_j ] as TFWRelationGroup).GroupView do
+                  if  assigned ( ButtonRecord )
+                  and ButtonRecord.Enabled
+                  Then
+                    Begin
+                      SendMessage ( ButtonRecord.Handle, {$IFDEF FPC}LM_LBUTTONDOWN{$ELSE}WM_LBUTTONDOWN{$ENDIF},0,0);
+                      SendMessage ( ButtonRecord.Handle, {$IFDEF FPC}LM_LBUTTONUP{$ELSE}WM_LBUTTONUP{$ENDIF},0,0);
+                    End;
           End;
       MrNo: // No
             Begin
               for li_i := 0 to gFWSources.Count - 1 do
-              if  assigned ( gFWSources.items [ li_i ].Datalink )
-              and assigned ( gFWSources.items [ li_i ].Datalink.DataSet ) Then
-               with gFWSources.items [ li_i ].Datalink.DataSet do
-                 Try   // yes
-                   if State in [dsInsert,dsEdit] then
-                      Cancel;
+               with gFWSources [ li_i ] do
+                if  assigned ( Datalink )
+                and assigned ( Datalink.DataSet ) Then
+                 with Datalink.DataSet do
+                   Try   // yes
+                     if State in [dsInsert,dsEdit] then
+                        Cancel;
 
-                 Except
-                   // Meilleur comportement d'annulation en laissant la fiche se fermer
-                   on e:exception do
-                     fcla_GereException ( e, Datasource.DataSet );
-                 end;
-              for li_i := 0 to high ( gt_Groupes ) do
-               with gt_Groupes [ li_i ] do
-                if  assigned ( ButtonCancel )
-                and ButtonCancel.Enabled
-                 Then
-                  Begin
-                    SendMessage ( ButtonCancel.Handle, {$IFDEF FPC}LM_LBUTTONDOWN{$ELSE}WM_LBUTTONDOWN{$ENDIF},0,0);
-                    SendMessage ( ButtonCancel.Handle, {$IFDEF FPC}LM_LBUTTONUP{$ELSE}WM_LBUTTONUP{$ENDIF},0,0);
-                  End;
+                   Except
+                     // Meilleur comportement d'annulation en laissant la fiche se fermer
+                     on e:exception do
+                       fcla_GereException ( e, Datasource.DataSet );
+                   end;
+              for li_i := 0 to gFWSources.Count-1 do
+               with gFWSources [ li_i ] do
+                for li_j := 0 to Relations.Count-1 do
+                 with (Relations [ li_j ] as TFWRelationGroup).GroupView do
+                  if  assigned ( ButtonCancel )
+                  and ButtonCancel.Enabled
+                   Then
+                    Begin
+                      SendMessage ( ButtonCancel.Handle, {$IFDEF FPC}LM_LBUTTONDOWN{$ELSE}WM_LBUTTONDOWN{$ENDIF},0,0);
+                      SendMessage ( ButtonCancel.Handle, {$IFDEF FPC}LM_LBUTTONUP{$ELSE}WM_LBUTTONUP{$ENDIF},0,0);
+                    End;
 
              End;
    end;

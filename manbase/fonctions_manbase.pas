@@ -499,8 +499,7 @@ type
     function  CreateDataLink : TFWColumnDatalink; virtual;
     function CreateCollectionIndexes: TFWIndexes; virtual;
     function CreateCollectionFields: TFWFieldColumns; virtual;
-    function CreateCollectionRelBegin: TFWRelations; virtual;
-    function CreateCollectionRelEnd: TFWRelations; virtual;
+    function CreateCollectionRelations: TFWRelations; virtual;
     procedure Notification(AComponent: TComponent; Operation: TOperation);{$IFDEF FPC} virtual{$ELSE}override{$ENDIF};
   public
     { Public declarations }
@@ -1738,7 +1737,7 @@ begin
   gsl_TableOptions   := TStringList.Create;
   gfwi_Indexes       := CreateCollectionIndexes;
   gfc_FieldColumns   := CreateCollectionFields;
-  gr_relations     := CreateCollectionRelEnd;
+  gr_relations     := CreateCollectionRelations;
   ddl_DataLink := CreateDataLink;
   gs_key:='';
   gi_KeyColumn := -1;
@@ -1749,12 +1748,7 @@ Begin
   Result   := TFWFieldColumns.Create(Self,TFWFieldColumn);
 end;
 
-function TFWTable.CreateCollectionRelBegin:TFWRelations;
-Begin
-  Result   := TFWRelations.Create(Self,TFWRelation);
-end;
-
-function TFWTable.CreateCollectionRelEnd:TFWRelations;
+function TFWTable.CreateCollectionRelations:TFWRelations;
 Begin
   Result   := TFWRelations.Create(Self,TFWRelation);
 end;
