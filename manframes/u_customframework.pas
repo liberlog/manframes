@@ -796,7 +796,7 @@ procedure p_TrieSurClickLabel (
         const ab_IsImage     : Boolean ;
         const ab_SortDBGRid : Boolean);
 function fs_getListSelect ( const afc_FieldsDefs : TFWFieldColumns ; const as_listOrigin : string = '*' ): String;
-function fs_getListShow ( const afc_FieldsDefs : TFWFieldColumns ): String;
+function fs_getListShow ( const afc_FieldsDefs : TFWMiniFieldColumns ): String;
 
 implementation
 
@@ -833,13 +833,14 @@ Begin
 end;
 
 
-function fs_getListShow ( const afc_FieldsDefs : TFWFieldColumns ): String;
+function fs_getListShow ( const afc_FieldsDefs : TFWMiniFieldColumns ): String;
 var li_j : Integer;
 Begin
   Result := '*';
   for li_j := 0 to afc_FieldsDefs.Count - 1 do
    with afc_FieldsDefs [li_j] do
-     if ShowCol >= 0 Then
+     if not ( afc_FieldsDefs is TFWFieldColumns )
+     or (( afc_FieldsDefs as TFWFieldColumns ) [li_j].ShowCol >= 0 ) Then
        if Result = '*'
          Then Result := FieldName
          Else AppendStr(Result,','+FieldName);
@@ -6264,19 +6265,18 @@ Begin
     if assigned ( ads_DataSource )
     and (afd_FieldDef <> nil)
     and not ( gb_PasUtiliserProps )
-    and (afd_FieldDef.LookupSource > -1 )
+    and (afd_FieldDef.Relation.TablesDest.Count > 0 )
     and fb_IsRechListeCtrlPoss ( acom_Component )// est-ce un control de list avec field de liste
     and not assigned ( fobj_getComponentObjectProperty( acom_Component, 'ListSource'))
     and not assigned ( fobj_getComponentObjectProperty( acom_Component, 'LookupSource'))
-    and (afd_FieldDef.LookupSource < gFWSources.Count )
      then
-       with gFWSources [ afd_FieldDef.LookupSource ] do
+       with afd_FieldDef.Relation do
         begin
         // Ouvrir les propriétés de liste
-          lds_DataSource := fds_GetOrCloneDataSource ( acom_Component, 'ListSource', 'SELECT * FROM '+ Table, Self, gdat_DatasetPrinc );
+          lds_DataSource := fds_GetOrCloneDataSource ( acom_Component, 'ListSource', 'SELECT * FROM '+ TablesDest.toString, Self, gdat_DatasetPrinc );
           if not assigned ( lds_DataSource ) Then
-            lds_DataSource := fds_GetOrCloneDataSource ( acom_Component, 'LookupSource', 'SELECT * FROM '+ Table, Self, gdat_DatasetPrinc );
-          ls_Temp := fs_getListShow(FieldsDefs);
+            lds_DataSource := fds_GetOrCloneDataSource ( acom_Component, 'LookupSource', 'SELECT * FROM '+ TablesDest.toString, Self, gdat_DatasetPrinc );
+          ls_Temp := fs_getListShow(FieldsDisplay);
           if ( ls_Temp <> '*' ) Then
             Begin
               p_SetComponentProperty ( acom_Component, 'LookupDisplay', ls_Temp);
