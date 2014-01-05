@@ -74,7 +74,9 @@ type
       property OnSet : TNotifyEvent read FOnSet write FOnSet ;
       property Width default CST_FILL_COMBO_WIDTH;
     End;
+    TExtFillComboClass = class of TExtFillCombo;
 
+var gefc_FillComboAutoCreated : TExtFillComboClass = TExtFillCombo;
 implementation
 
 uses fonctions_images, U_FormMainIni, fonctions_proprietes,

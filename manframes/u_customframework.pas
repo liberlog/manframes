@@ -213,6 +213,7 @@ type
   private
      e_Scroll         : TDatasetNotifyEvent ;
      FPanels : TFWPanels;
+     FPanelDetails : TCustomPanel;
      FLinked : TFWSourcesChilds;
      FForm : TF_CustomFrameWork;
      gd_Grid : TCustomDBGrid ;
@@ -320,6 +321,7 @@ type
     property NavEdit  : TExtDBNavigator read fcp_getDBNavigatorEditor write p_setDBNavigatorEditor;
     // Panel contenant le Grid de navigation
     property Panels  : TFWPanels read FPanels  write p_setPanels  ;
+    property PanelDetails  : TCustomPanel read FPanelDetails  write FPanelDetails  ;
     property Linked  : TFWSourcesChilds read FLinked  write p_setLinked  ;
     // Clé étrangère du DataSource vers le grid Lookup
     property LookupField : string read fs_getLookupField write p_SetLookupField;
