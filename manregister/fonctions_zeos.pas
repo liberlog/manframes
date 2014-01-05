@@ -125,7 +125,7 @@ End;
 
 function fs_EndCreateDatabase  ( const as_base, as_user, as_password : String ):String;
 Begin
-  Result := 'GRANT ALL ON '+as_base+'.* TO '''+as_user+'''@''''%'''' IDENTIFIED BY '+as_password+''';'+#10;
+  Result := 'GRANT ALL ON '+as_base+'.* TO '''+as_user+'''@''%'' IDENTIFIED BY '''+as_password+''';'+#10;
 End;
 
 

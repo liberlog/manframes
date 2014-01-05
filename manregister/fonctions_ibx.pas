@@ -78,15 +78,14 @@ Begin
 End ;
 function fs_CreateDatabase  ( const as_base, as_user, as_password : String ):String;
 Begin
-  Result := 'CREATE DATABASE '''+as_base+''' USER '''+as_user+''' PASSWORD '''+as_password+''' PAGE_SIZE 16384 DEFAULT CHARACTERSET '+Gs_Names_Charset+';'+#10
-          + 'USE '+as_base+';'+#10;
+  Result := 'CREATE DATABASE '''+as_base+''' USER '''+as_user+''' PASSWORD '''+as_password+''' PAGE_SIZE 16384 DEFAULT CHARACTER SET '+Gs_Names_Charset+';'+#10
+          + 'CONNECT '+as_base+';'+#10;
 End;
 
 procedure p_ExecuteSQLCommand ( const as_SQL : {$IFDEF DELPHI_9_UP} String {$ELSE} WideString{$ENDIF}  );
 var ls_File : String;
     lh_handleFile : THandle;
 Begin
-  MyMessageDlg('SQL',as_SQL,mtError,mbOKCancel);
   ls_File := fs_GetIniDir+'sql-firebird';
   if FileExistsUTF8(ls_File+CST_EXTENSION_SQL_FILE) Then DeleteFileUTF8(ls_File+CST_EXTENSION_SQL_FILE);
   lh_handleFile := FileCreateUTF8(ls_File+CST_EXTENSION_SQL_FILE);
@@ -95,7 +94,7 @@ Begin
   finally
     FileClose(lh_handleFile);
   end;
-  fs_ExecuteProcess({$IFDEF WINDOWS}'.'+DirectorySeparator+'isql.exe'{$ELSE}'fb-isql'{$ENDIF}, '-i '+ ls_File+CST_EXTENSION_SQL_FILE + ' -o ' + ls_File+CST_EXTENSION_LOG_FILE, False);
+  fs_ExecuteProcess({$IFDEF WINDOWS}'.'+DirectorySeparator+'isql.exe'{$ELSE}'isql-fb'{$ENDIF}, '-i '+ ls_File+CST_EXTENSION_SQL_FILE + ' -o ' + ls_File+CST_EXTENSION_LOG_FILE, False);
 End ;
 
 procedure p_setLibrary (var libname: string);
@@ -134,7 +133,7 @@ initialization
  ge_onCreateConnection := TCreateConnection ( p_CreateIBXconnection );
  ge_OnExecuteQuery  :=TOnExecuteQuery(p_ExecuteIBXQuery);
  ge_OnBeginCreateAlter  :=TOnGetSQL( fs_CreateAlterBeginSQL);
- ge_OnEndCreate       :=TOnSetDatabase( fs_CreateAlterEndSQL);
+ ge_OnEndCreate       :=TOnGetSQL( fs_CreateAlterEndSQL);
  ge_OnCreateDatabase  :=TOnSetDatabase( fs_CreateDatabase);
  ge_OnExecuteCommand:=TOnExecuteCommand(p_ExecuteSQLCommand);
  {$IFDEF VERSIONS}
