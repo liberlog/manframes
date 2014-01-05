@@ -26,7 +26,7 @@
 No control please"/>
     <License Value="LGPL"/>
     <Version Major="1" Minor="3"/>
-    <Files Count="4">
+    <Files Count="5">
       <Item1>
         <Filename Value="manbase/fonctions_manbase.pas"/>
         <UnitName Value="fonctions_manbase"/>
@@ -43,6 +43,10 @@ No control please"/>
         <Filename Value="manbase/u_multidonnees.pas"/>
         <UnitName Value="u_multidonnees"/>
       </Item4>
+      <Item5>
+        <Filename Value="manbase/unite_variables.pas"/>
+        <UnitName Value="unite_variables"/>
+      </Item5>
     </Files>
     <i18n>
       <OutDir Value="fonctions"/>

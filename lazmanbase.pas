@@ -8,7 +8,7 @@ interface
 
 uses
   fonctions_manbase, u_multidata, fonctions_create, u_multidonnees, 
-  LazarusPackageIntf;
+  unite_variables, LazarusPackageIntf;
 
 implementation
 

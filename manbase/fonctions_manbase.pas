@@ -55,7 +55,7 @@ type
                            End;}
   TFWOptionDefault = ( od0, od1, od2, od3, od4, od5 );
   TFWFieldOption = ( foUnsigned, foZeroFill, foAutoIncrement, foChoice, foFile );
-  TFWIndexKind = ( ikPrimary, ikSecondary, ikIndex, ikUniqueIndex, ikFullTextIndex );
+  TFWIndexKind = ( ikPrimary, ikIndex, ikUniqueIndex, ikFullTextIndex );
   TFWLinkOption = ( loRestrict, loCascade, loSetNull, loNoAction, loSetDefault );
   TFWSQLEvent = ( sqeBefore, sqeAfter );
   TFWEventMode = ( emCreate, emInsert, emUpdate, emDelete );
@@ -85,6 +85,7 @@ type
                TRIGGER_EVENT   : TFWSQLEventStrings;
                TRIGGER_EVENT_MODE   : TFWEventStrings;
                NOT_NULL        : string;
+               DATE            : String;
              end;
 
 
@@ -96,12 +97,12 @@ const CST_BASE_INDEX_PRIMARY = 'PRIMARY';
       CST_BASE_FIELD_OPTIONS : TFWFieldOptionStrings = ( 'UNSIGNED', 'ZEROFILL', 'AUTOINC' );
       CST_BASE_CREATE_TABLE = 'CREATE @ARGTABLE @ARG';
       CST_BASE_TEMPORARY_TABLE = 'TEMPORARY ';
-      CST_BASE_PRIMARY_KEY  = 'PRIMARY KEY @ARG' ;
       CST_BASE_FOREIGN_KEY  = 'FOREIGN KEY @ARG(@ARG)' ;
       CST_BASE_INDEX        = 'INDEX @ARG';
       CST_BASE_UNIQUE_INDEX = 'UNIQUE INDEX @ARG';
       CST_BASE_FULLTEXT_INDEX = 'FULLTEXT INDEX @ARG' ;
       CST_BASE_CREATE_INDEX = 'CREATE INDEX @ARG ON @ARG (@ARG)';
+      CST_BASE_INDEXES      : array[TFWIndexKind] of String = ('PRIMARY KEY','INDEX @ARG','UNIQUE INDEX @ARG','FULLTEXT INDEX @ARG');
       CST_BASE_ONDELETE     : TFWLinkOptionStrings = ('      ON DELETE RESTRICT','      ON DELETE CASCADE','      ON DELETE SET NULL','      ON DELETE NO ACTION','      ON DELETE SET DEFAULT');
       CST_BASE_ONUPDATE     : TFWLinkOptionStrings = ('      ON UPDATE RESTRICT','      ON UPDATE CASCADE','      ON UPDATE SET NULL','      ON UPDATE NO ACTION','      ON UPDATE SET DEFAULT');
       CST_Base_Words : Array [ TFWBaseMode ] of TFWWords = (
@@ -111,6 +112,7 @@ const CST_BASE_INDEX_PRIMARY = 'PRIMARY';
                         TRIGGER_EVENT   : ('BEFORE @ARG  ', 'AFTER  @ARG  ');
                         TRIGGER_EVENT_MODE   : ('CREATE','INSERT','UPDATE','DELETE');
                         NOT_NULL    : 'NOT NULL';
+                        DATE        : 'DATE';
                        ),
                        (
                         TABLE_TYPE   : 'TYPE=@ARG';
@@ -118,6 +120,7 @@ const CST_BASE_INDEX_PRIMARY = 'PRIMARY';
                         TRIGGER_EVENT   : ('BEFORE @ARG  ', 'AFTER  @ARG  ');
                         TRIGGER_EVENT_MODE   : ('CREATE','INSERT','UPDATE','DELETE');
                         NOT_NULL    : 'NOT NULL';
+                        DATE        : 'DATETIME';
                         ),
                         (
                          TABLE_TYPE   : 'TYPE=@ARG';
@@ -125,6 +128,7 @@ const CST_BASE_INDEX_PRIMARY = 'PRIMARY';
                          TRIGGER_EVENT   : ('BEFORE @ARG  ', 'AFTER  @ARG  ');
                          TRIGGER_EVENT_MODE   : ('CREATE','INSERT','UPDATE','DELETE');
                          NOT_NULL    : 'NOT NULL';
+                         DATE        : 'DATE';
                          ),
                         (
                          TABLE_TYPE   : 'TYPE=@ARG';
@@ -132,6 +136,7 @@ const CST_BASE_INDEX_PRIMARY = 'PRIMARY';
                          TRIGGER_EVENT   : ('BEFORE @ARG  ', 'AFTER  @ARG  ');
                          TRIGGER_EVENT_MODE   : ('CREATE','INSERT','UPDATE','DELETE');
                          NOT_NULL    : 'NOT NULL';
+                         DATE        : 'DATE';
                          ),
                        (
                         TABLE_TYPE   : 'TYPE=@ARG';
@@ -139,6 +144,7 @@ const CST_BASE_INDEX_PRIMARY = 'PRIMARY';
                         TRIGGER_EVENT   : ('BEFORE @ARG  ', 'AFTER  @ARG  ');
                         TRIGGER_EVENT_MODE   : ('CREATE','INSERT','UPDATE','DELETE');
                         NOT_NULL    : 'NOT NULL';
+                        DATE        : 'DATETIME';
                         )
                        );
       CST_MYSQL_TABLE_TYPE : Array [ 1..5 ] of String =('InnoDB','HEAP','BDB','ISAM','MERGE');
@@ -377,7 +383,7 @@ type
   published
     property IndexName: string read gs_Name write gs_Name;
     property Pos: integer read gi_Pos write gi_Pos default 0;              //Position
-    property IndexKind: TFWIndexKind read gik_IndexKind write gik_IndexKind default ikSecondary;
+    property IndexKind: TFWIndexKind read gik_IndexKind write gik_IndexKind default ikIndex;
     property FieldsDefs: TFWFieldColumns read gfc_FieldColumns write SetFields;
   end;
   TFWIndexClass = class of TFWIndex;
@@ -757,6 +763,7 @@ begin
   Inherited Create(ACollection);
   ( Collection as TFWIndexes ).gb_Changed:=True;
   gfc_FieldColumns:=CreateFieldColumns;
+  gik_IndexKind:=ikIndex;
 end;
 
 destructor TFWIndex.Destroy;
@@ -1020,7 +1027,7 @@ begin
 
     for i:=0 to gfc_FieldColumns.Count-1 do
      with gfc_FieldColumns[i] do
-      if ColUnique
+      if b_ColUnique
       and (theIndex.gfc_FieldColumns.indexOf(FieldName) = -1) then
         theIndex.gfc_FieldColumns.Add(gfc_FieldColumns[theIndex.gfc_FieldColumns.indexOf(FieldName)].Clone(theIndex.gfc_FieldColumns));
 
@@ -1073,7 +1080,7 @@ function TFWTable.GetSQLCreateCode(const DefinePK: Boolean = True;
   const LastExclusionColName: string = 'EX_DATE';
   const lastExclusionTriggerPrefix: string = 'EXCDT_'
   ): string;
-var s, s1: string;
+var s1: string;
   sIndex:string; // string for create index
   i, j: integer;
   theRel: TFWRelation;
@@ -1121,10 +1128,10 @@ begin
   //Make table temporary
   with CST_Base_Words [ gbm_DatabaseToGenerate ] do
   if isTemporary
-   then s:=fs_RemplaceMsg( CST_BASE_CREATE_TABLE, [ CST_BASE_TEMPORARY_TABLE, Table ])
-   else s:=fs_RemplaceMsg( CST_BASE_CREATE_TABLE, [ '', Table ]);
+   then Result:=fs_RemplaceMsg( CST_BASE_CREATE_TABLE, [ CST_BASE_TEMPORARY_TABLE, Table ])
+   else Result:=fs_RemplaceMsg( CST_BASE_CREATE_TABLE, [ '', Table ]);
 
-  s:=s+'('+#13+#10;
+  Result:=Result+'('+#13+#10;
 
   //gfc_FieldColumns
   for i:=0 to gfc_FieldColumns.Count-1 do
@@ -1134,20 +1141,20 @@ begin
         //colname
         if i>0 then
          begin
-          s:=s+',';
-          s:=s+#13#10;
+          Result:=Result+',';
+          Result:=Result+#13#10;
          end;
 
-        s:=s+'  '+GetSQLColumnCreateDefCode(FieldOnGeneratorOrSequence,HideNullField, DefaultBeforeNotNull, OutputComments);
+        Result:=Result+'  '+GetSQLColumnCreateDefCode(FieldOnGeneratorOrSequence,HideNullField, DefaultBeforeNotNull, OutputComments);
 
       end;
 
   //create column to store record changes
   if CreateLastChage then
   begin
-    s := s + ', '+ sLineBreak;
-    s := s + '  '+LastChangeDateCol + ' VARCHAR(15), ' + sLineBreak; //confirmar se é varchar(12)
-    s := s + '  '+LastChangeUserCol + ' INTEGER ';
+    Result := Result + ', '+ sLineBreak;
+    Result := Result + '  '+LastChangeDateCol + ' VARCHAR(15), ' + sLineBreak; //confirmar se é varchar(12)
+    Result := Result + '  '+LastChangeUserCol + ' INTEGER ';
   end;
 
   //Indexes
@@ -1172,17 +1179,8 @@ begin
       indexOnTable := '';
     end;
 
-    s:=s+'  ';
-    case IndexKind of
-      ikPrimary:
-        sIndex:=sIndex+'PRIMARY KEY(';
-      ikIndex:
-        sIndex:=sIndex+'INDEX '+DBQuote+IndexName+DBQuote+indexOnTable+'(';
-      ikUniqueIndex:
-        sIndex:=sIndex+'UNIQUE INDEX '+DBQuote+IndexName+DBQuote+indexOnTable+'(';
-      ikFullTextIndex:
-        sIndex:=sIndex+'FULLTEXT INDEX '+DBQuote+IndexName+DBQuote+indexOnTable+'(';
-    end;
+    Result:=Result+'  ';
+    sIndex:=sIndex+'  '+fs_RemplaceMsg(CST_BASE_INDEXES [ IndexKind ],[DBQuote+IndexName+DBQuote+indexOnTable])+'(';
 
     for j:=0 to gfc_FieldColumns.Count-1 do
      with gfc_FieldColumns[j] do
@@ -1210,9 +1208,9 @@ begin
       FinallyPortableIndexes := FinallyPortableIndexes + sIndex + ';'+#13#10+GoStatementstr;
     end else
     begin
-      s:=s+',';
-      s:=s+#13#10;
-      s:=s + sIndex;
+      Result:=Result+',';
+      Result:=Result+#13#10;
+      Result:=Result + sIndex;
     end;
   end;
 
@@ -1227,8 +1225,8 @@ begin
 
       if(theRel.CreateRefDef)then
       begin
-        s:=s+',';
-        s:=s+#13#10;
+        Result:=Result+',';
+        Result:=Result+#13#10;
         //get the FK field list from destination table
         s1:='';
         for j:=0 to theRel.FieldsFK.Count-1 do
@@ -1239,130 +1237,130 @@ begin
         end;
 
         //The Index for INNODB is now created like any other index
-        //s:=s+'  INDEX '+theRel.ObjName+'('+s1+'),'+#13#10; //Add this for INNODB
+        //Result:=Result+'  INDEX '+theRel.ObjName+'('+s1+'),'+#13#10; //Add this for INNODB
         if DoNotUseRelNameInRefDef then
-          s:=s+ fs_RemplaceMsg(CST_BASE_FOREIGN_KEY, ['',s1])+#13#10
+          Result:=Result+ fs_RemplaceMsg(CST_BASE_FOREIGN_KEY, ['',s1])+#13#10
         else
-          s:=s+fs_RemplaceMsg(CST_BASE_FOREIGN_KEY, [DBQuote+theRel.RelationName+DBQuote,s1])+#13#10;
+          Result:=Result+fs_RemplaceMsg(CST_BASE_FOREIGN_KEY, [DBQuote+theRel.RelationName+DBQuote,s1])+#13#10;
 
 
         FKIndexName := copy('IFK_'+DBQuote+theRel.RelationName+DBQuote,1,30);
         FKIndexes :=
           FKIndexes + fs_RemplaceMsg(CST_BASE_CREATE_INDEX, [FKIndexName,GetSQLTableName,s1])+#13#10+GoStatementstr;
 
-        s:=s+'    REFERENCES '+DBQuote+Table+DBQuote+'(';
+        Result:=Result+'    REFERENCES '+DBQuote+Table+DBQuote+'(';
         //get the FK field list from source table
         for j:=0 to theRel.FieldsFK.Count-1 do
         begin
-          s:=s+DBQuote+theRel.FieldsFK[j].FieldName+DBQuote;
+          Result:=Result+DBQuote+theRel.FieldsFK[j].FieldName+DBQuote;
           if(j<theRel.FieldsFK.Count-1)then
-            s:=s+', ';
+            Result:=Result+', ';
         end;
-        s:=s+')';
+        Result:=Result+')';
         {if(theRel.RefDef.Values['Matching']>'')then
           case StrToInt(theRel.RefDef.Values['Matching']) of
-            0: s:=s+#13#10+'      MATCH FULL';
-            1: s:=s+#13#10+'      MATCH PARTIAL';
+            0: Result:=Result+#13#10+'      MATCH FULL';
+            1: Result:=Result+#13#10+'      MATCH PARTIAL';
           end;}
 
-          s:=s+#13#10+CST_BASE_ONDELETE [ theRel.OnDelete ];
-          s:=s+#13#10+CST_BASE_ONUPDATE [ theRel.OnUpdate ];
+          Result:=Result+#13#10+CST_BASE_ONDELETE [ theRel.OnDelete ];
+          Result:=Result+#13#10+CST_BASE_ONUPDATE [ theRel.OnUpdate ];
 
         inc(relCounter);
       end;
     end;
   end;
 
-  s:=s+')';
+  Result:=Result+')';
 
   //TableType (MYISAM is standard)
   if (gbm_DatabaseToGenerate = bmMySQL )then
    Begin
      if(theTableType>0) Then
-       s:=s+#13#10+fs_RemplaceMsg(CST_Base_Words[gbm_DatabaseToGenerate].TABLE_TYPE,[CST_MYSQL_TABLE_TYPE [ theTableType ]]);
+       Result:=Result+#13#10+fs_RemplaceMsg(CST_Base_Words[gbm_DatabaseToGenerate].TABLE_TYPE,[CST_MYSQL_TABLE_TYPE [ theTableType ]]);
 
      //Options
      if(TblOptions)  then
      begin
-       AppendStr(s,TableOptions.Text);
+       AppendStr(Result,TableOptions.Text);
        {
        if(TableOptions.Values['NextAutoIncVal']>'')then
-         s:=s+#13#10+'AUTO_INCREMENT = '+TableOptions.Values['NextAutoIncVal'];
+         Result:=Result+#13#10+'AUTO_INCREMENT = '+TableOptions.Values['NextAutoIncVal'];
        if(TableOptions.Values['AverageRowLength']>'')then
-         s:=s+#13#10+'AVG_ROW_LENGTH = '+TableOptions.Values['AverageRowLength'];
+         Result:=Result+#13#10+'AVG_ROW_LENGTH = '+TableOptions.Values['AverageRowLength'];
        if(TableOptions.Values['RowChecksum']<>'0')and
          (TableOptions.Values['RowChecksum']>'')then
-         s:=s+#13#10+'CHECKSUM = '+TableOptions.Values['RowChecksum'];
+         Result:=Result+#13#10+'CHECKSUM = '+TableOptions.Values['RowChecksum'];
        if(TableOptions.Values['MaxRowNumber']>'')then
-         s:=s+#13#10+'MAX_ROWS = '+TableOptions.Values['MaxRowNumber'];
+         Result:=Result+#13#10+'MAX_ROWS = '+TableOptions.Values['MaxRowNumber'];
        if(TableOptions.Values['MinRowNumber']>'')then
-         s:=s+#13#10+'MIN_ROWS = '+TableOptions.Values['MinRowNumber'];
+         Result:=Result+#13#10+'MIN_ROWS = '+TableOptions.Values['MinRowNumber'];
        if(TableOptions.Values['PackKeys']<>'0')and
          (TableOptions.Values['PackKeys']>'')then
-         s:=s+#13#10+'PACK_KEYS = '+TableOptions.Values['PackKeys'];
+         Result:=Result+#13#10+'PACK_KEYS = '+TableOptions.Values['PackKeys'];
        if(TableOptions.Values['TblPassword']>'')then
-         s:=s+#13#10+'PASSWORD = "'+TableOptions.Values['TblPassword']+'"';
+         Result:=Result+#13#10+'PASSWORD = "'+TableOptions.Values['TblPassword']+'"';
        if(TableOptions.Values['DelayKeyTblUpdates']<>'0')and
          (TableOptions.Values['DelayKeyTblUpdates']>'')then
-         s:=s+#13#10+'DELAY_KEY_WRITE = '+TableOptions.Values['DelayKeyTblUpdates'];
+         Result:=Result+#13#10+'DELAY_KEY_WRITE = '+TableOptions.Values['DelayKeyTblUpdates'];
        if(TableOptions.Values['RowFormat']<>'0')then
        begin
          if(TableOptions.Values['RowFormat']='1')then
-           s:=s+#13#10+'ROW_FORMAT = dynamic'
+           Result:=Result+#13#10+'ROW_FORMAT = dynamic'
          else if(TableOptions.Values['RowFormat']='2')then
-           s:=s+#13#10+'ROW_FORMAT = fixed'
+           Result:=Result+#13#10+'ROW_FORMAT = fixed'
          else if(TableOptions.Values['RowFormat']='3')then
-           s:=s+#13#10+'ROW_FORMAT = compressed';
+           Result:=Result+#13#10+'ROW_FORMAT = compressed';
        end;
 
        if(TableOptions.Values['UseRaid']='1')then
        begin
          if(TableOptions.Values['RaidType']='0')then
-           s:=s+#13#10+'RAID_TYPE = STRIPED ';
+           Result:=Result+#13#10+'RAID_TYPE = STRIPED ';
 
-         s:=s+'RAID_CHUNKS = '+TableOptions.Values['Chunks']+
+         Result:=Result+'RAID_CHUNKS = '+TableOptions.Values['Chunks']+
            ' RAID_CHUNKSIZE = '+TableOptions.Values['ChunkSize'];
        end;
 
        if(TableOptions.Values['TblDataDir']>'')then
-         s:=s+#13#10+'DATA DIRECTORY = "'+TableOptions.Values['TblDataDir']+'"';
+         Result:=Result+#13#10+'DATA DIRECTORY = "'+TableOptions.Values['TblDataDir']+'"';
        if(TableOptions.Values['TblIndexDir']>'')then
-         s:=s+#13#10+'INDEX DIRECTORY = "'+TableOptions.Values['TblIndexDir']+'"';
+         Result:=Result+#13#10+'INDEX DIRECTORY = "'+TableOptions.Values['TblIndexDir']+'"';
          }
      end;
    end;
 
 
-  s:=s+';'+#13#10+GoStatementstr;
+  Result:=Result+';'+#13#10+GoStatementstr;
 
   if length(FinallyPortableIndexes)>0 then
   begin
-    s:=s+#13#10#13#10+FinallyPortableIndexes;
+    Result:=Result+#13#10#13#10+FinallyPortableIndexes;
   end;
 
   //Standard Inserts
   if(StdInserts)and(trim(StandardInserts.Text)>'')then
   begin
-    s:=s+#13#10#13#10+StandardInserts.Text+#13#10+GoStatementstr+CommitStatementstr;
+    Result:=Result+#13#10#13#10+StandardInserts.Text+#13#10+GoStatementstr+CommitStatementstr;
   end;
 
   //create triggers to implements auto_increment function to oracle/firebird
   if (FieldOnGeneratorOrSequence <> '') and CreateAutoInc then
   begin
-    s:=s + sLineBreak +  sLineBreak +
+    Result:=Result + sLineBreak +  sLineBreak +
       getTriggerForSequences(SeqName, PrefixName, FieldOnGeneratorOrSequence);
   end;
 
   //create triggers to implements record last change date
   if CreateLastChage then
   begin
-    s := s + sLineBreak + sLineBreak +
+    Result := Result + sLineBreak + sLineBreak +
       GetTriggersForLastChangeDate(LastChangeDateCol, LastChangePrefix, PkColumns);
   end;
 
   if CreateLastExclusion then
   begin
-    s := s + sLineBreak + sLineBreak +
+    Result := Result + sLineBreak + sLineBreak +
       GetTriggerForLastDeleteDate(LastExclusionTbName, LastExclusionColName,
                                   lastExclusionTriggerPrefix);
   end;
@@ -1370,19 +1368,17 @@ begin
   // Should output comments?
   if OutputComments then
   begin
-    s:=s + #13#10 +
+    Result:=Result + #13#10 +
        getSqlComment;
   end;
 
   // should create indexes for FKs?
   if FKIndex then
   begin
-    s:=s + #13#10 + FKIndexes;
+    Result:=Result + #13#10 + FKIndexes;
   end;
 
   PkColumns.Free;
-
-  GetSQLCreateCode:=s;
 end;
 
 function TFWTable.getSqlComment: string;
@@ -1889,8 +1885,9 @@ end;
 function TFWFieldData.GetSQLColumnCreateDefCode(var TableFieldGen: string;
   const HideNullField: boolean; const DefaultBeforeNotNull: boolean;
   const OutputComments: boolean ): string;
-var s: string;
+var
   j: integer;
+  found : Boolean;
   defaultTag:string;
   NullTag:string;
   ColComment:string;
@@ -1900,24 +1897,24 @@ begin
   with gr_Model,CST_Base_Words [ gbm_DatabaseToGenerate ] do
    Begin
     if(EncloseNames)then
-      s:=DBQuoteCharacter+FieldName+
+      Result:=DBQuoteCharacter+FieldName+
         DBQuoteCharacter+' '
     else
-      s:=FieldName+' ';
+      Result:=FieldName+' ';
 
     if b_colPrivate and b_ColUnique
       and (gbm_DatabaseToGenerate = bmPostgreSQL) then
     begin
-      s := s + 'SERIAL';
+      Result := Result + 'SERIAL';
     end else
     begin
       //Datatype name (INTEGER)
-      s:=s+TypeName;
+      Result:=Result+TypeName;
 
       //Datatype parameters (10, 2)
       if(DatatypeParams>'')then
-        s:=s+DatatypeParams;
-      s:=s+' ';
+        Result:=Result+DatatypeParams;
+      Result:=Result+' ';
     end;
 
     //Datatype options ([UNSIGNED] [ZEROFILL])
@@ -1926,11 +1923,11 @@ begin
       for j:=0 to gdo_Options.Count-1 do
       with gdo_Options [ j ] do
         if gb_Selected then
-          s:=s+OptionName+' ';
+          Result:=Result+OptionName+' ';
     end;
 
     //Set not null
-    if b_ColMain or b_ColUnique then
+    if b_ColMain then
     begin
       NullTag:=Not_NULL;
     end
@@ -1951,23 +1948,40 @@ begin
 
     if (DefaultBeforeNotNull) then
     begin
-      s := s+' '+defaultTag+' '+NullTag+' ';
+      Result := Result+' '+defaultTag+' '+NullTag+' ';
     end else
     begin
-      s := s+' '+NullTag+' '+defaultTag+' ';
+      Result := Result+' '+NullTag+' '+defaultTag+' ';
     end;
 
     // auto increment
-    if(b_ColUnique and b_ColHidden and not b_ColCreate)then
+    if b_ColUnique and b_ColHidden and not b_ColCreate then
       case gbm_DatabaseToGenerate of
        bmMySQL:
         begin
-          s:=s+' AUTO_INCREMENT';
-          TableFieldGen := '';
+         found := False;
+          if ( Collection is TFWFieldColumns ) Then
+           with Collection as TFWFieldColumns do
+            for j := 0 to Count - 1  do
+             with Items[j] do
+              Begin
+                if ( FieldName = Self.FieldName ) Then
+                 Break;
+                if b_ColUnique and b_ColHidden and not b_ColCreate then
+                 Begin
+                  found := True;
+                  Break;
+                 end;
+              end;
+          if not found Then
+           Begin
+            Result:=Result+' AUTO_INCREMENT';
+            TableFieldGen := '';
+           end;
         end;
       bmSQLServer :
         begin
-          s:=s+' IDENTITY ';
+          Result:=Result+' IDENTITY ';
           TableFieldGen := '';
         end;
        else
@@ -1976,8 +1990,6 @@ begin
         end;
       End;
 
-    {if(gfc_FieldColumns[i]).PrimaryKey)then
-      s:=s+' PRIMARY KEY';}
     ColComment := getSqlComment;
     ColComment := StringReplace (ColComment, '''', '''''', [rfReplaceAll]);
     if OutputComments and (Length(ColComment)>0) then
@@ -1985,12 +1997,11 @@ begin
 
       if gbm_DatabaseToGenerate = bmMySQL then
       begin
-        s := s+' COMMENT '''+ColComment+''' ';
+        Result := Result+' COMMENT '''+ColComment+''' ';
       end;
     end;
   End;
 
-  GetSQLColumnCreateDefCode:=s;
 end;
 
 procedure TFWFieldData.SetDataOptions(const AValue: TFWFieldDataOptions);
@@ -2035,7 +2046,12 @@ begin
     ftInteger : Begin
                  if FieldLength>-1 Then Result:='('+IntToStr(FieldLength)+')';
                 End;
-    ftFloat   : if gi_Decimals > 0 Then Result := '('+IntToStr(FieldLength)+','+IntToStr(Decimals)+')';
+    ftFloat   : if gi_Decimals > 0 Then
+                  Begin
+                    if FieldLength = -1 Then
+                      FieldLength := 23 + Decimals;
+                    Result := '('+IntToStr(FieldLength)+','+IntToStr(Decimals)+')';
+                  end;
   end;
 
 end;
@@ -2053,7 +2069,7 @@ end;
 function TFWFieldData.fs_TypeName: String;
 begin
   case FieldType of
-    ftDate  : Result := 'DATE';
+    ftDate  : Result := CST_Base_Words[gbm_DatabaseToGenerate].DATE;
     ftDateTime  : Result := 'DATETIME';
     ftString  : Result := 'VARCHAR';
     ftMemo,ftBlob    : Result := 'BLOB';
@@ -2064,7 +2080,8 @@ begin
                    else Result := 'INTEGER' ;
                  end;
                 End;
-    ftFloat   : if gi_Decimals = 0
+    ftFloat   : if  ( FieldLength = -1  )
+                or  ( FieldLength >= 23 )
                  Then Result := 'DOUBLE'
                  Else Result := 'DECIMAL';
   end;

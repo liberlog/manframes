@@ -36,7 +36,7 @@ const
 
 {$ENDIF}
   ge_OnBeginCreateAlter: TOnGetSQL = nil;
-  ge_OnEndCreate: TOnSetDatabase = nil;
+  ge_OnEndCreate: TOnGetSQL = nil;
   ge_OnCreateDatabase: TOnSetDatabase = nil;
 
 procedure p_SyncDB(const DMDB : TDataSet;const ModelTables: TList; const DBConn: TComponent;
@@ -1279,7 +1279,7 @@ End;
 function fs_EndCreate  ( const as_base, as_user, as_password : String ) :String;
 Begin
   if assigned ( ge_OnEndCreate )
-   Then Result := ge_OnEndCreate (  as_base, as_user, as_password )
+   Then Result := ge_OnEndCreate
    Else Result := '';
 End;
 

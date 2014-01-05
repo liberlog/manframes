@@ -7,9 +7,9 @@ unit lazmanframes;
 interface
 
 uses
-  fonctions_tableauframework, unite_variables, u_customframework, 
-  u_searchcomponents, u_fillcombobutton, u_man_reports_components, 
-  fonctions_extdb, u_formmaindb, u_connection, LazarusPackageIntf;
+  fonctions_tableauframework, u_customframework, u_searchcomponents, 
+  u_fillcombobutton, u_man_reports_components, fonctions_extdb, u_formmaindb, 
+  u_connection, LazarusPackageIntf;
 
 implementation
 
