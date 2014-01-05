@@ -54,7 +54,7 @@ type
                             GroupField : String;
                            End;}
   TFWOptionDefault = ( od0, od1, od2, od3, od4, od5 );
-  TFWFieldOption = ( foUnsigned, foZeroFill, foAutoIncrement, foChoice );
+  TFWFieldOption = ( foUnsigned, foZeroFill, foAutoIncrement, foChoice, foFile );
   TFWIndexKind = ( ikPrimary, ikSecondary, ikIndex, ikUniqueIndex, ikFullTextIndex );
   TFWLinkOption = ( loRestrict, loCascade, loSetNull, loNoAction, loSetDefault );
   TFWSQLEvent = ( sqeBefore, sqeAfter );
@@ -210,13 +210,12 @@ type
    End;
    TFWFieldData = class(TFWMiniFieldColumn)
    private
-     b_colHidden: Boolean;
      s_CaptionName, s_HintName: WideString;
      gs_DefaultValue,
      s_FieldName: String;
      i_NumTag : Integer ;
      i_ShowCol, i_ShowSearch, i_ShowSort, i_HelpIdx, i_FieldSize : Integer ;
-     b_ColMain, b_ColCreate, b_ColUnique, b_colSelect, b_colPrivate: Boolean;
+     b_ColMain, b_ColCreate, b_ColUnique, b_colSelect, b_colPrivate,b_ColHidden: Boolean;
      gr_relations : TFWRelations;
      gi_SynonymGroup,
      gi_length,                     // optional numbers after comma
@@ -252,11 +251,10 @@ type
     destructor Destroy; override;
     procedure Erase; virtual;
     function IsErased:Boolean; virtual;
-    function ColHidden:Boolean; virtual;
     procedure Init; virtual;
     function Clone ( const ACollection : TFWFieldColumns ) : TFWFieldData; override;
     function GetSQLColumnCreateDefCode(
-       var TableFieldGen: string; const HideNullField: boolean = False;
+       var TableFieldGen: string; const HideNullField: boolean = True;
        const DefaultBeforeNotNull: boolean = True; const OutputComments: boolean = True): string; virtual;
     property OptionExists[Index:TFWFieldOption]: Boolean read GetOptionExists;
     property OptionString[Index:TFWFieldOption]: String read GetOptionString;
@@ -290,6 +288,7 @@ type
      property ColMain : Boolean read b_ColMain write b_ColMain;
      property ColCreate : Boolean read b_ColCreate write b_ColCreate;
      property ColPrivate : Boolean read b_ColPrivate write b_ColPrivate default False;
+     property ColHidden : Boolean read b_ColHidden write b_ColHidden default False;
      property ColSelect : Boolean read b_colSelect write b_colSelect default True;
      property ColUnique : Boolean read b_ColUnique write b_ColUnique;
      property FieldSize : Integer read  i_FieldSize write i_FieldSize default 0;
@@ -513,7 +512,7 @@ type
     function GetSQLCreateCode(const DefinePK: Boolean=True;
       const CreateIndexes: Boolean=True; const DefineFK: Boolean=False;
       const TblOptions: Boolean=True; StdInserts: Boolean=False;
-      const OutputComments: Boolean=False; const HideNullField: Boolean=false;
+      const OutputComments: Boolean=False; const HideNullField: Boolean=True;
       const PortableIndexes: Boolean=false;
       const HideOnDeleteUpdateNoAction: boolean=false;
       const GOStatement: boolean=false; const CommitStatement: boolean=false;
@@ -1055,7 +1054,7 @@ function TFWTable.GetSQLCreateCode(const DefinePK: Boolean = True;
   const DefineFK: Boolean = False;
   const TblOptions: Boolean = True; StdInserts: Boolean = False;
   const OutputComments: Boolean = False;
-  const HideNullField : Boolean = false;
+  const HideNullField : Boolean = True;
   const PortableIndexes : Boolean = false;
   const HideOnDeleteUpdateNoAction : boolean = false;
   const GOStatement : boolean = false; //usefull for SQL Server
@@ -1959,7 +1958,7 @@ begin
     end;
 
     // auto increment
-    if(b_ColUnique and ColHidden)then
+    if(b_ColUnique and b_ColHidden and not b_ColCreate)then
       case gbm_DatabaseToGenerate of
        bmMySQL:
         begin
@@ -2054,6 +2053,8 @@ end;
 function TFWFieldData.fs_TypeName: String;
 begin
   case FieldType of
+    ftDate  : Result := 'DATE';
+    ftDateTime  : Result := 'DATETIME';
     ftString  : Result := 'VARCHAR';
     ftMemo,ftBlob    : Result := 'BLOB';
     ftBoolean : Result := 'TINYINT';
@@ -2100,6 +2101,7 @@ begin
   i_ShowSort :=-1;
   b_colSelect:=True;
   b_colPrivate:=False;
+  b_ColHidden:=False;
   i_FieldSize := 0;
 
   gi_SynonymGroup := 0;
@@ -2124,11 +2126,6 @@ end;
 function TFWFieldData.IsErased: Boolean;
 begin
   Result:=(s_FieldName='');
-end;
-
-function TFWFieldData.ColHidden: Boolean;
-begin
-  Result:=i_ShowCol=-1;
 end;
 
 { TFWFieldColumn }

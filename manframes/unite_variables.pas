@@ -123,6 +123,7 @@ var
   Gi_CONNECTION_TIMEOUT_DEFAUT : Integer = 15 ;
 
 resourcestring
+  Gs_NoComponentToCreate = 'Pas de composants à créer : Erreur.';
   GS_BAD_PASSWORD_REDO_TYPE_PASSWORD = 'Mot de passe invalide' + CST_ENDOFLINE
      				         + 'Veuillez resaisir votre mot de passe';
   GS_LOGIN    = 'Login';
