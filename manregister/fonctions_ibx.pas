@@ -14,11 +14,10 @@ uses
   fonctions_system,
   IBIntf,
   u_multidata,
-  u_multidonnees,
   DB;
 
 resourcestring
-   Gs_Names_Charset =   'UNICODE_FSS';
+   Gs_Names_Charset =   'UTF8';
 
 const DEFAULT_FIREBIRD_SERVER_DIR = '/var/lib/firebird/2.5/';
 {$IFDEF VERSIONS}
@@ -42,8 +41,6 @@ uses IBQuery,
      fonctions_init,
      fonctions_file,
      fonctions_create,
-     fonctions_dialogs,
-     Dialogs,
      fonctions_db,
      fonctions_dbcomponents;
 
@@ -94,13 +91,21 @@ Begin
   finally
     FileClose(lh_handleFile);
   end;
-  if FileExistsUTF8(ls_File+CST_EXTENSION_LOG_FILE) Then DeleteFileUTF8(ls_File+CST_EXTENSION_LOG_FILE);
-  lh_handleFile := FileCreateUTF8(ls_File+CST_EXTENSION_LOG_FILE);
+  if FileExistsUTF8(ls_File+CST_EXTENSION_BATCH_FILE) Then DeleteFileUTF8(ls_File+CST_EXTENSION_BATCH_FILE);
+  lh_handleFile := {$IFDEF WINDOWS}FileCreate{$ELSE}FileCreateUTF8{$ENDIF}(ls_File+CST_EXTENSION_BATCH_FILE);
   try
-    FileWriteln(lh_handleFile,  fs_ExecuteProcess({$IFDEF WINDOWS}'.'+DirectorySeparator+'isql.exe'{$ELSE}'isql-fb'{$ENDIF}, ' -i '+ ls_File+CST_EXTENSION_SQL_FILE+' -s 3', True));
+    {$IFDEF WINDOWS}
+    FileWriteln(lh_handleFile,fs_getAppDir+'isql.exe'+ ' -i '''+ ls_File+CST_EXTENSION_SQL_FILE
+                             +''' -o '''+ ls_File+CST_EXTENSION_LOG_FILE+''' -s 3');
+    {$ELSE}
+    FileWriteln(lh_handleFile, 'isql-fb'+ ' -i '+ ls_File+CST_EXTENSION_SQL_FILE
+                              +''' -o '''+ ls_File+CST_EXTENSION_LOG_FILE+''' -s 3');
+    {$ENDIF}
   finally
     FileClose(lh_handleFile);
   end;
+
+  fs_ExecuteProcess({$IFNDEF WINDOWS}'sh',{$ENDIF}ls_File+CST_EXTENSION_BATCH_FILE);
 End ;
 
 procedure p_setLibrary (var libname: string);

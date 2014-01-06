@@ -1884,6 +1884,8 @@ Begin
       gds_Query2 := TDataSource.Create ( Self ) ;
       gdat_Query2 :=  fdat_CloneDatasetWithoutSQL( gdat_DatasetPrinc, Self );
       gds_Query2.DataSet := gdat_Query2 ;
+      gds_Query2.Name  := CST_COMPONENTS_DATASOURCE_BEGIN+'Tool2Query2';
+      gdat_Query2.Name := CST_COMPONENTS_DATASET_BEGIN+'Tool2Query2';
       DatasourceQuerySearch := gds_Query2 ;
     End ;
   if  not assigned ( gds_SourceWork ) Then
@@ -1891,6 +1893,8 @@ Begin
       gds_Query1 :=  TDataSource.Create ( Self );
       gdat_Query1 :=  fdat_CloneDatasetWithoutSQL( gdat_DatasetPrinc, Self );
       gds_Query1.DataSet := gdat_Query1 ;
+      gds_Query1.Name  := CST_COMPONENTS_DATASOURCE_BEGIN+'Tool1Query1';
+      gdat_Query1.Name := CST_COMPONENTS_DATASET_BEGIN+'Tool1Query1';
       DatasourceQuery       := gds_Query1 ;
     End ;
 End;
@@ -1966,7 +1970,7 @@ var li_i, li_j : Integer;
     lt_Arg : Array [0..2] of String ;
     ls_temp:String;
     lmet_MethodeDistribueeSearch: TMethod;
-    lfd_FieldsDefs : TFieldDefs;
+    lfi_Field : TStringField;
 Begin
   lmet_MethodeDistribueeSearch.Data := Self;
   lmet_MethodeDistribueeSearch.Code := MethodAddress('p_BtnSearch');
@@ -2014,20 +2018,30 @@ Begin
           if gb_DicoUseFormField Then
             i_DebutTableau := li_CompteCol ;
           e_StateChange  := Datalink.DataSource.OnStateChange ;
-          e_BeforeInsert := Datalink.Dataset.BeforeInsert ;
-          e_AfterInsert  := Datalink.Dataset.AfterInsert ;
-          e_BeforePost   := Datalink.Dataset.BeforePost ;
-          e_AfterPost    := Datalink.Dataset.AfterPost ;
-          e_BeforeDelete := Datalink.Dataset.BeforeDelete ;
-          e_AfterCancel  := Datalink.Dataset.AfterCancel;
-          e_AfterEdit    := Datalink.Dataset.AfterEdit;
+          with Datalink,Dataset do
+           Begin
+            e_BeforeInsert := BeforeInsert ;
+            e_AfterInsert  := AfterInsert ;
+            e_BeforePost   := BeforePost ;
+            e_AfterPost    := AfterPost ;
+            e_BeforeDelete := BeforeDelete ;
+            e_AfterCancel  := AfterCancel;
+            e_AfterEdit    := AfterEdit;
+            // Gestion du focus renseigné ?
+            if assigned ( con_ControlFocus ) Then
+              Begin
+                e_BeforeCancel := BeforeCancel ;
+                BeforeCancel := p_DataWorkBeforeCancel ;
+              End;
+            AfterInsert  := p_DataWorkAfterInsert ;
+            BeforeInsert := p_DataWorkBeforeInsert ;
+            AfterPost    := p_DataWorkAfterPost ;
+            AfterCancel  := p_DataWorkAfterCancel ;
+            AfterEdit    := p_DataWorkAfterEdit ;
+            BeforeDelete := p_DataWorkBeforeDelete ;
+            p_CreateEventualCsvFile(FieldDefs,gFWSources.items [ li_i ]);
+           end;
 
-          // Gestion du focus renseigné ?
-          if assigned ( con_ControlFocus ) Then
-            Begin
-              e_BeforeCancel := Datalink.Dataset.BeforeCancel ;
-              Datalink.Dataset.BeforeCancel := p_DataWorkBeforeCancel ;
-            End;
           with Datalink do
            Begin
             ls_temp := fs_getSQLQuery ( Dataset );
@@ -2035,25 +2049,8 @@ Begin
              Begin
                p_SetSQLQuery(Dataset,'SELECT ' +fs_getListSelect(FieldsDefs)+' FROM ' + Table );
              End;
-          with Datalink do
-           Begin
-            AfterInsert  := p_DataWorkAfterInsert ;
-            BeforeInsert := p_DataWorkBeforeInsert ;
-            AfterPost    := p_DataWorkAfterPost ;
-            AfterCancel  := p_DataWorkAfterCancel ;
-            AfterEdit    := p_DataWorkAfterEdit ;
-            BeforeDelete := p_DataWorkBeforeDelete ;
-            lfd_FieldsDefs := Dataset.FieldDefs;
-            if assigned ( lfd_FieldsDefs ) Then
-             Begin
-              for li_j := 0 to FieldsDefs.Count - 1 do
-               with FieldsDefs [li_j] do
-                 lfd_FieldsDefs.Add (FieldName, FieldType, FieldSize );
-              p_CreateEventualCsvFile(lfd_FieldsDefs,gFWSources.items [ li_i ]);
-             End;
+            DataSource.OnStateChange := p_DatasourceWorksStateChange ;
            end;
-             end;
-          Datalink.DataSource.OnStateChange := p_DatasourceWorksStateChange ;
           if assigned ( nav_Saisie ) Then
             Begin
               p_HintNavigateur ( nav_Saisie    );
@@ -2419,11 +2416,19 @@ var lstl_File : TStringList;
     ls_FileInside : String ;
     li_i : Longint;
 Begin
-  if  ( afws_Source.Connection.DatasetType = dtCSV )
+  with afws_Source do
+  if  ( Connection.DatasetType in [dtCSV,dtDBNet] )
   and not FileExists ( fs_getFileNameOfTableColumn ( afws_Source ))
-  and ( afd_FieldsDefs.count > 0 )
+  and ( FieldsDefs.count > 0 )
    Then
     Begin
+     // use FieldsDefs from TFWSource to set to Dataset FieldDefs
+      for li_i := 0 to FieldsDefs.Count - 1 do
+       with FieldsDefs [li_i] do
+         Begin
+          //Dataset FieldDefs
+          Datalink.DataSet.FieldDefs.Add (FieldName, FieldType, FieldSize );
+         end;
       lstl_File := TStringList.create ;
       try
         ls_FileInside := '' ;
@@ -3565,8 +3570,9 @@ begin
        Else
         Begin
           for li_i := 0 to gFWSources.Count - 1 do
-            if assigned ( gFWSources.items [ li_i ].Datalink.DataSet ) Then
-              with gFWSources.items [ li_i ],Datalink.DataSet do
+           with gFWSources [ li_i ].Datalink do
+            if assigned ( DataSet ) Then
+              with DataSet do
                Begin
                 Open ;
                 BeforePost   := p_DataWorkBeforePost ;
