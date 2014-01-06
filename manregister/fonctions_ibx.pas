@@ -79,7 +79,7 @@ End ;
 function fs_CreateDatabase  ( const as_base, as_user, as_password : String ):String;
 Begin
   Result := 'CREATE DATABASE '''+as_base+''' USER '''+as_user+''' PASSWORD '''+as_password+''' PAGE_SIZE 16384 DEFAULT CHARACTER SET '+Gs_Names_Charset+';'+#10
-          + 'CONNECT '+as_base+';'+#10;
+          + 'COMMIT;'+#10+'CONNECT '+as_base+' USER '''+as_user+''' PASSWORD '''+as_password+''';'+#10;
 End;
 
 procedure p_ExecuteSQLCommand ( const as_SQL : {$IFDEF DELPHI_9_UP} String {$ELSE} WideString{$ENDIF}  );
@@ -94,7 +94,13 @@ Begin
   finally
     FileClose(lh_handleFile);
   end;
-  fs_ExecuteProcess({$IFDEF WINDOWS}'.'+DirectorySeparator+'isql.exe'{$ELSE}'isql-fb'{$ENDIF}, '-i '+ ls_File+CST_EXTENSION_SQL_FILE + ' -o ' + ls_File+CST_EXTENSION_LOG_FILE, False);
+  if FileExistsUTF8(ls_File+CST_EXTENSION_LOG_FILE) Then DeleteFileUTF8(ls_File+CST_EXTENSION_LOG_FILE);
+  lh_handleFile := FileCreateUTF8(ls_File+CST_EXTENSION_LOG_FILE);
+  try
+    FileWriteln(lh_handleFile,  fs_ExecuteProcess({$IFDEF WINDOWS}'.'+DirectorySeparator+'isql.exe'{$ELSE}'isql-fb'{$ENDIF}, ' -i '+ ls_File+CST_EXTENSION_SQL_FILE+' -s 3', True));
+  finally
+    FileClose(lh_handleFile);
+  end;
 End ;
 
 procedure p_setLibrary (var libname: string);
