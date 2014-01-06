@@ -52,7 +52,7 @@ Begin
   Result := 'SET SQL DIALECT 3;' + #10+ 'SET NAMES ' + Gs_Names_Charset +';'+ #10;
 end;
 
-function fs_CreateAlterEndSQL :String;
+function fs_CreateAlterEndSQL ( const as_base, as_user, as_password : String ):String;
 Begin
   Result := 'COMMIT;'+ #10;
 end;
@@ -79,7 +79,7 @@ End ;
 function fs_CreateDatabase  ( const as_base, as_user, as_password : String ):String;
 Begin
   Result := 'CREATE DATABASE '''+as_base+''' USER '''+as_user+''' PASSWORD '''+as_password+''' PAGE_SIZE 16384 DEFAULT CHARACTER SET '+Gs_Names_Charset+';'+#10
-          + 'COMMIT;'+#10+'CONNECT '+as_base+' USER '''+as_user+''' PASSWORD '''+as_password+''';'+#10;
+          + 'CONNECT '''+as_base+''' USER '''+as_user+''' PASSWORD '''+as_password+''';'+#10;
 End;
 
 procedure p_ExecuteSQLCommand ( const as_SQL : {$IFDEF DELPHI_9_UP} String {$ELSE} WideString{$ENDIF}  );
@@ -139,7 +139,7 @@ initialization
  ge_onCreateConnection := TCreateConnection ( p_CreateIBXconnection );
  ge_OnExecuteQuery  :=TOnExecuteQuery(p_ExecuteIBXQuery);
  ge_OnBeginCreateAlter  :=TOnGetSQL( fs_CreateAlterBeginSQL);
- ge_OnEndCreate       :=TOnGetSQL( fs_CreateAlterEndSQL);
+ ge_OnEndCreate       :=TOnSetDatabase( fs_CreateAlterEndSQL);
  ge_OnCreateDatabase  :=TOnSetDatabase( fs_CreateDatabase);
  ge_OnExecuteCommand:=TOnExecuteCommand(p_ExecuteSQLCommand);
  {$IFDEF VERSIONS}

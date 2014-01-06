@@ -2035,7 +2035,7 @@ Begin
              Begin
                p_SetSQLQuery(Dataset,'SELECT ' +fs_getListSelect(FieldsDefs)+' FROM ' + Table );
              End;
-          with Datalink,Dataset do
+          with Datalink do
            Begin
             AfterInsert  := p_DataWorkAfterInsert ;
             BeforeInsert := p_DataWorkBeforeInsert ;
@@ -2043,7 +2043,7 @@ Begin
             AfterCancel  := p_DataWorkAfterCancel ;
             AfterEdit    := p_DataWorkAfterEdit ;
             BeforeDelete := p_DataWorkBeforeDelete ;
-            lfd_FieldsDefs := fobj_GetcomponentObjectProperty ( Dataset, CST_DBPROPERTY_FIELDDEFS ) as TFieldDefs;
+            lfd_FieldsDefs := Dataset.FieldDefs;
             if assigned ( lfd_FieldsDefs ) Then
              Begin
               for li_j := 0 to FieldsDefs.Count - 1 do
@@ -3566,11 +3566,11 @@ begin
         Begin
           for li_i := 0 to gFWSources.Count - 1 do
             if assigned ( gFWSources.items [ li_i ].Datalink.DataSet ) Then
-              with gFWSources.items [ li_i ].Datalink.DataSet do
-             Begin
-              Open ;
-              BeforePost   := p_DataWorkBeforePost ;
-             end;
+              with gFWSources.items [ li_i ],Datalink.DataSet do
+               Begin
+                Open ;
+                BeforePost   := p_DataWorkBeforePost ;
+               end;
 
             if  gb_ModeAsynchrone
             and not gb_DatasourceActif Then
@@ -5982,7 +5982,7 @@ begin
        with FieldsDefs [ li_i ] do
         begin
           // Index du field en fonction du dico
-          if not assigned ( datasource.DataSet.FindField ( FieldsDefs [ li_i ].FieldName))
+          if not assigned ( datasource.DataSet.FindField ( FieldName))
           and not ( datasource.DataSet.ClassNameIs ( 'TJvCSVDataset' ))
            Then Continue ;
           lb_Trouve    := False ;
@@ -5990,7 +5990,7 @@ begin
             /// Scrute la grille
           if not lb_Reinit Then
             for li_j := 0 to gridColumns.Count - 1 do
-             if gridColumns[li_j].FieldName = FieldsDefs [ li_i ].FieldName
+             if gridColumns[li_j].FieldName = FieldName
               Then
                Begin
                  lcol_Colonne := gridColumns[li_j] ;
@@ -6002,7 +6002,6 @@ begin
 
           // Colonne trouvée ou créée
           if  assigned ( lcol_Colonne ) Then
-           with FieldsDefs [ li_i ] do
             Begin
               // On renseigne la colonne selon dico
               lcol_Colonne.FieldName := FieldName ;
@@ -6262,7 +6261,7 @@ Begin
     End;
 End;
 
-// Get number of colum from tag
+// Get number of column from tag
 function TF_CustomFrameWork.ffd_GetNumArray ( const acom_Component : TComponent ;
   const afws_DataWork : TFWSource;
   var ads_DataSource : TDataSource ; var ai_Tag : Longint ):TFWFieldColumn;
