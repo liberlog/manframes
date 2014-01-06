@@ -85,6 +85,7 @@ type
                TRIGGER_EVENT   : TFWSQLEventStrings;
                TRIGGER_EVENT_MODE   : TFWEventStrings;
                NOT_NULL        : string;
+               DOUBLE          : String;
                DATE            : String;
              end;
 
@@ -101,6 +102,7 @@ const CST_BASE_INDEX_PRIMARY = 'PRIMARY';
       CST_BASE_INDEX        = 'INDEX @ARG';
       CST_BASE_UNIQUE_INDEX = 'UNIQUE INDEX @ARG';
       CST_BASE_FULLTEXT_INDEX = 'FULLTEXT INDEX @ARG' ;
+      CST_FIREBIRD_FIELD_LENGTH = 31;
       CST_BASE_CREATE_INDEX = 'CREATE INDEX @ARG ON @ARG (@ARG)';
       CST_BASE_INDEXES      : array[TFWIndexKind] of String = ('PRIMARY KEY','INDEX @ARG','UNIQUE INDEX @ARG','FULLTEXT INDEX @ARG');
       CST_BASE_ONDELETE     : TFWLinkOptionStrings = ('      ON DELETE RESTRICT','      ON DELETE CASCADE','      ON DELETE SET NULL','      ON DELETE NO ACTION','      ON DELETE SET DEFAULT');
@@ -108,10 +110,11 @@ const CST_BASE_INDEX_PRIMARY = 'PRIMARY';
       CST_Base_Words : Array [ TFWBaseMode ] of TFWWords = (
                        (
                         TABLE_TYPE   : 'TYPE=@ARG';
-                        CREATE_TRIGGER : 'SET TERM !; '+#10+'CREATE TRIGGER '+CST_BASE_TRIGGER+' FOR '+CST_BASE_TABLE+' '+CST_BASE_EVENT+#10+'AS'#10+CST_BASE_BODY+#10+'/'+#10'SET TERM ;! ';
+                        CREATE_TRIGGER : 'SET TERM !; '+#10+'CREATE TRIGGER '+CST_BASE_TRIGGER+' FOR '+CST_BASE_TABLE+' '+CST_BASE_EVENT+#10+'AS'#10+CST_BASE_BODY+#10+'SET TERM ;! ';
                         TRIGGER_EVENT   : ('BEFORE @ARG  ', 'AFTER  @ARG  ');
                         TRIGGER_EVENT_MODE   : ('CREATE','INSERT','UPDATE','DELETE');
                         NOT_NULL    : 'NOT NULL';
+                        DOUBLE      : 'DECIMAL';
                         DATE        : 'DATE';
                        ),
                        (
@@ -120,6 +123,7 @@ const CST_BASE_INDEX_PRIMARY = 'PRIMARY';
                         TRIGGER_EVENT   : ('BEFORE @ARG  ', 'AFTER  @ARG  ');
                         TRIGGER_EVENT_MODE   : ('CREATE','INSERT','UPDATE','DELETE');
                         NOT_NULL    : 'NOT NULL';
+                        DOUBLE      : 'DOUBLE';
                         DATE        : 'DATETIME';
                         ),
                         (
@@ -128,6 +132,7 @@ const CST_BASE_INDEX_PRIMARY = 'PRIMARY';
                          TRIGGER_EVENT   : ('BEFORE @ARG  ', 'AFTER  @ARG  ');
                          TRIGGER_EVENT_MODE   : ('CREATE','INSERT','UPDATE','DELETE');
                          NOT_NULL    : 'NOT NULL';
+                         DOUBLE      : 'DOUBLE';
                          DATE        : 'DATE';
                          ),
                         (
@@ -136,6 +141,7 @@ const CST_BASE_INDEX_PRIMARY = 'PRIMARY';
                          TRIGGER_EVENT   : ('BEFORE @ARG  ', 'AFTER  @ARG  ');
                          TRIGGER_EVENT_MODE   : ('CREATE','INSERT','UPDATE','DELETE');
                          NOT_NULL    : 'NOT NULL';
+                         DOUBLE      : 'DOUBLE';
                          DATE        : 'DATE';
                          ),
                        (
@@ -144,6 +150,7 @@ const CST_BASE_INDEX_PRIMARY = 'PRIMARY';
                         TRIGGER_EVENT   : ('BEFORE @ARG  ', 'AFTER  @ARG  ');
                         TRIGGER_EVENT_MODE   : ('CREATE','INSERT','UPDATE','DELETE');
                         NOT_NULL    : 'NOT NULL';
+                        DOUBLE      : 'DOUBLE';
                         DATE        : 'DATETIME';
                         )
                        );
@@ -177,13 +184,15 @@ type
   private
     s_FieldName : String;
     gs_CaptionName : String;
+  protected
+    procedure SetFieldName ( const AValue : String ); virtual;
   public
    constructor Create(ACollection: TCollection); override;
     function   Clone ( const ACollection : TFWFieldColumns ) : TFWMiniFieldColumn; virtual;
     function GetCaption : String; virtual;
   published
-  property CaptionName : String read gs_CaptionName write gs_CaptionName;
-    property FieldName : String read s_FieldName write s_FieldName;
+    property CaptionName : String read gs_CaptionName write gs_CaptionName;
+    property FieldName : String read s_FieldName write SetFieldName;
   End;
 
   { TFWFieldDataOption }
@@ -216,9 +225,8 @@ type
    End;
    TFWFieldData = class(TFWMiniFieldColumn)
    private
-     s_CaptionName, s_HintName: WideString;
-     gs_DefaultValue,
-     s_FieldName: String;
+     s_HintName: WideString;
+     gs_DefaultValue:String;
      i_NumTag : Integer ;
      i_ShowCol, i_ShowSearch, i_ShowSort, i_HelpIdx, i_FieldSize : Integer ;
      b_ColMain, b_ColCreate, b_ColUnique, b_colSelect, b_colPrivate,b_ColHidden: Boolean;
@@ -280,10 +288,8 @@ type
      property SynonymGroup: integer read gi_SynonymGroup write gi_SynonymGroup default 0;
      property Decimals: integer read gi_decimals write gi_decimals default 0;
      property FieldLength: integer read gi_length write gi_length default -1;
-     property FieldName : String read s_FieldName write s_FieldName;
      property FieldType : TFieldType read ft_FieldType write ft_FieldType;
      property DatatypeParams : String read fs_DatatypeParams;
-     property CaptionName : WideString read s_CaptionName write s_CaptionName;
      property HintName : WideString read s_HintName write s_HintName;
      property NumTag : Integer read i_NumTag write i_NumTag;
      property ShowCol : Integer read i_ShowCol write i_ShowCol default -1;
@@ -340,12 +346,13 @@ type
 
    { TFWMiniFieldColumns }
     TFWMiniFieldColumns = class(TFWBaseFieldColumns)
-    private
-      FColumn: TCollectionItem;
+     ACollectionItemOwner : TCollectionItem;
+     protected
+      function  GetOwner: TPersistent; override;
     public
       function toString ( const ab_comma : Boolean = True ) : String; virtual;
       constructor Create(const Column: TCollectionItem; const ColumnClass: TFWMiniFieldColumnClass); virtual;
-      property Column : TCollectionItem read FColumn;
+      property Column : TCollectionItem read ACollectionItemOwner;
     End;
 
 
@@ -378,7 +385,6 @@ type
   public
     constructor Create(ACollection: TCollection); override;
     destructor Destroy; override;
-
     procedure Assign(Source: TPersistent); override;
   published
     property IndexName: string read gs_Name write gs_Name;
@@ -516,15 +522,16 @@ type
 
     procedure Assign(Source: TPersistent); override;
     function GetSQLCreateCode(const DefinePK: Boolean=True;
-      const CreateIndexes: Boolean=True; const DefineFK: Boolean=False;
+      const GenerateSequence: Boolean = True;
+      const CreateIndexes: Boolean=True; const DefineFK: Boolean=True;
       const TblOptions: Boolean=True; StdInserts: Boolean=False;
       const OutputComments: Boolean=False; const HideNullField: Boolean=True;
       const PortableIndexes: Boolean=false;
       const HideOnDeleteUpdateNoAction: boolean=false;
       const GOStatement: boolean=false; const CommitStatement: boolean=false;
       const FKIndex: boolean=false; const DefaultBeforeNotNull: boolean=false;
-      const SeqName: String='GlobalSequence'; const PrefixName: String='AINC_';
-      const CreateAutoInc: boolean=false; const CreateLastChage: boolean=false;
+      const PrefixName: String='AINC_';
+      const CreateAutoInc: boolean=True; const CreateLastChage: boolean=false;
       const LastChangeDateCol: string='LAST_CHANGE_DATE';
       const LastChangeUserCol: string='USERID'; const LastChangePrefix: string='UPD'
       +'T_'; const CreateLastExclusion: boolean=false;
@@ -542,19 +549,20 @@ type
     function GetSQLTableName(const DoNotAddPrefix : Boolean = False): string; virtual;
 
     //get SQL triggers to sequences/generators
-    function getTriggerForSequences(SeqName, PrefixName, Field:string): string; virtual;
+    function getTriggerForSequences(const SeqName, PrefixName, Field:string): string; virtual;
 
-    function GetTriggersForLastChangeDate(ColumnName, PrefixName: string;
-      pkFields: TStringList): string; virtual;
+    function GetTriggersForLastChangeDate(const ColumnName, PrefixName: string;
+      const pkFields: TStringList): string; virtual;
 
-    function GetTriggerForLastDeleteDate(TbName, ColName, PrefixName: string): string; virtual;
+    function GetTriggerForLastDeleteDate(const TbName, ColName, PrefixName: string): string; virtual;
 
     //Create sql tiggers definitions
     function GetTriggerSql( const TriggerBody, TriggerName:String; const Event : TFWSQLEvent; const EventMode : TFWEventMode): String; virtual;
 
-    function GetPkJoin(Tab1, Tab2: String; PKs: TStringList): String; virtual;
+    function GetPkJoin(const Tab1, Tab2: String; const PKs: TStringList): String; virtual;
+    function GetGlobalSequence (const seqname :String ):String;
 
-    function GetSQLDropCode(IfExists:boolean = false): string; virtual;
+    function GetSQLDropCode(const IfExists:boolean = false): string; virtual;
     function GetSQLInsertCode: string; virtual;
     function getSqlComment: string; override;
 
@@ -636,10 +644,10 @@ function ffws_CreateSource ( const ADBSources : TFWTables; const as_connection, 
 function fds_CreateDataSourceAndDataset ( const as_Table, as_NameEnd : String  ; const adat_QueryCopy : TDataset ; const acom_Owner : TComponent): TDatasource;
 function fs_getFileNameOfTableColumn ( const afws_Source    : TFWTable ): String;
 function fds_CreateDataSourceAndTable ( const as_Table, as_NameEnd, as_DataURL : String  ; const adtt_DatasetType : TDatasetType ; const adat_QueryCopy : TDataset ; const acom_Owner : TComponent): TDatasource;
-    procedure p_SetComboProperties ( const acom_combo : TControl;
-                                     const ads_ListSource : TDataSource;
-                                     const as_Name : String;
-                                     const alr_Relation : TFWRelation);
+procedure p_SetComboProperties ( const acom_combo : TControl;
+                                 const ads_ListSource : TDataSource;
+                                 const as_Name : String;
+                                 const alr_Relation : TFWRelation);
 
 var
   GS_Data_Extension : String = '.csv';
@@ -717,18 +725,34 @@ constructor TFWMiniFieldColumn.Create(ACollection: TCollection);
 begin
   inherited Create(ACollection);
   s_FieldName:='';
+  gs_CaptionName:='';
 end;
 
 function TFWMiniFieldColumn.Clone(const ACollection: TFWFieldColumns
   ): TFWMiniFieldColumn;
 begin
   Result:=TFWMiniFieldColumn.Create(ACollection);
-  Result.FieldName:=FieldName;
+  Result.s_FieldName:=s_FieldName;
+  Result.gs_CaptionName:=gs_CaptionName;
 end;
 
 function TFWMiniFieldColumn.GetCaption: String;
 begin
   Result := fs_GetLabelCaption(gs_CaptionName);
+end;
+
+procedure SetCorrectFieldName(const AFieldColumn : TFWMiniFieldColumn);
+var ls_table : String;
+begin
+  if gbm_DatabaseToGenerate = bmFirebird
+   Then p_SetStringMaxLength  (AFieldColumn.s_FieldName,CST_FIREBIRD_FIELD_LENGTH );
+end;
+
+procedure TFWMiniFieldColumn.SetFieldName(const AValue: String);
+var ls_table : String;
+begin
+  s_FieldName:=AValue;
+  SetCorrectFieldName(Self);
 end;
 
 
@@ -861,7 +885,7 @@ end;
 
 function TFWIndexes.GetOwner: TPersistent;
 begin
-  Result:=inherited GetOwner;
+  Result:=FColumn;
 end;
 
 constructor TFWIndexes.Create(const Column: TCollectionItem; const ColumnClass: TFWIndexClass);
@@ -996,7 +1020,7 @@ begin
      with gfc_FieldColumns[i] do
       begin
         if HasAutoInc and b_colPrivate and b_ColUnique then
-          gfc_FieldColumns[i].b_colPrivate:=False
+          gfc_FieldColumns[i].b_ColUnique:=False
         else if Not HasAutoInc and b_colPrivate and b_ColUnique then
           HasAutoInc:=True;
       end;
@@ -1057,8 +1081,9 @@ begin
 end;
 
 function TFWTable.GetSQLCreateCode(const DefinePK: Boolean = True;
+  const GenerateSequence: Boolean = True;
   const CreateIndexes: Boolean = True;
-  const DefineFK: Boolean = False;
+  const DefineFK: Boolean = True;
   const TblOptions: Boolean = True; StdInserts: Boolean = False;
   const OutputComments: Boolean = False;
   const HideNullField : Boolean = True;
@@ -1068,9 +1093,8 @@ function TFWTable.GetSQLCreateCode(const DefinePK: Boolean = True;
   const CommitStatement : boolean = false; //needed for ORACLE Inserts
   const FKIndex : boolean = false;
   const DefaultBeforeNotNull : boolean = false;
-  const SeqName: String = 'GlobalSequence';
   const PrefixName: String = 'AINC_';
-  const CreateAutoInc: boolean = false;
+  const CreateAutoInc: boolean = True;
   const CreateLastChage: boolean = false;
   const LastChangeDateCol: string = 'LAST_CHANGE_DATE';
   const LastChangeUserCol: string = 'USERID';
@@ -1098,14 +1122,18 @@ var s1: string;
   PkColumns: TStringList;
   GoStatementstr : string;
   CommitStatementstr : string;
-  Table : string;
-  LocalComment : string;
+  Table ,
+  LocalComment ,
+  SeqName : string;
+
 begin
   FKIndexes := '';
   Table := GetSQLTableName;
+  CheckPrimaryIndex;
 
-  GoStatementstr := fs_IfThen(GoStatement,'GO'+#13#10,'');
-  CommitStatementstr := fs_IfThen(CommitStatement,'commit;'+#13#10,'');
+
+  GoStatementstr := fs_IfThen(GoStatement,'GO'+sLineBreak,'');
+  CommitStatementstr := fs_IfThen(CommitStatement,'commit;'+sLineBreak,'');
 
   PkColumns := TStringList.Create;
 
@@ -1142,7 +1170,7 @@ begin
         if i>0 then
          begin
           Result:=Result+',';
-          Result:=Result+#13#10;
+          Result:=Result+sLineBreak;
          end;
 
         Result:=Result+'  '+GetSQLColumnCreateDefCode(FieldOnGeneratorOrSequence,HideNullField, DefaultBeforeNotNull, OutputComments);
@@ -1205,11 +1233,11 @@ begin
 
     if indexPortable then
     begin
-      FinallyPortableIndexes := FinallyPortableIndexes + sIndex + ';'+#13#10+GoStatementstr;
+      FinallyPortableIndexes := FinallyPortableIndexes + sIndex + ';'+sLineBreak+GoStatementstr;
     end else
     begin
       Result:=Result+',';
-      Result:=Result+#13#10;
+      Result:=Result+sLineBreak;
       Result:=Result + sIndex;
     end;
   end;
@@ -1226,7 +1254,7 @@ begin
       if(theRel.CreateRefDef)then
       begin
         Result:=Result+',';
-        Result:=Result+#13#10;
+        Result:=Result+sLineBreak;
         //get the FK field list from destination table
         s1:='';
         for j:=0 to theRel.FieldsFK.Count-1 do
@@ -1237,16 +1265,16 @@ begin
         end;
 
         //The Index for INNODB is now created like any other index
-        //Result:=Result+'  INDEX '+theRel.ObjName+'('+s1+'),'+#13#10; //Add this for INNODB
+        //Result:=Result+'  INDEX '+theRel.ObjName+'('+s1+'),'+sLineBreak; //Add this for INNODB
         if DoNotUseRelNameInRefDef then
-          Result:=Result+ fs_RemplaceMsg(CST_BASE_FOREIGN_KEY, ['',s1])+#13#10
+          Result:=Result+ fs_RemplaceMsg(CST_BASE_FOREIGN_KEY, ['',s1])+sLineBreak
         else
-          Result:=Result+fs_RemplaceMsg(CST_BASE_FOREIGN_KEY, [DBQuote+theRel.RelationName+DBQuote,s1])+#13#10;
+          Result:=Result+fs_RemplaceMsg(CST_BASE_FOREIGN_KEY, [DBQuote+theRel.RelationName+DBQuote,s1])+sLineBreak;
 
 
         FKIndexName := copy('IFK_'+DBQuote+theRel.RelationName+DBQuote,1,30);
         FKIndexes :=
-          FKIndexes + fs_RemplaceMsg(CST_BASE_CREATE_INDEX, [FKIndexName,GetSQLTableName,s1])+#13#10+GoStatementstr;
+          FKIndexes + fs_RemplaceMsg(CST_BASE_CREATE_INDEX, [FKIndexName,GetSQLTableName,s1])+sLineBreak+GoStatementstr;
 
         Result:=Result+'    REFERENCES '+DBQuote+Table+DBQuote+'(';
         //get the FK field list from source table
@@ -1259,12 +1287,12 @@ begin
         Result:=Result+')';
         {if(theRel.RefDef.Values['Matching']>'')then
           case StrToInt(theRel.RefDef.Values['Matching']) of
-            0: Result:=Result+#13#10+'      MATCH FULL';
-            1: Result:=Result+#13#10+'      MATCH PARTIAL';
+            0: Result:=Result+sLineBreak+'      MATCH FULL';
+            1: Result:=Result+sLineBreak+'      MATCH PARTIAL';
           end;}
 
-          Result:=Result+#13#10+CST_BASE_ONDELETE [ theRel.OnDelete ];
-          Result:=Result+#13#10+CST_BASE_ONUPDATE [ theRel.OnUpdate ];
+          Result:=Result+sLineBreak+CST_BASE_ONDELETE [ theRel.OnDelete ];
+          Result:=Result+sLineBreak+CST_BASE_ONUPDATE [ theRel.OnUpdate ];
 
         inc(relCounter);
       end;
@@ -1277,7 +1305,7 @@ begin
   if (gbm_DatabaseToGenerate = bmMySQL )then
    Begin
      if(theTableType>0) Then
-       Result:=Result+#13#10+fs_RemplaceMsg(CST_Base_Words[gbm_DatabaseToGenerate].TABLE_TYPE,[CST_MYSQL_TABLE_TYPE [ theTableType ]]);
+       Result:=Result+sLineBreak+fs_RemplaceMsg(CST_Base_Words[gbm_DatabaseToGenerate].TABLE_TYPE,[CST_MYSQL_TABLE_TYPE [ theTableType ]]);
 
      //Options
      if(TblOptions)  then
@@ -1285,70 +1313,74 @@ begin
        AppendStr(Result,TableOptions.Text);
        {
        if(TableOptions.Values['NextAutoIncVal']>'')then
-         Result:=Result+#13#10+'AUTO_INCREMENT = '+TableOptions.Values['NextAutoIncVal'];
+         Result:=Result+sLineBreak+'AUTO_INCREMENT = '+TableOptions.Values['NextAutoIncVal'];
        if(TableOptions.Values['AverageRowLength']>'')then
-         Result:=Result+#13#10+'AVG_ROW_LENGTH = '+TableOptions.Values['AverageRowLength'];
+         Result:=Result+sLineBreak+'AVG_ROW_LENGTH = '+TableOptions.Values['AverageRowLength'];
        if(TableOptions.Values['RowChecksum']<>'0')and
          (TableOptions.Values['RowChecksum']>'')then
-         Result:=Result+#13#10+'CHECKSUM = '+TableOptions.Values['RowChecksum'];
+         Result:=Result+sLineBreak+'CHECKSUM = '+TableOptions.Values['RowChecksum'];
        if(TableOptions.Values['MaxRowNumber']>'')then
-         Result:=Result+#13#10+'MAX_ROWS = '+TableOptions.Values['MaxRowNumber'];
+         Result:=Result+sLineBreak+'MAX_ROWS = '+TableOptions.Values['MaxRowNumber'];
        if(TableOptions.Values['MinRowNumber']>'')then
-         Result:=Result+#13#10+'MIN_ROWS = '+TableOptions.Values['MinRowNumber'];
+         Result:=Result+sLineBreak+'MIN_ROWS = '+TableOptions.Values['MinRowNumber'];
        if(TableOptions.Values['PackKeys']<>'0')and
          (TableOptions.Values['PackKeys']>'')then
-         Result:=Result+#13#10+'PACK_KEYS = '+TableOptions.Values['PackKeys'];
+         Result:=Result+sLineBreak+'PACK_KEYS = '+TableOptions.Values['PackKeys'];
        if(TableOptions.Values['TblPassword']>'')then
-         Result:=Result+#13#10+'PASSWORD = "'+TableOptions.Values['TblPassword']+'"';
+         Result:=Result+sLineBreak+'PASSWORD = "'+TableOptions.Values['TblPassword']+'"';
        if(TableOptions.Values['DelayKeyTblUpdates']<>'0')and
          (TableOptions.Values['DelayKeyTblUpdates']>'')then
-         Result:=Result+#13#10+'DELAY_KEY_WRITE = '+TableOptions.Values['DelayKeyTblUpdates'];
+         Result:=Result+sLineBreak+'DELAY_KEY_WRITE = '+TableOptions.Values['DelayKeyTblUpdates'];
        if(TableOptions.Values['RowFormat']<>'0')then
        begin
          if(TableOptions.Values['RowFormat']='1')then
-           Result:=Result+#13#10+'ROW_FORMAT = dynamic'
+           Result:=Result+sLineBreak+'ROW_FORMAT = dynamic'
          else if(TableOptions.Values['RowFormat']='2')then
-           Result:=Result+#13#10+'ROW_FORMAT = fixed'
+           Result:=Result+sLineBreak+'ROW_FORMAT = fixed'
          else if(TableOptions.Values['RowFormat']='3')then
-           Result:=Result+#13#10+'ROW_FORMAT = compressed';
+           Result:=Result+sLineBreak+'ROW_FORMAT = compressed';
        end;
 
        if(TableOptions.Values['UseRaid']='1')then
        begin
          if(TableOptions.Values['RaidType']='0')then
-           Result:=Result+#13#10+'RAID_TYPE = STRIPED ';
+           Result:=Result+sLineBreak+'RAID_TYPE = STRIPED ';
 
          Result:=Result+'RAID_CHUNKS = '+TableOptions.Values['Chunks']+
            ' RAID_CHUNKSIZE = '+TableOptions.Values['ChunkSize'];
        end;
 
        if(TableOptions.Values['TblDataDir']>'')then
-         Result:=Result+#13#10+'DATA DIRECTORY = "'+TableOptions.Values['TblDataDir']+'"';
+         Result:=Result+sLineBreak+'DATA DIRECTORY = "'+TableOptions.Values['TblDataDir']+'"';
        if(TableOptions.Values['TblIndexDir']>'')then
-         Result:=Result+#13#10+'INDEX DIRECTORY = "'+TableOptions.Values['TblIndexDir']+'"';
+         Result:=Result+sLineBreak+'INDEX DIRECTORY = "'+TableOptions.Values['TblIndexDir']+'"';
          }
      end;
    end;
 
 
-  Result:=Result+';'+#13#10+GoStatementstr;
+  Result:=Result+';'+sLineBreak+GoStatementstr;
 
   if length(FinallyPortableIndexes)>0 then
   begin
-    Result:=Result+#13#10#13#10+FinallyPortableIndexes;
+    Result:=Result+sLineBreak+sLineBreak+FinallyPortableIndexes;
   end;
 
   //Standard Inserts
   if(StdInserts)and(trim(StandardInserts.Text)>'')then
   begin
-    Result:=Result+#13#10#13#10+StandardInserts.Text+#13#10+GoStatementstr+CommitStatementstr;
+    Result:=Result+sLineBreak+sLineBreak+StandardInserts.Text+sLineBreak+GoStatementstr+CommitStatementstr;
   end;
 
   //create triggers to implements auto_increment function to oracle/firebird
-  if (FieldOnGeneratorOrSequence <> '') and CreateAutoInc then
+  if (FieldOnGeneratorOrSequence > '') and CreateAutoInc then
   begin
-    Result:=Result + sLineBreak +  sLineBreak +
-      getTriggerForSequences(SeqName, PrefixName, FieldOnGeneratorOrSequence);
+    SeqName:=Table+'_'+FieldOnGeneratorOrSequence;
+    if gbm_DatabaseToGenerate = bmFirebird
+     Then p_SetStringMaxLength  (SeqName,CST_FIREBIRD_FIELD_LENGTH );
+    if GenerateSequence Then
+      AppendStr(Result, sLineBreak +  sLineBreak +  GetGlobalSequence(SeqName));
+    AppendStr(Result, sLineBreak +  getTriggerForSequences(SeqName, PrefixName, FieldOnGeneratorOrSequence));
   end;
 
   //create triggers to implements record last change date
@@ -1368,16 +1400,20 @@ begin
   // Should output comments?
   if OutputComments then
   begin
-    Result:=Result + #13#10 +
+    Result:=Result + sLineBreak +
        getSqlComment;
   end;
 
   // should create indexes for FKs?
   if FKIndex then
   begin
-    Result:=Result + #13#10 + FKIndexes;
+    Result:=Result + sLineBreak + FKIndexes;
   end;
 
+  {case gbm_DatabaseToGenerate of
+    bmFirebird :AppendStr(Result,'COMMIT;'+sLineBreak);
+  end;
+   }
   PkColumns.Free;
 end;
 
@@ -1386,7 +1422,7 @@ begin
   Result:='Table ' + Table;
 end;
 
-function TFWTable.getTriggerForSequences(SeqName, PrefixName,
+function TFWTable.getTriggerForSequences(const SeqName, PrefixName,
   Field: string): string;
 var AuxTriggerBody : TStringList;
 begin
@@ -1431,22 +1467,22 @@ begin
   with CST_Base_Words [ gbm_DatabaseToGenerate ] do
    Begin
     Result := CST_Base_Words [ gbm_DatabaseToGenerate ].CREATE_TRIGGER;
-    StringReplace(Result,CST_BASE_TABLE,GetSQLTableName,[rfReplaceAll]);
-    StringReplace(Result,CST_BASE_BODY,TriggerBody,[rfReplaceAll]);
-    StringReplace(Result,CST_BASE_TRIGGER,TriggerName,[rfReplaceAll]);
-    StringReplace(Result,CST_BASE_EVENT,fs_RemplaceMsg(TRIGGER_EVENT[Event],[TRIGGER_EVENT_MODE[EventMode]]),[rfReplaceAll]);
-    StringReplace(Result,CST_BASE_BODY,TriggerBody,[rfReplaceAll]);
+    Result := StringReplace(Result,CST_BASE_TABLE,GetSQLTableName,[rfReplaceAll]);
+    Result := StringReplace(Result,CST_BASE_BODY,TriggerBody,[rfReplaceAll]);
+    Result := StringReplace(Result,CST_BASE_TRIGGER,TriggerName,[rfReplaceAll]);
+    Result := StringReplace(Result,CST_BASE_EVENT,fs_RemplaceMsg(TRIGGER_EVENT[Event],[TRIGGER_EVENT_MODE[EventMode]]),[rfReplaceAll]);
+    Result := StringReplace(Result,CST_BASE_BODY,TriggerBody,[rfReplaceAll])+#10+#10;
    end;
 
 end;
 
-function TFWTable.GetTriggersForLastChangeDate(ColumnName, PrefixName: string;
-  pkFields: TStringList): string;
+function TFWTable.GetTriggersForLastChangeDate(const ColumnName, PrefixName: string;
+  const pkFields: TStringList): string;
 begin
 
 end;
 
-function TFWTable.GetTriggerForLastDeleteDate(TbName, ColName,
+function TFWTable.GetTriggerForLastDeleteDate(const TbName, ColName,
   PrefixName: string): string;
 var
   AuxTriggerBody: TStringList;
@@ -1544,7 +1580,7 @@ begin
   End;
 end;
 
-function TFWTable.GetPkJoin(Tab1, Tab2: String; PKs: TStringList): String;
+function TFWTable.GetPkJoin(const Tab1, Tab2: String;const PKs: TStringList): String;
 var
   PkIndex: integer;
 begin
@@ -1561,7 +1597,15 @@ begin
 
 end;
 
-function TFWTable.GetSQLDropCode(IfExists:boolean = false): string;
+function TFWTable.GetGlobalSequence(const seqname: String): String;
+begin
+  case gbm_DatabaseToGenerate of
+    bmFirebird :
+      Result := 'CREATE GENERATOR '+seqname+';'#10
+  end;
+end;
+
+function TFWTable.GetSQLDropCode(const IfExists:boolean = false): string;
 var DBQuote: string;
 begin
   DBQuote:=GetDBQuote;
@@ -1651,7 +1695,7 @@ begin
   if assigned ( Collection.Owner ) Then
    ( Collection.Owner as TComponent ).ReferenceInterface ( DataSource, opInsert );
   if  assigned ( ddl_DataLink.Dataset )
-  and ( fs_getComponentProperty (ddl_DataLink.Dataset, 'TableName' ) <> '' )
+  and ( fs_getComponentProperty (ddl_DataLink.Dataset, 'TableName' ) > '' )
    Then
     Table := fs_getComponentProperty (ddl_DataLink.Dataset, 'TableName' ) ;
 end;
@@ -1871,6 +1915,7 @@ begin
   Result.FieldSize:=FieldSize;
   Result.b_ColCreate:=b_ColCreate;
   Result.b_ColMain:=b_ColMain;
+  Result.b_ColHidden:=b_ColHidden;
   Result.b_colPrivate:=b_colPrivate;
   Result.b_colSelect:=b_colSelect;
   Result.b_ColUnique:=b_ColUnique;
@@ -1959,25 +2004,8 @@ begin
       case gbm_DatabaseToGenerate of
        bmMySQL:
         begin
-         found := False;
-          if ( Collection is TFWFieldColumns ) Then
-           with Collection as TFWFieldColumns do
-            for j := 0 to Count - 1  do
-             with Items[j] do
-              Begin
-                if ( FieldName = Self.FieldName ) Then
-                 Break;
-                if b_ColUnique and b_ColHidden and not b_ColCreate then
-                 Begin
-                  found := True;
-                  Break;
-                 end;
-              end;
-          if not found Then
-           Begin
-            Result:=Result+' AUTO_INCREMENT';
-            TableFieldGen := '';
-           end;
+          Result:=Result+' AUTO_INCREMENT';
+          TableFieldGen := '';
         end;
       bmSQLServer :
         begin
@@ -2032,7 +2060,7 @@ end;
 
 function TFWFieldData.getSqlComment: string;
 begin
-  Result := 'Field ' + FieldName + ' - ';
+  Result := 'Field ' + FieldName + ' as ';
   WriteStr(Result,FieldType);
 end;
 
@@ -2044,12 +2072,16 @@ begin
                  Else Result := '('+IntToStr(FieldLength)+')';
     ftBoolean : Result := '(1)';
     ftInteger : Begin
-                 if FieldLength>-1 Then Result:='('+IntToStr(FieldLength)+')';
+                 case gbm_DatabaseToGenerate of
+                   bmMySQL,bmOracle :  if FieldLength>-1 Then Result:='('+IntToStr(FieldLength)+')';
+                 end;
                 End;
     ftFloat   : if gi_Decimals > 0 Then
                   Begin
                     if FieldLength = -1 Then
-                      FieldLength := 23 + Decimals;
+                     if gbm_DatabaseToGenerate=bmFirebird
+                       Then FieldLength := 18
+                       Else FieldLength := 23 + Decimals;
                     Result := '('+IntToStr(FieldLength)+','+IntToStr(Decimals)+')';
                   end;
   end;
@@ -2082,7 +2114,7 @@ begin
                 End;
     ftFloat   : if  ( FieldLength = -1  )
                 or  ( FieldLength >= 23 )
-                 Then Result := 'DOUBLE'
+                 Then Result := CST_Base_Words[gbm_DatabaseToGenerate].DOUBLE
                  Else Result := 'DECIMAL';
   end;
 end;
@@ -2156,6 +2188,7 @@ end;
 procedure TFWFieldColumn.SetFieldOld(const Avalue: TFWFieldData);
 begin
   gfw_FieldOld.Assign(AValue);
+  SetCorrectFieldName(Self);
 end;
 
 destructor TFWFieldColumn.Destroy;
@@ -2249,8 +2282,13 @@ constructor TFWMiniFieldColumns.Create(const Column: TCollectionItem;
   const ColumnClass: TFWMiniFieldColumnClass);
 Begin
   inherited Create(ColumnClass);
-  FColumn := Column;
+  ACollectionItemOwner := Column;
 End;
+
+function TFWMiniFieldColumns.GetOwner: TPersistent;
+begin
+  Result:=ACollectionItemOwner;
+end;
 
 function TFWMiniFieldColumns.toString ( const ab_comma : Boolean = True ): String;
 var li_i : Integer ;
@@ -2352,13 +2390,13 @@ Begin
         p_SetComponentProperty(acom_combo,CST_PROPERTY_KEYFIELD   , toString);
         p_SetComponentProperty(acom_combo,CST_PROPERTY_LOOKUPFIELD, toString);
        end;
-      if ls_Fields <> '' Then
+      if ls_Fields > '' Then
         Begin
           p_SetComponentObjectProperty(acom_combo,CST_PROPERTY_LISTSOURCE  , ads_ListSource );
           p_SetComponentObjectProperty(acom_combo,CST_PROPERTY_LOOKUPSOURCE, ads_ListSource );
         end;
 
-      if as_Name <> '' Then
+      if as_Name > '' Then
         Begin
          Hint:=fs_GetLabelCaption(as_Name);
          ShowHint:=True;
