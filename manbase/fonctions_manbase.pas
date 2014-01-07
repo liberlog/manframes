@@ -1,4 +1,4 @@
-unit fonctions_manbase;
+﻿unit fonctions_manbase;
 
 {$IFDEF FPC}
 {$mode Delphi}
@@ -214,14 +214,14 @@ type
    TFWFieldDataOptions = class(TCollection)
    private
      FColumn: TCollectionItem;
-     function GetColumnField(const Index: Integer): TFWFieldDataOption;
-     procedure SetColumnField(const Index: Integer; Value: TFWFieldDataOption);
+     function GetColumnField( Index: Integer): TFWFieldDataOption;
+     procedure SetColumnField( Index: Integer; Value: TFWFieldDataOption);
    public
      constructor Create(const Column: TCollectionItem; const ColumnClass: TFWFieldDataOptionClass); virtual;
      function indexOf ( const as_OptionName : String ) : Integer;
      function Add: TFWFieldDataOption; virtual;
      property Column : TCollectionItem read FColumn;
-     property Items[CST_BASE_INDEX: Integer]: TFWFieldDataOption read GetColumnField write SetColumnField; default;
+     property Items[Index:Integer]: TFWFieldDataOption read GetColumnField write SetColumnField; default;
    End;
    TFWFieldData = class(TFWMiniFieldColumn)
    private
@@ -245,13 +245,13 @@ type
      gb_EditParamsAsString,  // for ENUM and SET Types
      gb_ParamRequired : Boolean; //stores whether the Params are required or not
      gfo_Options : TFWFieldOptions;
-     gafo_OptionSelected : array [ TFWFieldOption ] of Boolean;
+     gafo_OptionSelected : TFWFieldOptions;
      gdo_Options : TFWFieldDataOptions;
      procedure SetDataOptions ( const AValue : TFWFieldDataOptions );
-     function  GetOptionSelected ( const Index : TFWFieldOption ):Boolean;
-     function  GetOptionExists   ( const Index : TFWFieldOption ):Boolean;
-     function  GetOptionString   ( const Index : TFWFieldOption ):String;
-     procedure SetOptionSelected ( const Index : TFWFieldOption; const Avalue : Boolean );
+     function  GetOptionSelected ( Index : TFWFieldOption ):Boolean;
+     function  GetOptionExists   ( Index : TFWFieldOption ):Boolean;
+     function  GetOptionString   ( Index : TFWFieldOption ):String;
+     procedure SetOptionSelected ( Index : TFWFieldOption; Avalue : Boolean );
      function getSqlComment: string; override;
      function fs_DatatypeParams : String;
      function fr_GetRelation : TFWRelation;
@@ -266,7 +266,7 @@ type
     procedure Erase; virtual;
     function IsErased:Boolean; virtual;
     procedure Init; virtual;
-    function Clone ( const ACollection : TFWFieldColumns ) : TFWFieldData; override;
+    function Clone ( const ACollection : TFWFieldColumns ) : TFWFieldData; virtual;
     function GetSQLColumnCreateDefCode(
        var TableFieldGen: string; const HideNullField: boolean = True;
        const DefaultBeforeNotNull: boolean = True; const OutputComments: boolean = True): string; virtual;
@@ -283,7 +283,7 @@ type
      property OptionDefaults: TFWOptionDefaults read god_OptionDefaults write god_OptionDefaults default [];
      property DataOptions: TFWFieldDataOptions read gdo_Options write SetDataOptions;
      property Options: TFWFieldOptions read gfo_Options write gfo_Options default [];
-     property OptionSelected[Index:TFWFieldOption]: Boolean read GetOptionSelected write SetOptionSelected;
+     property OptionSelected:TFWFieldOptions read gafo_OptionSelected write gafo_OptionSelected default [];
      property EditParamsAsString: Boolean read gb_EditParamsAsString write gb_EditParamsAsString default False;  // for ENUM and SET Types
      property SynonymGroup: integer read gi_SynonymGroup write gi_SynonymGroup default 0;
      property Decimals: integer read gi_decimals write gi_decimals default 0;
@@ -318,7 +318,7 @@ type
     function CreateOldField: TFWFieldData; virtual;
   public
    constructor Create(ACollection: TCollection); override;
-   function   Clone ( const ACollection : TFWFieldColumns ) : TFWFieldColumn; override;
+   function   Clone ( const ACollection : TFWFieldColumns ) : TFWFieldColumn; virtual;
    destructor Destroy; override;
   published
    property FieldOld : TFWFieldData read gfw_FieldOld write SetFieldOld;
@@ -332,16 +332,15 @@ type
 
    TFWBaseFieldColumns = class(TCollection)
     private
-      function GetColumnField(const Index: Integer): TFWMiniFieldColumn;
-      procedure SetColumnField(const Index: Integer; Value: TFWMiniFieldColumn);
+      function GetColumnField(Index:Integer): TFWMiniFieldColumn;
+      procedure SetColumnField(Index:Integer; Value: TFWMiniFieldColumn);
     public
      function GetString: String; virtual;
-     procedure Add ( const ToAdd: TFWMiniFieldColumn ); virtual; overload;
-     function Add: TFWMiniFieldColumn; virtual; overload;
+     procedure Add ( const ToAdd: TFWMiniFieldColumn ); overload; virtual;
+     function Add: TFWMiniFieldColumn; overload; virtual;
      function indexOf ( const as_FieldName : String ) : Integer; virtual;
      function byName  ( const as_FieldName : String ) : TFWMiniFieldColumn;
-    published
-     property Items[CST_BASE_INDEX: Integer]: TFWMiniFieldColumn read GetColumnField write SetColumnField; default;
+     property Items[Index:Integer]: TFWMiniFieldColumn read GetColumnField write SetColumnField; default;
    End;
 
    { TFWMiniFieldColumns }
@@ -359,11 +358,11 @@ type
    { TFWFieldColumns }
     TFWFieldColumns = class(TFWMiniFieldColumns)
     private
-      function GetColumnField(const Index: Integer): TFWFieldColumn;
-      procedure SetColumnField(const Index: Integer; Value: TFWFieldColumn);
+      function GetColumnField( Index: Integer): TFWFieldColumn;
+      procedure SetColumnField( Index: Integer; Value: TFWFieldColumn);
     public
       function Add: TFWFieldColumn; virtual;
-      property Items[CST_BASE_INDEX: Integer]: TFWFieldColumn read GetColumnField write SetColumnField; default;
+      property Items[Index: Integer]: TFWFieldColumn read GetColumnField write SetColumnField; default;
     End;
 
 
@@ -399,18 +398,17 @@ type
   TFWTables = class(TCollection)
   private
     FOwner : TPersistent;
-    function GetTable( const Index: Integer): TFWTable;
-    procedure SetTable( const Index: Integer; Value: TFWTable);
+    function GetTable( Index: Integer): TFWTable;
+    procedure SetTable( Index: Integer; Value: TFWTable);
   protected
    function GetOwner: TPersistent; override;
   public
     function toString ( const ab_comma : Boolean = True ): String; virtual;
-    constructor Create(const AOwner: TPersistent; const ColumnClass: TFWTableClass); virtual; overload;
-    constructor Create(const ColumnClass: TFWTableClass); virtual; overload;
+    constructor Create(const AOwner: TPersistent; const ColumnClass: TFWTableClass); overload; virtual;
+    constructor Create(const ColumnClass: TFWTableClass); overload; virtual;
     function indexOf ( const as_TableName : String ) : Integer;
     function Add: TFWTable; virtual;
-  published
-    property Items[CST_BASE_INDEX: Integer]: TFWTable read GetTable write SetTable; default;
+    property Items[Index: Integer]: TFWTable read GetTable write SetTable; default;
   End;
 
   { TFWIndexes }
@@ -419,19 +417,18 @@ type
   private
     FColumn: TCollectionItem;
     gb_Changed : Boolean;
-    function GetIndex( const Index: Integer): TFWIndex;
-    procedure SetIndex( const Index: Integer; const Value: TFWIndex);
+    function GetIndex( Index: Integer): TFWIndex;
+    procedure SetIndex( Index: Integer; Value: TFWIndex);
   protected
     function GetOwner: TPersistent; override;
   public
-    constructor Create(const Column: TCollectionItem; const ColumnClass: TFWIndexClass); virtual; overload;
+    constructor Create(const Column: TCollectionItem; const ColumnClass: TFWIndexClass); overload; virtual;
     property Changed : Boolean read gb_Changed;
     function indexOf ( const as_IndexName : String ) : Integer;
     function Add: TFWIndex; virtual;
     function Insert ( const AIndex : Integer ): TFWIndex; virtual;
     property Column : TCollectionItem read FColumn;
-  published
-   property Items[CST_BASE_INDEX: Integer]: TFWIndex read GetIndex write SetIndex; default;
+   property Items[Index: Integer]: TFWIndex read GetIndex write SetIndex; default;
   End;
 
   TFWRelationClass = class of TFWRelation;
@@ -511,7 +508,7 @@ type
     function CreateCollectionIndexes: TFWIndexes; virtual;
     function CreateCollectionFields: TFWFieldColumns; virtual;
     function CreateCollectionRelations: TFWRelations; virtual;
-    procedure Notification(AComponent: TComponent; Operation: TOperation);{$IFDEF FPC} virtual{$ELSE}override{$ENDIF};
+    procedure Notification(AComponent: TComponent; Operation: TOperation);virtual;
   public
     { Public declarations }
     constructor Create(Collection: TCollection); override;
@@ -803,7 +800,7 @@ end;
 
 { TFWTables }
 
-function TFWTables.GetTable(const Index: Integer): TFWTable;
+function TFWTables.GetTable( Index: Integer): TFWTable;
 begin
   if  ( Index > -1 )
   and ( Index < Count ) Then
@@ -811,7 +808,7 @@ begin
 
 end;
 
-procedure TFWTables.SetTable(const Index: Integer; Value: TFWTable);
+procedure TFWTables.SetTable( Index: Integer; Value: TFWTable);
 begin
   Items[Index].Assign(Value);
 end;
@@ -870,7 +867,7 @@ end;
 
 { TFWIndexes }
 
-function TFWIndexes.GetIndex(const Index: Integer): TFWIndex;
+function TFWIndexes.GetIndex( Index: Integer): TFWIndex;
 begin
   if  ( Index > -1 )
   and ( Index < Count ) Then
@@ -878,7 +875,7 @@ begin
 
 end;
 
-procedure TFWIndexes.SetIndex(const Index: Integer; const Value: TFWIndex);
+procedure TFWIndexes.SetIndex( Index: Integer; Value: TFWIndex);
 begin
   Items[Index].Assign(Value);
 end;
@@ -1053,7 +1050,7 @@ begin
      with gfc_FieldColumns[i] do
       if b_ColUnique
       and (theIndex.gfc_FieldColumns.indexOf(FieldName) = -1) then
-        theIndex.gfc_FieldColumns.Add(gfc_FieldColumns[theIndex.gfc_FieldColumns.indexOf(FieldName)].Clone(theIndex.gfc_FieldColumns));
+        theIndex.gfc_FieldColumns.Add(gfc_FieldColumns.byname(FieldName).Clone(theIndex.gfc_FieldColumns));
 
   end;
 end;
@@ -2037,23 +2034,23 @@ begin
   gdo_Options.assign(AValue);
 end;
 
-function TFWFieldData.GetOptionSelected(const Index: TFWFieldOption):Boolean;
+function TFWFieldData.GetOptionSelected( Index: TFWFieldOption):Boolean;
 begin
   result := gafo_OptionSelected [ index ];
 end;
 
-function TFWFieldData.GetOptionExists(const Index: TFWFieldOption): Boolean;
+function TFWFieldData.GetOptionExists( Index: TFWFieldOption): Boolean;
 begin
   Result:=index in gfo_Options;
 end;
 
-function TFWFieldData.GetOptionString(const Index: TFWFieldOption): String;
+function TFWFieldData.GetOptionString(Index: TFWFieldOption): String;
 begin
   if OptionExists[Index] Then
    Result:=CST_BASE_FIELD_OPTIONS[Index];
 end;
 
-procedure TFWFieldData.SetOptionSelected(const Index: TFWFieldOption; const Avalue: Boolean);
+procedure TFWFieldData.SetOptionSelected( Index: TFWFieldOption; Avalue: Boolean);
 begin
   gafo_OptionSelected [ index ] := Avalue;
 end;
@@ -2217,12 +2214,12 @@ begin
   (TFWMiniFieldColumn(Add)).Assign(ToAdd);
 end;
 
-function TFWBaseFieldColumns.GetColumnField(const Index: Integer): TFWMiniFieldColumn;
+function TFWBaseFieldColumns.GetColumnField(Index: Integer): TFWMiniFieldColumn;
 begin
   Result := TFWMiniFieldColumn(inherited Items[Index]);
 end;
 
-procedure TFWBaseFieldColumns.SetColumnField(const Index: Integer;
+procedure TFWBaseFieldColumns.SetColumnField(Index: Integer;
   Value: TFWMiniFieldColumn);
 begin
   Items[Index].Assign(Value);
