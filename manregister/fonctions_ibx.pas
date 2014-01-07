@@ -17,7 +17,7 @@ uses
   DB;
 
 resourcestring
-   Gs_Names_Charset =   'UTF8';
+   Gs_Charset_ibx =   'utf8';
 
 const DEFAULT_FIREBIRD_SERVER_DIR = '/var/lib/firebird/2.5/';
 {$IFDEF VERSIONS}
@@ -25,10 +25,11 @@ const DEFAULT_FIREBIRD_SERVER_DIR = '/var/lib/firebird/2.5/';
                                          FileUnit : 'fonctions_ibx' ;
                         		 Owner : 'Matthieu Giroux' ;
                         		 Comment : 'Just add the package.' ;
-                        		 BugsStory   : 'Version 1.0.0.1 : Testing IBX.' +#10
+                        		 BugsStory   : 'Version 1.0.1.0 : Upgrading for XML Frames.' +#10
+                                                     + 'Version 1.0.0.1 : Testing IBX.' +#10
                                                      + 'Version 1.0.0.0 : IBX Version.';
                         		 UnitType : 1 ;
-                        		 Major : 1 ; Minor : 0 ; Release : 0 ; Build : 1 );
+                        		 Major : 1 ; Minor : 0 ; Release : 1 ; Build : 0 );
 {$ENDIF}
 
 procedure p_CreateIBXconnection ( const AOwner : TComponent ; var adtt_DatasetType : TDatasetType ; var AQuery : TDataset; var AConnection : TComponent );
@@ -46,7 +47,7 @@ uses IBQuery,
 
 function fs_CreateAlterBeginSQL :String;
 Begin
-  Result := 'SET SQL DIALECT 3;' + #10+ 'SET NAMES ' + Gs_Names_Charset +';'+ #10;
+  Result := 'SET SQL DIALECT 3;' + #10+ 'SET NAMES ' + Gs_Charset_ibx +';'+ #10;
 end;
 
 function fs_CreateAlterEndSQL ( const as_base, as_user, as_password : String ):String;
@@ -59,6 +60,7 @@ Begin
   adtt_DatasetType := dtIBX;
   AQuery := TIBQuery.Create(AOwner);
   AConnection :=TIBDataBase.Create(AOwner);
+  ( AConnection as TIBDataBase ).Params.Add('lc_ctype='+Gs_Charset_ibx);
   with AQuery as TIBQuery do
      Begin
        Transaction := TIBTransaction.Create ( AOwner );
@@ -75,7 +77,7 @@ Begin
 End ;
 function fs_CreateDatabase  ( const as_base, as_user, as_password : String ):String;
 Begin
-  Result := 'CREATE DATABASE '''+as_base+''' USER '''+as_user+''' PASSWORD '''+as_password+''' PAGE_SIZE 16384 DEFAULT CHARACTER SET '+Gs_Names_Charset+';'+#10
+  Result := 'CREATE DATABASE '''+as_base+''' USER '''+as_user+''' PASSWORD '''+as_password+''' PAGE_SIZE 16384 DEFAULT CHARACTER SET '+Gs_Charset_ibx+';'+#10
           + 'CONNECT '''+as_base+''' USER '''+as_user+''' PASSWORD '''+as_password+''';'+#10;
 End;
 

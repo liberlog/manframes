@@ -482,11 +482,6 @@ type
     {.$IFDEF EXRX}
     //ge_OldDataGridResize: TAutoWidthEvent ;
     {.$ENDIF}
-    procedure p_AffecteEvenementsNavigators ( const acpa_Component : TCustomPanel );
-    procedure p_ChargeEvenementsDatasourcePrinc;
-    procedure p_CreateEventualCsvFile(const afd_FieldsDefs: TFieldDefs;
-      const afws_Source: TFWSource);
-    procedure p_DataWorksLinksCancel(const ai_originalSource: Integer);
     procedure p_setEnregistrement(const aFWColumn: TFWSource);
     procedure p_SetLabels(const a_Value: Boolean);
     procedure p_SetSearch ( const a_Value : TDatasource );
@@ -497,18 +492,10 @@ type
     procedure p_SetBeforeShow   ( a_Value : TNotifyEvent );
     procedure p_SetBeforeCreate ( a_Value : TNotifyEvent );
 
-    function fb_Locate ( const adat_Dataset : TDataset ; const as_OldFilter, as_Champ : String ; avar_Recherche : Variant; const alo_Options : TLocateOptions ; const ab_Trie : Boolean ): Boolean ;
     procedure p_SetAutoInsert ( Value : Boolean );
 
     procedure p_SetVersion  ( Value : String  );
     procedure p_SetSources ( const ASources : TFWSources );
-    procedure p_DatasetLookupFilteredField ( var   lb_isfirstField         : Boolean ;
-                                               var   lstl_DataGridLookValeur : TStringList;
-                                               const ldat_DatasetLookup      : TDataset ;
-                                               const lstl_Field              : TStringList;
-                                               const ls_Cle, ls_FieldLookup  : String ;
-                                               const li_NoCle                : Integer ;
-                                               const lstr_Parameters         : TCollection ) ;
     function fb_RafraichitFiltre ( const lt_DatasourceWork : TFWSource ) : Boolean ;
     function fb_SourceLookupFiltrage(const GfwSource, GfwLookupSource: TfwSource ; const astl_FieldsChilds : TStringList): Boolean; virtual;
     function fb_SourceChildsLookupFiltering(const gfwSource : TFWSource ): Boolean; virtual;
@@ -519,8 +506,6 @@ type
     procedure p_DateDropDown(Sender: TObject);
      {$ENDIF}
     function fvar_GetEnregistrement1 : Variant ;
-    function fs_Lettrage(const ach_Lettrage: Char;const ai64_Compteur : Int64 ; const ali_TailleLettrage : Longint ): String ;
-    function fb_CacheRecherche ( const ads_Datasource : TDatasource ): Boolean ;
     procedure p_DatasourceWorksStateChange(Sender: TObject);
     procedure p_DataWorkNavClick(Sender: TObject; Button : TExtNavigateBtn);
     procedure p_DataWorkBeforeInsert(DataSet: TDataSet);
@@ -536,19 +521,6 @@ type
     procedure p_DeleteOtherDatasources ();
     procedure p_SetWorkSource(const a_Value: TDatasource);
     procedure WMSize(var Message: TWMSize); message WM_SIZE;
-    procedure p_ChargeIndicateurs ( const acom_Control :  TComponent);
-    procedure p_CacheEdit ( const ads_DataSource : TDataSource; const anv_Navigateur : TCustomPanel; const adbg_DataGrid : TCustomDBGrid  ; const adbg_DataGridColumns : TDBGridColumns ; const adne_DataChangeEvent : TDataChangeEvent );
-    function  fb_ChargeTablePrinc: Boolean;
-    procedure p_ActiveGrille ( const adbgd_DataGrid : TCustomGrid ; const anv_navigator, anv_SaisieRecherche : TCustomPanel );
-    procedure p_CreationEditRecherche;
-    procedure p_PlacerFocus(const actrl_Focus: TWinControl);
-    procedure p_BugActivecontrolNameEmpty(const DataSet: TDataSet;
-      const aCtrl_Focus: TWinControl);
-    procedure p_SurSortieDBEdit(const acon_dbcontrol: TWinControl);
-    procedure p_AfficheRecherche(const adbgd_DataGrid: TCustomDBGrid;const adbgd_DataGridColumns : TDBGridColumns ;
-      const as_Field: String);
-    procedure p_HideAndAffectOldFormProperties;
-    procedure p_OpenDatasource;
     {$IFDEF VERSIONS}
     function fs_GetVersion : String ;
     {$ENDIF}
@@ -575,15 +547,51 @@ type
     lb_KeyDown  : Boolean ;
     { abstract methods }
     // Méthodes abstraites
-    function ffws_SearchSource(const as_Table: String): TFWSource;
     function fb_ChargeDonnees : Boolean; virtual; abstract;
     procedure p_AfterColumnFrameShow( const aFWColumn : TFWSource ); virtual; abstract;
     function fb_ChargementNomCol ( const AFWColumn : TFWSource ; const ai_NumSource : Integer ) : Boolean; virtual; abstract;
 
+    function fb_Locate ( const adat_Dataset : TDataset ;
+                         const as_OldFilter, as_Champ : String ;
+                         avar_Recherche : Variant;
+                         const alo_Options : TLocateOptions ;
+                         const ab_Trie : Boolean ): Boolean ; virtual;
+    procedure p_ChargeIndicateurs ( const acom_Control :  TComponent);virtual;
+    procedure p_DatasetLookupFilteredField ( var   lb_isfirstField         : Boolean ;
+                                             var   lstl_DataGridLookValeur : TStringList;
+                                             const ldat_DatasetLookup      : TDataset ;
+                                             const lstl_Field              : TStringList;
+                                             const ls_Cle, ls_FieldLookup  : String ;
+                                             const li_NoCle                : Integer ;
+                                             const lstr_Parameters         : TCollection ) ; virtual;
+    procedure p_CacheEdit ( const ads_DataSource : TDataSource;
+                            const anv_Navigateur : TCustomPanel;
+                            const adbg_DataGrid : TCustomDBGrid  ;
+                            const adbg_DataGridColumns : TDBGridColumns ;
+                            const adne_DataChangeEvent : TDataChangeEvent ); virtual;
+    function  fb_ChargeTablePrinc: Boolean; virtual;
+    procedure p_HideAndAffectOldFormProperties; virtual;
+    procedure p_OpenDatasource; virtual;
+    procedure p_ActiveGrille ( const adbgd_DataGrid : TCustomGrid ; const anv_navigator, anv_SaisieRecherche : TCustomPanel ); virtual;
+    procedure p_CreationEditRecherche; virtual;
+    procedure p_PlacerFocus(const actrl_Focus: TWinControl); virtual;
+    procedure p_BugActivecontrolNameEmpty(const DataSet: TDataSet;
+      const aCtrl_Focus: TWinControl); virtual;
+    procedure p_SurSortieDBEdit(const acon_dbcontrol: TWinControl); virtual;
+    procedure p_AfficheRecherche(const adbgd_DataGrid: TCustomDBGrid;const adbgd_DataGridColumns : TDBGridColumns ;
+      const as_Field: String); virtual;
+    function fs_Lettrage(const ach_Lettrage: Char;const ai64_Compteur : Int64 ; const ali_TailleLettrage : Longint ): String ; virtual;
+    function fb_CacheRecherche ( const ads_Datasource : TDatasource ): Boolean ;virtual;
     procedure p_VerifyColumnBeforeValidate(const afwc_Source: TFWSource; const adat_Dataset : TDataset ); virtual;
     procedure p_ScruteComposantsFiche (); virtual;
     function fb_False : Boolean; virtual;
     function fs_connection : String;virtual;
+    function ffws_SearchSource(const as_Table: String): TFWSource; virtual;
+    procedure p_AffecteEvenementsNavigators ( const acpa_Component : TCustomPanel ); virtual;
+    procedure p_ChargeEvenementsDatasourcePrinc; virtual;
+    procedure p_CreateOptionalCsvFile(const afd_FieldsDefs: TFieldDefs;
+      const afws_Source: TFWSource); virtual;
+    procedure p_DataWorksLinksCancel(const ai_originalSource: Integer); virtual;
     {$IFDEF RX}
     procedure gd_GridTitleBtnClick(Sender: TObject; ACol: Integer; Field: TField); virtual;
     {$ENDIF}
@@ -950,59 +958,59 @@ begin
     Begin
       if  assigned ( Datalink ) Then
         Begin
-              if fb_SortADataset ( Datalink.Dataset, as_NomChamp, ab_SortDesc ) then
-               lb_Continue := False
+          if fb_SortADataset ( Datalink.Dataset, as_NomChamp, ab_SortDesc ) then
+           lb_Continue := False
             Else
-          Begin
-        {$IFDEF JEDI}
-            if ( gd_Grid is TjvDBUltimGrid ) Then
-              Begin
-                ls_NomChamp := UpperCase  ( as_NomChamp );
-                if (( gd_Grid as TjvDBUltimGrid ).SortedField <> as_NomChamp  ) Then
-                  ( gd_Grid as TjvDBUltimGrid ).SortedField := as_NomChamp ;
-                if ((( gd_Grid as TjvDBUltimGrid ).SortMarker = JvDBGRid.smDown ) and  not ab_SortDesc )
-                or ((( gd_Grid as TjvDBUltimGrid ).SortMarker = JvDBGRid.smUp   ) and      ab_SortDesc ) Then
-                  if ab_SortDesc Then
-                    ( gd_Grid as TjvDBUltimGrid ).SortMarker := JvDBGRid.smUp
-                  else
-                    ( gd_Grid as TjvDBUltimGrid ).SortMarker := JvDBGRid.smDown;
-                lb_Continue := False ;
-              End
-            else
-        {$ENDIF}
-        {$IFDEF EXRX}
-            if ( gd_Grid is TExRXDBGrid ) Then
-              Begin
-                if (( gd_Grid as TExRXDBGrid ).SortFieldName <> as_NomChamp  ) Then
-                  ( gd_Grid as TExRXDBGrid ).SortFieldName := as_NomChamp ;
-                if ((( gd_Grid as TExRXDBGrid ).SortDesc ) and  not    ab_SortDesc )
-                or (not (( gd_Grid as TExRXDBGrid ).SortDesc  ) and  ab_SortDesc ) Then
-                  for li_i := 0 to TExRXDBGrid(gd_Grid).Columns.Count - 1 do
-                    if UpperCase ( TExRXDBGrid(gd_Grid).Columns [ li_i ].FieldName ) = ls_NomChamp Then
+             Begin
+          {$IFDEF JEDI}
+              if ( gd_Grid is TjvDBUltimGrid ) Then
+                Begin
+                  ls_NomChamp := UpperCase  ( as_NomChamp );
+                  if (( gd_Grid as TjvDBUltimGrid ).SortedField <> as_NomChamp  ) Then
+                    ( gd_Grid as TjvDBUltimGrid ).SortedField := as_NomChamp ;
+                  if ((( gd_Grid as TjvDBUltimGrid ).SortMarker = JvDBGRid.smDown ) and  not ab_SortDesc )
+                  or ((( gd_Grid as TjvDBUltimGrid ).SortMarker = JvDBGRid.smUp   ) and      ab_SortDesc ) Then
+                    if ab_SortDesc Then
+                      ( gd_Grid as TjvDBUltimGrid ).SortMarker := JvDBGRid.smUp
+                    else
+                      ( gd_Grid as TjvDBUltimGrid ).SortMarker := JvDBGRid.smDown;
+                  lb_Continue := False ;
+                End
+              else
+          {$ENDIF}
+          {$IFDEF EXRX}
+              if ( gd_Grid is TExRXDBGrid ) Then
+                Begin
+                  if (( gd_Grid as TExRXDBGrid ).SortFieldName <> as_NomChamp  ) Then
+                    ( gd_Grid as TExRXDBGrid ).SortFieldName := as_NomChamp ;
+                  if ((( gd_Grid as TExRXDBGrid ).SortDesc ) and  not    ab_SortDesc )
+                  or (not (( gd_Grid as TExRXDBGrid ).SortDesc  ) and  ab_SortDesc ) Then
+                    for li_i := 0 to TExRXDBGrid(gd_Grid).Columns.Count - 1 do
+                      if UpperCase ( TExRXDBGrid(gd_Grid).Columns [ li_i ].FieldName ) = ls_NomChamp Then
+                        Begin
+                          TExRXDBGrid(gd_Grid).OnTitleBtnClick ( aWin_ControlAvecTag.Owner, li_i, gd_Grid.DataSource.DataSet.FieldByName ( as_NomChamp )) ;
+                          lb_Continue := False ;
+                          Break ;
+                        End ;
+                End
+              Else
+          {$ENDIF}
+              if assigned ( fobj_getComponentObjectProperty(gd_Grid, 'DataSource'))
+              and ( fobj_getComponentObjectProperty(gd_Grid, 'DataSource') is TDAtasource )
+               Then
+                Begin
+                  ldat_Dataset := ( fobj_getComponentObjectProperty(gd_Grid, 'DataSource') as TDAtasource ).Dataset;
+                  if assigned ( ldat_Dataset )
+                   Then
+                    if fs_getComponentProperty ( ldat_Dataset, 'SortedFields' ) <> as_NomChamp  Then
                       Begin
-                        TExRXDBGrid(gd_Grid).OnTitleBtnClick ( aWin_ControlAvecTag.Owner, li_i, gd_Grid.DataSource.DataSet.FieldByName ( as_NomChamp )) ;
-                        lb_Continue := False ;
-                        Break ;
-                      End ;
-              End
-            Else
-        {$ENDIF}
-            if assigned ( fobj_getComponentObjectProperty(gd_Grid, 'DataSource'))
-            and ( fobj_getComponentObjectProperty(gd_Grid, 'DataSource') is TDAtasource )
-             Then
-              Begin
-                ldat_Dataset := ( fobj_getComponentObjectProperty(gd_Grid, 'DataSource') as TDAtasource ).Dataset;
-                if assigned ( ldat_Dataset )
-                 Then
-                  if fs_getComponentProperty ( ldat_Dataset, 'SortedFields' ) <> as_NomChamp  Then
-                    Begin
-                      p_SetComponentProperty ( ldat_Dataset, 'SortedFields', as_NomChamp );
-                      p_SetComponentProperty ( ldat_Dataset, 'SortType', 0 );
-                    End
-                   else
-                     p_SetComponentProperty ( ldat_Dataset, 'SortType', fli_getComponentProperty ( ldat_Dataset, 'SortType' ) = 0);
-              End;
-          End;
+                        p_SetComponentProperty ( ldat_Dataset, 'SortedFields', as_NomChamp );
+                        p_SetComponentProperty ( ldat_Dataset, 'SortType', 0 );
+                      End
+                     else
+                       p_SetComponentProperty ( ldat_Dataset, 'SortType', fli_getComponentProperty ( ldat_Dataset, 'SortType' ) = 0);
+                End;
+            End;
         End ;
       if lb_Continue then
         Begin
@@ -1974,7 +1982,6 @@ var li_i, li_j : Integer;
 Begin
   lmet_MethodeDistribueeSearch.Data := Self;
   lmet_MethodeDistribueeSearch.Code := MethodAddress('p_BtnSearch');
-
    li_CompteCol := 0 ;
    for li_i := 0 to gFWSources.Count - 1 do
      with gFWSources.items [ li_i ] do
@@ -2039,7 +2046,7 @@ Begin
             AfterCancel  := p_DataWorkAfterCancel ;
             AfterEdit    := p_DataWorkAfterEdit ;
             BeforeDelete := p_DataWorkBeforeDelete ;
-            p_CreateEventualCsvFile(FieldDefs,gFWSources.items [ li_i ]);
+            p_CreateOptionalCsvFile(FieldDefs,gFWSources.items [ li_i ]);
            end;
 
           with Datalink do
@@ -2057,9 +2064,7 @@ Begin
               p_SetComponentObjectProperty ( nav_Saisie   , 'DataSource', Datalink.DataSource );
               if not assigned ( fmet_getComponentMethodProperty ( nav_saisie, 'OnBtnSearch' ).Code )
                Then
-                Begin
-                  p_SetComponentMethodProperty ( nav_saisie, 'OnBtnSearch', TMethod ( lmet_MethodeDistribueeSearch ));
-                End;
+                 p_SetComponentMethodProperty ( nav_saisie, 'OnBtnSearch', TMethod ( lmet_MethodeDistribueeSearch ));
             End;
           if assigned ( nav_Navigator ) Then
             Begin
@@ -2411,7 +2416,7 @@ end;
 // Creating CSV file
 // afd_FieldsDefs : field definition
 //  afws_Source   : Column definition
-procedure TF_CustomFrameWork.p_CreateEventualCsvFile ( const afd_FieldsDefs : TFieldDefs ; const afws_Source : TFWSource );
+procedure TF_CustomFrameWork.p_CreateOptionalCsvFile ( const afd_FieldsDefs : TFieldDefs ; const afws_Source : TFWSource );
 var lstl_File : TStringList;
     ls_FileInside : String ;
     li_i : Longint;
@@ -4697,6 +4702,7 @@ End ;
 //////////////////////////////////////////////////////////////////////////////
 procedure TFWSourceDatalink.FocusControl ( lfie_Field : TFieldRef ) ;
 begin
+  inherited;
   if not ( csDestroying in Owner.ComponentState ) Then
     Begin
       inherited FocusControl ( lfie_Field );
@@ -4712,6 +4718,7 @@ end;
 //////////////////////////////////////////////////////////////////////////////
 procedure TFWSourceDatalink.ActiveChanged;
 begin
+  Inherited;
   if not ( csDestroying in Owner.ComponentState ) Then
     Begin
       inherited;
