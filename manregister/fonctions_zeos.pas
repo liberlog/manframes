@@ -12,7 +12,9 @@ uses
   {$IFDEF VERSIONS}
   fonctions_version,
   {$ENDIF}
-  u_multidata, DB;
+  u_multidata,
+  ZConnection,
+  DB;
 
 {$IFDEF VERSIONS}
 const
@@ -30,7 +32,8 @@ procedure p_CreateZeosconnection ( const AOwner : TComponent ; var adtt_DatasetT
 implementation
 
 uses
-    ZDataset, ZConnection,
+    ZDataset,
+    ZSqlProcessor,
     ZAbstractRODataset,
     u_connection,
     StdCtrls,
@@ -49,21 +52,6 @@ Begin
   AQuery := TZQuery.Create(AOwner);
   AConnection :=TZConnection.Create(AOwner);
   ( AQuery as TZQuery ).Connection := AConnection as TZConnection;
-       {$IFDEF EADO}
-       if adtt_DatasetType = dtADO Then
-         Begin
-          Fdat_QueryCopy := TADOQuery.Create(Self);
-          Fcom_Connection :=TADOConnection.Create(Self);
-          ( Fdat_QueryCopy as TADOQuery ).Connection :=Fcom_Connection as TADOConnection;
-        End;
-
-       if Fcom_Connection is TADOConnection then
-         Begin
-           ( Fcom_Connection as TADOConnection ).OnExecuteComplete := ConnectionExecuteComplete;
-           ( Fcom_Connection as TADOConnection ).OnWillExecute := ConnectionWillExecute;
-         End;
-       {$ENDIF}
-
 end;
 
 procedure p_ExecuteZEOSQuery ( const adat_Dataset : Tdataset  );
@@ -117,6 +105,19 @@ begin
   End;
 End;
 
+procedure p_ExecuteSQLCommandServer ( const AConnection : TComponent; const as_SQL : {$IFDEF DELPHI_9_UP} String {$ELSE} WideString{$ENDIF}  );
+var lsp_sqlcommand : TZSQLProcessor;
+Begin
+  lsp_sqlcommand:=TZSQLProcessor.Create(nil);
+  try
+    lsp_sqlcommand.Connection:=AConnection as TZConnection;
+    lsp_sqlcommand.Script.Text:=as_SQL;
+    lsp_sqlcommand.Execute;
+  finally
+    lsp_sqlcommand.Destroy;
+  end;
+End ;
+
 function fs_BeginCreateDatabase  ( const as_base, as_user, as_password : String ):String;
 Begin
   Result := 'CREATE DATABASE '+as_base+';'+#10+
@@ -125,13 +126,15 @@ End;
 
 function fs_EndCreateDatabase  ( const as_base, as_user, as_password : String ):String;
 Begin
-  Result := 'GRANT ALL ON '+as_base+'.* TO '''+as_user+'''@''%'' IDENTIFIED BY '''+as_password+''';'+#10;
+  Result := 'GRANT ALL PRIVILEGES ON '+as_base+'.* TO '''+as_user+'''@''%'' IDENTIFIED BY '''+as_password+''';'+#10
+         +  'FLUSH PRIVILEGES;'+#10;
 End;
 
 
 
 initialization
  ge_onCreateConnection := TCreateConnection ( {$IFNDEF FPC}@{$ENDIF}p_CreateZeosconnection );
+ ge_OnExecuteScriptServer:=TOnExecuteScriptServer(p_ExecuteSQLCommandServer);
  ge_OnExecuteQuery:=TOnExecuteQuery({$IFNDEF FPC}@{$ENDIF}p_ExecuteZEOSQuery);
  ge_OnCreateDatabase :=TOnSetDatabase(fs_BeginCreateDatabase);
  ge_OnEndCreate :=TOnSetDatabase(fs_EndCreateDatabase);

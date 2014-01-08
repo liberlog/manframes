@@ -248,10 +248,8 @@ type
      gafo_OptionSelected : TFWFieldOptions;
      gdo_Options : TFWFieldDataOptions;
      procedure SetDataOptions ( const AValue : TFWFieldDataOptions );
-     function  GetOptionSelected ( Index : TFWFieldOption ):Boolean;
      function  GetOptionExists   ( Index : TFWFieldOption ):Boolean;
      function  GetOptionString   ( Index : TFWFieldOption ):String;
-     procedure SetOptionSelected ( Index : TFWFieldOption; Avalue : Boolean );
      function getSqlComment: string; override;
      function fs_DatatypeParams : String;
      function fr_GetRelation : TFWRelation;
@@ -2034,11 +2032,6 @@ begin
   gdo_Options.assign(AValue);
 end;
 
-function TFWFieldData.GetOptionSelected( Index: TFWFieldOption):Boolean;
-begin
-  result := gafo_OptionSelected [ index ];
-end;
-
 function TFWFieldData.GetOptionExists( Index: TFWFieldOption): Boolean;
 begin
   Result:=index in gfo_Options;
@@ -2048,11 +2041,6 @@ function TFWFieldData.GetOptionString(Index: TFWFieldOption): String;
 begin
   if OptionExists[Index] Then
    Result:=CST_BASE_FIELD_OPTIONS[Index];
-end;
-
-procedure TFWFieldData.SetOptionSelected( Index: TFWFieldOption; Avalue: Boolean);
-begin
-  gafo_OptionSelected [ index ] := Avalue;
 end;
 
 function TFWFieldData.getSqlComment: string;
@@ -2324,12 +2312,12 @@ begin
 
 end;
 
-function TFWFieldDataOptions.GetColumnField(const Index: Integer): TFWFieldDataOption;
+function TFWFieldDataOptions.GetColumnField( Index: Integer): TFWFieldDataOption;
 begin
   Result := TFWFieldDataOption(inherited Items[Index]);
 end;
 
-procedure TFWFieldDataOptions.SetColumnField(const Index: Integer;
+procedure TFWFieldDataOptions.SetColumnField( Index: Integer;
   Value: TFWFieldDataOption);
 begin
   Items[Index].Assign(Value);
@@ -2344,12 +2332,12 @@ end;
 
 { TFWFieldColumns }
 
-function TFWFieldColumns.GetColumnField(const Index: Integer): TFWFieldColumn;
+function TFWFieldColumns.GetColumnField( Index: Integer): TFWFieldColumn;
 begin
   Result := TFWFieldColumn(inherited Items[Index]);
 end;
 
-procedure TFWFieldColumns.SetColumnField(const Index: Integer;
+procedure TFWFieldColumns.SetColumnField( Index: Integer;
   Value: TFWFieldColumn);
 begin
   Items[Index].Assign(Value);
