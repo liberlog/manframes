@@ -130,7 +130,7 @@ Begin
         //Check unsigned
         if ((Pos(UpperCase(theDatatype.OptionString[foUnsigned]),
           UpperCase(DMDB.Fields[1].AsString)) > 0) <>
-          theField.OptionSelected[foUnsigned]) then
+          (foUnsigned in theField.OptionSelected)) then
           Result := True;
 
         //ShowMessage('Tolerate int without params: '+DatatypeName+DatatypeParams+'='+gr_model.PhysicalTypeName)
@@ -161,7 +161,7 @@ Begin
       for fo_i := low ( TFWFieldOption) to high ( TFWFieldOption ) do
         if ((Pos(UpperCase(theDatatype.OptionString[fo_i]),
           UpperCase(DMDB.Fields[1].AsString)) > 0) <>
-          theField.OptionSelected[fo_i]) then
+          (foUnsigned in theField.OptionSelected)) then
           Result := True;
   end
   else
