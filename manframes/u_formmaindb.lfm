@@ -1,7 +1,0 @@
-object F_FormMainIni: TF_FormMainIni
-  Left = 0
-  Height = 240
-  Top = 29
-  Width = 320
-  LCLVersion = '1.0.6.0'
-end
