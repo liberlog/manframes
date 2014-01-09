@@ -19,7 +19,9 @@ uses
 
 type
   TOnGetSQL = function : String;
-  TOnSetDatabase = function ( const as_base, as_user, as_password : String ) : String;
+  TOnSetDatabase = function ( const as_base, as_user, as_password, as_host : String ) : String;
+  TOnExecuteCommand = procedure ( const as_SQL: {$IFDEF DELPHI_9_UP} String {$ELSE} WideString{$ENDIF} );
+  TOnExecuteScriptServer = procedure ( const AConnection : TComponent; const as_SQL: {$IFDEF DELPHI_9_UP} String {$ELSE} WideString{$ENDIF} );
 
 
 const
@@ -38,7 +40,11 @@ const
   ge_OnBeginCreateAlter: TOnGetSQL = nil;
   ge_OnEndCreate: TOnSetDatabase = nil;
   ge_OnCreateDatabase: TOnSetDatabase = nil;
+  ge_OnExecuteCommand: TOnExecuteCommand = nil;
+  ge_OnExecuteScriptServer: TOnExecuteScriptServer = nil;
 
+procedure p_ExecuteSQLCommand ( const as_Command :{$IFDEF DELPHI_9_UP} String {$ELSE} WideString{$ENDIF} ; const ab_ShowException : boolean = True );
+procedure p_ExecuteSQLScriptServer ( const AConnection : TComponent; const as_Command :{$IFDEF DELPHI_9_UP} String {$ELSE} WideString{$ENDIF} ; const ab_ShowException : boolean = True );
 procedure p_SyncDB(const DMDB : TDataSet;const ModelTables: TList; const DBConn: TComponent;
   var Log: TLazLoggerFile; const KeepExTbls, StdInsertsOnCreate, StdInsertsSync: boolean);
 function fvar_getKeyRecord ( const adat_Dataset : TDataset ; const aff_Cle : TFWFieldColumns ): Variant;
@@ -58,13 +64,42 @@ function fb_InsereCompteur ( const adat_Dataset, adat_DatasetQuery : TDataset ;
                              const ach_DebutLettrage, ach_FinLettrage : Char ;
                              const ali_Debut, ali_LimiteRecherche     : Int64 ;
                              const ab_DBMessageOnError  : Boolean ): Boolean;
-function fs_CreateDatabase  ( const as_base, as_user, as_password : String ):String;
+function fs_CreateDatabase  ( const as_base, as_user, as_password, as_host : String ):String;
 function fs_BeginAlterCreate :String;
-function fs_EndCreate  ( const as_base, as_user, as_password : String ) :String;
+function fs_EndCreate  ( const as_base, as_user, as_password, as_host : String ) :String;
 
 implementation
 
-uses variants,fonctions_string,fonctions_db,fonctions_erreurs;
+uses variants,
+     fonctions_string,
+     fonctions_db,
+     fonctions_erreurs;
+
+// execute query with optional module
+procedure p_ExecuteSQLCommand ( const as_Command :{$IFDEF DELPHI_9_UP} String {$ELSE} WideString{$ENDIF} ; const ab_ShowException : boolean = True );
+Begin
+  try
+    if assigned ( ge_OnExecuteCommand ) Then
+     ge_OnExecuteCommand ( as_Command );
+  Except
+    on E:Exception do
+     if ab_ShowException Then
+       p_ShowSQLError(E.Message,as_Command);
+  end;
+End ;
+
+// execute query with optional module
+procedure p_ExecuteSQLScriptServer ( const AConnection : TComponent; const as_Command :{$IFDEF DELPHI_9_UP} String {$ELSE} WideString{$ENDIF} ; const ab_ShowException : boolean = True );
+Begin
+  try
+    if assigned ( ge_OnExecuteScriptServer ) Then
+     ge_OnExecuteScriptServer ( AConnection, as_Command );
+  Except
+    on E:Exception do
+     if ab_ShowException Then
+      p_ShowSQLError(E.Message,as_Command);
+  end;
+End ;
 
 function fb_SyncFielddataType ( const DMDB : TDataSet; const thefield : TFWFieldColumn ; const DatatypeName, DatatypeParams : String ):Boolean;
 var theDatatype : TFWFieldData;
@@ -1276,19 +1311,20 @@ Begin
    Else Result := '';
 End;
 
-function fs_EndCreate  ( const as_base, as_user, as_password : String ) :String;
+function fs_EndCreate  ( const as_base, as_user, as_password, as_host : String ) :String;
 Begin
   if assigned ( ge_OnEndCreate )
-   Then Result := ge_OnEndCreate ( as_base, as_user, as_password )
+   Then Result := ge_OnEndCreate ( as_base, as_user, as_password, as_host )
    Else Result := '';
 End;
 
-function fs_CreateDatabase  ( const as_base, as_user, as_password : String ):String;
+function fs_CreateDatabase  ( const as_base, as_user, as_password, as_host : String ):String;
 Begin
   if assigned ( ge_OnCreateDatabase )
-   Then Result := ge_OnCreateDatabase (  as_base, as_user, as_password )
+   Then Result := ge_OnCreateDatabase (  as_base, as_user, as_password, as_host )
    Else Result := '';
 End;
+
 
 
 {$IFDEF VERSIONS}

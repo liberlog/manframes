@@ -37,6 +37,7 @@ uses
     ZAbstractRODataset,
     u_connection,
     StdCtrls,
+    fonctions_system, FileUtil, fonctions_db, fonctions_file,
     fonctions_create,
     fonctions_manbase,
     ZCompatibility,
@@ -107,7 +108,17 @@ End;
 
 procedure p_ExecuteSQLCommandServer ( const AConnection : TComponent; const as_SQL : {$IFDEF DELPHI_9_UP} String {$ELSE} WideString{$ENDIF}  );
 var lsp_sqlcommand : TZSQLProcessor;
+var ls_File : String;
+    lh_handleFile : THandle;
 Begin
+  ls_File := fs_getAppDir+'sql-p';
+  if FileExistsUTF8(ls_File+CST_EXTENSION_SQL_FILE) Then DeleteFileUTF8(ls_File+CST_EXTENSION_SQL_FILE);
+  lh_handleFile := FileCreateUTF8(ls_File+CST_EXTENSION_SQL_FILE);
+  try
+    FileWriteln(lh_handleFile,as_SQL);
+  finally
+    FileClose(lh_handleFile);
+  end;
   lsp_sqlcommand:=TZSQLProcessor.Create(nil);
   try
     lsp_sqlcommand.Connection:=AConnection as TZConnection;
@@ -118,26 +129,31 @@ Begin
   end;
 End ;
 
-function fs_BeginCreateDatabase  ( const as_base, as_user, as_password : String ):String;
+function fs_BeginCreateDatabase  ( const as_base, as_user, as_password, as_host : String ):String;
 Begin
-  Result := 'CREATE DATABASE '+as_base+';'+#10+
-            'USE '+as_base+';'+#10;
+  Result := 'CREATE DATABASE '+as_base+';'+#10;
 End;
 
-function fs_EndCreateDatabase  ( const as_base, as_user, as_password : String ):String;
+function fs_EndCreateDatabase  ( const as_base, as_user, as_password, as_host : String ):String;
 Begin
-  Result := 'GRANT ALL PRIVILEGES ON '+as_base+'.* TO '''+as_user+'''@''%'' IDENTIFIED BY '''+as_password+''';'+#10
-         +  'FLUSH PRIVILEGES;'+#10;
+  case gbm_DatabaseToGenerate of
+    bmMySQL :
+      Result := 'GRANT ALL PRIVILEGES ON '+as_base+'.* TO '''+as_user+'''@''%'' IDENTIFIED BY '''+as_password+''';'+#10
+             +  'FLUSH PRIVILEGES;'+#10;
+    else
+      Result := 'CREATE USER '+as_user+''' NOCREATEUSER WITH PASSWORD '''+as_password+''';'+#10
+             +  'GRANT ALL PRIVILEGES ON '+as_base+' TO '+as_user+''';'+#10;
+  end;
 End;
 
 
 
 initialization
- ge_onCreateConnection := TCreateConnection ( {$IFNDEF FPC}@{$ENDIF}p_CreateZeosconnection );
- ge_OnExecuteScriptServer:=TOnExecuteScriptServer(p_ExecuteSQLCommandServer);
+ ge_onCreateConnection := TCreateConnection ({$IFNDEF FPC}@{$ENDIF}p_CreateZeosconnection );
+ ge_OnExecuteScriptServer:=TOnExecuteScriptServer({$IFNDEF FPC}@{$ENDIF}p_ExecuteSQLCommandServer);
  ge_OnExecuteQuery:=TOnExecuteQuery({$IFNDEF FPC}@{$ENDIF}p_ExecuteZEOSQuery);
- ge_OnCreateDatabase :=TOnSetDatabase(fs_BeginCreateDatabase);
- ge_OnEndCreate :=TOnSetDatabase(fs_EndCreateDatabase);
+ ge_OnCreateDatabase :=TOnSetDatabase({$IFNDEF FPC}@{$ENDIF}fs_BeginCreateDatabase);
+ ge_OnEndCreate :=TOnSetDatabase({$IFNDEF FPC}@{$ENDIF}fs_EndCreateDatabase);
  ge_SetConnectComponentsOnCreate := TSetConnectComponents({$IFNDEF FPC}@{$ENDIF}p_setZEOSConnectionOnCreation);
  gbm_DatabaseToGenerate := bmMySQL;
  {$IFDEF VERSIONS}

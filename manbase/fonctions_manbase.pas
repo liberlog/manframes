@@ -132,7 +132,7 @@ const CST_BASE_INDEX_PRIMARY = 'PRIMARY';
                          TRIGGER_EVENT   : ('BEFORE @ARG  ', 'AFTER  @ARG  ');
                          TRIGGER_EVENT_MODE   : ('CREATE','INSERT','UPDATE','DELETE');
                          NOT_NULL    : 'NOT NULL';
-                         DOUBLE      : 'DOUBLE';
+                         DOUBLE      : 'DOUBLE PRECISION';
                          DATE        : 'DATE';
                          ),
                         (
@@ -1942,11 +1942,10 @@ begin
     else
       Result:=FieldName+' ';
 
-    if b_colPrivate and b_ColUnique
-      and (gbm_DatabaseToGenerate = bmPostgreSQL) then
-    begin
-      Result := Result + 'SERIAL';
-    end else
+    if (gbm_DatabaseToGenerate = bmPostgreSQL) and b_ColUnique and b_ColHidden and not b_ColCreate
+     then
+      Result := Result + 'SERIAL'
+     else
     begin
       //Datatype name (INTEGER)
       Result:=Result+TypeName;
@@ -1997,11 +1996,11 @@ begin
     // auto increment
     if b_ColUnique and b_ColHidden and not b_ColCreate then
       case gbm_DatabaseToGenerate of
-       bmMySQL:
-        begin
-          Result:=Result+' AUTO_INCREMENT';
-          TableFieldGen := '';
-        end;
+      bmMySQL:
+       begin
+         Result:=Result+' AUTO_INCREMENT';
+         TableFieldGen := '';
+       end;
       bmSQLServer :
         begin
           Result:=Result+' IDENTITY ';
@@ -2064,9 +2063,11 @@ begin
     ftFloat   : if gi_Decimals > 0 Then
                   Begin
                     if FieldLength = -1 Then
-                     if gbm_DatabaseToGenerate=bmFirebird
-                       Then FieldLength := 18
-                       Else FieldLength := 23 + Decimals;
+                     case gbm_DatabaseToGenerate of
+                       bmFirebird   : FieldLength := 18;
+                       bmPostgreSQL : FieldLength := 38;
+                       else FieldLength := 23 + Decimals;
+                     End;
                     Result := '('+IntToStr(FieldLength)+','+IntToStr(Decimals)+')';
                   end;
   end;
@@ -2097,8 +2098,10 @@ begin
                    else Result := 'INTEGER' ;
                  end;
                 End;
-    ftFloat   : if  ( FieldLength = -1  )
-                or  ( FieldLength >= 23 )
+    ftFloat   : if  (     ( gbm_DatabaseToGenerate = bmPostgreSQL )
+                      and ( gi_Decimals = 0 ))
+                or  (     ( gbm_DatabaseToGenerate <> bmPostgreSQL )
+                      and (( FieldLength = -1  ) or  ( FieldLength >= 23 )))
                  Then Result := CST_Base_Words[gbm_DatabaseToGenerate].DOUBLE
                  Else Result := 'DECIMAL';
   end;
