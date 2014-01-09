@@ -148,7 +148,7 @@ type
   private
     FSource : Integer ;
     s_FieldsChilds : String ;
-    stl_FieldsChilds  : TStringList ;
+    stl_FieldsChilds  : TStrings ;
   public
     constructor Create(Collection: TCollection);override;
     destructor Destroy ; override;
@@ -226,7 +226,7 @@ type
      im_FlecheBasse,
      im_FlecheHaute : TImage ;
      stl_Fields ,
-     stl_Valeurs : TStringList ;
+     stl_Valeurs : TStrings ;
      i_DebutTableau : LongInt ;
      e_StateChange : TNotifyEvent ;
      e_BeforePost ,
@@ -298,8 +298,8 @@ type
 {$ENDIF}
     // Table du Datasource de travail
     property MyRecord : Variant read var_Enregistrement ;
-    property FieldList : TStringList read stl_Fields write stl_Fields;
-    property ValueList : TStringList read stl_Valeurs write stl_Valeurs;
+    property FieldList : TStrings read stl_Fields write stl_Fields;
+    property ValueList : TStrings read stl_Valeurs write stl_Valeurs;
     property GridColumns : TDBGRidColumns read gd_GridColumns write gd_GridColumns;
     property FieldsBegin : Longint read i_DebutTableau write i_DebutTableau;
     // Datasource principal en recherche uniquement
@@ -497,7 +497,7 @@ type
     procedure p_SetVersion  ( Value : String  );
     procedure p_SetSources ( const ASources : TFWSources );
     function fb_RafraichitFiltre ( const lt_DatasourceWork : TFWSource ) : Boolean ;
-    function fb_SourceLookupFiltrage(const GfwSource, GfwLookupSource: TfwSource ; const astl_FieldsChilds : TStringList): Boolean; virtual;
+    function fb_SourceLookupFiltrage(const GfwSource, GfwLookupSource: TfwSource ; const astl_FieldsChilds : TStrings): Boolean; virtual;
     function fb_SourceChildsLookupFiltering(const gfwSource : TFWSource ): Boolean; virtual;
     function fb_DataGridLookupFiltrage ( const gfwSource : TFWSource ) : Boolean ;
     function fb_DatasourceModifie(
@@ -558,9 +558,9 @@ type
                          const ab_Trie : Boolean ): Boolean ; virtual;
     procedure p_ChargeIndicateurs ( const acom_Control :  TComponent);virtual;
     procedure p_DatasetLookupFilteredField ( var   lb_isfirstField         : Boolean ;
-                                             var   lstl_DataGridLookValeur : TStringList;
+                                             var   lstl_DataGridLookValeur : TStrings;
                                              const ldat_DatasetLookup      : TDataset ;
-                                             const lstl_Field              : TStringList;
+                                             const lstl_Field              : TStrings;
                                              const ls_Cle, ls_FieldLookup  : String ;
                                              const li_NoCle                : Integer ;
                                              const lstr_Parameters         : TCollection ) ; virtual;
@@ -642,10 +642,10 @@ type
       as_Field: String): String; overload;
     {$IFDEF VIRTUALTREES}
     function fb_SetLabels ( const ahea_Header : TVTHeader ; const aws_Table, aws_FieldMainColumn, aws_Fields : String ; const ach_Separator : Char ):Boolean ; overload;
-    function fb_SetLabels ( const ahea_Header : TVTHeader ; const aws_Table : String ; const alst_Fields : TStringlist ):Boolean ; overload;
+    function fb_SetLabels ( const ahea_Header : TVTHeader ; const aws_Table : String ; const alst_Fields : TStrings ):Boolean ; overload;
     {$ENDIF}
     function fb_SetLabels ( const alv_ListeView : TListView ; const aws_Table, aws_Fields : String ; const ach_Separator : Char ):Boolean ; overload;
-    function fb_SetLabels ( const alv_ListeView : TListView ; const aws_Table : String ; const alst_Fields : TStringlist ):Boolean ; overload;
+    function fb_SetLabels ( const alv_ListeView : TListView ; const aws_Table : String ; const alst_Fields : TStrings ):Boolean ; overload;
 
     function fs_GetLabel(const as_OldLabel : String ; const acom_Control : TComponent ): String; overload;
 
@@ -2054,7 +2054,7 @@ Begin
             ls_temp := fs_getSQLQuery ( Dataset );
             if ls_temp = '' Then
              Begin
-               p_SetSQLQuery(Dataset,'SELECT ' +fs_getListSelect(FieldsDefs)+' FROM ' + Table );
+               p_SetSQLQuery(Dataset,FieldsDefs, GetKey, Table );
              End;
             DataSource.OnStateChange := p_DatasourceWorksStateChange ;
            end;
@@ -3372,7 +3372,7 @@ Begin
 End ;
 
 
-function TF_CustomFrameWork.fb_SourceLookupFiltrage ( const GfwSource, GfwLookupSource : TfwSource; const astl_FieldsChilds : TStringList ) : Boolean ;
+function TF_CustomFrameWork.fb_SourceLookupFiltrage ( const GfwSource, GfwLookupSource : TfwSource; const astl_FieldsChilds : TStrings ) : Boolean ;
 var li_i : Integer ;
   // variable utilisée pour savoir si le filtre doit changer
     lobj_Parameters : Tobject ;
@@ -3474,9 +3474,9 @@ Begin
 End;
 procedure TF_CustomFrameWork.p_DatasetLookupFilteredField
                  ( var   lb_isfirstField         : Boolean ;
-                   var   lstl_DataGridLookValeur : TStringList;
+                   var   lstl_DataGridLookValeur : TStrings;
                    const ldat_DatasetLookup      : TDataset ;
-                   const lstl_Field              : TStringList;
+                   const lstl_Field              : TStrings;
                    const ls_Cle, ls_FieldLookup  : String ;
                    const li_NoCle                : Integer ;
                    const lstr_Parameters         : TCollection ) ;
@@ -5648,7 +5648,7 @@ End ;
 ///////////////////////////////////////////////////////////////////////
 {$IFDEF VIRTUALTREES}
 function TF_CustomFrameWork.fb_SetLabels (const ahea_Header : TVTHeader ; const aws_Table, aws_FieldMainColumn, aws_Fields : String ; const ach_Separator : Char ):Boolean ;
-var lstl_Liste : TStringList ;
+var lstl_Liste : TStrings ;
 Begin
   lstl_Liste := nil ;
 
@@ -5670,7 +5670,7 @@ End ;
 // alst_Fields : Les champs de colonnes
 // Retour : affecté ou non
 ///////////////////////////////////////////////////////////////////////
-function TF_CustomFrameWork.fb_SetLabels ( const ahea_Header : TVTHeader ; const aws_Table : String ; const alst_Fields : TStringlist ):Boolean ;
+function TF_CustomFrameWork.fb_SetLabels ( const ahea_Header : TVTHeader ; const aws_Table : String ; const alst_Fields : TStrings ):Boolean ;
 var li_i ,
     li_j ,
     li_NumSource : Integer ;
@@ -5705,7 +5705,7 @@ End ;
 // Retour : affecté ou non
 ///////////////////////////////////////////////////////////////////////
 function TF_CustomFrameWork.fb_SetLabels ( const alv_ListeView : TListView ; const aws_Table, aws_Fields : String ; const ach_Separator : Char ):Boolean ;
-var lstl_Liste : TStringList ;
+var lstl_Liste : TStrings ;
 Begin
   lstl_Liste := nil ;
 
@@ -5721,7 +5721,7 @@ End ;
 // alst_Fields : Les champs de colonnes
 // Retour : affecté ou non
 ///////////////////////////////////////////////////////////////////////
-function TF_CustomFrameWork.fb_SetLabels ( const alv_ListeView : TListView ; const aws_Table : String ; const alst_Fields : TStringlist ):Boolean ;
+function TF_CustomFrameWork.fb_SetLabels ( const alv_ListeView : TListView ; const aws_Table : String ; const alst_Fields : TStrings ):Boolean ;
 var li_i ,
     li_j ,
     li_NumSource : Integer ;
