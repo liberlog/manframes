@@ -2454,7 +2454,7 @@ begin
       Result := ADBSources.Add;
       Result.Connection := lds_Connection;
       if ab_createDS Then
-        Result.Datasource := fds_CreateDataSourceAndTable ( as_Table, '_' + PrimaryKey + IntToStr ( Result.Index ),
+        Result.Datasource := fds_CreateDataSourceAndTable ( as_Table, '_' + IntToStr ( ADBSources.Count - 1 ),
                                IntToStr ( ADBSources.Count - 1 ), DatasetType, QueryCopy, acom_Owner);
       Result.Table := as_Table;
       if DatasetType = dtCSV Then
