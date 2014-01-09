@@ -36,8 +36,8 @@ No control please"/>
         <UnitName Value="u_multidata"/>
       </Item2>
       <Item3>
-        <Filename Value="manbase/fonctions_create.pas"/>
-        <UnitName Value="fonctions_create"/>
+        <Filename Value="manbase/fonctions_createsql.pas"/>
+        <UnitName Value="fonctions_createsql"/>
       </Item3>
       <Item4>
         <Filename Value="manbase/u_multidonnees.pas"/>

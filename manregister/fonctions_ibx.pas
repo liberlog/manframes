@@ -43,7 +43,7 @@ uses IBQuery,
      fonctions_init,
      u_multidonnees,
      fonctions_file,
-     fonctions_create,
+     fonctions_createsql,
      fonctions_db,
      fonctions_dbcomponents;
 

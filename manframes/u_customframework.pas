@@ -127,11 +127,16 @@ type
     property Panel : TWinControl  read FPanel write p_SetDBPanelDataSource ;
   end;
   TFWPanelColumnClass = class of TFWPanelColumn;
+
+  { TFWPanels }
+
   TFWPanels = class(TCollection)
   private
     FParent : TFWSource;
     function GetPanelColumn( Index: Integer): TFWPanelColumn;
     procedure SetPanelColumn( Index: Integer; Value: TFWPanelColumn);
+  protected
+    function GetOwner: TPersistent; override;
   public
     function Add: TFWPanelColumn;
     constructor Create(const Source: TFWSource; const ColumnClass: TFWPanelColumnClass); virtual;
@@ -831,7 +836,7 @@ uses fonctions_string,
      fonctions_dbcomponents,
      u_extdbgrid,
      fonctions_dialogs,
-     fonctions_create,
+     fonctions_createsql,
      fonctions_numedit, unite_variables, unite_messages,
      fonctions_proprietes;
 
@@ -1673,12 +1678,12 @@ end;
 // Affectation de la propirété avec vérification de destruction
 procedure TFWPanelColumn.p_SetDBPanelDataSource( const a_Value: TWinControl);
 begin
-  (Collection.Owner as TComponent).ReferenceInterface ( Panel, opRemove );
+  ((Collection.Owner as TCollectionItem).Collection.Owner as TComponent).ReferenceInterface ( FPanel, opRemove );
   if FPanel <> a_Value then
   begin
     FPanel := a_Value ;
   end;
-  (Collection.Owner as TComponent).ReferenceInterface ( Panel, opInsert );
+  ((Collection.Owner as TCollectionItem).Collection.Owner as TComponent).ReferenceInterface ( FPanel, opInsert );
 
 end;
 
@@ -1713,6 +1718,11 @@ end;
 procedure TFWPanels.SetPanelColumn(Index: Integer; Value: TFWPanelColumn);
 begin
   Items[Index].Assign(Value);
+end;
+
+function TFWPanels.GetOwner: TPersistent;
+begin
+  Result:=FParent;
 end;
 
 function TFWPanels.Add: TFWPanelColumn;
@@ -4819,7 +4829,7 @@ End ;
 /////////////////////////////////////////////////////////////////////////////////
 function TF_CustomFrameWork.fb_InsereCompteur ( const adat_Dataset : TDataset ; const aff_Cle : TFWFieldColumns ; const as_ChampCompteur, as_Table : String ; const ali_Debut, ali_LimiteRecherche : int64 ) : Boolean ;
 Begin
-  Result := fonctions_create.fb_InsereCompteur ( adat_Dataset, gds_recherche.Dataset, aff_Cle, as_ChampCompteur, as_Table, '', ' ', ' ', ali_Debut, ali_LimiteRecherche, gb_DBMessageOnError );
+  Result := fonctions_createsql.fb_InsereCompteur ( adat_Dataset, gds_recherche.Dataset, aff_Cle, as_ChampCompteur, as_Table, '', ' ', ' ', ali_Debut, ali_LimiteRecherche, gb_DBMessageOnError );
 End ;
 /////////////////////////////////////////////////////////////////////////////////
 // Fonction : fb_InsereCompteur
@@ -4834,7 +4844,7 @@ End ;
 /////////////////////////////////////////////////////////////////////////////////
 function TF_CustomFrameWork.fb_InsereCompteur ( const adat_Dataset : TDataset ; const aff_Cle : TFWFieldColumns ; const as_ChampCompteur, as_Table, as_PremierLettrage : String ; const ach_DebutLettrage, ach_FinLettrage : Char ) : Boolean ;
 Begin
-  Result := fonctions_create.fb_InsereCompteur ( adat_Dataset, gds_recherche.Dataset, aff_Cle, as_ChampCompteur, as_Table, as_PremierLettrage, ach_DebutLettrage, ach_FinLettrage, 0, 0, gb_DBMessageOnError );
+  Result := fonctions_createsql.fb_InsereCompteur ( adat_Dataset, gds_recherche.Dataset, aff_Cle, as_ChampCompteur, as_Table, as_PremierLettrage, ach_DebutLettrage, ach_FinLettrage, 0, 0, gb_DBMessageOnError );
 End ;
 function TF_CustomFrameWork.fcla_GereException ( const aexc_exception : Exception  ; const adat_Dataset : TDataset ) : TClass;
 Begin
