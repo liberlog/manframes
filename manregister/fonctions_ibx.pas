@@ -40,6 +40,7 @@ uses IBQuery,
      IBDatabase,
      FileUtil,
      fonctions_init,
+     u_multidonnees,
      fonctions_file,
      fonctions_create,
      fonctions_db,
@@ -50,7 +51,7 @@ Begin
   Result := 'SET SQL DIALECT 3;' + #10+ 'SET NAMES ' + Gs_Charset_ibx +';'+ #10;
 end;
 
-function fs_CreateAlterEndSQL ( const as_base, as_user, as_password : String ):String;
+function fs_CreateAlterEndSQL ( const as_base, as_user, as_password, as_host : String ):String;
 Begin
   Result := 'COMMIT;'+ #10;
 end;
@@ -75,7 +76,7 @@ Begin
     ( adat_Dataset as TIBQuery ).ExecSQL;
 
 End ;
-function fs_CreateDatabase  ( const as_base, as_user, as_password : String ):String;
+function fs_CreateDatabase  ( const as_base, as_user, as_password, as_host : String ):String;
 Begin
   Result := 'CREATE DATABASE '''+as_base+''' USER '''+as_user+''' PASSWORD '''+as_password+''' PAGE_SIZE 16384 DEFAULT CHARACTER SET '+Gs_Charset_ibx+';'+#10
           + 'CONNECT '''+as_base+''' USER '''+as_user+''' PASSWORD '''+as_password+''';'+#10;
@@ -125,7 +126,7 @@ Begin
           and ( DMModuleSources.Sources [ 0 ].DataBase [1] = '/' ))
   Then Begin Alib := 'libfbembed';  version := '.2.5'; End
   Else Begin Alib := 'libfbclient'; version := '.2'; End ;
-  libname:= fs_getSoftDir+Alib+CST_EXTENSION_LIBRARY;
+  libname:= fs_getAppDir+Alib+CST_EXTENSION_LIBRARY;
   if not FileExistsUTF8(libname)
     Then libname:='/usr/lib/'+Alib + CST_EXTENSION_LIBRARY + version;
   if not FileExistsUTF8(libname)
@@ -135,8 +136,8 @@ Begin
   if not FileExistsUTF8(libname)
     Then libname:='/usr/lib/x86_64-linux-gnu/'+Alib + CST_EXTENSION_LIBRARY + version;
   if FileExistsUTF8(libname)
-  and FileExistsUTF8(fs_getSoftDir+'exec.sh"') Then
-     fs_ExecuteProcess('sh',' "'+fs_getSoftDir+'exec.sh"');
+  and FileExistsUTF8(fs_getAppDir+'exec.sh"') Then
+     fs_ExecuteProcess('sh',' "'+fs_getAppDir+'exec.sh"');
   {$ENDIF}
 end;
 initialization
