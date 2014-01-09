@@ -37,6 +37,7 @@ procedure p_CreateIBXconnection ( const AOwner : TComponent ; var adtt_DatasetTy
 implementation
 
 uses IBQuery,
+     IBUpdateSQL,
      IBDatabase,
      FileUtil,
      fonctions_init,
@@ -61,12 +62,17 @@ Begin
   adtt_DatasetType := dtIBX;
   AQuery := TIBQuery.Create(AOwner);
   AConnection :=TIBDataBase.Create(AOwner);
-  ( AConnection as TIBDataBase ).Params.Add('lc_ctype='+Gs_Charset_ibx);
+  with AConnection as TIBDataBase do
+   Begin
+    Params.Add('lc_ctype='+Gs_Charset_ibx);
+    LoginPrompt:=False;
+    DefaultTransaction := TIBTransaction.Create ( AOwner );
+    DefaultTransaction.DefaultDatabase := AConnection as TIBDataBase;
+   End;
   with AQuery as TIBQuery do
      Begin
-       Transaction := TIBTransaction.Create ( AOwner );
-       Transaction.DefaultDatabase := AConnection as TIBDataBase;
-       Database := AConnection as TIBDataBase;
+      Database := AConnection as TIBDataBase;
+      UpdateObject:=TIBUpdateSQL.Create(AOwner);
      end;
 end;
 
@@ -111,6 +117,7 @@ Begin
   fs_ExecuteProcess({$IFNDEF WINDOWS}'sh',{$ENDIF}ls_File+CST_EXTENSION_BATCH_FILE);
 End ;
 
+{$IFDEF FPC}
 procedure p_setLibrary (var libname: string);
 {$IFNDEF WINDOWS}
 var Alib : String;
@@ -140,6 +147,8 @@ Begin
      fs_ExecuteProcess('sh',' "'+fs_getAppDir+'exec.sh"');
   {$ENDIF}
 end;
+{$ENDIF}
+
 initialization
  {$IFDEF FPC}
  OnGetLibraryName:= TOnGetLibraryName( p_setLibrary);

@@ -67,12 +67,14 @@ function fb_InsereCompteur ( const adat_Dataset, adat_DatasetQuery : TDataset ;
 function fs_CreateDatabase  ( const as_base, as_user, as_password, as_host : String ):String;
 function fs_BeginAlterCreate :String;
 function fs_EndCreate  ( const as_base, as_user, as_password, as_host : String ) :String;
+procedure p_SetSQLQuery ( const adat_Dataset : Tdataset ; const af_fields, af_key : TFWFieldColumns ; const as_table : String);
 
 implementation
 
 uses variants,
      fonctions_string,
      fonctions_db,
+     fonctions_proprietes,
      fonctions_erreurs;
 
 // execute query with optional module
@@ -1325,6 +1327,44 @@ Begin
    Else Result := '';
 End;
 
+function fs_GetSQLParameters ( const af_fields : TFWFieldColumns ; const as_format : String = ':@ARG'; const as_interleave : String = ','; const af_removed : TFWFieldColumns = nil ): String;
+var li_i : Integer;
+
+Begin
+  Result:='';
+  for li_i := 0 to af_fields.Count-1 do
+   with af_fields [ li_i ] do
+    if ( af_removed = nil ) or ( af_removed.indexOf(FieldName)=-1) Then
+      if Result=''
+        Then Result:=StringReplace(as_format,'@ARG',FieldName,[rfReplaceAll])
+        Else AppendStr(Result,as_interleave+StringReplace(as_format,'@ARG',FieldName,[rfReplaceAll]));
+end;
+
+procedure p_SetSQLQuery ( const adat_Dataset : Tdataset ; const af_fields, af_key : TFWFieldColumns ; const as_table : String);
+var lobj_SQL : TObject ;
+    lsts_SQL : TStrings;
+
+    function fs_getStringKeys: String;
+    Begin
+      Result:=' WHERE '+ fs_GetSQLParameters (af_key,'@ARG=:@ARG',' AND ');
+    End;
+Begin
+ fonctions_dbcomponents.p_SetSQLQuery(adat_Dataset,'SELECT ' +af_fields.toString+' FROM ' + as_table);
+ lobj_SQL := fobj_getComponentObjectProperty ( adat_Dataset, CST_DBPROPERTY_UPDATEOBJECT );
+ if assigned ( lobj_SQL ) Then
+   Begin
+     lsts_SQL := fobj_getComponentObjectProperty ( lobj_SQL, CST_DBPROPERTY_REFRESH_SQL ) as TStrings;
+     lsts_SQL.Text:='SELECT ' + af_fields.toString+' FROM ' +as_table + fs_getStringKeys;
+     lsts_SQL := fobj_getComponentObjectProperty ( lobj_SQL, CST_DBPROPERTY_DELETE_SQL ) as TStrings;
+     lsts_SQL.Text:='DELETE FROM ' +as_table + fs_getStringKeys;
+     lsts_SQL := fobj_getComponentObjectProperty ( lobj_SQL, CST_DBPROPERTY_INSERT_SQL ) as TStrings;
+     lsts_SQL.Text:='INSERT INTO ' +as_table + ' (' +af_fields.toString +') VALUES('+
+                    fs_GetSQLParameters (af_fields)+')';
+     lsts_SQL := fobj_getComponentObjectProperty ( lobj_SQL, CST_DBPROPERTY_MODIFY_SQL ) as TStrings;
+     lsts_SQL.Text:='UDPDATE ' +as_table + ' SET '+fs_GetSQLParameters (af_fields,'@ARG=:@ARG',',',af_key)
+                  + fs_getStringKeys   ;
+   end;
+End ;
 
 
 {$IFDEF VERSIONS}
