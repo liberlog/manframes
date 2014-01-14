@@ -172,6 +172,17 @@ type
   published
     property GroupView : TDBGroupView  read FGroupView write FGroupView ;
   end;
+  { TFWRelations }
+
+  TFWRelationsGroup = class(TFWRelations)
+  private
+    function GetRelation( Index: Integer): TFWRelationGroup;
+    procedure SetRelation( Index: Integer; Value: TFWRelationGroup);
+  public
+    function indexOf ( const as_RelationName : String ) : Integer;
+    function Add: TFWRelationGroup; virtual;
+    property Items[CST_BASE_INDEX: Integer]: TFWRelationGroup read GetRelation write SetRelation; default;
+  End;
   TFWSourceChildClass = class of TFWSourceChild;
 
   { TFWSourcesChilds }
@@ -256,6 +267,8 @@ type
      b_ShowPrint : Boolean;
 
     FStored: Boolean;
+    function GetRelations: TFWRelationsGroup;
+    procedure SetRelations(AValue: TFWRelationsGroup);
     function GetCounter(Index: Integer): TFWCounter;
     function GetCsvDef(Index: Integer): TFWCsvDef;
     procedure p_SetDBNavigatorEditor (  const a_Value: TExtDBNavigator );
@@ -281,7 +294,7 @@ type
     function  CreateDataLink : TFWColumnDatalink; override;
     property IsStored: Boolean read FStored write FStored default True;
     function fb_ChangeDataSourceWork : Boolean ; virtual;
-    function CreateCollectionRelations: TFWRelations; virtual;
+    function CreateCollectionRelations: TFWRelations; override;
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
   public
 
@@ -333,6 +346,7 @@ type
     property ShowPrint : Boolean read b_ShowPrint write b_ShowPrint default True;
 
     property OnScroll  : TDatasetNotifyEvent read fe_getDataScroll  write p_SetDataScroll  ;
+    property Relations: TFWRelationsGroup read GetRelations write SetRelations;
 
    End;
 
@@ -1230,6 +1244,40 @@ begin
 
 end;
 
+
+{ TFWRelationsGroup }
+
+function TFWRelationsGroup.GetRelation(Index: Integer): TFWRelationGroup;
+begin
+  if  ( Index > -1 )
+  and ( Index < Count ) Then
+    Result:=Inherited Items[Index] as TFWRelationGroup;
+end;
+
+procedure TFWRelationsGroup.SetRelation(Index: Integer; Value: TFWRelationGroup);
+begin
+  items [ Index ].Assign(Value);
+end;
+
+function TFWRelationsGroup.indexOf(const as_RelationName: String): Integer;
+var li_i : Integer;
+begin
+  Result := -1;
+  for li_i := 0 to Count -1 do
+   with Items [ li_i ] do
+    if RelationName = as_RelationName Then
+     Begin
+      Result := Index;
+      Break;
+     end;
+end;
+
+function TFWRelationsGroup.Add: TFWRelationGroup;
+begin
+  Result := TFWRelationGroup ( Inherited Add );
+end;
+
+
 { TFWSourceChild }
 
 constructor TFWSourceChild.Create(Collection: TCollection);
@@ -1462,7 +1510,7 @@ end;
 
 function TFWSource.CreateCollectionRelations: TFWRelations;
 begin
-  Result:=TFWRelations.Create(Self,TFWRelationGroup);
+  Result:=TFWRelationsGroup.Create(Self,TFWRelationGroup);
 end;
 
 procedure TFWSource.Notification(AComponent: TComponent; Operation: TOperation);
@@ -1560,6 +1608,18 @@ begin
   end;
   (Collection.Owner as TComponent).ReferenceInterface ( NavEdit, opInsert );
 end;
+
+function TFWSource.GetRelations: TFWRelationsGroup;
+begin
+  Result:=inherited Relations as TFWRelationsGroup;
+end;
+
+procedure TFWSource.SetRelations(AValue: TFWRelationsGroup);
+begin
+  Relations.Assign(AValue);
+end;
+
+
 
 function TFWSource.fcp_getDBNavigatorEditor: TExtDBNavigator;
 begin
@@ -1665,7 +1725,7 @@ begin
   Items[Index].Assign(Value);
 end;
 
-function TFWSources.fF_GetForm;
+function TFWSources.fF_GetForm: TF_CustomFrameWork;
 begin
   Result := GetOwner as TF_CustomFrameWork;
 end;
@@ -4644,8 +4704,9 @@ begin
   for li_i := 0 to gFWSources.Count - 1 do
     with gFWSources [ li_i ] do
       for li_j := 0 to Relations.Count-1 do
-        with (Relations [ li_j ] as TFWRelationGroup).GroupView do
-          if  assigned ( ButtonRecord )
+        with Relations [ li_j ],Groupview do
+          if  Assigned ( GroupView)
+          and assigned ( ButtonRecord )
           and ButtonRecord.Enabled Then
           // oui on quitte
             Exit ;
@@ -5312,8 +5373,9 @@ begin
               for li_i := 0 to gFWSources.Count-1 do
                with gFWSources [ li_i ] do
                 for li_j := 0 to Relations.Count-1 do
-                 with (Relations [ li_j ] as TFWRelationGroup).GroupView do
-                  if  assigned ( ButtonCancel )
+                 with (Relations [ li_j ] as TFWRelationGroup),GroupView do
+                  if  assigned ( GroupView )
+                  and assigned ( ButtonCancel )
                   and ButtonCancel.Enabled
                    Then
                     Begin
