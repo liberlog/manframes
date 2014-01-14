@@ -1216,7 +1216,7 @@ Begin
   and assigned ( aff_Cle )
   and ( aff_Cle.Count > 0 ) Then
     Begin
-      Result := adat_Dataset.FieldValues [ aff_Cle.GetString ];
+      Result := adat_Dataset.FieldValues [ aff_Cle.toString ];
     End
   Else
     Result := Null ;

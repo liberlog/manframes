@@ -333,7 +333,7 @@ type
       function GetColumnField(Index:Integer): TFWMiniFieldColumn;
       procedure SetColumnField(Index:Integer; Value: TFWMiniFieldColumn);
     public
-     function GetString: String; virtual;
+     function toString ( const ab_comma : Boolean = True ) : String; virtual;
      procedure Add ( const ToAdd: TFWMiniFieldColumn ); overload; virtual;
      function Add: TFWMiniFieldColumn; overload; virtual;
      function indexOf ( const as_FieldName : String ) : Integer; virtual;
@@ -347,7 +347,6 @@ type
      protected
       function  GetOwner: TPersistent; override;
     public
-      function toString ( const ab_comma : Boolean = True ) : String; virtual;
       constructor Create(const Column: TCollectionItem; const ColumnClass: TFWMiniFieldColumnClass); virtual;
       property Column : TCollectionItem read ACollectionItemOwner;
     End;
@@ -769,7 +768,7 @@ end;
 
 function TFWIndex.getSqlComment: string;
 begin
-  Result := 'Index ' + IndexName + ' on ' + FieldsDefs.GetString ;
+  Result := 'Index ' + IndexName + ' on ' + FieldsDefs.toString ;
 end;
 
 function TFWIndex.CreateFieldColumns: TFWFieldColumns;
@@ -955,7 +954,8 @@ begin
   and ( Indexes [ 0 ].IndexKind=ikPrimary )
    Then
     Begin
-     Result:=Indexes[0].FieldsDefs.GetString;
+     Result:=Indexes[0].FieldsDefs.toString;
+     gs_key:=Result;
     end;
   Indexes.gb_Changed:=False;
 end;
@@ -1857,7 +1857,7 @@ end;
 
 function TFWRelation.getSqlComment: string;
 begin
-  Result := 'RelationShip ' +  FieldsFK.GetString + ' on ' + gt_DestTables.toString;
+  Result := 'RelationShip ' +  FieldsFK.toString + ' on ' + gt_DestTables.toString;
 end;
 
 constructor TFWRelation.Create(Collection : TCollection);
@@ -2216,23 +2216,17 @@ begin
   Items[Index].Assign(Value);
 end;
 
-
-function TFWBaseFieldColumns.GetString: String;
-var li_j : integer;
-    lb_first : Boolean;
+function TFWBaseFieldColumns.toString ( const ab_comma : Boolean = True ): String;
+var li_i : Integer ;
 begin
-  lb_first:=True;
-  Result := '';
-  for li_j := 0 to Count - 1 do
-    if lb_first Then
-      Begin
-       Result:=Items[li_j].FieldName;
-       lb_first:=False;
-      end
-     Else
-      AppendStr(Result,','+Items[li_j].FieldName);
+  Result:='';
+  for li_i := 0 to Count-1 do
+   Begin
+    if (li_i = 0) or not ab_comma
+     Then AppendStr(Result,Items[li_i].FieldName)
+     Else AppendStr(Result,','+Items[li_i].FieldName);
+   end;
 end;
-
 
 function TFWBaseFieldColumns.indexOf(const as_FieldName: String): Integer;
 var af_field : TFWFieldColumn ;
@@ -2277,19 +2271,6 @@ function TFWMiniFieldColumns.GetOwner: TPersistent;
 begin
   Result:=ACollectionItemOwner;
 end;
-
-function TFWMiniFieldColumns.toString ( const ab_comma : Boolean = True ): String;
-var li_i : Integer ;
-begin
-  Result:='';
-  for li_i := 0 to Count-1 do
-   Begin
-    if (li_i = 0) or not ab_comma
-     Then AppendStr(Result,Items[li_i].FieldName)
-     Else AppendStr(Result,','+Items[li_i].FieldName);
-   end;
-end;
-
 
 
 { TFWFieldDataOptions }
