@@ -66,6 +66,7 @@ Begin
    Begin
     Params.Add('lc_ctype='+Gs_Charset_ibx);
     LoginPrompt:=False;
+    AllowStreamedConnected:=True;
     DefaultTransaction := TIBTransaction.Create ( AOwner );
     DefaultTransaction.DefaultDatabase := AConnection as TIBDataBase;
    End;

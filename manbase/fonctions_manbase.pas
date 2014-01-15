@@ -2221,11 +2221,13 @@ var li_i : Integer ;
 begin
   Result:='';
   for li_i := 0 to Count-1 do
-   Begin
-    if (li_i = 0) or not ab_comma
-     Then AppendStr(Result,Items[li_i].FieldName)
-     Else AppendStr(Result,','+Items[li_i].FieldName);
-   end;
+  with Items[li_i] do
+   if FieldName >'' Then
+     Begin
+      if (li_i = 0) or not ab_comma
+       Then AppendStr(Result,FieldName)
+       Else AppendStr(Result,','+FieldName);
+     end;
 end;
 
 function TFWBaseFieldColumns.indexOf(const as_FieldName: String): Integer;
