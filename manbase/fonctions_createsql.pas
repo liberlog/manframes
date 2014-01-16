@@ -303,7 +303,7 @@ var
         end;
 
         //Add column-ID
-        IndexColumns.Add(theTable.FieldsDefs.byName(DMDB.Fields[4].AsString));
+        IndexColumns.Add(theTable.FieldsDefs.FieldByName(DMDB.Fields[4].AsString));
 
         prevIndex := DMDB.Fields[2].AsString;
         DMDB.Next;

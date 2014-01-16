@@ -59,6 +59,7 @@ type
   TFWLinkOption = ( loRestrict, loCascade, loSetNull, loNoAction, loSetDefault );
   TFWSQLEvent = ( sqeBefore, sqeAfter );
   TFWEventMode = ( emCreate, emInsert, emUpdate, emDelete );
+  TFWEventModes = set of TFWEventMode;
   TFWOptionDefaults = set of TFWOptionDefault;
   TFWBaseMode = ( bmFirebird, bmMySQL, bmPostgreSQL, bmOracle, bmSQLServer );
   TFWLinkOptionStrings = Array [ TFWLinkOption ] of String;
@@ -83,7 +84,6 @@ type
                TABLE_TYPE      : String;
                CREATE_TRIGGER  : String;
                TRIGGER_EVENT   : TFWSQLEventStrings;
-               TRIGGER_EVENT_MODE   : TFWEventStrings;
                NOT_NULL        : string;
                DOUBLE          : String;
                DATE            : String;
@@ -94,6 +94,7 @@ const CST_BASE_INDEX_PRIMARY = 'PRIMARY';
       CST_BASE_TRIGGER = '@TRIGGER';
       CST_BASE_EVENT   = '@EVENT';
       CST_BASE_TABLE   = '@TABLE';
+      TRIGGER_EVENT_MODE   : TFWEventStrings=('CREATE','INSERT','UPDATE','DELETE');
       CST_BASE_BODY    = '@BODY';
       CST_BASE_FIELD_OPTIONS : TFWFieldOptionStrings = ( 'UNSIGNED', 'ZEROFILL', 'AUTOINC' );
       CST_BASE_CREATE_TABLE = 'CREATE @ARGTABLE @ARG';
@@ -112,7 +113,6 @@ const CST_BASE_INDEX_PRIMARY = 'PRIMARY';
                         TABLE_TYPE   : 'TYPE=@ARG';
                         CREATE_TRIGGER : 'SET TERM !; '+#10+'CREATE TRIGGER '+CST_BASE_TRIGGER+' FOR '+CST_BASE_TABLE+' '+CST_BASE_EVENT+#10+'AS'#10+CST_BASE_BODY+#10+'SET TERM ;! ';
                         TRIGGER_EVENT   : ('BEFORE @ARG  ', 'AFTER  @ARG  ');
-                        TRIGGER_EVENT_MODE   : ('CREATE','INSERT','UPDATE','DELETE');
                         NOT_NULL    : 'NOT NULL';
                         DOUBLE      : 'DECIMAL';
                         DATE        : 'DATE';
@@ -121,7 +121,6 @@ const CST_BASE_INDEX_PRIMARY = 'PRIMARY';
                         TABLE_TYPE   : 'TYPE=@ARG';
                         CREATE_TRIGGER : '';
                         TRIGGER_EVENT   : ('BEFORE @ARG  ', 'AFTER  @ARG  ');
-                        TRIGGER_EVENT_MODE   : ('CREATE','INSERT','UPDATE','DELETE');
                         NOT_NULL    : 'NOT NULL';
                         DOUBLE      : 'DOUBLE';
                         DATE        : 'DATETIME';
@@ -130,7 +129,6 @@ const CST_BASE_INDEX_PRIMARY = 'PRIMARY';
                          TABLE_TYPE   : 'TYPE=@ARG';
                          CREATE_TRIGGER : '';
                          TRIGGER_EVENT   : ('BEFORE @ARG  ', 'AFTER  @ARG  ');
-                         TRIGGER_EVENT_MODE   : ('CREATE','INSERT','UPDATE','DELETE');
                          NOT_NULL    : 'NOT NULL';
                          DOUBLE      : 'DOUBLE PRECISION';
                          DATE        : 'DATE';
@@ -139,7 +137,6 @@ const CST_BASE_INDEX_PRIMARY = 'PRIMARY';
                          TABLE_TYPE   : 'TYPE=@ARG';
                          CREATE_TRIGGER : 'CREATE OR REPLACE TRIGGER '+CST_BASE_TRIGGER+' '+CST_BASE_EVENT+#10+' ON '+CST_BASE_TABLE+#10+CST_BASE_BODY+#10+'/';
                          TRIGGER_EVENT   : ('BEFORE @ARG  ', 'AFTER  @ARG  ');
-                         TRIGGER_EVENT_MODE   : ('CREATE','INSERT','UPDATE','DELETE');
                          NOT_NULL    : 'NOT NULL';
                          DOUBLE      : 'DOUBLE';
                          DATE        : 'DATE';
@@ -148,7 +145,6 @@ const CST_BASE_INDEX_PRIMARY = 'PRIMARY';
                         TABLE_TYPE   : 'TYPE=@ARG';
                         CREATE_TRIGGER : 'CREATE TRIGGER '+CST_BASE_TRIGGER+' ON '+CST_BASE_TABLE+' '+CST_BASE_EVENT+#10+'AS'#10+CST_BASE_BODY+#10+'GO';
                         TRIGGER_EVENT   : ('BEFORE @ARG  ', 'AFTER  @ARG  ');
-                        TRIGGER_EVENT_MODE   : ('CREATE','INSERT','UPDATE','DELETE');
                         NOT_NULL    : 'NOT NULL';
                         DOUBLE      : 'DOUBLE';
                         DATE        : 'DATETIME';
@@ -170,6 +166,8 @@ type
   TFWBaseObject = class(TCollectionItem)
   private
     gi_id  : Integer;
+  protected
+    procedure AssignTo(Dest: TPersistent); override;
   public
     constructor Create(ACollection: TCollection); override;
     // get SQL comment
@@ -186,8 +184,10 @@ type
     gs_CaptionName : String;
   protected
     procedure SetFieldName ( const AValue : String ); virtual;
+    procedure AssignTo ( Dest: TPersistent ); override;
   public
-   constructor Create(ACollection: TCollection); override;
+    function getSqlComment: string; override;
+    constructor Create(ACollection: TCollection); override;
     function   Clone ( const ACollection : TFWFieldColumns ) : TFWMiniFieldColumn; virtual;
     function GetCaption : String; virtual;
   published
@@ -250,21 +250,21 @@ type
      procedure SetDataOptions ( const AValue : TFWFieldDataOptions );
      function  GetOptionExists   ( Index : TFWFieldOption ):Boolean;
      function  GetOptionString   ( Index : TFWFieldOption ):String;
-     function getSqlComment: string; override;
      function fs_DatatypeParams : String;
      function fr_GetRelation : TFWRelation;
      procedure p_setRelation ( const AValue : TFWRelation );
      function fs_TypeName : String;
    protected
-   function CreateCollectionFieldOptions: TFWFieldDataOptions; virtual;
-   function CreateCollectionRelations: TFWRelations; virtual;
+     function CreateCollectionFieldOptions: TFWFieldDataOptions; virtual;
+     function CreateCollectionRelations: TFWRelations; virtual;
+     procedure AssignTo ( Dest: TPersistent ); override;
    public
+    function getSqlComment: string; override;
     constructor Create(ACollection: TCollection); override;
     destructor Destroy; override;
     procedure Erase; virtual;
     function IsErased:Boolean; virtual;
     procedure Init; virtual;
-    function Clone ( const ACollection : TFWFieldColumns ) : TFWFieldData; virtual;
     function GetSQLColumnCreateDefCode(
        var TableFieldGen: string; const HideNullField: boolean = True;
        const DefaultBeforeNotNull: boolean = True; const OutputComments: boolean = True): string; virtual;
@@ -314,9 +314,9 @@ type
   protected
     procedure SetFieldOld(const Avalue: TFWFieldData); virtual;
     function CreateOldField: TFWFieldData; virtual;
+    procedure AssignTo(Dest: TPersistent); override;
   public
    constructor Create(ACollection: TCollection); override;
-   function   Clone ( const ACollection : TFWFieldColumns ) : TFWFieldColumn; virtual;
    destructor Destroy; override;
   published
    property FieldOld : TFWFieldData read gfw_FieldOld write SetFieldOld;
@@ -333,11 +333,11 @@ type
       function GetColumnField(Index:Integer): TFWMiniFieldColumn;
       procedure SetColumnField(Index:Integer; Value: TFWMiniFieldColumn);
     public
-     function toString ( const ab_comma : Boolean = True ) : String; virtual;
+     function toString ( const ab_comma : Boolean = True ) : String; overload; virtual;
      procedure Add ( const ToAdd: TFWMiniFieldColumn ); overload; virtual;
      function Add: TFWMiniFieldColumn; overload; virtual;
      function indexOf ( const as_FieldName : String ) : Integer; virtual;
-     function byName  ( const as_FieldName : String ) : TFWMiniFieldColumn;
+     function FieldByName  ( const as_FieldName : String ) : TFWMiniFieldColumn;
      property Items[Index:Integer]: TFWMiniFieldColumn read GetColumnField write SetColumnField; default;
    End;
 
@@ -358,7 +358,7 @@ type
       function GetColumnField( Index: Integer): TFWFieldColumn;
       procedure SetColumnField( Index: Integer; Value: TFWFieldColumn);
     public
-      function Add: TFWFieldColumn; virtual;
+      function Add: TFWFieldColumn; override;
       property Items[Index: Integer]: TFWFieldColumn read GetColumnField write SetColumnField; default;
     End;
 
@@ -376,12 +376,12 @@ type
    gfc_FieldColumns: TFWFieldColumns;
    procedure SetFields(const AValue: TFWFieldColumns);
   protected
-   function getSqlComment: string; override;
    function CreateFieldColumns : TFWFieldColumns; virtual;
+   procedure AssignTo(Dest: TPersistent); override;
   public
+    function getSqlComment: string; override;
     constructor Create(ACollection: TCollection); override;
     destructor Destroy; override;
-    procedure Assign(Source: TPersistent); override;
   published
     property IndexName: string read gs_Name write gs_Name;
     property Pos: integer read gi_Pos write gi_Pos default 0;              //Position
@@ -404,6 +404,7 @@ type
     constructor Create(const AOwner: TPersistent; const ColumnClass: TFWTableClass); overload; virtual;
     constructor Create(const ColumnClass: TFWTableClass); overload; virtual;
     function indexOf ( const as_TableName : String ) : Integer;
+    function TableByName ( const as_TableName : String ) : TFWTable;
     function Add: TFWTable; virtual;
     property Items[Index: Integer]: TFWTable read GetTable write SetTable; default;
   End;
@@ -506,6 +507,7 @@ type
     function CreateCollectionFields: TFWFieldColumns; virtual;
     function CreateCollectionRelations: TFWRelations; virtual;
     procedure Notification(AComponent: TComponent; Operation: TOperation);virtual;
+    procedure AssignTo(Dest: TPersistent); override;
   public
     { Public declarations }
     constructor Create(Collection: TCollection); override;
@@ -514,7 +516,6 @@ type
     function GetKeyString: String; virtual;
     function GetKeyCount: Integer; virtual;
 
-    procedure Assign(Source: TPersistent); override;
     function GetSQLCreateCode(const DefinePK: Boolean=True;
       const GenerateSequence: Boolean = True;
       const CreateIndexes: Boolean=True; const DefineFK: Boolean=True;
@@ -534,7 +535,7 @@ type
         const lastExclusionTriggerPrefix: string='EXCDT_'): string; virtual;
 
     //Checks the primary index and returns the obj_id or -1
-    function CheckPrimaryIndex: integer; virtual;
+    procedure CheckPrimaryIndex; virtual;
 
     //Returns the table's prefix
     function GetTablePrefix: String; virtual;
@@ -551,7 +552,7 @@ type
     function GetTriggerForLastDeleteDate(const TbName, ColName, PrefixName: string): string; virtual;
 
     //Create sql tiggers definitions
-    function GetTriggerSql( const TriggerBody, TriggerName:String; const Event : TFWSQLEvent; const EventMode : TFWEventMode): String; virtual;
+    function GetTriggerSql( const TriggerBody, TriggerName:String; const Event : TFWSQLEvent; const EventMode : TFWEventModes): String; virtual;
 
     function GetPkJoin(const Tab1, Tab2: String; const PKs: TStringList): String; virtual;
     function GetGlobalSequence (const seqname :String ):String;
@@ -606,12 +607,11 @@ type
   protected
    function CreateCollectionFields: TFWMiniFieldColumns; virtual;
    function CreateCollectionTables: TFWTables; virtual;
-   function getSqlComment: string; override;
+   procedure AssignTo(Dest: TPersistent); override;
   public
+    function getSqlComment: string; override;
     constructor Create(Collection : TCollection); override;
     destructor Destroy; override;
-
-    procedure Assign(Source: TPersistent); override;
 
   published
     { Public declarations }
@@ -655,6 +655,23 @@ uses fonctions_dbcomponents,
      u_multidonnees,
      typinfo,
      fonctions_languages;
+
+function GetEventString ( const aevents : TFWEventModes ) : String ;
+var aevent : TFWEventMode;
+    lbfirst : Boolean;
+Begin
+  lbfirst := True;
+  Result:='';
+  for aevent:=low(TFWEventMode) to high ( TFWEventMode ) do
+   if aevent in aevents Then
+    if lbfirst Then
+     Begin
+      Result:=TRIGGER_EVENT_MODE[aevent];
+      lbfirst:=False;
+     end
+    else
+     AppendStr(Result,','+TRIGGER_EVENT_MODE[aevent]);
+end;
 
 function GetDBQuote : String ;
 Begin
@@ -726,8 +743,7 @@ function TFWMiniFieldColumn.Clone(const ACollection: TFWFieldColumns
   ): TFWMiniFieldColumn;
 begin
   Result:=TFWMiniFieldColumn.Create(ACollection);
-  Result.s_FieldName:=s_FieldName;
-  Result.gs_CaptionName:=gs_CaptionName;
+  Result.Assign(Self);
 end;
 
 function TFWMiniFieldColumn.GetCaption: String;
@@ -736,21 +752,37 @@ begin
 end;
 
 procedure SetCorrectFieldName(const AFieldColumn : TFWMiniFieldColumn);
-var ls_table : String;
 begin
   if gbm_DatabaseToGenerate = bmFirebird
    Then p_SetStringMaxLength  (AFieldColumn.s_FieldName,CST_FIREBIRD_FIELD_LENGTH );
 end;
 
 procedure TFWMiniFieldColumn.SetFieldName(const AValue: String);
-var ls_table : String;
 begin
   s_FieldName:=AValue;
   SetCorrectFieldName(Self);
 end;
 
+procedure TFWMiniFieldColumn.AssignTo(Dest: TPersistent);
+var lfmf_Field : TFWMiniFieldColumn;
+begin
+  lfmf_Field := dest as TFWMiniFieldColumn;
+  lfmf_Field.FieldName:=FieldName;
+  lfmf_Field.CaptionName:=CaptionName;
+end;
+
+function TFWMiniFieldColumn.getSqlComment: string;
+begin
+  Result:=FieldName;
+end;
+
 
 { TFWBaseObject }
+
+procedure TFWBaseObject.AssignTo(Dest: TPersistent);
+begin
+  (dest as TFWBaseObject).gi_id:=gi_id;
+end;
 
 constructor TFWBaseObject.Create(ACollection: TCollection);
 begin
@@ -776,6 +808,17 @@ begin
   Result := TFWFieldColumns.Create(Self,TFWFieldColumn);
 end;
 
+procedure TFWIndex.AssignTo(Dest: TPersistent);
+var lfi_Dest : TFWIndex;
+begin
+  inherited AssignTo(Dest);
+  lfi_Dest := dest as TFWIndex;
+  lfi_Dest.gs_Name:=gs_Name;
+  lfi_Dest.gi_Pos:=gi_Pos;              //Position
+  lfi_Dest.gik_IndexKind:=gik_IndexKind;
+  lfi_Dest.gfc_FieldColumns.Assign(gfc_FieldColumns);
+end;
+
 constructor TFWIndex.Create(ACollection: TCollection);
 begin
   Inherited Create(ACollection);
@@ -788,11 +831,6 @@ destructor TFWIndex.Destroy;
 begin
   ( Collection as TFWIndexes ).gb_Changed:=True;
   inherited Destroy;
-end;
-
-procedure TFWIndex.Assign(Source: TPersistent);
-begin
-  inherited Assign(Source);
 end;
 
 { TFWTables }
@@ -842,14 +880,23 @@ end;
 
 
 function TFWTables.indexOf(const as_TableName: String): Integer;
-var li_i : Integer;
+var lft_table : TFWTable;
 begin
   Result := -1;
+  lft_table:=TableByName(as_TableName);
+  if Assigned(lft_table) Then
+    Result := lft_table.Index;
+
+end;
+
+function TFWTables.TableByName(const as_TableName: String): TFWTable;
+var li_i : Integer;
+begin
+  Result := nil;
   for li_i := 0 to Count -1 do
-   with Items [ li_i ] do
-    if Table = as_TableName Then
+    if Items [ li_i ].Table = as_TableName Then
      Begin
-      Result := Index;
+      Result := Items [ li_i ];
       Break;
      end;
 
@@ -939,8 +986,6 @@ end;
 // Implementation of the TFWTable
 
 function TFWTable.GetKeyString: String;
-var li_j : integer;
-    lb_first : Boolean;
 begin
   if ( gs_key > '' )
   and not Indexes.gb_Changed Then
@@ -948,7 +993,6 @@ begin
      Result:=gs_key;
      Exit;
     end;
-  lb_first:=True;
   Result := '';
   if  ( Indexes.Count > 0 )
   and ( Indexes [ 0 ].IndexKind=ikPrimary )
@@ -961,7 +1005,6 @@ begin
 end;
 
 function TFWTable.GetKeyCount: Integer;
-var li_i : integer;
 begin
   if Indexes.Count > 0
    Then  Result := Indexes [ 0 ].FieldsDefs.Count
@@ -970,7 +1013,6 @@ end;
 
 
 destructor TFWTable.Destroy;
-var i: integer;
 begin
   inherited;
   gfwi_Indexes  .Destroy;
@@ -993,7 +1035,7 @@ begin
    end;
 end;
 
-function TFWTable.CheckPrimaryIndex: integer;
+procedure TFWTable.CheckPrimaryIndex;
 var i, colCount: integer;
   theIndex: TFWIndex;
   HasAutoInc: Boolean;
@@ -1048,7 +1090,7 @@ begin
      with gfc_FieldColumns[i] do
       if b_ColUnique
       and (theIndex.gfc_FieldColumns.indexOf(FieldName) = -1) then
-        theIndex.gfc_FieldColumns.Add(gfc_FieldColumns.byname(FieldName).Clone(theIndex.gfc_FieldColumns));
+        theIndex.gfc_FieldColumns.Add(gfc_FieldColumns.FieldByName(FieldName).Clone(theIndex.gfc_FieldColumns));
 
   end;
 end;
@@ -1107,7 +1149,6 @@ var s1: string;
   isTemporary: Boolean;
   relCounter, relSum: integer;
   DBQuote: string;
-  theStrList: TStringList;
   indexPortable: boolean;
   indexOnTable:string;
   FinallyPortableIndexes:string;
@@ -1118,7 +1159,6 @@ var s1: string;
   GoStatementstr : string;
   CommitStatementstr : string;
   Table ,
-  LocalComment ,
   SeqName : string;
 
 begin
@@ -1433,7 +1473,7 @@ begin
                     getTriggerForSequences := GetTriggerSql(
                                                 AuxTriggerBody.Text,
                                                 Copy(PrefixName + GetSQLTableName, 1, 30),
-                                                sqeBefore, emInsert
+                                                sqeBefore, [emInsert]
                                               );
                   end;
      bmOracle   : begin
@@ -1447,7 +1487,7 @@ begin
                     getTriggerForSequences := GetTriggerSql(
                                                 AuxTriggerBody.Text,
                                                 Copy(PrefixName + GetSQLTableName, 1, 30),
-                                                sqeBefore, emInsert
+                                                sqeBefore, [emInsert]
                                               );
                   end;
     end;
@@ -1456,7 +1496,7 @@ begin
   end;
 end;
 
-function TFWTable.GetTriggerSql(const TriggerBody, TriggerName:String; const Event : TFWSQLEvent; const EventMode : TFWEventMode): String;
+function TFWTable.GetTriggerSql(const TriggerBody, TriggerName:String; const Event : TFWSQLEvent; const EventMode : TFWEventModes): String;
 
 begin
   with CST_Base_Words [ gbm_DatabaseToGenerate ] do
@@ -1465,7 +1505,7 @@ begin
     Result := StringReplace(Result,CST_BASE_TABLE,GetSQLTableName,[rfReplaceAll]);
     Result := StringReplace(Result,CST_BASE_BODY,TriggerBody,[rfReplaceAll]);
     Result := StringReplace(Result,CST_BASE_TRIGGER,TriggerName,[rfReplaceAll]);
-    Result := StringReplace(Result,CST_BASE_EVENT,fs_RemplaceMsg(TRIGGER_EVENT[Event],[TRIGGER_EVENT_MODE[EventMode]]),[rfReplaceAll]);
+    Result := StringReplace(Result,CST_BASE_EVENT,fs_RemplaceMsg(TRIGGER_EVENT[Event],[GetEventString(EventMode)]),[rfReplaceAll]);
     Result := StringReplace(Result,CST_BASE_BODY,TriggerBody,[rfReplaceAll])+#10+#10;
    end;
 
@@ -1473,7 +1513,64 @@ end;
 
 function TFWTable.GetTriggersForLastChangeDate(const ColumnName, PrefixName: string;
   const pkFields: TStringList): string;
+var
+  AuxTriggerBody: TStringList;
 begin
+  AuxTriggerBody := TStringList.Create;
+  try
+    case gbm_DatabaseToGenerate of
+    bmOracle:// ORACLE TRIGGER
+      begin
+         AuxTriggerBody.Add('FOR EACH ROW ');
+         AuxTriggerBody.Add('BEGIN');
+         AuxTriggerBody.Add('  :NEW.'+ColumnName+
+                            ' :=  TO_CHAR(SYSTIMESTAMP, ''YYMMDDHH24MISSFF3'');');
+         AuxTriggerBody.Add('END;');
+
+         Result := GetTriggerSql(AuxTriggerBody.Text,
+                                 Copy(PrefixName + GetSQLTableName, 1, 30),
+                                 sqeBefore,[emInsert,emUpdate]
+                               );
+      end;
+    bmFirebird:
+      //FIREBIRD
+      begin
+        AuxTriggerBody.Add('BEGIN ');
+        AuxTriggerBody.Add('New.' + ColumnName + ' = ');
+        AuxTriggerBody.Add('  substr(CURRENT_TIMESTAMP, 3,   4) || ');
+        AuxTriggerBody.Add('  substr(CURRENT_TIMESTAMP, 6,   7) || ');
+        AuxTriggerBody.Add('  substr(CURRENT_TIMESTAMP, 9,  10) || ');
+        AuxTriggerBody.Add('  substr(CURRENT_TIMESTAMP, 12, 13) || ');
+        AuxTriggerBody.Add('  substr(CURRENT_TIMESTAMP, 15, 16) || ');
+        AuxTriggerBody.Add('  substr(CURRENT_TIMESTAMP, 18, 19) || ');
+        AuxTriggerBody.Add('  substr(CURRENT_TIMESTAMP, 21, 23);   ');
+        AuxTriggerBody.Add('END! ');
+
+        Result := GetTriggerSql( AuxTriggerBody.Text,
+                                 Copy(PrefixName + GetSQLTableName, 1, 30),
+                                 sqeBefore,[emInsert,emUpdate]
+                               );
+      end;
+    bmSQLServer :  //SQL SERVER
+      begin
+        AuxTriggerBody.Add('BEGIN ');
+        AuxTriggerBody.Add('    declare @dt varchar(15) ');
+        AuxTriggerBody.Add('    set @dt = (select replace(CONVERT(VARCHAR(6),GETDATE(),12)+CONVERT(VARCHAR,GETDATE(),14), '':'', '''')) ');
+        AuxTriggerBody.Add('    UPDATE '+ GetSQLTableName +' SET '+ColumnName+' = @dt ');
+        AuxTriggerBody.Add('    FROM '+ GetSQLTableName +' TAB INNER JOIN inserted I ON ('+GetPkJoin('TAB', 'I', pkFields)+') ');
+        AuxTriggerBody.Add('    WHERE TAB.'+ColumnName+' < @dt OR TAB.'+ColumnName+' IS NULL ');
+        AuxTriggerBody.Add('END;');
+
+        Result := GetTriggerSql (AuxTriggerBody.Text,
+                                 Copy(PrefixName + GetSQLTableName, 1, 30),
+                                 sqeAfter,[emInsert,emUpdate]
+                                 );
+      end;
+    End;
+  finally
+    AuxTriggerBody.Destroy;
+
+  end;
 
 end;
 
@@ -1508,7 +1605,7 @@ begin
          GetTriggerForLastDeleteDate := GetTriggerSql(
                                            AuxTriggerBody.Text,
                                            Copy(PrefixName + GetSQLTableName, 1, 30),
-                                           sqeAfter,emDelete
+                                           sqeAfter,[emDelete]
                                          );
       end;
     bmFirebird  :  //FIREBIRD
@@ -1539,7 +1636,7 @@ begin
         GetTriggerForLastDeleteDate := GetTriggerSql(
                                           AuxTriggerBody.Text,
                                           Copy(PrefixName + GetSQLTableName, 1, 30),
-                                          sqeAfter,emDelete
+                                          sqeAfter,[emDelete]
                                         );
 
       end;
@@ -1564,7 +1661,7 @@ begin
         GetTriggerForLastDeleteDate := GetTriggerSql(
                                           AuxTriggerBody.Text,
                                           Copy(PrefixName + GetSQLTableName, 1, 30),
-                                          sqeAfter,emDelete
+                                          sqeAfter,[emDelete]
                                         );
       end;
 
@@ -1787,44 +1884,37 @@ Begin
   Result   := TFWRelations.Create(Self,TFWRelation);
 end;
 
-procedure TFWTable.Assign(Source: TPersistent);
+procedure TFWTable.AssignTo(Dest: TPersistent);
 var
-  theSourceTbl: TFWTable;
-  theColumn: TFWFieldColumn;
-  theIndex: TFWIndex;
+  theDestTbl: TFWTable;
 begin
-  inherited Assign(Source);
+  inherited AssignTo(Dest);
 
-  if Source is TFWTable then
-  begin
-    theSourceTbl:=TFWTable(Source);
+  theDestTbl:=TFWTable(Dest);
 
-    //Parent:=theSourceTbl.Parent;
+  //Parent:=theDestTbl.Parent;
 
-    nmTable:=theSourceTbl.GetnmTableStatus;
+  theDestTbl.nmTable:=GetnmTableStatus;
 
-    TableType:=theSourceTbl.TableType;
-    TablePrefix:=theSourceTbl.TablePrefix;
-    Temporary:=theSourceTbl.Temporary;
+  theDestTbl.TableType:=TableType;
+  theDestTbl.TablePrefix:=TablePrefix;
+  theDestTbl.Temporary:=Temporary;
 
-    TableOldName:=theSourceTbl.TableOldName;
+  theDestTbl.TableOldName:=TableOldName;
 
-    TableOptions.Text:=theSourceTbl.TableOptions.Text;
+  theDestTbl.TableOptions.Text:=TableOptions.Text;
 
-    StandardInserts.Text:=theSourceTbl.StandardInserts.Text;
-    UseStandardInserts:=theSourceTbl.UseStandardInserts;
+  theDestTbl.StandardInserts.Text:=StandardInserts.Text;
+  theDestTbl.UseStandardInserts:=UseStandardInserts;
 
-    //gfc_FieldColumns.Assign(theSourceTbl.gfc_FieldColumns);
-    gfc_FieldColumns.Clear;
-    gfc_FieldColumns.Assign(theSourceTbl.gfc_FieldColumns);
+  //  theDestTbl.gfc_FieldColumns.Assign(gfc_FieldColumns);
+  theDestTbl.gfc_FieldColumns.Assign(gfc_FieldColumns);
 
-    //Indexes.Assign(theSourceTbl.Indexes);
-    Indexes.Clear;
-    gfwi_Indexes.Assign(theSourceTbl.gfwi_Indexes);
+  //Indexes.Assign(Indexes);
+  theDestTbl.gfwi_Indexes.Assign(gfwi_Indexes);
 
-    Relations.Assign(theSourceTbl.Relations);
+  theDestTbl.Relations.Assign(Relations);
 
-  end;
 end;
 
 // -----------------------------------------------
@@ -1879,47 +1969,45 @@ begin
 
 end;
 
-procedure TFWRelation.Assign(Source: TPersistent);
-var theSourceRel: TFWRelation;
+procedure TFWRelation.AssignTo(Dest: TPersistent);
+var theDestRel: TFWRelation;
 begin
-  inherited Assign(Source);
+  inherited AssignTo(Dest);
 
-  if Source is TFWRelation then
-  begin
-    theSourceRel:=TFWRelation(Source);
+  theDestRel:=TFWRelation(Dest);
 
-    RelKind:=theSourceRel.RelKind;
+  theDestRel.RelKind:=RelKind;
 
-    gt_DestTables.Assign(theSourceRel.gt_DestTables);
+  theDestRel.gt_DestTables.Assign(gt_DestTables);
 
-    FieldsFK.Assign(theSourceRel.FieldsFK);
+  theDestRel.FieldsFK.Assign(FieldsFK);
 
-    CreateRefDef:=theSourceRel.CreateRefDef;
+  theDestRel.CreateRefDef:=CreateRefDef;
 
-    OptionalStart:=theSourceRel.OptionalStart;
-    OptionalEnd:=theSourceRel.OptionalEnd;
-
-  end;
+  theDestRel.OptionalStart:=OptionalStart;
+  theDestRel.OptionalEnd:=OptionalEnd;
 end;
 
 
-function TFWFieldData.Clone ( const ACollection : TFWFieldColumns ): TFWFieldData;
+procedure TFWFieldData.AssignTo ( Dest: TPersistent );
+var lfd_Dest : TFWFieldData;
 begin
-  Result:= TFWFieldData (Inherited Clone(ACollection));
-  Result.FieldName:=FieldName;
-  Result.FieldSize:=FieldSize;
-  Result.b_ColCreate:=b_ColCreate;
-  Result.b_ColMain:=b_ColMain;
-  Result.b_ColHidden:=b_ColHidden;
-  Result.b_colPrivate:=b_colPrivate;
-  Result.b_colSelect:=b_colSelect;
-  Result.b_ColUnique:=b_ColUnique;
-  Result.CaptionName:=CaptionName;
-  Result.ft_FieldType:=ft_FieldType;
-  Result.EditParamsAsString:=EditParamsAsString;
-  Result.gas_Options:=gas_Options;
-  Result.gas_Param:=gas_Param;
-  Result.gb_ParamRequired:=gb_ParamRequired;
+  Inherited AssignTo(Dest);
+  lfd_Dest := Dest as TFWFieldData;
+  lfd_Dest.FieldName:=FieldName;
+  lfd_Dest.FieldSize:=FieldSize;
+  lfd_Dest.b_ColCreate:=b_ColCreate;
+  lfd_Dest.b_ColMain:=b_ColMain;
+  lfd_Dest.b_ColHidden:=b_ColHidden;
+  lfd_Dest.b_colPrivate:=b_colPrivate;
+  lfd_Dest.b_colSelect:=b_colSelect;
+  lfd_Dest.b_ColUnique:=b_ColUnique;
+  lfd_Dest.CaptionName:=CaptionName;
+  lfd_Dest.ft_FieldType:=ft_FieldType;
+  lfd_Dest.EditParamsAsString:=EditParamsAsString;
+  lfd_Dest.gas_Options:=gas_Options;
+  lfd_Dest.gas_Param:=gas_Param;
+  lfd_Dest.gb_ParamRequired:=gb_ParamRequired;
 end;
 
 function TFWFieldData.GetSQLColumnCreateDefCode(var TableFieldGen: string;
@@ -1927,7 +2015,6 @@ function TFWFieldData.GetSQLColumnCreateDefCode(var TableFieldGen: string;
   const OutputComments: boolean ): string;
 var
   j: integer;
-  found : Boolean;
   defaultTag:string;
   NullTag:string;
   ColComment:string;
@@ -1942,7 +2029,7 @@ begin
     else
       Result:=FieldName+' ';
 
-    if (gbm_DatabaseToGenerate = bmPostgreSQL) and b_ColUnique and b_ColHidden and not b_ColCreate
+    if (gbm_DatabaseToGenerate = bmPostgreSQL) and b_ColUnique and (b_ColHidden or b_colPrivate) and not b_ColCreate
      then
       Result := Result + 'SERIAL'
      else
@@ -1994,7 +2081,7 @@ begin
     end;
 
     // auto increment
-    if b_ColUnique and b_ColHidden and not b_ColCreate then
+    if b_ColUnique and (b_ColHidden or b_colPrivate) and not b_ColCreate then
       case gbm_DatabaseToGenerate of
       bmMySQL:
        begin
@@ -2139,6 +2226,9 @@ begin
   b_colSelect:=True;
   b_colPrivate:=False;
   b_ColHidden:=False;
+  b_ColCreate:=False;
+  b_ColUnique:=False;
+  b_ColMain:=False;
   i_FieldSize := 0;
 
   gi_SynonymGroup := 0;
@@ -2167,10 +2257,13 @@ end;
 
 { TFWFieldColumn }
 
-function TFWFieldColumn.Clone ( const ACollection : TFWFieldColumns ): TFWFieldColumn;
+procedure TFWFieldColumn.AssignTo ( Dest: TPersistent );
+var lfd_Dest : TFWFieldColumn;
 begin
-  Result:= TFWFieldColumn (Inherited Clone(ACollection));
-  Result.FieldOld.Assign(FieldOld);
+  Inherited AssignTo(Dest);
+  lfd_Dest := Dest as TFWFieldColumn;
+  lfd_Dest.FieldOld.Assign(FieldOld);
+  lfd_Dest.Decimals:=Decimals;
 end;
 
 procedure TFWFieldColumn.SetFieldOld(const Avalue: TFWFieldData);
@@ -2233,13 +2326,13 @@ end;
 function TFWBaseFieldColumns.indexOf(const as_FieldName: String): Integer;
 var af_field : TFWFieldColumn ;
 begin
-  af_field := TFWFieldColumn (byName(as_FieldName));
+  af_field := TFWFieldColumn (FieldByName(as_FieldName));
   if af_field = nil
    Then Result := -1
    Else Result := af_field.index;
 end;
 
-function TFWBaseFieldColumns.byName(const as_FieldName: String
+function TFWBaseFieldColumns.FieldByName(const as_FieldName: String
   ): TFWMiniFieldColumn;
 var li_i : Integer ;
 begin

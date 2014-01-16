@@ -166,10 +166,14 @@ type
 
   TFWRelationGroup = class(TFWRelation)
   private
+    gi_source : Integer;
     FGroupView : TDBGroupView;
   protected
     procedure Notification(AComponent: TComponent; Operation: TOperation);{$IFDEF FPC} virtual{$ELSE}override{$ENDIF};
+    constructor Create(ACollection: TCollection); override;
+
   published
+    property Source: Integer read gi_source write gi_source;
     property GroupView : TDBGroupView  read FGroupView write FGroupView ;
   end;
   { TFWRelations }
@@ -230,19 +234,14 @@ type
      e_Scroll         : TDatasetNotifyEvent ;
      FPanels : TFWPanels;
      FPanelDetails : TCustomPanel;
-     FLinked : TFWSourcesChilds;
      FForm : TF_CustomFrameWork;
      gd_Grid : TCustomDBGrid ;
      nav_Saisie    ,
      nav_Navigator : TExtDBNavigator ;
      con_ControlFocus : TWinControl ;
-     gs_title      ,
-     s_LookFields  : String ;
-
+     gs_title      : String ;
      im_FlecheBasse,
      im_FlecheHaute : TImage ;
-     stl_Fields ,
-     stl_Valeurs : TStrings ;
      i_DebutTableau : LongInt ;
      e_StateChange : TNotifyEvent ;
      e_BeforePost ,
@@ -279,8 +278,6 @@ type
     function  fwct_getCtrl_Focus: TWinControl ;
     procedure p_SetDBGrid (  const a_Value: TCustomDBGrid );
     function  fcdg_getDBGrid: TCustomDBGrid ;
-    procedure p_SetLookupField ( const a_value : String );
-    function fs_getLookupField  : String;
     function  fe_getDataScroll : TDatasetNotifyEvent;
     procedure p_SetDataScroll(const Value: TDatasetNotifyEvent);
     function fli_GetHighCsvDefs: Longint ;
@@ -316,8 +313,6 @@ type
 {$ENDIF}
     // Table du Datasource de travail
     property MyRecord : Variant read var_Enregistrement ;
-    property FieldList : TStrings read stl_Fields write stl_Fields;
-    property ValueList : TStrings read stl_Valeurs write stl_Valeurs;
     property GridColumns : TDBGRidColumns read gd_GridColumns write gd_GridColumns;
     property FieldsBegin : Longint read i_DebutTableau write i_DebutTableau;
     // Datasource principal en recherche uniquement
@@ -340,9 +335,7 @@ type
     // Panel contenant le Grid de navigation
     property Panels  : TFWPanels read FPanels  write p_setPanels  ;
     property PanelDetails  : TCustomPanel read FPanelDetails  write FPanelDetails  ;
-    property Linked  : TFWSourcesChilds read FLinked  write p_setLinked  ;
     // Clé étrangère du DataSource vers le grid Lookup
-    property LookupField : string read fs_getLookupField write p_SetLookupField;
     property ShowPrint : Boolean read b_ShowPrint write b_ShowPrint default True;
 
     property OnScroll  : TDatasetNotifyEvent read fe_getDataScroll  write p_SetDataScroll  ;
@@ -516,7 +509,7 @@ type
     procedure p_SetVersion  ( Value : String  );
     procedure p_SetSources ( const ASources : TFWSources );
     function fb_RafraichitFiltre ( const lt_DatasourceWork : TFWSource ) : Boolean ;
-    function fb_SourceLookupFiltrage(const GfwSource, GfwLookupSource: TfwSource ; const astl_FieldsChilds : TStrings): Boolean; virtual;
+    function fb_SourceLookupFiltrage(const GfwSource, GfwLookupSource: TfwSource): Boolean; virtual;
     function fb_SourceChildsLookupFiltering(const gfwSource : TFWSource ): Boolean; virtual;
     function fb_DataGridLookupFiltrage ( const gfwSource : TFWSource ) : Boolean ;
     function fb_DatasourceModifie(
@@ -1244,6 +1237,13 @@ begin
 
 end;
 
+constructor TFWRelationGroup.Create(ACollection: TCollection);
+begin
+  inherited Create(ACollection);
+  FGroupView:=nil;
+  gi_source:=-1;
+end;
+
 
 { TFWRelationsGroup }
 
@@ -1361,11 +1361,6 @@ begin
       MinString :=  AValue.MinString ;
       MaxString :=  AValue.MaxString ;
     End;
-end;
-
-procedure TFWSource.p_setLinked(const AValue: TFWSourcesChilds);
-begin
-  FLinked.Assign(AValue);
 end;
 
 procedure TFWSource.p_setPanels(const AValue: TFWPanels);
@@ -1490,7 +1485,6 @@ begin
   inherited;
   FForm := (TFWSources(Collection)).Form;
   FPanels := TFWPanels.Create(Self,TFWPanelColumn);
-  FLinked := TFWSourcesChilds.Create(Self,TFWSourceChild);
   b_ShowPrint := True;
 
 
@@ -1568,18 +1562,6 @@ begin
 
 end;
 
-
-procedure TFWSource.p_SetLookupField( const a_value: String);
-begin
-  s_LookFields := a_value;
-
-end;
-
-function TFWSource.fs_getLookupField: String;
-begin
-  Result := s_LookFields;
-
-end;
 
 // Renseigne la propriété DataGridNAvigator avec vérification d'existence à nil
 procedure TFWSource.p_SeTDBNavigator (  const a_Value: TExtDBNavigator );
@@ -2077,21 +2059,9 @@ Begin
                   nav_Navigator.OnClick := p_dataworknavclick ;
                 End;
             End;
-          for li_j := 0 to Linked.Count - 1 do
-           with Linked.Items [ li_j ] do
-             Begin
-               If ( Source <> li_i )
-               and ( Source > -1 )
-               and ( LookupFields <> '' )
-                Then
-                 p_ChampsVersListe(stl_FieldsChilds,s_FieldsChilds, gc_FieldDelimiter);
-             end;
-          stl_Valeurs := TStringList.Create;
           ds_DataSourcesWork := Datalink.DataSource;
           var_Enregistrement:=Null;
           i_DebutTableau := li_CompteCol ;
-          stl_Fields := nil;
-          p_ChampsVersListe ( stl_Fields, s_LookFields, gc_FieldDelimiter );
           if gb_DicoUseFormField Then
             i_DebutTableau := li_CompteCol ;
           e_StateChange  := Datalink.DataSource.OnStateChange ;
@@ -2365,7 +2335,6 @@ begin
    for li_i := 0 to gFWSources.Count - 1 do
     with gFWSources.items [ li_i ] do
       Begin
-        stl_Valeurs.Free ;
         if  assigned ( Datalink )
         and assigned ( Datalink.DataSet ) Then
           Begin
@@ -3098,8 +3067,8 @@ begin
            // ancien évènement
         if not Visible Then
           Exit ;
-        for li_j := 0 to FLinked.Count - 1 do
-          with FLinked [ li_j ] do
+        for li_j := 0 to Relations.Count - 1 do
+          with Relations [ li_j ] as TFWRelationGroup do
             Begin
               if  ( Source <> li_i )
               and ( Source > -1 )
@@ -3145,8 +3114,8 @@ begin
       and ( Datalink.DataSet = Dataset ) Then
         Begin
 
-          for li_j := 0 to FLinked.Count - 1 do
-            with FLinked [ li_j ] do
+          for li_j := 0 to Relations.Count - 1 do
+            with Relations [ li_j ] do
               Begin
                 if  ( Source <> li_i )
                 and ( Source > -1 )
@@ -3205,8 +3174,8 @@ procedure TF_CustomFrameWork.p_DataWorksLinksCancel( const ai_originalSource : I
 var li_j : Integer ;
 Begin
   with gFWSources.items [ ai_originalSource ] do
-  for li_j := 0 to FLinked.Count - 1 do
-    with FLinked [ li_j ] do
+  for li_j := 0 to Relations.Count - 1 do
+    with Relations [ li_j ] do
       if  ( Source <> ai_originalSource )
       and ( Source > -1 )
       and Assigned ( gFWSources.items [ Source ].ds_DataSourcesWork.DataSet )
@@ -3312,8 +3281,8 @@ begin
             on e: Exception do
               fcla_GereException ( e, Dataset );
           End ;
-          for li_j := 0 to FLinked.Count - 1 do
-            with FLinked [ li_j ] do
+          for li_j := 0 to Relations.Count - 1 do
+            with Relations [ li_j ] do
               Begin
               if  ( Source <> li_i )
               and ( Source > -1 )
@@ -3437,12 +3406,12 @@ Begin
           and assigned ( Datalink.DataSet )
           // On recherche si les champs existent
            Then
-            fb_SourceLookupFiltrage ( gFWSource, gFWSources [ li_h ], stl_Fields );
+            fb_SourceLookupFiltrage ( gFWSource, gFWSources [ li_h ] );
         End ;
 End ;
 
 
-function TF_CustomFrameWork.fb_SourceLookupFiltrage ( const GfwSource, GfwLookupSource : TfwSource; const astl_FieldsChilds : TStrings ) : Boolean ;
+function TF_CustomFrameWork.fb_SourceLookupFiltrage ( const GfwSource, GfwLookupSource : TfwSource ) : Boolean ;
 var li_i : Integer ;
   // variable utilisée pour savoir si le filtre doit changer
     lobj_Parameters : Tobject ;
@@ -3470,22 +3439,22 @@ Begin
                             and (( lobj_Parameters as TCollection ).Count >= GetKeyCount );
             if lb_UseQuery Then
               ds_DataSourcesWork.DataSet.Close ;
-            stl_Valeurs.Clear ;
-            if GetKeyCount > 0 Then
-             for li_i := 0 to astl_FieldsChilds.Count - 1 do
-              if ( astl_FieldsChilds.Count > li_i )
-              and assigned ( DataSet.FindField ( astl_FieldsChilds [ li_i ] ))
-               Then
-                Begin
-                  p_DatasetLookupFilteredField ( lb_isfirstField,
-                                                  stl_Valeurs,
-                                                  ds_DataSourcesWork.DataSet,
-                                                  astl_FieldsChilds,
-                                                  Indexes [ 0 ].FieldsDefs [ li_i ].FieldName,
-                                                  astl_FieldsChilds  [ li_i ],
-                                                  li_i,
-                                                  lobj_Parameters as TCollection ) ;
-                End;
+            if  ( GetKeyCount > 0 ) Then
+              for li_i := 0 to FieldsDefs.Count - 1 do
+               with FieldsDefs [ li_i ] do
+                if ColSelect
+                and assigned ( DataSet.FindField ( FieldName ))
+                 Then
+                  Begin
+                    p_DatasetLookupFilteredField ( lb_isfirstField,
+                                                    stl_Valeurs,
+                                                    ds_DataSourcesWork.DataSet,
+                                                    astl_FieldsChilds,
+                                                    Indexes [ 0 ].FieldsDefs [ li_i ].FieldName,
+                                                    FieldName,
+                                                    li_i,
+                                                    lobj_Parameters as TCollection ) ;
+                  End;
           ds_DataSourcesWork.DataSet.Filtered := True ;
           Result := True ;
     //            p_GridLookupAfterScroll ( dbgd_DataGridLookupDataSource.DataSet );
@@ -3649,6 +3618,7 @@ begin
             if assigned ( DataSet ) Then
               with DataSet do
                Begin
+                 ShowMessage(fs_getSQLQuery(DataSet));
                 Open ;
                 BeforePost   := p_DataWorkBeforePost ;
                end;
