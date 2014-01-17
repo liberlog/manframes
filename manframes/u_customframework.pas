@@ -3468,16 +3468,16 @@ Begin
   if not Visible Then
     exit;
   if  assigned ( gFWSource.Datalink )
-  and assigned ( gFWSource.Datalink.DataSet ) Then
-    if gFWSource.Datalink.DataSet.Active Then
-     for li_j := 0 to gFWSource.Relations.Count - 1 do
-       with gFWSource.Relations [ li_j ] do
-           if  ( TableLinked > -1 )
-           and Assigned ( gFWSources.items [ TableLinked ].ds_DataSourcesWork.DataSet )
-            Then
-              if gFWSources.items [ TableLinked ].ds_DataSourcesWork.DataSet.Active
-               Then
-                 fb_SourceLookupFiltrage ( gFWSource, gFWSources.items [ TableLinked ] );
+  and assigned ( gFWSource.Datalink.DataSet )
+  and gFWSource.Datalink.DataSet.Active Then
+   for li_j := 0 to gFWSource.Relations.Count - 1 do
+     with gFWSource.Relations [ li_j ] do
+       if  ( TableLinked > -1 )
+       and Assigned ( gFWSources [ TableLinked ].ds_DataSourcesWork.DataSet )
+       and gFWSources [ TableLinked ].ds_DataSourcesWork.DataSet.Active
+         Then
+           fb_SourceLookupFiltrage ( gFWSource, gFWSources [ TableLinked ] );
+
 End ;
 
 function TF_CustomFrameWork.fb_RafraichitFiltre ( const lt_DatasourceWork : TFWSource ) : Boolean ;
@@ -3605,7 +3605,7 @@ begin
             if assigned ( DataSet ) Then
               with DataSet do
                Begin
-                 //ShowMessage(fs_getSQLQuery(DataSet));
+                 //ShowMessage(fs_getSQLQuery(DataSet)+' '+IntToStr(FieldDefs.count));
                 Open ;
                 BeforePost   := p_DataWorkBeforePost ;
                end;
@@ -5302,8 +5302,9 @@ begin
               for li_i := 0 to gFWSources.Count-1 do
                with gFWSources [ li_i ] do
                 for li_j := 0 to Relations.Count-1 do
-                 with (Relations [ li_j ] as TFWRelationGroup).GroupView do
-                  if  assigned ( ButtonRecord )
+                 with (Relations [ li_j ] as TFWRelationGroup),GroupView do
+                  if  assigned ( GroupView )
+                  and assigned ( ButtonRecord )
                   and ButtonRecord.Enabled
                   Then
                     Begin

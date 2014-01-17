@@ -2266,7 +2266,7 @@ procedure TFWFieldColumn.AssignTo ( Dest: TPersistent );
 var lfd_Dest : TFWFieldColumn;
 begin
   Inherited AssignTo(Dest);
-  if not (Dest is TFWFieldData) then
+  if not (Dest is TFWFieldColumn) then
    Exit;
   lfd_Dest := Dest as TFWFieldColumn;
   lfd_Dest.FieldOld.Assign(FieldOld);
