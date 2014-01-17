@@ -599,6 +599,7 @@ type
    gs_RelationName : String;
    gf_DisplayFields,
    gf_FKFields : TFWMiniFieldColumns;
+   gi_TableLinked : Integer;
    glo_LinkOptionUpdate,
    glo_LinkOptionDelete : TFWLinkOption;
    procedure SetFKFields ( const AValue : TFWMiniFieldColumns );
@@ -629,6 +630,7 @@ type
     property RelKind: integer read grk_RelKind write grk_RelKind default 0;
 
     property TablesDest: TFWTables read gt_DestTables write p_setDestTables;
+    property TableLinked: Integer read gi_TableLinked write gi_TableLinked;
   end;
   TOnGetFileFromTable = function ( const ATable : TFWTable ):String;
 
@@ -1953,6 +1955,7 @@ end;
 constructor TFWRelation.Create(Collection : TCollection);
 begin
   inherited Create(Collection);
+  gi_TableLinked:=-1;
   OptionalStart:=False;
   OptionalEnd:=False;
 
@@ -1993,6 +1996,8 @@ procedure TFWFieldData.AssignTo ( Dest: TPersistent );
 var lfd_Dest : TFWFieldData;
 begin
   Inherited AssignTo(Dest);
+  if not (Dest is TFWFieldData) then
+   Exit;
   lfd_Dest := Dest as TFWFieldData;
   lfd_Dest.FieldName:=FieldName;
   lfd_Dest.FieldSize:=FieldSize;
@@ -2261,6 +2266,8 @@ procedure TFWFieldColumn.AssignTo ( Dest: TPersistent );
 var lfd_Dest : TFWFieldColumn;
 begin
   Inherited AssignTo(Dest);
+  if not (Dest is TFWFieldData) then
+   Exit;
   lfd_Dest := Dest as TFWFieldColumn;
   lfd_Dest.FieldOld.Assign(FieldOld);
   lfd_Dest.Decimals:=Decimals;
