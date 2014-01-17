@@ -166,14 +166,12 @@ type
 
   TFWRelationGroup = class(TFWRelation)
   private
-    gi_source : Integer;
     FGroupView : TDBGroupView;
   protected
     procedure Notification(AComponent: TComponent; Operation: TOperation);{$IFDEF FPC} virtual{$ELSE}override{$ENDIF};
     constructor Create(ACollection: TCollection); override;
 
   published
-    property Source: Integer read gi_source write gi_source;
     property GroupView : TDBGroupView  read FGroupView write FGroupView ;
   end;
   { TFWRelations }
@@ -283,7 +281,6 @@ type
     function fli_GetHighCsvDefs: Longint ;
     procedure SetCounter(Index: Integer; const AValue: TFWCounter);
     procedure SetCsvDef(Index: Integer; const AValue: TFWCsvDef);
-    procedure p_setLinked(const AValue: TFWSourcesChilds);
     procedure p_setPanels(const AValue: TFWPanels);
 
   protected
@@ -570,9 +567,7 @@ type
                          const ab_Trie : Boolean ): Boolean ; virtual;
     procedure p_ChargeIndicateurs ( const acom_Control :  TComponent);virtual;
     procedure p_DatasetLookupFilteredField ( var   lb_isfirstField         : Boolean ;
-                                             var   lstl_DataGridLookValeur : TStrings;
                                              const ldat_DatasetLookup      : TDataset ;
-                                             const lstl_Field              : TStrings;
                                              const ls_Cle, ls_FieldLookup  : String ;
                                              const li_NoCle                : Integer ;
                                              const lstr_Parameters         : TCollection ) ; virtual;
@@ -1241,7 +1236,6 @@ constructor TFWRelationGroup.Create(ACollection: TCollection);
 begin
   inherited Create(ACollection);
   FGroupView:=nil;
-  gi_source:=-1;
 end;
 
 
@@ -3070,11 +3064,11 @@ begin
         for li_j := 0 to Relations.Count - 1 do
           with Relations [ li_j ] as TFWRelationGroup do
             Begin
-              if  ( Source <> li_i )
-              and ( Source > -1 )
-              and Assigned ( gFWSources.items [ Source ].ds_DataSourcesWork.DataSet )
+              if  ( TableLinked <> li_i )
+              and ( TableLinked > -1 )
+              and Assigned ( gFWSources.items [ TableLinked ].ds_DataSourcesWork.DataSet )
                Then
-                with gFWSources.items [ Source ].ds_DataSourcesWork.DataSet do
+                with gFWSources.items [ TableLinked ].ds_DataSourcesWork.DataSet do
                  if not ( State in [dsInsert, dsEdit]) Then
                   Edit;
             End;
@@ -3117,11 +3111,11 @@ begin
           for li_j := 0 to Relations.Count - 1 do
             with Relations [ li_j ] do
               Begin
-                if  ( Source <> li_i )
-                and ( Source > -1 )
-                and Assigned ( gFWSources.items [ Source ].ds_DataSourcesWork.DataSet )
+                if  ( TableLinked <> li_i )
+                and ( TableLinked > -1 )
+                and Assigned ( gFWSources.items [ TableLinked ].ds_DataSourcesWork.DataSet )
                  Then
-                  with gFWSources.items [ Source ].ds_DataSourcesWork.DataSet do
+                  with gFWSources.items [ TableLinked ].ds_DataSourcesWork.DataSet do
                    if State in [ dsInsert, dsEdit ] Then
                      Post;
               End;
@@ -3176,11 +3170,11 @@ Begin
   with gFWSources.items [ ai_originalSource ] do
   for li_j := 0 to Relations.Count - 1 do
     with Relations [ li_j ] do
-      if  ( Source <> ai_originalSource )
-      and ( Source > -1 )
-      and Assigned ( gFWSources.items [ Source ].ds_DataSourcesWork.DataSet )
+      if  ( TableLinked <> ai_originalSource )
+      and ( TableLinked > -1 )
+      and Assigned ( gFWSources.items [ TableLinked ].ds_DataSourcesWork.DataSet )
        Then
-        with gFWSources.items [ Source ].ds_DataSourcesWork.DataSet do
+        with gFWSources.items [ TableLinked ].ds_DataSourcesWork.DataSet do
          if ( State in [dsInsert, dsEdit]) Then
           Cancel;
 
@@ -3284,10 +3278,10 @@ begin
           for li_j := 0 to Relations.Count - 1 do
             with Relations [ li_j ] do
               Begin
-              if  ( Source <> li_i )
-              and ( Source > -1 )
-              and Assigned ( gFWSources.items [ Source ].ds_DataSourcesWork.DataSet ) Then
-               with gFWSources.items [ Source ].ds_DataSourcesWork.DataSet do
+              if  ( TableLinked <> li_i )
+              and ( TableLinked > -1 )
+              and Assigned ( gFWSources.items [ TableLinked ].ds_DataSourcesWork.DataSet ) Then
+               with gFWSources.items [ TableLinked ].ds_DataSourcesWork.DataSet do
                 if not ( State in [dsInsert,dsEdit])
                  Then
                   Insert;
@@ -3447,9 +3441,7 @@ Begin
                  Then
                   Begin
                     p_DatasetLookupFilteredField ( lb_isfirstField,
-                                                    stl_Valeurs,
                                                     ds_DataSourcesWork.DataSet,
-                                                    astl_FieldsChilds,
                                                     Indexes [ 0 ].FieldsDefs [ li_i ].FieldName,
                                                     FieldName,
                                                     li_i,
@@ -3478,31 +3470,31 @@ Begin
   if  assigned ( gFWSource.Datalink )
   and assigned ( gFWSource.Datalink.DataSet ) Then
     if gFWSource.Datalink.DataSet.Active Then
-     for li_j := 0 to gFWSource.FLinked.Count - 1 do
-       with gFWSource.FLinked [ li_j ] do
-           if  assigned ( stl_FieldsChilds )
-           and ( stl_FieldsChilds.Count > 0 )
-           and ( Source > -1 )
-           and Assigned ( gFWSources.items [ Source ].ds_DataSourcesWork.DataSet )
+     for li_j := 0 to gFWSource.Relations.Count - 1 do
+       with gFWSource.Relations [ li_j ] do
+           if  ( TableLinked > -1 )
+           and Assigned ( gFWSources.items [ TableLinked ].ds_DataSourcesWork.DataSet )
             Then
-              if gFWSources.items [ Source ].ds_DataSourcesWork.DataSet.Active
+              if gFWSources.items [ TableLinked ].ds_DataSourcesWork.DataSet.Active
                Then
-                 fb_SourceLookupFiltrage ( gFWSource, gFWSources.items [ Source ], stl_FieldsChilds );
+                 fb_SourceLookupFiltrage ( gFWSource, gFWSources.items [ TableLinked ] );
 End ;
 
 function TF_CustomFrameWork.fb_RafraichitFiltre ( const lt_DatasourceWork : TFWSource ) : Boolean ;
 var li_i : Integer ;
 Begin
   Result := False;
-  if assigned ( lt_DatasourceWork.stl_Fields ) then
-    for li_i := 0 to lt_DatasourceWork.stl_Fields.Count - 1 do
-      if ( lt_DatasourceWork.stl_Fields.Count > li_i )
-      and assigned ( lt_DatasourceWork.Datalink.DataSet.FindField ( lt_DatasourceWork.stl_Fields [ li_i ] ))
-      and assigned ( gdat_DatasetPrinc.FindField ( lt_DatasourceWork.stl_Fields [ li_i ] ))
+//  if assigned ( lt_DatasourceWork.stl_Fields ) then
+    for li_i := 0 to lt_DatasourceWork.FieldsDefs.Count - 1 do
+      with lt_DatasourceWork,FieldsDefs [ li_i ] do
+      if  ColSelect
+      and (ShowCol>-1)
+      and assigned ( Datalink.DataSet.FindField ( FieldName ))
+      and assigned ( gdat_DatasetPrinc.FindField ( FieldName ))
        Then
         Begin
-          if ( lt_DatasourceWork.var_Enregistrement.Count <= li_i )
-          or ( lt_DatasourceWork.var_Enregistrement [ li_i ] <> gdat_DatasetPrinc.FindField ( lt_DatasourceWork.stl_Fields [ li_i ] ).AsString )
+          if ( var_Enregistrement.Count <= li_i )
+          or ( var_Enregistrement [ li_i ] <> gdat_DatasetPrinc.FindField ( FieldName ).AsString )
            Then
            //  le filtre doit changer
             Begin
@@ -3513,16 +3505,11 @@ Begin
 End;
 procedure TF_CustomFrameWork.p_DatasetLookupFilteredField
                  ( var   lb_isfirstField         : Boolean ;
-                   var   lstl_DataGridLookValeur : TStrings;
                    const ldat_DatasetLookup      : TDataset ;
-                   const lstl_Field              : TStrings;
                    const ls_Cle, ls_FieldLookup  : String ;
                    const li_NoCle                : Integer ;
                    const lstr_Parameters         : TCollection ) ;
 Begin
-  //fermeture pour filtrage
-  lstl_DataGridLookValeur.Add ( gdat_DatasetPrinc.FindField ( ls_Cle ).AsString );
-//                  dbgd_DataGridLookupDataSource.DataSet.Close ;
   // filtrage
   If gb_UseQuery Then
     Begin
@@ -3618,7 +3605,7 @@ begin
             if assigned ( DataSet ) Then
               with DataSet do
                Begin
-                 ShowMessage(fs_getSQLQuery(DataSet));
+                 //ShowMessage(fs_getSQLQuery(DataSet));
                 Open ;
                 BeforePost   := p_DataWorkBeforePost ;
                end;
