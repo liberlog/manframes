@@ -107,11 +107,9 @@ const
 
 implementation
 
-uses fonctions_init,Types,
-     fonctions_db,
+uses fonctions_init,
      fonctions_dialogs,
      unite_variables,
-     fonctions_dbcomponents,
      fonctions_components,
      fonctions_proprietes;
 
