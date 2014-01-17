@@ -1338,10 +1338,27 @@ Begin
   Result:='';
   for li_i := 0 to af_fields.Count-1 do
    with af_fields [ li_i ] do
-    if ( af_removed = nil ) or ( af_removed.indexOf(FieldName)=-1) Then
+    if ColSelect and (( af_removed = nil ) or ( af_removed.indexOf(FieldName)=-1)) Then
       if Result=''
         Then Result:=StringReplace(as_format,'@ARG',FieldName,[rfReplaceAll])
         Else AppendStr(Result,as_interleave+StringReplace(as_format,'@ARG',FieldName,[rfReplaceAll]));
+end;
+
+function fs_getPersitentFields ( const af_fields : TFWFieldColumns ): String;
+var li_i : Integer;
+    lb_isfirst: Boolean;
+Begin
+  lb_isfirst := True;
+  for li_i := 0 to af_fields.Count-1 do
+   with af_fields [li_i] do
+    if ColSelect Then
+      if lb_isfirst Then
+       Begin
+         Result:=FieldName;
+         lb_isfirst:=False;
+       end
+      else
+       AppendStr(Result,','+FieldName);
 end;
 
 procedure p_SetSQLQuery ( const adat_Dataset : Tdataset ; const af_fields, af_key : TFWFieldColumns ; const as_table : String);
@@ -1353,16 +1370,16 @@ var lobj_SQL : TObject ;
       Result:=' WHERE '+ fs_GetSQLParameters (af_key,'@ARG=:@ARG',' AND ');
     End;
 Begin
- fonctions_dbcomponents.p_SetSQLQuery(adat_Dataset,'SELECT ' +af_fields.toString+' FROM ' + as_table);
+ fonctions_dbcomponents.p_SetSQLQuery(adat_Dataset,'SELECT ' +fs_getPersitentFields ( af_fields )+' FROM ' + as_table);
  lobj_SQL := fobj_getComponentObjectProperty ( adat_Dataset, CST_DBPROPERTY_UPDATEOBJECT );
  if assigned ( lobj_SQL ) Then
    Begin
      lsts_SQL := fobj_getComponentObjectProperty ( lobj_SQL, CST_DBPROPERTY_REFRESH_SQL ) as TStrings;
-     lsts_SQL.Text:='SELECT ' + af_fields.toString+' FROM ' +as_table + fs_getStringKeys;
+     lsts_SQL.Text:='SELECT ' + fs_getPersitentFields ( af_fields )+' FROM ' +as_table + fs_getStringKeys;
      lsts_SQL := fobj_getComponentObjectProperty ( lobj_SQL, CST_DBPROPERTY_DELETE_SQL ) as TStrings;
      lsts_SQL.Text:='DELETE FROM ' +as_table + fs_getStringKeys;
      lsts_SQL := fobj_getComponentObjectProperty ( lobj_SQL, CST_DBPROPERTY_INSERT_SQL ) as TStrings;
-     lsts_SQL.Text:='INSERT INTO ' +as_table + ' (' +af_fields.toString +') VALUES('+
+     lsts_SQL.Text:='INSERT INTO ' +as_table + ' (' +fs_getPersitentFields ( af_fields ) +') VALUES('+
                     fs_GetSQLParameters (af_fields)+')';
      lsts_SQL := fobj_getComponentObjectProperty ( lobj_SQL, CST_DBPROPERTY_MODIFY_SQL ) as TStrings;
      lsts_SQL.Text:='UDPDATE ' +as_table + ' SET '+fs_GetSQLParameters (af_fields,'@ARG=:@ARG',',',af_key)
