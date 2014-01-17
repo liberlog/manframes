@@ -104,6 +104,7 @@ const CST_BASE_INDEX_PRIMARY = 'PRIMARY';
       CST_BASE_UNIQUE_INDEX = 'UNIQUE INDEX @ARG';
       CST_BASE_FULLTEXT_INDEX = 'FULLTEXT INDEX @ARG' ;
       CST_FIREBIRD_FIELD_LENGTH = 31;
+      CST_ORACLE_FIELD_LENGTH = 30;
       CST_BASE_CREATE_INDEX = 'CREATE INDEX @ARG ON @ARG (@ARG)';
       CST_BASE_INDEXES      : array[TFWIndexKind] of String = ('PRIMARY KEY','INDEX @ARG','UNIQUE INDEX @ARG','FULLTEXT INDEX @ARG');
       CST_BASE_ONDELETE     : TFWLinkOptionStrings = ('      ON DELETE RESTRICT','      ON DELETE CASCADE','      ON DELETE SET NULL','      ON DELETE NO ACTION','      ON DELETE SET DEFAULT');
@@ -333,7 +334,7 @@ type
       function GetColumnField(Index:Integer): TFWMiniFieldColumn;
       procedure SetColumnField(Index:Integer; Value: TFWMiniFieldColumn);
     public
-     function toString ( const ab_comma : Boolean = True ) : String; overload; virtual;
+     function toString ( const ach_Delimiter : Char = ','; const ab_comma : Boolean = True ) : String; overload; virtual;
      procedure Add ( const ToAdd: TFWMiniFieldColumn ); overload; virtual;
      function Add: TFWMiniFieldColumn; overload; virtual;
      function indexOf ( const as_FieldName : String ) : Integer; virtual;
@@ -494,7 +495,7 @@ type
     function GetnmTableStatus: Boolean;
     procedure SetnmTableStatus(const isnmTable: Boolean);
     procedure SetIndexes(const AValue: TFWIndexes);
-    procedure SetRelationEnd(const AValue: TFWRelations);
+    procedure SetRelations(const AValue: TFWRelations);
     procedure SetFieldColumns(const AValue: TFWFieldColumns);
     procedure p_SetDataSource ( const a_Value: TDataSource );
     function  fds_GetDataSource  : TDataSource ;
@@ -568,7 +569,7 @@ type
     property Datasource : TDataSource read fds_GetDataSource write p_SetDataSource;
     property ConnectKey : String read gs_ConnectionKey write p_setConnectionKey;
     property Indexes : TFWIndexes read gfwi_Indexes write SetIndexes;
-    property Relations : TFWRelations read gr_relations write SetRelationEnd;
+    property Relations : TFWRelations read gr_relations write SetRelations;
     property Table : String read gs_NomTable write gs_NomTable;
     property TableOptions : TStrings read gsl_TableOptions write gsl_TableOptions;
     property StandardInserts : TStrings read gsl_StandardInserts write gsl_StandardInserts;
@@ -644,6 +645,8 @@ procedure p_SetComboProperties ( const acom_combo : TControl;
                                  const ads_ListSource : TDataSource;
                                  const as_Name : String;
                                  const alr_Relation : TFWRelation);
+procedure p_SetCorrectFieldName(const AFieldColumn : TFWMiniFieldColumn); overload;
+procedure p_SetCorrectFieldName(var AFieldName : String); overload;
 
 var
   GS_Data_Extension : String = '.csv';
@@ -657,6 +660,24 @@ uses fonctions_dbcomponents,
      u_multidonnees,
      typinfo,
      fonctions_languages;
+// procedure p_SetCorrectFieldName
+// split field names
+procedure p_SetCorrectFieldName(const AFieldColumn : TFWMiniFieldColumn);
+begin
+  p_SetCorrectFieldName( AFieldColumn.s_FieldName );
+end;
+
+
+// procedure p_SetCorrectFieldName
+// split field names
+procedure p_SetCorrectFieldName(var AFieldName : String);
+begin
+  case gbm_DatabaseToGenerate of
+    bmFirebird : p_SetStringMaxLength  (AFieldName,CST_FIREBIRD_FIELD_LENGTH );
+    bmOracle : p_SetStringMaxLength  (AFieldName,CST_ORACLE_FIELD_LENGTH );
+  end;
+end;
+
 
 function GetEventString ( const aevents : TFWEventModes ) : String ;
 var aevent : TFWEventMode;
@@ -753,16 +774,10 @@ begin
   Result := fs_GetLabelCaption(gs_CaptionName);
 end;
 
-procedure SetCorrectFieldName(const AFieldColumn : TFWMiniFieldColumn);
-begin
-  if gbm_DatabaseToGenerate = bmFirebird
-   Then p_SetStringMaxLength  (AFieldColumn.s_FieldName,CST_FIREBIRD_FIELD_LENGTH );
-end;
-
 procedure TFWMiniFieldColumn.SetFieldName(const AValue: String);
 begin
   s_FieldName:=AValue;
-  SetCorrectFieldName(Self);
+  p_SetCorrectFieldName(Self);
 end;
 
 procedure TFWMiniFieldColumn.AssignTo(Dest: TPersistent);
@@ -1768,7 +1783,7 @@ begin
   gfwi_Indexes.Assign(AValue);
 end;
 
-procedure TFWTable.SetRelationEnd(const AValue: TFWRelations);
+procedure TFWTable.SetRelations(const AValue: TFWRelations);
 begin
   gr_relations.Assign(AValue);
 end;
@@ -2276,7 +2291,7 @@ end;
 procedure TFWFieldColumn.SetFieldOld(const Avalue: TFWFieldData);
 begin
   gfw_FieldOld.Assign(AValue);
-  SetCorrectFieldName(Self);
+  p_SetCorrectFieldName(Self);
 end;
 
 destructor TFWFieldColumn.Destroy;
@@ -2316,7 +2331,7 @@ begin
   Items[Index].Assign(Value);
 end;
 
-function TFWBaseFieldColumns.toString ( const ab_comma : Boolean = True ): String;
+function TFWBaseFieldColumns.toString ( const ach_Delimiter : Char = ','; const ab_comma : Boolean = True ): String;
 var li_i : Integer ;
 begin
   Result:='';
@@ -2326,7 +2341,7 @@ begin
      Begin
       if (li_i = 0) or not ab_comma
        Then AppendStr(Result,FieldName)
-       Else AppendStr(Result,','+FieldName);
+       Else AppendStr(Result,ach_Delimiter+FieldName);
      end;
 end;
 

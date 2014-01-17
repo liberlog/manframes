@@ -251,7 +251,7 @@ type
      e_AfterEdit ,
      e_AfterInsert : TdataSetNotifyEvent;
      {$IFDEF RX}
-     e_GridTitleClick : TTitleClickEvent;
+     e_GridTitleClick : TDBGridClickEvent;
      {$ENDIF}
 
      ds_recherche  : Tdatasource ;
@@ -306,7 +306,7 @@ type
     property AfterInsert  : TDatasetNotifyEvent read e_AfterInsert  write e_AfterInsert  ;
     property AfterEdit  : TDatasetNotifyEvent read e_AfterEdit  write e_AfterEdit  ;
 {$IFDEF RX}
-    property GridTitleClick  : TTitleClickEvent read e_GridTitleClick  write e_GridTitleClick  ;
+    property GridTitleClick  : TDBGridClickEvent read e_GridTitleClick  write e_GridTitleClick  ;
 {$ENDIF}
     // Table du Datasource de travail
     property MyRecord : Variant read var_Enregistrement ;
@@ -600,7 +600,7 @@ type
       const afws_Source: TFWSource); virtual;
     procedure p_DataWorksLinksCancel(const ai_originalSource: Integer); virtual;
     {$IFDEF RX}
-    procedure gd_GridTitleBtnClick(Sender: TObject; ACol: Integer; Field: TField); virtual;
+    procedure gd_GridTitleBtnClick(Column: TColumn); virtual;
     {$ENDIF}
     function ffd_GetNumArray( const acom_Component : TComponent ;
                              const afws_DataWork : TFWSource;
@@ -2043,8 +2043,8 @@ Begin
               {$IFDEF RX}
               if gd_Grid is TRxDBGrid Then
                 Begin
-                 GridTitleClick := ( gd_Grid as TRxDBGrid ).OnTitleBtnClick;
-                 ( gd_Grid as TRxDBGrid ).OnTitleBtnClick := gd_GridTitleBtnClick ;
+                 GridTitleClick := ( gd_Grid as TRxDBGrid ).OnTitleClick;
+                 ( gd_Grid as TRxDBGrid ).OnTitleClick := gd_GridTitleBtnClick ;
                 End;
               {$ENdIF}
               if assigned ( nav_Navigator ) then
@@ -3549,7 +3549,7 @@ End;
 // place le tag par défaut
 procedure TF_CustomFrameWork.DoShow;
 var
-  li_i  : Integer ;
+  li_i, li_j, li_k  : Integer ;
   lt_Arg : Array [0..0] of String ;
 begin
   if ( csDesigning in ComponentState )
@@ -3601,14 +3601,24 @@ begin
        Else
         Begin
           for li_i := 0 to gFWSources.Count - 1 do
-           with gFWSources [ li_i ].Datalink do
-            if assigned ( DataSet ) Then
-              with DataSet do
-               Begin
-                 //ShowMessage(fs_getSQLQuery(DataSet)+' '+IntToStr(FieldDefs.count));
-                Open ;
-                BeforePost   := p_DataWorkBeforePost ;
-               end;
+           with gFWSources [ li_i ] do
+             Begin
+             {  for li_j := 0 to FieldsDefs.count -1 do
+                with FieldsDefs [ li_j ].Relation.TablesDest do
+                 if Count>0 Then
+                  for li_k := 0 to Count-1 do
+                   with Items[li_k].Datalink do
+                    if Assigned(DataSet) Then
+                     DataSet.Open;}
+               with Datalink do
+               if assigned ( DataSet ) Then
+                with DataSet do
+                 Begin
+                   //ShowMessage(fs_getSQLQuery(DataSet)+' '+IntToStr(FieldDefs.count));
+                  Open ;
+                  BeforePost   := p_DataWorkBeforePost ;
+                 end;
+             end;
 
             if  gb_ModeAsynchrone
             and not gb_DatasourceActif Then
@@ -5894,13 +5904,14 @@ begin
 end;
 
 {$IFDEF RX}
-procedure TF_CustomFrameWork.gd_GridTitleBtnClick(Sender: TObject; ACol: Integer; Field: TField);
+procedure TF_CustomFrameWork.gd_GridTitleBtnClick(Column: TColumn);
 var li_i : Integer ;
     ls_Field, ls_FieldName : String;
     lcon_Control : TControl ;
 Begin
   lcon_Control := nil ;
-  ls_FieldName := LowerCase ( Field.FieldName );
+  with Column do ls_FieldName := LowerCase ( Field.FieldName );
+
   for li_i := 0 to ComponentCount -1 do
     Begin
       ls_Field := lowercase ( fs_getComponentProperty ( Components [ li_i ], 'DataField' ));
@@ -5908,13 +5919,13 @@ Begin
       and assigned ( fobj_GetComponentObjectProperty ( Components [ li_i ], 'MyLabel' )) then
         lcon_Control := fobj_GetComponentObjectProperty ( Components [ li_i ], 'MyLabel' ) as TControl;
     End;
-  li_i := fi_GetDataWorkFromGrid ( gFWSources, Sender as TCustomDBGrid );
+  li_i := fi_GetDataWorkFromGrid ( gFWSources, Column.Grid as TCustomDBGrid );
   if assigned ( lcon_Control ) Then
     Begin
       p_trieSurClickLabel ( gFWSources [ li_i ], lcon_Control, False, False );
     End;
   if assigned ( gFWSources [ li_i ].GridTitleClick ) then
-    gFWSources [ li_i ].GridTitleClick ( Sender, ACol, Field );
+    gFWSources [ li_i ].GridTitleClick ( Column  );
 End;
 
 {$ENDIF}
@@ -6180,9 +6191,7 @@ Begin
               if fb_FieldRecordExists ( adat_Dataset, gds_Query1.DataSet, Table, FieldName, gb_DBMessageOnError ) Then
                 Begin
                   inc ( li_Compteur2 );
-                  if li_Compteur2 = 1
-                   Then ls_Message2 :=                      CaptionName
-                   Else ls_Message2 := ls_Message2 + ', ' + CaptionName ;
+                  AppendStr(ls_Message2,' - ' + CaptionName +#10);
                 end;
               Continue;
             end;
@@ -6193,9 +6202,7 @@ Begin
              Then
               begin
                 inc ( li_Compteur );
-                if li_Compteur = 1
-                 Then ls_Message :=                     CaptionName
-                 Else ls_Message := ls_Message + ', ' + CaptionName ;
+                AppendStr(ls_Message,' - ' + CaptionName +#10);
               end;
         end;
 
@@ -6208,8 +6215,8 @@ Begin
            Begin
             lt_Arg [0] := ls_Message ;
             if li_Compteur = 1
-              Then  MyMessageDlg ( {$IFDEF FPC}GS_SAISIR_ANNULER,{$ENDIF} fs_RemplaceMsg ( GS_ZONE_OBLIGATOIRE  , lt_Arg ), mtWarning, [mbOk], 0)
-              Else  MyMessageDlg ( {$IFDEF FPC}GS_SAISIR_ANNULER,{$ENDIF} fs_RemplaceMsg ( GS_ZONES_OBLIGATOIRES, lt_Arg ), mtWarning, [mbOk], 0);
+              Then  MyMessageDlg ( GS_SAISIR_ANNULER, fs_RemplaceMsg ( GS_ZONE_OBLIGATOIRE  , lt_Arg ), mtWarning, [mbOk], 0)
+              Else  MyMessageDlg ( GS_SAISIR_ANNULER, fs_RemplaceMsg ( GS_ZONES_OBLIGATOIRES, lt_Arg ), mtWarning, [mbOk], 0);
            End ;
           Abort;
          End ;
@@ -6218,8 +6225,8 @@ Begin
        Begin
          lt_Arg [0] := ls_Message2 ;
          if li_Compteur2 = 1
-           Then  MyMessageDlg ( {$IFDEF FPC}GS_SAISIR_ANNULER,{$ENDIF} fs_RemplaceMsg ( GS_ZONE_UNIQUE  , lt_Arg ), mtWarning, [mbOk], 0)
-           Else  MyMessageDlg ( {$IFDEF FPC}GS_SAISIR_ANNULER,{$ENDIF} fs_RemplaceMsg ( GS_ZONES_UNIQUES, lt_Arg ), mtWarning, [mbOk], 0);
+           Then  MyMessageDlg ( GS_SAISIR_ANNULER, fs_RemplaceMsg ( GS_ZONE_UNIQUE  , lt_Arg ), mtWarning, [mbOk], 0)
+           Else  MyMessageDlg ( GS_SAISIR_ANNULER, fs_RemplaceMsg ( GS_ZONES_UNIQUES, lt_Arg ), mtWarning, [mbOk], 0);
          Abort;
        End ;
     End ;

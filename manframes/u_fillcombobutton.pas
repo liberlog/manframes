@@ -77,11 +77,18 @@ type
     TExtFillComboClass = class of TExtFillCombo;
 
 var gefc_FillComboAutoCreated : TExtFillComboClass = TExtFillCombo;
+function ffc_CreateFillComboButton(const acom_owner : TComponent):TExtFillCombo;
+
 implementation
 
 uses fonctions_images, U_FormMainIni, fonctions_proprietes,
      unite_messages, unite_variables, fonctions_forms,
      fonctions_dbcomponents;
+
+function ffc_CreateFillComboButton(const acom_owner : TComponent):TExtFillCombo;
+Begin
+  Result:=gefc_FillComboAutoCreated.Create(acom_owner);
+end;
 
 { TExtFillCombo }
 
@@ -108,15 +115,16 @@ begin
            fb_RefreshDataset ( {$IFNDEF RXJVCOMBO}ListSource{$ELSE}LookupSource{$ENDIF}.DataSet );
            Refresh;
           end;
-       if assigned ( Field )
+       if assigned ( {$IFDEF RX}DataSource.DataSet.FindField(DataField){$ELSE}Field{$ENDIF})
        and ( FOK )
        and ( FFormModal is TF_CustomFrameWork ) Then
         with ( FFormModal as TF_CustomFrameWork ).DBSources [ FFormSource ] do
          if not Datasource.DataSet.IsEmpty Then
+          with {$IFDEF RX}DataSource.DataSet.FindField(DataField){$ELSE}Field{$ENDIF} do
           Begin
             Result := mrOk;
-            Field.DataSet.Edit;
-            Field.Value := Datasource.DataSet.FieldByName ( GetKeyString ).Value;
+            DataSet.Edit;
+            Value := Datasource.DataSet.FieldByName ( GetKeyString ).Value;
           end;
      end;
   if assigned ( FOnSet ) Then

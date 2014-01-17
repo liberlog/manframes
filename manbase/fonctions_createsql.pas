@@ -71,7 +71,10 @@ function fb_InsereCompteur ( const adat_Dataset, adat_DatasetQuery : TDataset ;
 function fs_CreateDatabase  ( const as_base, as_user, as_password, as_host : String ):String;
 function fs_BeginAlterCreate :String;
 function fs_EndCreate  ( const as_base, as_user, as_password, as_host : String ) :String;
-procedure p_SetSQLQuery ( const adat_Dataset : Tdataset ; const af_fields, af_key : TFWFieldColumns ; const as_table : String);
+procedure p_SetSQLQuery ( const adat_Dataset : Tdataset ;
+                          const af_fields, af_key : TFWMiniFieldColumns ;
+                          const as_table : String;
+                          const ab_IsLookup : Boolean=False);
 
 implementation
 
@@ -1331,51 +1334,72 @@ Begin
    Else Result := '';
 End;
 
-function fs_GetSQLParameters ( const af_fields : TFWFieldColumns ; const as_format : String = ':@ARG'; const as_interleave : String = ','; const af_removed : TFWFieldColumns = nil ): String;
+function fs_GetSQLParameters ( const af_fields : TFWMiniFieldColumns ;
+                               const as_format : String = ':@ARG';
+                               const as_interleave : String = ',';
+                               const af_removed : TFWMiniFieldColumns = nil ): String;
 var li_i : Integer;
 
 Begin
   Result:='';
   for li_i := 0 to af_fields.Count-1 do
    with af_fields [ li_i ] do
-    if ColSelect and (( af_removed = nil ) or ( af_removed.indexOf(FieldName)=-1)) Then
+    if ((af_fields is TFWFieldColumns) and (af_fields [ li_i ] as TFWFieldColumn).ColSelect) and (( af_removed = nil ) or ( af_removed.indexOf(FieldName)=-1)) Then
       if Result=''
         Then Result:=StringReplace(as_format,'@ARG',FieldName,[rfReplaceAll])
         Else AppendStr(Result,as_interleave+StringReplace(as_format,'@ARG',FieldName,[rfReplaceAll]));
 end;
 
-function fs_getPersitentFields ( const af_fields : TFWFieldColumns ): String;
+function fs_getPersitentFields ( const af_fields : TFWMiniFieldColumns;
+                                 const as_interleave  : String = ',';
+                                 const as_beginFields : String = '' ;
+                                 const as_endFields   : String = '' ): String;
 var li_i : Integer;
     lb_isfirst: Boolean;
 Begin
   lb_isfirst := True;
-  for li_i := 0 to af_fields.Count-1 do
-   with af_fields [li_i] do
-    if ColSelect Then
-      if lb_isfirst Then
-       Begin
-         Result:=FieldName;
-         lb_isfirst:=False;
-       end
-      else
-       AppendStr(Result,','+FieldName);
+
+      for li_i := 0 to af_fields.Count-1 do
+       with af_fields [li_i] do
+        if not (af_fields is TFWFieldColumns) or (af_fields [li_i] as TFWFieldColumn).ColSelect Then
+          if lb_isfirst Then
+           Begin
+             Result:=as_beginFields+FieldName;
+             lb_isfirst:=False;
+           end
+          else
+           AppendStr(Result,as_interleave+FieldName);
+  if Result>'' Then
+   AppendStr(Result,as_endFields);
 end;
 
-procedure p_SetSQLQuery ( const adat_Dataset : Tdataset ; const af_fields, af_key : TFWFieldColumns ; const as_table : String);
+procedure p_SetSQLQuery ( const adat_Dataset : Tdataset ;
+                          const af_fields, af_key : TFWMiniFieldColumns ;
+                          const as_table : String;
+                          const ab_IsLookup : Boolean=False);
 var lobj_SQL : TObject ;
     lsts_SQL : TStrings;
+    ls_temp : String;
 
     function fs_getStringKeys: String;
     Begin
       Result:=' WHERE '+ fs_GetSQLParameters (af_key,'@ARG=:@ARG',' AND ');
     End;
 Begin
- fonctions_dbcomponents.p_SetSQLQuery(adat_Dataset,'SELECT ' +fs_getPersitentFields ( af_fields )+' FROM ' + as_table);
+ if ab_IsLookup
+   Then
+    Begin
+      ls_temp:=af_fields.toString('_');
+      p_SetCorrectFieldName( ls_temp );
+      ls_temp:=fs_getPersitentFields ( af_fields, ',', 'concat (',') as '+ls_temp +','+ af_key.ToString );
+    end
+   Else ls_temp:=fs_getPersitentFields ( af_fields );
+ fonctions_dbcomponents.p_SetSQLQuery(adat_Dataset,'SELECT ' +ls_temp+' FROM ' + as_table);
  lobj_SQL := fobj_getComponentObjectProperty ( adat_Dataset, CST_DBPROPERTY_UPDATEOBJECT );
  if assigned ( lobj_SQL ) Then
    Begin
      lsts_SQL := fobj_getComponentObjectProperty ( lobj_SQL, CST_DBPROPERTY_REFRESH_SQL ) as TStrings;
-     lsts_SQL.Text:='SELECT ' + fs_getPersitentFields ( af_fields )+' FROM ' +as_table + fs_getStringKeys;
+     lsts_SQL.Text:='SELECT ' + ls_temp+' FROM ' +as_table + fs_getStringKeys;
      lsts_SQL := fobj_getComponentObjectProperty ( lobj_SQL, CST_DBPROPERTY_DELETE_SQL ) as TStrings;
      lsts_SQL.Text:='DELETE FROM ' +as_table + fs_getStringKeys;
      lsts_SQL := fobj_getComponentObjectProperty ( lobj_SQL, CST_DBPROPERTY_INSERT_SQL ) as TStrings;
