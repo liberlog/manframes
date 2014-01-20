@@ -472,7 +472,8 @@ type
   TFWTable = class(TFWBaseObject)
   private
     { Private declarations }
-    gs_key : String;
+    gs_key      ,
+    gs_tablekey : String;
     gi_KeyColumn : Integer;
     gs_ConnectionKey : String;
     gr_Connection : TDSSource;
@@ -568,6 +569,7 @@ type
     // Datasource principal édité
     property Datasource : TDataSource read fds_GetDataSource write p_SetDataSource;
     property ConnectKey : String read gs_ConnectionKey write p_setConnectionKey;
+    property TableKey : String read gs_tablekey write gs_tablekey;
     property Indexes : TFWIndexes read gfwi_Indexes write SetIndexes;
     property Relations : TFWRelations read gr_relations write SetRelations;
     property Table : String read gs_NomTable write gs_NomTable;
@@ -637,7 +639,7 @@ type
 
 function ffws_CreateSource ( const ADBSources : TFWTables; const as_connection, as_Table: String ;
                              const av_Connection: Variant; const acom_Owner : TComponent ;
-                             const ab_createDS : Boolean = True ): TFWTable;
+                             const ab_createDS : Boolean = True ; const as_TableKey: String ='' ): TFWTable;
 function fds_CreateDataSourceAndDataset ( const as_Table, as_NameEnd : String  ; const adat_QueryCopy : TDataset ; const acom_Owner : TComponent): TDatasource;
 function fs_getFileNameOfTableColumn ( const afws_Source    : TFWTable ): String;
 function fds_CreateDataSourceAndTable ( const as_Table, as_NameEnd, as_DataURL : String  ; const adtt_DatasetType : TDatasetType ; const adat_QueryCopy : TDataset ; const acom_Owner : TComponent): TDatasource;
@@ -981,16 +983,16 @@ end;
 
 { TFWColumnDatalink }
 
-//////////////////////////////////////////////////////////////////////////////
-// Constructeur : Création du lien de données géré par form dico
-// Description  : Gestion du scroll et de l'activation des dataset des Datasource, Datasource2, DatasourceGridLookup
-// Paramètres : aTF_FormFrameWork la form dico
-//////////////////////////////////////////////////////////////////////////////
-
 function TFWColumnDatalink.GetFormColumn: TFWTable;
 begin
   Result:=gFc_FormColumn;
 end;
+
+//////////////////////////////////////////////////////////////////////////////
+// Constructeur : Création du lien de données géré par la fiche
+// Description  : Gestion du scroll et de l'activation des datasets
+// Paramètres : la table et la fiche ou l'application
+//////////////////////////////////////////////////////////////////////////////
 
 constructor TFWColumnDatalink.Create ( const aTFc_FormColumn : TFWTable; const af_Frame : TComponent );
 begin
@@ -1021,6 +1023,7 @@ begin
   Indexes.gb_Changed:=False;
 end;
 
+// counter of fieldefs of key
 function TFWTable.GetKeyCount: Integer;
 begin
   if Indexes.Count > 0
@@ -1028,7 +1031,8 @@ begin
    Else  Result := 0;
 end;
 
-
+ // Destroying unlinked objects
+// testing destroy with heaprpc
 destructor TFWTable.Destroy;
 begin
   inherited;
@@ -1039,6 +1043,7 @@ begin
   gr_relations.Destroy;
 end;
 
+// looking for table primary key
 function TFWTable.GetKey: TFWFieldColumns;
 begin
   with Indexes do
@@ -1052,6 +1057,7 @@ begin
    end;
 end;
 
+// looking for table primary index
 procedure TFWTable.CheckPrimaryIndex;
 var i, colCount: integer;
   theIndex: TFWIndex;
@@ -1112,6 +1118,7 @@ begin
   end;
 end;
 
+// table to SQL Table
 function TFWTable.GetSQLTableName(const DoNotAddPrefix : Boolean = False ): String;
 var DBQuote, s: string;
 begin
@@ -1128,12 +1135,15 @@ begin
   GetSQLTableName:=s;
 end;
 
+// format function
+// remove end of lines
 procedure RemoveCRFromString(var s:string);
 begin
   s := StringReplace (s,#13,' ',[rfReplaceAll]);
   s := StringReplace (s,#10,' ',[rfReplaceAll]);
 end;
 
+// creating a table
 function TFWTable.GetSQLCreateCode(const DefinePK: Boolean = True;
   const GenerateSequence: Boolean = True;
   const CreateIndexes: Boolean = True;
@@ -1469,11 +1479,13 @@ begin
   PkColumns.Free;
 end;
 
+// get comment
 function TFWTable.getSqlComment: string;
 begin
   Result:='Table ' + Table;
 end;
 
+// unique auto field sequence
 function TFWTable.getTriggerForSequences(const SeqName, PrefixName,
   Field: string): string;
 var AuxTriggerBody : TStringList;
@@ -1513,6 +1525,7 @@ begin
   end;
 end;
 
+// get a sql trigger
 function TFWTable.GetTriggerSql(const TriggerBody, TriggerName:String; const Event : TFWSQLEvent; const EventMode : TFWEventModes): String;
 
 begin
@@ -1591,6 +1604,7 @@ begin
 
 end;
 
+// trigger for date
 function TFWTable.GetTriggerForLastDeleteDate(const TbName, ColName,
   PrefixName: string): string;
 var
@@ -1689,6 +1703,7 @@ begin
   End;
 end;
 
+// sql join
 function TFWTable.GetPkJoin(const Tab1, Tab2: String;const PKs: TStringList): String;
 var
   PkIndex: integer;
@@ -1706,6 +1721,7 @@ begin
 
 end;
 
+// unique auto field sequence
 function TFWTable.GetGlobalSequence(const seqname: String): String;
 begin
   case gbm_DatabaseToGenerate of
@@ -1714,6 +1730,7 @@ begin
   end;
 end;
 
+// sql drop table
 function TFWTable.GetSQLDropCode(const IfExists:boolean = false): string;
 var DBQuote: string;
 begin
@@ -1730,6 +1747,7 @@ begin
       DBQuote+gr_Model.TablePrefix[TablePrefix]+DBQuote+'.'+DBQuote+Table+DBQuote+';';
 end;
 
+// sql insert into created table
 function TFWTable.GetSQLInsertCode: string;
 var s: string;
   i: integer;
@@ -1762,12 +1780,13 @@ begin
   GetSQLInsertCode:=s;
 end;
 
-
+// prefix
 function TFWTable.GetTablePrefix: String;
 begin
   Result:=gr_Model.TablePrefix[TablePrefix];
 end;
 
+// status
 function TFWTable.GetnmTableStatus: Boolean;
 begin
   GetnmTableStatus:=nmTable;
@@ -1778,16 +1797,19 @@ begin
   nmTable:=isnmTable;
 end;
 
+// table indexes assign
 procedure TFWTable.SetIndexes(const AValue: TFWIndexes);
 begin
   gfwi_Indexes.Assign(AValue);
 end;
 
+// table relations assign
 procedure TFWTable.SetRelations(const AValue: TFWRelations);
 begin
   gr_relations.Assign(AValue);
 end;
 
+// table fields assign
 procedure TFWTable.SetFieldColumns(const AValue: TFWFieldColumns);
 begin
   gfc_FieldColumns.Assign(AValue);
@@ -1809,6 +1831,7 @@ begin
     Table := fs_getComponentProperty (ddl_DataLink.Dataset, 'TableName' ) ;
 end;
 
+// table datasource assign
 function TFWTable.fds_GetDataSource: TDataSource;
 begin
   if assigned ( ddl_DataLink )
@@ -1819,6 +1842,7 @@ begin
 
 end;
 
+ // for form
 procedure TFWTable.p_WorkDataScroll;
 begin
 
@@ -1832,6 +1856,7 @@ begin
   p_setMiniConnectionTo ( AValue, gr_Connection );
 end;
 
+// auto database connect key
 procedure TFWTable.p_setConnectionKey(const AValue: String);
 var li_i : Integer;
 begin
@@ -1859,6 +1884,7 @@ begin
   Result:=TFWIndexes.Create(Self,TFWIndex);
 end;
 
+// correct destroyes
 procedure TFWTable.Notification(AComponent: TComponent; Operation: TOperation);
 begin
   Inherited;
@@ -1873,6 +1899,7 @@ begin
 
 end;
 
+// creating objects and setting variables
 constructor TFWTable.Create(Collection: TCollection );
 begin
   Inherited Create ( Collection );
@@ -1901,6 +1928,7 @@ Begin
   Result   := TFWRelations.Create(Self,TFWRelation);
 end;
 
+// assigning table
 procedure TFWTable.AssignTo(Dest: TPersistent);
 var
   theDestTbl: TFWTable;
@@ -1967,6 +1995,7 @@ begin
   Result := 'RelationShip ' +  FieldsFK.toString + ' on ' + gt_DestTables.toString;
 end;
 
+// creating objects and initing variables
 constructor TFWRelation.Create(Collection : TCollection);
 begin
   inherited Create(Collection);
@@ -1987,6 +2016,7 @@ begin
 
 end;
 
+// relation assign
 procedure TFWRelation.AssignTo(Dest: TPersistent);
 var theDestRel: TFWRelation;
 begin
@@ -2030,6 +2060,7 @@ begin
   lfd_Dest.gb_ParamRequired:=gb_ParamRequired;
 end;
 
+// datafield sql create
 function TFWFieldData.GetSQLColumnCreateDefCode(var TableFieldGen: string;
   const HideNullField: boolean; const DefaultBeforeNotNull: boolean;
   const OutputComments: boolean ): string;
@@ -2155,6 +2186,7 @@ begin
   WriteStr(Result,FieldType);
 end;
 
+// sql datatype
 function TFWFieldData.fs_DatatypeParams: String;
 begin
   case FieldType of
@@ -2191,6 +2223,7 @@ begin
   gr_relations [ 0 ].Assign(AValue);
 end;
 
+// sql datatype name
 function TFWFieldData.fs_TypeName: String;
 begin
   case FieldType of
@@ -2225,12 +2258,14 @@ begin
   Result.Add;
 end;
 
+// init on create
 constructor TFWFieldData.Create(ACollection: TCollection);
 begin
   inherited Create(ACollection);
   Init;
 end;
 
+// destroying child objects on destroy
 destructor TFWFieldData.Destroy;
 begin
   inherited Destroy;
@@ -2238,6 +2273,7 @@ begin
   gdo_Options.Destroy;
 end;
 
+// creating objects and setting variables
 procedure TFWFieldData.Init;
 begin
   i_ShowCol :=-1;
@@ -2277,6 +2313,7 @@ end;
 
 { TFWFieldColumn }
 
+// field assign
 procedure TFWFieldColumn.AssignTo ( Dest: TPersistent );
 var lfd_Dest : TFWFieldColumn;
 begin
@@ -2331,6 +2368,7 @@ begin
   Items[Index].Assign(Value);
 end;
 
+// simple string with fields separated by commas
 function TFWBaseFieldColumns.toString ( const ach_Delimiter : Char = ','; const ab_comma : Boolean = True ): String;
 var li_i : Integer ;
 begin
@@ -2345,6 +2383,7 @@ begin
      end;
 end;
 
+// get index of field from fieldname
 function TFWBaseFieldColumns.indexOf(const as_FieldName: String): Integer;
 var af_field : TFWFieldColumn ;
 begin
@@ -2354,6 +2393,7 @@ begin
    Else Result := af_field.index;
 end;
 
+// get field from fieldname
 function TFWBaseFieldColumns.FieldByName(const as_FieldName: String
   ): TFWMiniFieldColumn;
 var li_i : Integer ;
@@ -2399,6 +2439,7 @@ Begin
   FColumn := Column;
 End;
 
+// get index of field option
 function TFWFieldDataOptions.indexOf(const as_OptionName: String): Integer;
 var li_i : Integer ;
 begin
@@ -2432,7 +2473,9 @@ end;
 
 
 { TFWFieldColumns }
-
+  //////////////////////////////
+ // properties               //
+//////////////////////////////
 function TFWFieldColumns.GetColumnField( Index: Integer): TFWFieldColumn;
 begin
   Result := TFWFieldColumn(inherited Items[Index]);
@@ -2540,7 +2583,7 @@ end;
 
 function ffws_CreateSource ( const ADBSources : TFWTables; const as_connection, as_Table: String ;
                              const av_Connection: Variant; const acom_Owner : TComponent ;
-                             const ab_createDS : Boolean = True ): TFWTable;
+                             const ab_createDS : Boolean = True ; const as_TableKey: String ='' ): TFWTable;
 var lds_Connection : TDSSource;
 begin
   if av_Connection = Null Then
@@ -2554,6 +2597,9 @@ begin
       if ab_createDS Then
         Result.Datasource := fds_CreateDataSourceAndTable ( as_Table, '_' + IntToStr ( ADBSources.Count - 1 ),
                                IntToStr ( ADBSources.Count - 1 ), DatasetType, QueryCopy, acom_Owner);
+      if as_TableKey = ''
+        Then Result.TableKey := as_Table
+        Else Result.TableKey := as_TableKey;
       Result.Table := as_Table;
       if DatasetType = dtCSV Then
         Begin

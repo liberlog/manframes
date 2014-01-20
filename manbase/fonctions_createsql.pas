@@ -1373,6 +1373,7 @@ Begin
    AppendStr(Result,as_endFields);
 end;
 
+// set sql on query, eventually ibx
 procedure p_SetSQLQuery ( const adat_Dataset : Tdataset ;
                           const af_fields, af_key : TFWMiniFieldColumns ;
                           const as_table : String;
@@ -1393,7 +1394,7 @@ Begin
       p_SetCorrectFieldName( ls_temp );
       ls_temp:=fs_getPersitentFields ( af_fields, ',', 'concat (',') as '+ls_temp +','+ af_key.ToString );
     end
-   Else ls_temp:=fs_getPersitentFields ( af_fields );
+   Else ls_temp:=fs_getPersitentFields ( af_fields, ','+#10 )+#10;
  fonctions_dbcomponents.p_SetSQLQuery(adat_Dataset,'SELECT ' +ls_temp+' FROM ' + as_table);
  lobj_SQL := fobj_getComponentObjectProperty ( adat_Dataset, CST_DBPROPERTY_UPDATEOBJECT );
  if assigned ( lobj_SQL ) Then
