@@ -62,30 +62,33 @@
       <OutDir Value="LANG"/>
     </i18n>
     <Type Value="RunAndDesignTime"/>
-    <RequiredPkgs Count="7">
+    <RequiredPkgs Count="8">
       <Item1>
-        <PackageName Value="extreports"/>
+        <PackageName Value="ExtCopy"/>
       </Item1>
       <Item2>
-        <PackageName Value="lazmanbase"/>
-        <MaxVersion Major="1" Release="1" Build="6"/>
+        <PackageName Value="extreports"/>
       </Item2>
       <Item3>
-        <PackageName Value="FCL"/>
-        <MinVersion Major="1" Valid="True"/>
+        <PackageName Value="lazmanbase"/>
+        <MaxVersion Major="1" Release="1" Build="6"/>
       </Item3>
       <Item4>
-        <PackageName Value="rxnew"/>
+        <PackageName Value="FCL"/>
+        <MinVersion Major="1" Valid="True"/>
       </Item4>
       <Item5>
-        <PackageName Value="LCL"/>
+        <PackageName Value="rxnew"/>
       </Item5>
       <Item6>
-        <PackageName Value="lazextcomponents"/>
+        <PackageName Value="LCL"/>
       </Item6>
       <Item7>
-        <PackageName Value="JvXPBarLaz"/>
+        <PackageName Value="lazextcomponents"/>
       </Item7>
+      <Item8>
+        <PackageName Value="JvXPBarLaz"/>
+      </Item8>
     </RequiredPkgs>
     <UsageOptions>
       <UnitPath Value="$(PkgOutDir)"/>

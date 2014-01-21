@@ -8,7 +8,7 @@ unit u_connection;
 {$ENDIF}
 
 
-{$I ..\DLCompilers.inc}
+{$I ..\dlcompilers.inc}
 {$I ..\extends.inc}
 
 // Unit U_ZConnection
