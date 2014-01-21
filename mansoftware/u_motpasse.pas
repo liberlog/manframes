@@ -73,21 +73,20 @@ uses U_FormMainIni, unite_variables, fonctions_Objets_Data ;
 procedure TF_MotPasse.btn_okClick(Sender: TObject);
 begin
   // Utilisateur obligatoire
-      // Vérification du MDP
-        	// Le mot de passe est comparé à celui dans l'edit
+  // Vérification du MDP
+  // Le mot de passe est comparé à celui dans l'edit
 
-        	if (tx_mdp.Text = fs_stringDeCrypte(gq_user.FieldByName( CST_UTIL_Mdp).Asstring ) ) then
-        		begin
-        			gb_MotPasseEstValide := True ;
-        			Close;
-        		end
-        	else
-        		begin
-        			MyMessageDlg(GS_BAD_PASSWORD_REDO_TYPE_PASSWORD,
-        				         mtError, [mbOk], 0);
-        			tx_mdp.SetFocus;
-        		end;
-//        end;
+  if (tx_mdp.Text = fs_stringDeCrypte(gq_user.FieldByName( CST_UTIL_Mdp).Asstring ) ) then
+    begin
+      gb_MotPasseEstValide := True ;
+      Close;
+    end
+  else
+    begin
+      MyMessageDlg(GS_BAD_PASSWORD_REDO_TYPE_PASSWORD,
+        	       mtError, [mbOk]);
+      tx_mdp.SetFocus;
+    end;
 end;
 
 

@@ -136,7 +136,7 @@ uses fonctions_db, unite_variables,
      fonctions_array,
 {$ENDIF}
      fonctions_variant, fonctions_proprietes,
-     fonctions_create,
+     fonctions_createsql,
      fonctions_dbcomponents;
 
 { TF_FormFrameWork }
@@ -210,7 +210,7 @@ function TF_PropForm.fb_InsereCompteur ( const adat_Dataset : TDataset ;
                                               const ach_DebutLettrage, ach_FinLettrage : Char ;
                                               const ali_Debut, ali_LimiteRecherche : Int64 ): Boolean;
 Begin
-  Result := fonctions_create.fb_InsereCompteur ( adat_Dataset, gds_SourceWork.Dataset, astl_Cle, as_ChampCompteur, as_Table, as_PremierLettrage, ach_DebutLettrage, ach_FinLettrage, 0, 0, gb_DBMessageOnError );
+  Result := fonctions_createsql.fb_InsereCompteur ( adat_Dataset, gds_SourceWork.Dataset, astl_Cle, as_ChampCompteur, as_Table, as_PremierLettrage, ach_DebutLettrage, ach_FinLettrage, 0, 0, gb_DBMessageOnError );
 End ;
 
 procedure TF_PropForm.p_ChargeTable ( const aq_dico : TDataSource; const astl_SQL : TStrings; {$IFDEF DELPHI_9_UP} const awst_SQL : TWideStrings ;{$ENDIF} const as_Table : String );

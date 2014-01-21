@@ -150,7 +150,7 @@ begin
   if fb_stringVide(cbx_user.Text ) then
 //  {$ENDIF}
     begin
-      MyMessageDlg(gs_Nom_Utilisateur_Invalide, mtWarning, [mbOk], 0);
+      MyMessageDlg(gs_Nom_Utilisateur_Invalide, mtWarning, [mbOk] );
       cbx_user.SetFocus;
     end
   else
@@ -173,7 +173,7 @@ begin
        with Application.MainForm as TF_FormMainIni do
         begin
         	MyMessageDlg(GS_aucune_connexion + #13 + #13
-        				     + GS_administration_seule, mtError, [mbOk], 0);
+        				     + GS_administration_seule, mtError, [mbOk] );
         	cbx_user.SetFocus;
 {$IFNDEF CSV}
 {$IFDEF EADO}
@@ -242,7 +242,7 @@ begin
         end
       else
         begin
-          MyMessageDlg( GS_mot_passe_invalide , mtWarning, [mbOk], 0);
+          MyMessageDlg( GS_mot_passe_invalide , mtWarning, [mbOk] );
           tx_mdp.SetFocus;
         end;
     end;
@@ -323,8 +323,8 @@ begin
 {$IFDEF EADO}
     p_setParamDataset (gq_connexions,'Cle', cbx_user.Value );
 {$ELSE}
-    if assigned ( cbx_user.{$IFDEF FPC}ListSource{$ELSE}LookupSource{$ENDIF} ) Then
-      p_setParamDataset ( gq_connexions,'Cle', cbx_user.{$IFDEF FPC}ListSource{$ELSE}LookupSource{$ENDIF}.DataSet.FieldByName(cbx_user.{$IFDEF FPC}ListField{$ELSE}LookupDisplay{$ENDIF}).AsString );
+    if assigned ( cbx_user.LookupSource ) Then
+      p_setParamDataset ( gq_connexions,'Cle', cbx_user.LookupSource.DataSet.FieldByName(cbx_user.LookupDisplay).AsString );
 {$ENDIF}
 {$ENDIF}
     Open;
@@ -352,8 +352,8 @@ begin
   ds_User.DataSet:=gq_User;
   ds_connexions:=TDataSource.Create(Self);
   ds_connexions.DataSet:=gq_connexions;
-  cbx_User.{$IFDEF FPC}ListSource{$ELSE}LookupSource{$ENDIF} := ds_User;
-  cbx_Connexion.{$IFDEF FPC}ListSource{$ELSE}LookupSource{$ENDIF} := ds_Connexions;
+  cbx_User.LookupSource := ds_User;
+  cbx_Connexion.LookupSource := ds_Connexions;
   try
     gq_User.Open;
   finally
