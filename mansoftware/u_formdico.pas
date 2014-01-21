@@ -243,7 +243,7 @@ begin
               ShowCol     := Fields[5].AsInteger;
               HelpIdx        := Fields[7].AsInteger;
               if Fields[6 ].IsNull then ShowSearch   := -1  Else  ShowSearch    := Fields[6 ].AsInteger;
-              if Fields[8 ].IsNull then LookupSource := -1  Else  LookupSource  := Fields[8 ].AsInteger;
+              if not Fields[8 ].IsNull then Relation.TableLinked  := Fields[8 ].AsInteger;
               if ( Fields[9] is TBooleanField ) then
                 ColMain      := Fields[9].AsBoolean
                else

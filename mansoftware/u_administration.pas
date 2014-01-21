@@ -788,14 +788,14 @@ begin
          or (  ( adoq_Utilisateurs.FieldByName ( CST_UTIL__SOMM ).AsString ) <>  ( CST_SOMM_Administrateur )))
      Then
       Begin
-        MyMessageDlg ( GS_CHANGE_UTILISATEUR, mtWarning, [mbOk], 0);
+        MyMessageDlg ( GS_CHANGE_UTILISATEUR, mtWarning, [mbOk] );
         Abort ;
       End ;
     if ( Trim ( adoq_Utilisateurs.FieldByName ( CST_UTIL_Clep  ).Asstring ) = '' )
     or ( adoq_Utilisateurs.FieldByName ( CST_UTIL__SOMM ).Value = Null )
     or ( adoq_Utilisateurs.FieldByName ( CST_UTIL__PRIV ).Value = Null ) Then
       Begin
-        MyMessageDlg ( GS_UTIL_VIDE + #13#10 + GS_SAISIR_ANNULER, mtWarning, [mbOk], 0);
+        MyMessageDlg ( GS_UTIL_VIDE + #13#10 + GS_SAISIR_ANNULER, mtWarning, [mbOk] );
         Abort ;
       End ;
     if  gb_MotPasseModifie
@@ -906,7 +906,7 @@ begin
   if  ( DBSources [ 9 ].MyRecord = Null )
    Then
     Begin
-      MyMessageDlg ( GS_CHOISIR_FONCTION , mtWarning, [mbOk], 0);
+      MyMessageDlg ( GS_CHOISIR_FONCTION , mtWarning, [mbOk] );
 
       Abort ;
       Exit ;
@@ -915,7 +915,7 @@ begin
   if  (    DBSources [ 2 ].MyRecord = Null )
    Then
     Begin
-      MyMessageDlg ( GS_CHOISIR_SOMMAIRE , mtWarning, [mbOk], 0);
+      MyMessageDlg ( GS_CHOISIR_SOMMAIRE , mtWarning, [mbOk] );
       Abort ;
       Exit ;
     End ;
@@ -937,7 +937,7 @@ begin
           if DBSources [ 4 ].MyRecord = Null
            then
             Begin
-              MyMessageDlg ( GS_CHOISIR_MENU , mtWarning, [mbOk], 0);
+              MyMessageDlg ( GS_CHOISIR_MENU , mtWarning, [mbOk] );
               Abort ;
               Exit ;
             End ;
@@ -953,14 +953,14 @@ begin
           if ( DBSources [ 6 ].MyRecord = Null )
            then
             Begin
-              MyMessageDlg ( GS_CHOISIR_SOUS_MENU , mtWarning, [mbOk], 0);
+              MyMessageDlg ( GS_CHOISIR_SOUS_MENU , mtWarning, [mbOk] );
               Abort ;
               Exit ;
             End ;
           if (     DBSources [ 4 ].MyRecord = Null )
            then
             Begin
-              MyMessageDlg ( GS_CHOISIR_MENU , mtWarning, [mbOk], 0);
+              MyMessageDlg ( GS_CHOISIR_MENU , mtWarning, [mbOk] );
               Exit ;
             End ;
           lws_TextSQL := 'SELECT * FROM SOUM_FONCTIONS '
@@ -1007,7 +1007,7 @@ begin
           if DBSources [ 4 ].MyRecord = Null
            Then
             Begin
-              MyMessageDlg ( GS_CHOISIR_MENU , mtWarning, [mbOk], 0);
+              MyMessageDlg ( GS_CHOISIR_MENU , mtWarning, [mbOk] );
               Abort ;
               Exit ;
             End ;
@@ -1022,14 +1022,14 @@ begin
           if DBSources [ 4 ].MyRecord = Null
            Then
             Begin
-              MyMessageDlg ( GS_CHOISIR_MENU , mtWarning, [mbOk], 0);
+              MyMessageDlg ( GS_CHOISIR_MENU , mtWarning, [mbOk] );
               Abort ;
               Exit ;
             End ;
           if DBSources [ 6 ].MyRecord = Null
            Then
             Begin
-              MyMessageDlg ( GS_CHOISIR_SOUS_MENU , mtWarning, [mbOk], 0);
+              MyMessageDlg ( GS_CHOISIR_SOUS_MENU , mtWarning, [mbOk] );
               Abort ;
               Exit ;
             End ;
@@ -1311,7 +1311,7 @@ function TF_Administration.fb_EffaceEnregistrements ( const as_Message : String 
 begin
   Result := False ;
 //  lbmk_GardeEnregistrement := aDat_Dataset.Bookmark ;
-  if MyMessageDlg ( as_Message + #13#10 + GS_EFFACE_1 + GS_EFFACE_2 + #13#10  + #13#10 + ' - ' + as_Enregistrement, mtWarning, [mbOk,mbCancel], 0) = mrOk
+  if MyMessageDlg ( as_Message + #13#10 + GS_EFFACE_1 + GS_EFFACE_2 + #13#10  + #13#10 + ' - ' + as_Enregistrement, mtWarning, [mbOk,mbCancel] ) = mrOk
    Then  // Ce delete va supprimer les associations
     Begin
       if aDat_Dataset = adoq_Sommaire  // Effacement d'un menu et de ses descendants
@@ -1390,7 +1390,7 @@ begin
           if adoq_Utilisateurs.IsEmpty  // Effacement d'un sommaire et de ses descendants
            Then ab_efface := fb_EffaceEnregistrements ( GS_EFFACE_SOMMAIRE, adoq_Sommaire.FieldByName ( CST_SOMM_Clep ).AsString, aDat_Dataset )
         // Si il y a au moins un utilisateur on affiche un message
-           Else MyMessageDlg ( GS_EFFACE_PAS_SOMMAIRE, mtWarning, [mbOk], 0);
+           Else MyMessageDlg ( GS_EFFACE_PAS_SOMMAIRE, mtWarning, [mbOk] );
 //          adoq_Utilisateurs.Close ;
           adoq_Utilisateurs.Filtered := False ;
 //          adoq_Utilisateurs.Open ;
@@ -2387,7 +2387,7 @@ begin
     and ( DBSources [ 9 ].MyRecord = CST_Fonc_V_1_Admin )
      Then
       Begin
-        MyMessageDlg ( GS_PAS_CETTE_FONCTION , mtWarning, [mbOk], 0);
+        MyMessageDlg ( GS_PAS_CETTE_FONCTION , mtWarning, [mbOk] );
         Exit ;
       End ;
     // Initialisation de la requête
@@ -2524,7 +2524,7 @@ begin
     if adoq_Menus.FieldByName ( CST_MENU_Clep ).AsString = ''
      Then
       Begin
-        MyMessageDlg ( GS_MENU_VIDE + #13#10 + GS_SAISIR_ANNULER, mtWarning, [mbOk], 0);
+        MyMessageDlg ( GS_MENU_VIDE + #13#10 + GS_SAISIR_ANNULER, mtWarning, [mbOk] );
         Abort ;
       End ;
     if Dataset.State = dsInsert
@@ -2547,7 +2547,7 @@ begin
     if adoq_SousMenus.FieldByName ( CST_SOUM_Clep ).AsString = ''
      Then
       Begin
-        MyMessageDlg ( GS_SOUSMENU_VIDE + #13#10 + GS_SAISIR_ANNULER, mtWarning, [mbOk], 0);
+        MyMessageDlg ( GS_SOUSMENU_VIDE + #13#10 + GS_SAISIR_ANNULER, mtWarning, [mbOk] );
         Abort ;
       End ;
     if Dataset.State = dsInsert
@@ -2683,7 +2683,7 @@ begin
   if adoq_Sommaire.FieldByName ( CST_SOMM_Clep ).AsString = ''
    Then
     Begin
-      MyMessageDlg ( GS_SOMMAIRE_VIDE + #13#10 + GS_SAISIR_ANNULER, mtWarning, [mbOk], 0);
+      MyMessageDlg ( GS_SOMMAIRE_VIDE + #13#10 + GS_SAISIR_ANNULER, mtWarning, [mbOk] );
       Abort ;
     End ;
   if ( Dataset.State = dsEdit )
@@ -2691,7 +2691,7 @@ begin
             and ( ( adoq_Sommaire.FieldByName ( CST_SOMM_Clep ).AsString ) <> ( CST_SOMM_Administrateur ))))
    Then
     Begin
-      MyMessageDlg ( GS_CHANGE_PAS_SOMMAIRE , mtWarning, [mbOk], 0);
+      MyMessageDlg ( GS_CHANGE_PAS_SOMMAIRE , mtWarning, [mbOk] );
       Abort ;
     End ;
 //  fb_ValidePostDelete( Dataset, CST_SOMMAIRE, lstl_CleSommaire, nil, True );
@@ -2825,7 +2825,7 @@ begin
    Then
     p_EffaceEnregistrements (( Sender as TExtDBNavigator ).DataSource.DataSet )
    Else
-    MyMessageDlg ( GS_PAS_CE_SOMMAIRE , mtWarning, [mbOk], 0);
+    MyMessageDlg ( GS_PAS_CE_SOMMAIRE , mtWarning, [mbOk] );
 end;
 
 procedure TF_Administration.btn_insereClick(Sender: TObject);
@@ -3697,10 +3697,10 @@ end;
 procedure TF_Administration.nav_UtilisateurBtnDelete(Sender: TObject);
 begin
   if adoq_Utilisateurs.FieldByName(CST_UTIL_Clep).AsString = UpperCase ( CST_UTIL_Administrateur ) then
-    MyMessageDlg(GS_PAS_CET_UTILISATEUR, mtWarning, [mbOk], 0)
+    MyMessageDlg(GS_PAS_CET_UTILISATEUR, mtWarning, [mbOk] )
   else
     Try
-      if MyMessageDlg ( GS_SUPPRIMER_QUESTION, mtConfirmation, [mbYes,mbNo], CST_HC_SUPPRIMER ) = mrYes Then
+      if MyMessageDlg ( GS_SUPPRIMER_QUESTION, mtConfirmation, [mbYes,mbNo] ) = mrYes Then
         adoq_Utilisateurs.Delete;
     Except
       on e: Exception do

@@ -368,7 +368,7 @@ begin
   except
     On e:Exception do
       Begin
-        MyMessageDlg( GS_PB_CONNEXION + ':'+#13#10+e.Message, mtWarning, [mbOk], 0);
+        MyMessageDlg( GS_PB_CONNEXION + ':'+#13#10+e.Message, mtWarning, [mbOk] );
         p_pbConnexion;
         gb_AbortConnexion := True;
         Exit;
@@ -457,7 +457,7 @@ begin
   except
     On e:Exception do
       Begin
-        MyMessageDlg( GS_PB_CONNEXION + ':'+#13#10+e.Message, mtWarning, [mbOk], 0);
+        MyMessageDlg( GS_PB_CONNEXION + ':'+#13#10+e.Message, mtWarning, [mbOk]);
         p_pbConnexion;
         Exit;
       End;
@@ -625,7 +625,7 @@ end;
 procedure TF_FenetrePrincipale.dbt_identClick(Sender: TObject);
 begin
   if lb_MsgDeconnexion
-  and ( MyMessageDlg ( GS_DECONNECTER, mtConfirmation, [ mbYes, mbNo ], 0 ) = mrNo ) Then
+  and ( MyMessageDlg ( GS_DECONNECTER, mtConfirmation, [ mbYes, mbNo ] ) = mrNo ) Then
     Exit ;
   // (Ré)initialisation de l'application
   Screen.Cursor := crSQLWait;
@@ -663,7 +663,7 @@ begin
     except
       on e:exception do
         Begin
-          MyMessageDlg( GS_PB_CONNEXION + ':'+#13#10+e.Message, mtWarning, [mbOk], 0);
+          MyMessageDlg( GS_PB_CONNEXION + ':'+#13#10+e.Message, mtWarning, [mbOk]);
           p_PbConnexion;
           Abort;
         End;
@@ -762,9 +762,9 @@ begin
 
       except
         if gi_niveau_priv < CST_ADMIN Then
-          MyMessageDlg( GS_PB_CONNEXION, mtError, [mbOk], 0)
+          MyMessageDlg( GS_PB_CONNEXION, mtError, [mbOk])
         Else
-          MyMessageDlg( GS_PB_CONNEXION + #13#10 + #13#10 + GS_ADMINISTRATION_SEULEMENT, mtError, [mbOk], 0);
+          MyMessageDlg( GS_PB_CONNEXION + #13#10 + #13#10 + GS_ADMINISTRATION_SEULEMENT, mtError, [mbOk]);
 
         p_SetLedColor ( False );
         br_statusbar.Panels[2].Text  := GS_LBL_PB;
