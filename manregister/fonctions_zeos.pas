@@ -35,11 +35,12 @@ uses
     ZDataset,
     ZSqlProcessor,
     ZAbstractRODataset,
-    u_connection,
     StdCtrls,
     fonctions_system, FileUtil, fonctions_db, fonctions_file,
     fonctions_createsql,
+    fonctions_proprietes,
     fonctions_manbase,
+    u_multidonnees,
     ZCompatibility,
     ZDbcIntfs,
     Types,
@@ -90,7 +91,7 @@ Begin
     End;              *)
 End ;
 
-procedure p_setZEOSConnectionOnCreation ( const cbx_Protocol: TComboBox;  const ch_ServerConnect: TCheckBox; const ed_Base, ed_Host, ed_Password, ed_User, ed_Catalog, ed_Collation: TEdit );
+procedure p_setZEOSConnectionOnCreation ( const cbx_Protocol, ch_ServerConnect, ed_Base, ed_Host, ed_Password, ed_User, ed_Catalog, ed_Collation: TComponent );
   var
   I, J: Integer;
   Drivers: IZCollection;
@@ -98,12 +99,13 @@ procedure p_setZEOSConnectionOnCreation ( const cbx_Protocol: TComboBox;  const 
 begin
   Drivers := DriverManager.GetDrivers;
   Protocols := nil;
-  for I := 0 to Drivers.Count - 1 do
-  begin
-    Protocols := (Drivers[I] as IZDriver).GetSupportedProtocols;
-    for J := Low(Protocols) to High(Protocols) do
-      cbx_Protocol.Items.Append(Protocols[J]);
-  End;
+  with fobj_getComponentObjectProperty(cbx_Protocol,'Items')as TStrings do
+   for I := 0 to Drivers.Count - 1 do
+    begin
+      Protocols := (Drivers[I] as IZDriver).GetSupportedProtocols;
+      for J := Low(Protocols) to High(Protocols) do
+        Append(Protocols[J]);
+    End;
 End;
 
 procedure p_ExecuteSQLCommandServer ( const AConnection : TComponent; const as_SQL : {$IFDEF DELPHI_9_UP} String {$ELSE} WideString{$ENDIF}  );

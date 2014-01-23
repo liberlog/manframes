@@ -1,3 +1,4 @@
+
 ////////////////////////////////////////////////////////////////////////////////
 //
 //	Nom Unité :  U_MultiDonnées
@@ -24,8 +25,11 @@ uses
 {$ENDIF}
   DB, u_multidata;
 
-{$IFDEF VERSIONS}
+type
+   TSetConnectComponents = procedure ( const cbx_Protocol, ch_ServerConnect, ed_Base, ed_Host, ed_Password, ed_User, ed_Catalog, ed_Collation: TComponent );
+
 const
+{$IFDEF VERSIONS}
       gver_MMultiDonnees : T_Version = ( Component : 'Data Module with connections and cloned queries.' ;
                                          FileUnit : 'U_multidonnees' ;
                         		 Owner : 'Matthieu Giroux' ;
@@ -34,6 +38,7 @@ const
                         		 UnitType : 2 ;
                         		 Major : 1 ; Minor : 0 ; Release : 0 ; Build : 0 );
 {$ENDIF}
+  ge_SetConnectComponentsOnCreate : TSetConnectComponents = nil;
 
 
 type
