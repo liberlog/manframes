@@ -47,7 +47,6 @@ const
 {$ENDIF}
 
 type
-  TSetConnectComponents = procedure ( const cbx_Protocol: TComboBox;  const ch_ServerConnect: TCheckBox; const ed_Base, ed_Host, ed_Password, ed_User, ed_Catalog, ed_Collation: TEdit );
 
   { TF_ConnectionWindow }
 
@@ -101,15 +100,13 @@ var
 procedure p_ShowConnectionWindow ( const Connexion : TComponent ; const Inifile : TCustomInifile );
 procedure p_InitComponent ( const Connexion : TComponent ; const Inifile : TCustomInifile ; const Test : Boolean );
 
-const
-   ge_SetConnectComponentsOnCreate : TSetConnectComponents = nil;
-
 
 implementation
 
 uses fonctions_init,
      fonctions_dialogs,
      unite_variables,
+     u_multidonnees,
      fonctions_components,
      fonctions_proprietes;
 

@@ -301,8 +301,8 @@ end;
 //////////////////////////////////////////////////////////////////////////
 procedure p_FreeConfigFile;
 begin
-  FMainIni.Free;
-  FMainIni := nil;
+  FIniMain.Free;
+  FIniMain := nil;
 End ;
 
 //////////////////////////////////////////////////////////////////////////
@@ -332,7 +332,7 @@ end;
 // Renvoie un fichier INI (même si c'est pas très utile) !!!
 function TF_FormMainDB.f_IniGetConfigFile: TIniFile;
 begin
-  p_IniGetDBConfigFile ( FMainIni,FConnection,FConnector,gs_NomApp);
+  p_IniGetDBConfigFile ( FIniMain,FConnection,FConnector,gs_NomApp);
   Result := inherited f_IniGetConfigFile;
 end;
 
