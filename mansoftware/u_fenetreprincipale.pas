@@ -337,14 +337,14 @@ begin
   {$ENDIF}
 {$ENDIF}
 
-  if not assigned ( FMainIni ) Then
+  if not assigned ( FIniMain ) Then
     Begin
       ShowMessage ( GS_MUST_BE_ROOT );
       Application.Terminate;
       Exit;
     end;
 
-  gs_DefaultUser := FMainIni.Readstring ( INISEC_PAR, INISEC_UTI, '' );
+  gs_DefaultUser := FIniMain.Readstring ( INISEC_PAR, INISEC_UTI, '' );
 
   p_FreeConfigFile ;
   SvgFormInfoIni.LaFormCreate ( Self );
