@@ -65,46 +65,46 @@
       <OutDir Value="LANG"/>
     </i18n>
     <Type Value="RunAndDesignTime"/>
-    <RequiredPkgs Count="12">
+    <RequiredPkgs Count="11">
       <Item1>
         <PackageName Value="lazextbuttons"/>
       </Item1>
       <Item2>
-        <PackageName Value="toolbarmenupkg"/>
+        <PackageName Value="virtualtreeview_package"/>
       </Item2>
       <Item3>
-        <PackageName Value="virtualtreeview_package"/>
+        <PackageName Value="lazmansoft"/>
       </Item3>
       <Item4>
-        <PackageName Value="lazmansoft"/>
+        <PackageName Value="LCL"/>
       </Item4>
       <Item5>
-        <PackageName Value="LCL"/>
+        <PackageName Value="lazmanframes"/>
       </Item5>
       <Item6>
-        <PackageName Value="lazmanframes"/>
+        <PackageName Value="lazextcomponents"/>
       </Item6>
       <Item7>
-        <PackageName Value="lazextcomponents"/>
+        <PackageName Value="zcomponent"/>
       </Item7>
       <Item8>
-        <PackageName Value="zcomponent"/>
+        <PackageName Value="JvXPBarLaz"/>
       </Item8>
       <Item9>
-        <PackageName Value="JvXPBarLaz"/>
+        <PackageName Value="zcore"/>
       </Item9>
       <Item10>
-        <PackageName Value="zcore"/>
+        <PackageName Value="rxnew"/>
       </Item10>
       <Item11>
-        <PackageName Value="rxnew"/>
-      </Item11>
-      <Item12>
         <PackageName Value="FCL"/>
-      </Item12>
+      </Item11>
     </RequiredPkgs>
     <PublishOptions>
       <Version Value="2"/>
     </PublishOptions>
+    <CustomOptions Items="ExternHelp" Version="2">
+      <_ExternHelp Items="Count"/>
+    </CustomOptions>
   </Package>
 </CONFIG>
