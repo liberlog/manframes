@@ -115,12 +115,12 @@ begin
            fb_RefreshDataset ( {$IFNDEF RXJVCOMBO}ListSource{$ELSE}LookupSource{$ENDIF}.DataSet );
            Refresh;
           end;
-       if assigned ( {$IFDEF RX}DataSource.DataSet.FindField(DataField){$ELSE}Field{$ENDIF})
+       if assigned ( Field)
        and ( FOK )
        and ( FFormModal is TF_CustomFrameWork ) Then
         with ( FFormModal as TF_CustomFrameWork ).DBSources [ FFormSource ] do
          if not Datasource.DataSet.IsEmpty Then
-          with {$IFDEF RX}DataSource.DataSet.FindField(DataField){$ELSE}Field{$ENDIF} do
+          with Field do
           Begin
             Result := mrOk;
             DataSet.Edit;
