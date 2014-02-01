@@ -2,6 +2,7 @@ unit unite_variables;
 
 interface
 
+{$I ..\dlcompilers.inc}
 {$I ..\extends.inc}
 
 {$IFDEF FPC}
