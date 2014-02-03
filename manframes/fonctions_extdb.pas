@@ -20,7 +20,6 @@ uses SysUtils,
   {$IFDEF VERSIONS}
   fonctions_version,
   {$ENDIF}
-  Controls,
   DBCtrls, ExtCtrls,
   IniFiles,
   Classes ;
@@ -87,17 +86,11 @@ function fb_IniSetSQLConnection ( const asqc_Connection : TSQLConnection ) : Boo
 implementation
 
 uses Variants,  fonctions_erreurs, fonctions_string,
-  {$IFDEF FPC}
-  unite_messages,
-  {$ELSE}
-  unite_messages_delphi,
-  {$ENDIF}
   {$IFDEF EADO}
      AdoConEd,
   {$ENDIF}
-   fonctions_proprietes, TypInfo, fonctions_db,
+   fonctions_proprietes, TypInfo,
    Dialogs, unite_variables,
-   u_connection,
    fonctions_init;
 
 
