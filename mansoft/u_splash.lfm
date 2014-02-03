@@ -13,7 +13,7 @@ object F_SplashForm: TF_SplashForm
   Font.Name = 'MS Sans Serif'
   FormStyle = fsStayOnTop
   Position = poScreenCenter
-  LCLVersion = '0.9.30'
+  LCLVersion = '1.0.14.0'
   object Panel1: TPanel
     Left = 0
     Height = 70
@@ -23,7 +23,7 @@ object F_SplashForm: TF_SplashForm
     BevelInner = bvLowered
     ClientHeight = 70
     ClientWidth = 222
-    Color = clWhite
+    Color = clWindow
     Font.Color = clBlack
     Font.Height = -11
     Font.Name = 'MS Sans Serif'
@@ -38,26 +38,29 @@ object F_SplashForm: TF_SplashForm
       AutoSize = False
       Caption = 'MAN FRAMES'
       Font.CharSet = ANSI_CHARSET
-      Font.Color = clNavy
+      Font.Color = clWindowText
       Font.Height = -16
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold, fsItalic]
       ParentColor = False
       ParentFont = False
       WordWrap = True
+      ColorFocus = clActiveText
     end
     object texte: TFWLabel
       Left = 8
       Height = 18
       Top = 38
       Width = 153
+      AutoSize = False
       Caption = 'Initialisation en cours...'
-      Font.Color = clBlack
+      Font.Color = clWindowText
       Font.Height = -13
       Font.Name = 'MS Sans Serif'
       ParentColor = False
       ParentFont = False
       WordWrap = True
+      ColorFocus = clActiveText
     end
   end
 end
