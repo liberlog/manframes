@@ -189,6 +189,7 @@ resourcestring
   GS_PROPRIETE_PAS_BONNE_CLE = 'La propriété @ARG ne comporte pas le champ clé primaire @ARG.' ;
 
   GS_ERREUR_CHARGEMENT = 'Erreur au chargement @ARG.' ;
+  GS_SOFTWARE_CLOSING = 'L''application est en train de se fermer.' ;
   GS_COMPOSANT_ADO = 'Le composant @ARG doit être une table ou un query en ADO.' ;
 
   GS_INSERER_ENREGISTREMENT = 'Insérer un enregistrement' ;

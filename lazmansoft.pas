@@ -2,20 +2,19 @@
   This source is only used to compile and install the package.
  }
 
-unit lazmansoft; 
+unit lazmansoft;
 
 interface
 
 uses
-    fonctions_Objets_Dynamiques, fonctions_FenetrePrincipale, U_Splash, 
-  LazarusPackageIntf;
+  fonctions_Objets_Dynamiques, fonctions_FenetrePrincipale, LazarusPackageIntf;
 
 implementation
 
-procedure Register; 
+procedure Register;
 begin
-end; 
+end;
 
 initialization
-  RegisterPackage('lazmansoft', @Register); 
+  RegisterPackage('lazmansoft', @Register);
 end.

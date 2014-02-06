@@ -26,7 +26,7 @@
     <Description Value="Full management software RAD Framework"/>
     <License Value="LGPL"/>
     <Version Minor="9" Release="5"/>
-    <Files Count="3">
+    <Files Count="2">
       <Item1>
         <Filename Value="mansoft/fonctions_objets_dynamiques.pas"/>
         <UnitName Value="fonctions_Objets_Dynamiques"/>
@@ -35,10 +35,6 @@
         <Filename Value="mansoft/fonctions_fenetreprincipale.pas"/>
         <UnitName Value="fonctions_FenetrePrincipale"/>
       </Item2>
-      <Item3>
-        <Filename Value="mansoft/u_splash.pas"/>
-        <UnitName Value="U_Splash"/>
-      </Item3>
     </Files>
     <i18n>
       <EnableI18N Value="True"/>
