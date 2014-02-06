@@ -236,7 +236,6 @@ var
 implementation
 
 uses
-  U_Splash,
   TypInfo,
 {$IFDEF DBEXPRESS}
   SQLExpr,
@@ -645,7 +644,7 @@ begin
   br_statusbar.Panels[2].Text := GS_LBL_PCONN;
   p_SetLengthSB(br_statusbar.Panels[2]);
 
-  if Assigned(F_SplashForm) then F_splashForm.Hide;
+  doCloseWorking;
 
   Screen.Cursor := Self.Cursor;
 
@@ -683,8 +682,7 @@ end;
 procedure TF_FenetrePrincipale.p_ConnectToData ();
 var ls_ConnectString: String;
 begin
-  F_SplashForm.Free; // Libération de la mémoire
-  F_SplashForm := nil;
+  doCloseWorking;
 
   Screen.Cursor := crSQLWait;
   if ( gs_User <> ''  ) Then

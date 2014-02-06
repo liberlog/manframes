@@ -102,7 +102,6 @@ var
 implementation
 
 uses
-  U_Splash,
   TypInfo,
 {$IFNDEF FPC}
   DB,
@@ -222,11 +221,7 @@ begin
   if not ( csDesigning in af_Form.ComponentState ) Then
     Begin
       p_IniWriteSectionStr ( INISEC_PAR, INISEC_UTI, gs_DefaultUser );
-      if not assigned ( F_SplashForm ) Then
-        Begin
-          F_SplashForm := TF_SplashForm.Create(Application);
-        End ;
-      F_SplashForm.Show;   // Affichage de la fiche
+      doShowWorking(GS_SOFTWARE_CLOSING);   // Affichage de la fiche
    End ;
 end;
 

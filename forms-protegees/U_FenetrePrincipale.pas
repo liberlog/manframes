@@ -45,7 +45,6 @@ uses
   TntDBCtrls, TntMenus,TntStdCtrls, TntExtCtrls, DKLang, TntActnList,
   TntDialogs, TntGraphics, TntForms,
 {$ENDIF}
-  U_Donnees, 
   Controls, Graphics, Classes, SysUtils, StrUtils,
   ExtCtrls, ActnList, Menus, Messages,
   JvXPContainer, ComCtrls, JvXPButtons,
@@ -217,7 +216,6 @@ var
 implementation
 
 uses
-  U_Splash,
   TypInfo,
 {$IFDEF DBEXPRESS}
   SQLExpr,
@@ -339,8 +337,7 @@ begin
   inherited;
   if ( csDesigning in ComponentState ) Then
     Exit ;
-  F_SplashForm.Free; // Libération de la mémoire
-  F_SplashForm := nil;
+  docl
 end;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -496,11 +493,7 @@ begin
   if not ( csDesigning in ComponentState ) Then
     Begin
       p_IniWriteSectionStr ( INISEC_PAR, INISEC_UTI, gs_DefaultUser );
-      if not assigned ( F_SplashForm ) Then
-        Begin
-          F_SplashForm := TF_SplashForm.Create(Application);
-        End ;
-      F_SplashForm.Show;   // Affichage de la fiche
+      dos
    End ;
    inherited ;
 end;
