@@ -3485,8 +3485,8 @@ var li_i : Integer ;
 Begin
   Result := False;
 //  if assigned ( lt_DatasourceWork.stl_Fields ) then
-    for li_i := 0 to lt_DatasourceWork.FieldsDefs.Count - 1 do
-      with lt_DatasourceWork,FieldsDefs [ li_i ] do
+    for li_i := 0 to lt_DatasourceWork.GetKey.Count - 1 do
+      with lt_DatasourceWork,GetKey [ li_i ] do
       if  ColSelect
       and (ShowCol>-1)
       and assigned ( Datalink.DataSet.FindField ( FieldName ))
