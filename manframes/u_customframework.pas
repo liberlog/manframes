@@ -43,9 +43,6 @@ uses
 {$IFDEF EXRX}
    ExRXDBGrid,
 {$ENDIF}
-{$IFDEF RX}
-  RxLookup,
-{$ENDIF}
 {$IFDEF VIRTUALTREES}
   VirtualTrees,
 {$ENDIF}
@@ -3549,7 +3546,7 @@ End;
 // place le tag par défaut
 procedure TF_CustomFrameWork.DoShow;
 var
-  li_i, li_j, li_k  : Integer ;
+  li_i  : Integer ;
   lt_Arg : Array [0..0] of String ;
 begin
   if ( csDesigning in ComponentState )
@@ -3614,7 +3611,7 @@ begin
                if assigned ( DataSet ) Then
                 with DataSet do
                  Begin
-                   //ShowMessage(fs_getSQLQuery(DataSet)+' '+IntToStr(FieldDefs.count));
+//                 ShowMessage(fs_getSQLQuery(DataSet)+' '+IntToStr(FieldDefs.count));
                   Open ;
                   BeforePost   := p_DataWorkBeforePost ;
                  end;
