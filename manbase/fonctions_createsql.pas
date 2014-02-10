@@ -1350,7 +1350,8 @@ Begin
         Else AppendStr(Result,as_interleave+StringReplace(as_format,'@ARG',FieldName,[rfReplaceAll]));
 end;
 
-function fs_getPersitentFields ( const af_fields : TFWMiniFieldColumns;
+function fs_getPersitentFields ( const af_fields    : TFWMiniFieldColumns;
+                                 const af_fieldsout : TFWMiniFieldColumns = nil;
                                  const as_interleave  : String = ',';
                                  const as_beginFields : String = '' ;
                                  const as_endFields   : String = '' ): String;
@@ -1361,7 +1362,8 @@ Begin
 
       for li_i := 0 to af_fields.Count-1 do
        with af_fields [li_i] do
-        if not (af_fields is TFWFieldColumns) or (af_fields [li_i] as TFWFieldColumn).ColSelect Then
+        if (not (af_fields is TFWFieldColumns) or (af_fields [li_i] as TFWFieldColumn).ColSelect)
+        and ((af_fieldsout=nil) or (af_fieldsout.FieldByName(FieldName)=nil)) Then
           if lb_isfirst Then
            Begin
              Result:=as_beginFields+FieldName;
@@ -1369,6 +1371,8 @@ Begin
            end
           else
            AppendStr(Result,as_interleave+FieldName);
+    if Assigned(af_fieldsout) Then
+      AppendStr(Result,fs_getPersitentFields(af_fieldsout,nil,as_interleave,as_interleave));
   if Result>'' Then
    AppendStr(Result,as_endFields);
 end;
@@ -1392,9 +1396,9 @@ Begin
     Begin
       ls_temp:=af_fields.toString('_');
       p_SetCorrectFieldName( ls_temp );
-      ls_temp:=fs_getPersitentFields ( af_fields, ',', 'concat (',') as '+ls_temp +','+ af_key.ToString );
+      ls_temp:=fs_getPersitentFields ( af_fields, af_key, ',', 'concat (',') as '+ls_temp +','+ af_key.ToString );
     end
-   Else ls_temp:=fs_getPersitentFields ( af_fields, ','+#10 )+#10;
+   Else ls_temp:=fs_getPersitentFields ( af_fields, af_key, ','+#10 )+#10;
  fonctions_dbcomponents.p_SetSQLQuery(adat_Dataset,'SELECT ' +ls_temp+' FROM ' + as_table);
  lobj_SQL := fobj_getComponentObjectProperty ( adat_Dataset, CST_DBPROPERTY_UPDATEOBJECT );
  if assigned ( lobj_SQL ) Then

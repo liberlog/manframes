@@ -9,9 +9,8 @@ interface
 uses
   Classes, SysUtils,
   {$IFDEF VERSIONS}
-    fonctions_version,
+  fonctions_version,
   {$ENDIF}
-  StdCtrls,
   u_multidata,
   DB,
   Controls;
@@ -26,11 +25,12 @@ const
                                       FileUnit : 'fonctions_manbase' ;
                                       Owner : 'Matthieu Giroux' ;
                                       Comment : 'Base de la Fiche personnalisée avec méthodes génériques et gestion de données.' ;
-                                      BugsStory :  '0.9.9.0 : Adding auto create sql' + #13#10 +
+                                      BugsStory :  '1.0.0.0 : Usuable.' + #13#10 +
+                                                   '0.9.9.0 : Adding auto create sql' + #13#10 +
                                                    '0.9.0.1 : Tested and centralizing from XML Frames' + #13#10 +
                                                    '0.9.0.0 : base not tested'  ;
                                        UnitType : 3 ;
-                                       Major : 0 ; Minor : 9 ; Release : 9; Build : 0 );
+                                       Major : 1 ; Minor : 0 ; Release : 0; Build : 0 );
 
 {$ENDIF}
     CST_COMPONENTS_DATASOURCE_BEGIN   = 'ds_' ;
@@ -596,7 +596,7 @@ type
 
   private
   { Private declarations }
-   grk_RelKind, gi_relMidDirection : Integer;
+   grk_RelKind : Integer;
    gt_DestTables : TFWTables;
    gb_CreateRefDef, gb_OptionalStart, gb_OptionalEnd : Boolean;
    gs_RelationName : String;
@@ -620,7 +620,7 @@ type
   published
     { Public declarations }
     property FieldsFK:TFWMiniFieldColumns read gf_FKFields write SetFKFields; //Stores the names of Source and Dest. Fields
-    property FieldsDisplay:TFWMiniFieldColumns read gf_FKFields write SetFKFields; //Stores the names of Source and Dest. Fields
+    property FieldsDisplay:TFWMiniFieldColumns read gf_DisplayFields write SetDisplayFields; //Stores the names of Source and Dest. Fields
 
     property OnDelete: TFWLinkOption read glo_LinkOptionDelete write glo_LinkOptionDelete default loNoAction ;
     property OnUpdate: TFWLinkOption read glo_LinkOptionUpdate write glo_LinkOptionUpdate default loNoAction ;
@@ -2005,6 +2005,7 @@ begin
 
   CreateRefDef:=gr_Model.ActivateRefDefForNewRelations;
   gf_FKFields := CreateCollectionFields;
+  gf_DisplayFields := CreateCollectionFields;
   gt_DestTables := CreateCollectionTables;
 end;
 
@@ -2012,8 +2013,9 @@ destructor TFWRelation.Destroy;
 begin
 
   inherited;
-  FieldsFK.Destroy;
-
+  gf_FKFields.Destroy;
+  gf_DisplayFields.Destroy;
+  gt_DestTables.Destroy;
 end;
 
 // relation assign
@@ -2029,6 +2031,7 @@ begin
   theDestRel.gt_DestTables.Assign(gt_DestTables);
 
   theDestRel.FieldsFK.Assign(FieldsFK);
+  theDestRel.FieldsDisplay.Assign(FieldsDisplay);
 
   theDestRel.CreateRefDef:=CreateRefDef;
 
