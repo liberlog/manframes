@@ -228,6 +228,7 @@ type
   private
      e_Scroll         : TDatasetNotifyEvent ;
      FPanels : TFWPanels;
+     FPageControlDetails : TCustomTabControl;
      FPanelDetails : TCustomPanel;
      FForm : TF_CustomFrameWork;
      gd_Grid : TCustomDBGrid ;
@@ -329,6 +330,7 @@ type
     // Panel contenant le Grid de navigation
     property Panels  : TFWPanels read FPanels  write p_setPanels  ;
     property PanelDetails  : TCustomPanel read FPanelDetails  write FPanelDetails  ;
+    property PageControlDetails  : TCustomTabControl read FPageControlDetails  write FPageControlDetails  ;
     // Clé étrangère du DataSource vers le grid Lookup
     property ShowPrint : Boolean read b_ShowPrint write b_ShowPrint default True;
 
