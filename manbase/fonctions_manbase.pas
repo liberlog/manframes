@@ -12,8 +12,7 @@ uses
   fonctions_version,
   {$ENDIF}
   u_multidata,
-  DB,
-  Controls;
+  DB;
 
 //////////////////////////////////////////////////////////////////////
 // Matthieu GIROUX 2013
@@ -643,10 +642,6 @@ function ffws_CreateSource ( const ADBSources : TFWTables; const as_connection, 
 function fds_CreateDataSourceAndDataset ( const as_Table, as_NameEnd : String  ; const adat_QueryCopy : TDataset ; const acom_Owner : TComponent): TDatasource;
 function fs_getFileNameOfTableColumn ( const afws_Source    : TFWTable ): String;
 function fds_CreateDataSourceAndTable ( const as_Table, as_NameEnd, as_DataURL : String  ; const adtt_DatasetType : TDatasetType ; const adat_QueryCopy : TDataset ; const acom_Owner : TComponent): TDatasource;
-procedure p_SetComboProperties ( const acom_combo : TControl;
-                                 const ads_ListSource : TDataSource;
-                                 const as_Name : String;
-                                 const alr_Relation : TFWRelation);
 procedure p_SetCorrectFieldName(const AFieldColumn : TFWMiniFieldColumn); overload;
 procedure p_SetCorrectFieldName(var AFieldName : String); overload;
 
@@ -2502,45 +2497,6 @@ end;
 
 
 { functions }
-
-procedure p_SetComboProperties ( const acom_combo : TControl;
-                                 const ads_ListSource : TDataSource;
-                                 const as_Name : String;
-                                 const alr_Relation : TFWRelation);
-var
-    ls_Fields : String;
-Begin
-  with acom_combo,alr_Relation do
-    Begin
-      Width := 100;
-      if FieldsDisplay.Count > 0 Then
-      with FieldsDisplay do
-       Begin
-         ls_Fields := FieldsFK.toString + ',' + toString;
-         p_SetComponentProperty(acom_combo,CST_PROPERTY_LISTFIELD    , toString);
-         p_SetComponentProperty(acom_combo,CST_PROPERTY_LOOKUPDISPLAY, toString);
-       end
-      Else
-       ls_Fields := FieldsFK.toString;
-      with FieldsFK do
-       Begin
-        p_SetComponentProperty(acom_combo,CST_PROPERTY_KEYFIELD   , toString);
-        p_SetComponentProperty(acom_combo,CST_PROPERTY_LOOKUPFIELD, toString);
-       end;
-      if ls_Fields > '' Then
-        Begin
-          p_SetComponentObjectProperty(acom_combo,CST_PROPERTY_LISTSOURCE  , ads_ListSource );
-          p_SetComponentObjectProperty(acom_combo,CST_PROPERTY_LOOKUPSOURCE, ads_ListSource );
-        end;
-
-      if as_Name > '' Then
-        Begin
-         Hint:=fs_GetLabelCaption(as_Name);
-         ShowHint:=True;
-        end;
-    end;
-End;
-
 /////////////////////////////////////////////////////////////////////////
 // function fds_CreateDataSourceAndDataset
 // Cloning a Dataset and creating its datasource

@@ -22,6 +22,8 @@ uses SysUtils,
   {$ENDIF}
   DBCtrls, ExtCtrls,
   IniFiles,
+  Controls,
+  fonctions_manbase,
   Classes ;
 
 
@@ -55,6 +57,9 @@ procedure p_InitZComponent ( const Connexion : TComponent ; const Inifile : TCus
 function fs_CollationEncode ( const Connexion : TComponent ; const as_StringsProp : String ) : String;
 function fb_TestConnection ( const Connexion : TComponent ; const lb_ShowMessage : Boolean ) : Boolean;
 function fs_IniSetConnection ( const accx_Connection : TComponent ) : String ;
+procedure p_SetComboProperties ( const acom_combo : TControl;
+                                 const ads_ListSource : TDataSource;
+                                 const alr_Relation : TFWRelation);
 
 const
         CST_ADOCONNECTION ='TADOConnection';
@@ -89,9 +94,50 @@ uses Variants,  fonctions_erreurs, fonctions_string,
   {$IFDEF EADO}
      AdoConEd,
   {$ENDIF}
-   fonctions_proprietes, TypInfo,
+   fonctions_proprietes,
+   fonctions_languages,
+   TypInfo,
    Dialogs, unite_variables,
    fonctions_init;
+
+
+const CST_DECIMAL_COMBO = ';';
+
+procedure p_SetComboProperties ( const acom_combo : TControl;
+                                 const ads_ListSource : TDataSource;
+                                 const alr_Relation : TFWRelation);
+var
+    ls_Fields : String;
+Begin
+  with acom_combo,alr_Relation do
+    Begin
+      Width := 100;
+      if FieldsDisplay.Count > 0 Then
+      with FieldsDisplay do
+       Begin
+         ls_Fields := FieldsFK.toString + ',' + toString;
+         p_SetComponentProperty(acom_combo,CST_PROPERTY_LISTFIELD    , toString(CST_DECIMAL_COMBO));
+         p_SetComponentProperty(acom_combo,CST_PROPERTY_LOOKUPDISPLAY, toString(CST_DECIMAL_COMBO));
+       end
+      Else
+       ls_Fields := FieldsFK.toString;
+      with FieldsFK do
+       Begin
+        p_SetComponentProperty(acom_combo,CST_PROPERTY_KEYFIELD   , Items[0].FieldName);
+        p_SetComponentProperty(acom_combo,CST_PROPERTY_LOOKUPFIELD, Items[0].FieldName);
+       end;
+      if ls_Fields > '' Then
+        Begin
+          p_SetComponentObjectProperty(acom_combo,CST_PROPERTY_LISTSOURCE  , ads_ListSource );
+          p_SetComponentObjectProperty(acom_combo,CST_PROPERTY_LOOKUPSOURCE, ads_ListSource );
+        end;
+      if RelationName > '' Then
+        Begin
+         Hint:=fs_GetLabelCaption(RelationName);
+         ShowHint:=True;
+        end;
+    end;
+End;
 
 
 
