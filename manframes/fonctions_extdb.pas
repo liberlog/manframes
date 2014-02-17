@@ -94,9 +94,12 @@ uses Variants,  fonctions_erreurs, fonctions_string,
   {$IFDEF EADO}
      AdoConEd,
   {$ENDIF}
+   fonctions_dialogs,
    fonctions_proprietes,
    fonctions_languages,
+   fonctions_createsql,
    TypInfo,
+   u_form_msg,
    Dialogs, unite_variables,
    fonctions_init;
 
@@ -307,7 +310,6 @@ Begin
 //  fb_InitConnection( asqc_Connection, FIniFile );
 End;
 {$ENDIF}
-
 {$IFDEF VERSIONS}
 initialization
   p_ConcatVersion ( gVer_fonctions_extdb );

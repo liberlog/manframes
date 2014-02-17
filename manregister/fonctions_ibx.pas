@@ -20,6 +20,7 @@ resourcestring
    Gs_Charset_ibx =   'utf8';
 
 const DEFAULT_FIREBIRD_SERVER_DIR = '/var/lib/firebird/2.5/';
+      _REL_PATH_BACKUP='Backup'+DirectorySeparator;
 {$IFDEF VERSIONS}
       gver_fonctions_ibx : T_Version = ( Component : 'IBX Connect package.' ;
                                          FileUnit : 'fonctions_ibx' ;
@@ -38,13 +39,19 @@ implementation
 
 uses IBQuery,
      IBUpdateSQL,
+     IBServices,
      IBDatabase,
+     fonctions_dialogs,
+     unite_variables,
+     IBSQL,
      FileUtil,
      fonctions_init,
      u_multidonnees,
-     fonctions_file,
-     fonctions_createsql,
      fonctions_db,
+     fonctions_file,
+     fonctions_string,
+     fonctions_proprietes,
+     fonctions_createsql,
      fonctions_dbcomponents;
 
 function fs_CreateAlterBeginSQL :String;
@@ -56,6 +63,36 @@ function fs_CreateAlterEndSQL ( const as_base, as_user, as_password, as_host : S
 Begin
   Result := 'COMMIT;'+ #10;
 end;
+function fb_OpenDatabase  ( const AConnection  : TComponent ;
+                            const ab_Open : Boolean ;
+                            const ab_showError : Boolean    ):Boolean;
+begin
+  with AConnection as TIBDataBase do
+   Begin
+    if ab_Open Then
+      try
+       Open;
+       DefaultTransaction.Active:=True;
+      Except
+        on e:Exception do
+         if ab_showError Then
+           MyShowMessage('Error:'+e.Message);
+     end
+    Else
+     Begin
+       if DefaultTransaction.Active Then
+         try
+          DefaultTransaction.Commit;
+
+         Except
+           DefaultTransaction.Rollback;
+         end;
+       Close;
+     end;
+
+     Result:=Connected;
+   End;
+End;
 
 procedure p_CreateIBXconnection ( const AOwner : TComponent ; var adtt_DatasetType : TDatasetType ; var AQuery : TDataset; var AConnection : TComponent );
 Begin
@@ -68,7 +105,11 @@ Begin
     LoginPrompt:=False;
     AllowStreamedConnected:=True;
     DefaultTransaction := TIBTransaction.Create ( AOwner );
-    DefaultTransaction.DefaultDatabase := AConnection as TIBDataBase;
+    with DefaultTransaction do
+     Begin
+      DefaultDatabase := AConnection as TIBDataBase;
+      DefaultAction   := TACommit;
+     End;
    End;
   with AQuery as TIBQuery do
      Begin
@@ -88,6 +129,142 @@ Begin
   Result := 'CREATE DATABASE '''+as_base+''' USER '''+as_user+''' PASSWORD '''+as_password+''' PAGE_SIZE 16384 DEFAULT CHARACTER SET '+Gs_Charset_ibx+';'+#10
           + 'CONNECT '''+as_base+''' USER '''+as_user+''' PASSWORD '''+as_password+''';'+#10;
 End;
+
+function fb_RestoreBase ( const AConnection : TComponent ;
+                          const as_database, as_user, as_password, APathSave : String ;
+                          const ASt_Messages : TStrings;
+                          const acom_ControlMessage, acom_owner : TComponent):Boolean;
+var
+  DiskSize:Int64;
+  sr:TSearchRec;
+  TailleFichier:LongInt;
+  Pos:integer;
+  ibRestore:TIBRestoreService;
+  IBBackup:TIBBackupService;
+  FileNameGBK,PathNameGBK,BackFile,Serveur,NomBase:string;
+  lecteur:string;
+  Prot:TProtocol;
+  lb_connected : Boolean;
+begin
+  if AConnection = nil
+   Then lb_connected := False
+   Else
+    Begin
+     lb_connected := fb_getComponentBoolProperty(AConnection,CST_DBPROPERTY_CONNECTED);
+     p_SetComponentBoolProperty(AConnection,CST_DBPROPERTY_CONNECTED,False);
+    end;
+  {$IFDEF WINDOWS}
+  Pos:=AnsiPos(':',as_database);
+  if Pos>2 then
+  {$ELSE}
+  Pos:=AnsiPos(DirectorySeparator,as_database);
+  if Pos <> 1 then
+  {$ENDIF}
+  begin
+    Prot:=TCP;
+    Serveur:=copy(as_database,1,Pos-1);
+    NomBase:=copy(as_database,Pos+1,250);
+    BackFile:='optimisation.fbk';
+  end
+  else
+  begin
+    Prot:=Local;
+    Serveur:='';
+    NomBase:=as_database;
+    FileNameGBK:=ExtractFileNameOnly(as_database)+FormatDateTime('yymmddhh',Now);
+    FileNameGBK:=ChangeFileExt(FileNameGBK,'.FBK');
+{$IFDEF WINDOWS}
+    if Pos=2 then
+{$ELSE}
+    if ( as_database <> '' )
+    and ( as_database [1] = DirectorySeparator ) Then
+{$ENDIF}
+     begin
+      lecteur:=AnsiUpperCase(APathSave);
+      DiskSize:=DiskFree({$IFDEF WINDOWS}ord(lecteur[1])-ord('A')+1{$ELSE}0{$ENDIF});
+      FindFirstUTF8(NomBase, faAnyFile, sr); { *Converted from FindFirstUTF8*  }
+      TailleFichier:=sr.Size;
+      FindCloseUTF8(sr); { *Converted from FindCloseUTF8*  }
+      if DiskSize>TailleFichier then
+        PathNameGBK:=APathSave
+      else
+        PathNameGBK:=ExtractFilePath(NomBase)+_REL_PATH_BACKUP;
+     end
+      else
+        PathNameGBK:=APathSave;
+    if not ForceDirectoriesUTF8(PathNameGBK) { *Converted from ForceDirectories*  } then
+    begin
+      Result:=False;
+      exit;
+    end;
+    BackFile:=ExcludeTrailingPathDelimiter(PathNameGBK)+DirectorySeparator+FileNameGBK;
+  end;
+
+  try
+    IBBackup:=TIBBackupService.Create(acom_owner);
+    with IBBackup do
+    begin
+      LoginPrompt:=False;
+      with Params do
+       Begin
+        Add('user_name='+as_user);
+        Add('password='+as_password);
+        //Add('lc_ctype=ISO8859_1');
+       end;
+      Protocol:=Prot;
+      ServerName:=Serveur;
+      Active:=True;
+      try
+        Verbose:=True;
+        Options:= [IgnoreLimbo];
+        DatabaseName:=NomBase;
+        BackupFile.Add(BackFile);
+        p_SetComponentProperty(acom_ControlMessage,CST_PROPERTY_CAPTION,fs_RemplaceMsg(gs_Caption_Save_in,[BackFile]));
+        ServiceStart;
+        while not Eof do
+          if ASt_Messages = nil
+           Then GetNextLine
+           Else ASt_Messages.Append(GetNextLine);
+      finally
+        Active:=False;
+        IBBackup.Destroy;
+      end;
+    end;
+
+    ibRestore:=TIBRestoreService.Create(acom_owner);
+    with IBRestore do
+    begin
+      LoginPrompt:=False;
+      Params.Add('user_name='+as_user);
+      Params.Add('password='+as_password);
+      Protocol:=Prot;
+      ServerName:=Serveur;
+      Active:=True;
+      try
+        Verbose:=True;
+        Options:= [Replace];
+        PageBuffers:=32000;
+        PageSize:=4096;
+        DatabaseName.Add(NomBase);
+        BackupFile.Add(BackFile);
+        p_SetComponentProperty(acom_ControlMessage,CST_PROPERTY_CAPTION,fs_RemplaceMsg(gs_Caption_Restore_database,[as_database]));
+        ServiceStart;
+        while not Eof do
+          if ASt_Messages = nil
+           Then GetNextLine
+           Else ASt_Messages.Append(GetNextLine);
+      finally
+        Active:=False;
+        ibRestore.Destroy;
+      end;
+    end;
+
+  finally
+    if lb_connected Then
+      p_SetComponentBoolProperty(AConnection,CST_DBPROPERTY_CONNECTED,lb_connected);
+  end;
+end;
+
 
 procedure p_ExecuteSQLCommand ( const as_SQL : {$IFDEF DELPHI_9_UP} String {$ELSE} WideString{$ENDIF}  );
 var ls_File : String;
@@ -159,6 +336,8 @@ initialization
  ge_OnBeginCreateAlter  :=TOnGetSQL( fs_CreateAlterBeginSQL);
  ge_OnEndCreate       :=TOnSetDatabase( fs_CreateAlterEndSQL);
  ge_OnCreateDatabase  :=TOnSetDatabase( fs_CreateDatabase);
+ ge_OnOpenDatabase  :=TOnOpenDatabase( fb_OpenDatabase );
+ ge_OnOptimiseDatabase  :=TOnOptimiseDatabase( fb_RestoreBase );
  ge_OnExecuteCommand:=TOnExecuteCommand(p_ExecuteSQLCommand);
  {$IFDEF VERSIONS}
  p_ConcatVersion ( gver_fonctions_ibx );
