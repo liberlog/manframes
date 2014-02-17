@@ -34,6 +34,7 @@ uses
     ZeosDataServer,
     ZConnection,
     fonctions_dbcomponents,
+    fonctions_createsql,
     u_moduledbnetserver;
 
 
@@ -60,9 +61,25 @@ Begin
       OnLogin := ZConnectionLogin;
     end;
 end;
+function fb_OpenDatabase  ( const AConnection  : TComponent ;
+                            const ab_Open : Boolean ;
+                            const ab_showError : Boolean    ):Boolean;
+begin
+  with AConnection as TZeosDataServer do
+    Begin
+     try
+      connected := ab_open;
+     Except
+     end;
+     Result:=Connected;
+    end;
+End;
+
+
 
 initialization
  ge_onCreateConnection := TCreateConnection ( p_CreateOnLineconnection );
+ ge_OnOpenDatabase     := TOnOpenDatabase({$IFNDEF FPC}@{$ENDIF}fb_OpenDatabase);
  {$IFDEF VERSIONS}
  p_ConcatVersion ( gVer_fonctions_dbnetserver );
  {$ENDIF}

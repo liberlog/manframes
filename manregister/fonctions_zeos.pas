@@ -148,6 +148,19 @@ Begin
   end;
 End;
 
+function fb_OpenDatabase  ( const AConnection  : TComponent ;
+                            const ab_Open : Boolean ;
+                            const ab_showError : Boolean    ):Boolean;
+begin
+  with AConnection as TZConnection do
+   Begin
+    try
+     connected := ab_open;
+    Except
+    end;
+    Result:=Connected;
+   end;
+End;
 
 
 initialization
@@ -155,6 +168,7 @@ initialization
  ge_OnExecuteScriptServer:=TOnExecuteScriptServer({$IFNDEF FPC}@{$ENDIF}p_ExecuteSQLCommandServer);
  ge_OnExecuteQuery:=TOnExecuteQuery({$IFNDEF FPC}@{$ENDIF}p_ExecuteZEOSQuery);
  ge_OnCreateDatabase :=TOnSetDatabase({$IFNDEF FPC}@{$ENDIF}fs_BeginCreateDatabase);
+ ge_OnOpenDatabase :=TOnOpenDatabase({$IFNDEF FPC}@{$ENDIF}fb_OpenDatabase);
  ge_OnEndCreate :=TOnSetDatabase({$IFNDEF FPC}@{$ENDIF}fs_EndCreateDatabase);
  ge_SetConnectComponentsOnCreate := TSetConnectComponents({$IFNDEF FPC}@{$ENDIF}p_setZEOSConnectionOnCreation);
  gbm_DatabaseToGenerate := bmMySQL;

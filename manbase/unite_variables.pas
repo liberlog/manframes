@@ -189,6 +189,19 @@ resourcestring
   GS_PROPRIETE_PAS_BONNE_CLE = 'La propriété @ARG ne comporte pas le champ clé primaire @ARG.' ;
 
   GS_ERREUR_CHARGEMENT = 'Erreur au chargement @ARG.' ;
+
+  // backup
+  gs_Error_Restore_Directory_does_not_exists =
+          'Opération impossible, le répertoire de sauvegarde'+CST_ENDOFLINE
+        +'@ARG'+CST_ENDOFLINE+'n''existe pas et ne peut être créé.';
+  gs_Caption_Save_in = 'Sauvegarde dans @ARG.';
+  gs_Caption_Restore_database = 'Restauration base @ARG.';
+  gs_Log_Optimising_database = 'Optimisation de la base de données...';
+  gs_Optimising_database_is_a_success = 'L''optimisation de la base s''est bien passée.';
+  gs_Error_One_Error_has_occured_while_optimising_Verify_if_you_are_admin = 'Une erreur s''est produite pendant l''optimisation.'+CST_ENDOFLINE+CST_ENDOFLINE
+      +'Vérifiez que vous possédez les droits d''administration'+CST_ENDOFLINE
+      +'de cette base pour exécuter cette opération.';
+
   GS_SOFTWARE_CLOSING = 'L''application est en train de se fermer.' ;
   GS_COMPOSANT_ADO = 'Le composant @ARG doit être une table ou un query en ADO.' ;
 
