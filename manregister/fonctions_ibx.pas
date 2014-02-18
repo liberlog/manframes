@@ -35,6 +35,17 @@ const DEFAULT_FIREBIRD_SERVER_DIR = '/var/lib/firebird/2.5/';
 
 procedure p_CreateIBXconnection ( const AOwner : TComponent ; var adtt_DatasetType : TDatasetType ; var AQuery : TDataset; var AConnection : TComponent );
 
+type
+
+{ TDM_IBX }
+
+ TDM_IBX = class ( TDataModule )
+       public
+         constructor Create(AOwner: TComponent);
+       //  procedure IBXDatasetPost ( ADataset : TDataSet );
+     End;
+
+ var GDM_IBX : TDM_IBX=nil;
 implementation
 
 uses IBQuery,
@@ -47,6 +58,7 @@ uses IBQuery,
      FileUtil,
      fonctions_init,
      u_multidonnees,
+     IBCustomDataSet,
      fonctions_db,
      fonctions_file,
      fonctions_string,
@@ -111,10 +123,13 @@ Begin
       DefaultAction   := TACommit;
      End;
    End;
+  if GDM_IBX = nil Then
+    GDM_IBX:=TDM_IBX.Create(nil);
   with AQuery as TIBQuery do
      Begin
       Database := AConnection as TIBDataBase;
       UpdateObject:=TIBUpdateSQL.Create(AOwner);
+//      AfterPost:=GDM_IBX.IBXDatasetPost;
      end;
 end;
 
@@ -325,6 +340,35 @@ Begin
      fs_ExecuteProcess('sh',' "'+fs_getAppDir+'exec.sh"');
   {$ENDIF}
 end;
+
+{ TDM_IBX }
+
+constructor TDM_IBX.Create(AOwner: TComponent);
+begin
+  if not ( csDesigning in ComponentState ) Then
+    Try
+      GlobalNameSpace.BeginWrite;
+      {$IFDEF FPC}
+      CreateNew(AOwner, 0 );
+      {$ELSE}
+      CreateNew(AOwner);
+      {$ENDIF}
+      //ModuleCreate;
+      DoCreate;
+      GDM_IBX := Self ;
+
+    Finally
+      GlobalNameSpace.EndWrite;
+    End
+  Else
+   inherited ;
+end;
+{
+procedure TDM_IBX.IBXDatasetPost(ADataset: TDataSet);
+begin
+  ( ADataset as TIBCustomDataSet ).Transaction.Commit;
+end;
+ }
 {$ENDIF}
 
 initialization
@@ -342,5 +386,7 @@ initialization
  {$IFDEF VERSIONS}
  p_ConcatVersion ( gver_fonctions_ibx );
  {$ENDIF}
+finalization
+ GDM_IBX.Free;
 end.
 
