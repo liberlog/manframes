@@ -68,10 +68,10 @@ begin
   with AConnection as TZeosDataServer do
     Begin
      try
-      connected := ab_open;
+      Active := ab_open;
      Except
      end;
-     Result:=Connected;
+     Result:=Active;
     end;
 End;
 
