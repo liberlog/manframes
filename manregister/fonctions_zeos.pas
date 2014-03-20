@@ -108,19 +108,9 @@ begin
     End;
 End;
 
-procedure p_ExecuteSQLCommandServer ( const AConnection : TComponent; const as_SQL : {$IFDEF DELPHI_9_UP} String {$ELSE} WideString{$ENDIF}  );
+procedure p_ExecuteSQLCommandServer ( const AConnection : TComponent; const as_SQL :{$IFDEF DELPHI_9_UP} WideString {$ELSE} String{$ENDIF}  );
 var lsp_sqlcommand : TZSQLProcessor;
-var ls_File : String;
-    lh_handleFile : THandle;
 Begin
-  ls_File := fs_getAppDir+'sql-p';
-  if FileExistsUTF8(ls_File+CST_EXTENSION_SQL_FILE) Then DeleteFileUTF8(ls_File+CST_EXTENSION_SQL_FILE);
-  lh_handleFile := FileCreateUTF8(ls_File+CST_EXTENSION_SQL_FILE);
-  try
-    FileWriteln(lh_handleFile,as_SQL);
-  finally
-    FileClose(lh_handleFile);
-  end;
   lsp_sqlcommand:=TZSQLProcessor.Create(nil);
   try
     lsp_sqlcommand.Connection:=AConnection as TZConnection;
