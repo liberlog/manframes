@@ -404,7 +404,7 @@ type
     constructor Create(const AOwner: TPersistent; const ColumnClass: TFWTableClass); overload; virtual;
     constructor Create(const ColumnClass: TFWTableClass); overload; virtual;
     function indexOf ( const as_TableName : String ) : Integer;
-    function TableByName ( const as_TableName : String ) : TFWTable;
+    function TableByName ( as_TableName : String ) : TFWTable;
     function Add: TFWTable; virtual;
     property Items[Index: Integer]: TFWTable read GetTable write SetTable; default;
   End;
@@ -654,6 +654,9 @@ implementation
 uses fonctions_dbcomponents,
      fonctions_proprietes,
      fonctions_string,
+     {$IFDEF FPC}
+     LazUTF8,
+     {$ENDIF}
      u_multidonnees,
      typinfo,
      fonctions_languages;
@@ -903,12 +906,13 @@ begin
 
 end;
 
-function TFWTables.TableByName(const as_TableName: String): TFWTable;
+function TFWTables.TableByName(as_TableName: String): TFWTable;
 var li_i : Integer;
 begin
   Result := nil;
+  as_TableName:=LowerCase(trim(as_TableName));
   for li_i := 0 to Count -1 do
-    if Items [ li_i ].Table = as_TableName Then
+    if LowerCase(trim(Items [ li_i ].Table)) = as_TableName Then
      Begin
       Result := Items [ li_i ];
       Break;

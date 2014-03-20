@@ -26,8 +26,8 @@ type
   TOnOptimiseDatabase = function ( const AConnection : TComponent ;
                                    const as_database, as_user, as_password, APathSave : String ;
                                    const ASt_Messages : TStrings; const acom_ControlMessage, acom_owner : TComponent):Boolean;
-  TOnExecuteCommand = procedure ( const as_SQL: {$IFDEF DELPHI_9_UP} String {$ELSE} WideString{$ENDIF} );
-  TOnExecuteScriptServer = procedure ( const AConnection : TComponent; const as_SQL: {$IFDEF DELPHI_9_UP} String {$ELSE} WideString{$ENDIF} );
+  TOnExecuteCommand = procedure ( const as_SQL: {$IFDEF DELPHI_9_UP} WideString {$ELSE} String{$ENDIF} );
+  TOnExecuteScriptServer = procedure ( const AConnection : TComponent; const as_SQL: {$IFDEF DELPHI_9_UP} WideString {$ELSE} String{$ENDIF} );
 
 
 const
@@ -55,8 +55,8 @@ const
   CST_DBPROPERTY_MODIFY_SQL  = 'ModifySQL';
   CST_DBPROPERTY_REFRESH_SQL = 'RefreshSQL';
 
-procedure p_ExecuteSQLCommand ( const as_Command :{$IFDEF DELPHI_9_UP} String {$ELSE} WideString{$ENDIF} ; const ab_ShowException : boolean = True );
-procedure p_ExecuteSQLScriptServer ( const AConnection : TComponent; const as_Command :{$IFDEF DELPHI_9_UP} String {$ELSE} WideString{$ENDIF} ; const ab_ShowException : boolean = True );
+procedure p_ExecuteSQLCommand ( const as_Command :{$IFDEF DELPHI_9_UP} WideString {$ELSE} String{$ENDIF} ; const ab_ShowException : boolean = True );
+procedure p_ExecuteSQLScriptServer ( const AConnection : TComponent; const as_Command :{$IFDEF DELPHI_9_UP} WideString {$ELSE} String{$ENDIF} ; const ab_ShowException : boolean = True );
 procedure p_optimiseDatabase ( const AConnection : TComponent;
                                const as_database, as_user, as_password, APathSave : String );
 procedure p_SyncDB(const DMDB : TDataSet;const ModelTables: TList; const DBConn: TComponent;
@@ -105,7 +105,7 @@ uses variants,
      fonctions_erreurs;
 
 // execute query with optional module
-procedure p_ExecuteSQLCommand ( const as_Command :{$IFDEF DELPHI_9_UP} String {$ELSE} WideString{$ENDIF} ; const ab_ShowException : boolean = True );
+procedure p_ExecuteSQLCommand ( const as_Command :{$IFDEF DELPHI_9_UP} WideString {$ELSE} String{$ENDIF} ; const ab_ShowException : boolean = True );
 Begin
   try
     if assigned ( ge_OnExecuteCommand ) Then
@@ -118,7 +118,7 @@ Begin
 End ;
 
 // execute query with optional module
-procedure p_ExecuteSQLScriptServer ( const AConnection : TComponent; const as_Command :{$IFDEF DELPHI_9_UP} String {$ELSE} WideString{$ENDIF} ; const ab_ShowException : boolean = True );
+procedure p_ExecuteSQLScriptServer ( const AConnection : TComponent; const as_Command :{$IFDEF DELPHI_9_UP} WideString {$ELSE} String{$ENDIF} ; const ab_ShowException : boolean = True );
 Begin
   try
     if assigned ( ge_OnExecuteScriptServer ) Then
@@ -1476,4 +1476,4 @@ end;
 initialization
   p_ConcatVersion(gVer_fonctions_create);
 {$ENDIF}
-end.
+end.
