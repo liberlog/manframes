@@ -281,7 +281,7 @@ begin
 end;
 
 
-procedure p_ExecuteSQLCommand ( const as_SQL : {$IFDEF DELPHI_9_UP} String {$ELSE} WideString{$ENDIF}  );
+procedure p_ExecuteSQLCommand ( const as_SQL : {$IFDEF DELPHI_9_UP} WideString {$ELSE} String{$ENDIF}  );
 var ls_File : String;
     lh_handleFile : THandle;
 Begin
@@ -293,21 +293,15 @@ Begin
   finally
     FileClose(lh_handleFile);
   end;
-  if FileExistsUTF8(ls_File+CST_EXTENSION_BATCH_FILE) Then DeleteFileUTF8(ls_File+CST_EXTENSION_BATCH_FILE);
-  lh_handleFile := {$IFDEF WINDOWS}FileCreate{$ELSE}FileCreateUTF8{$ENDIF}(ls_File+CST_EXTENSION_BATCH_FILE);
-  try
-    {$IFDEF WINDOWS}
-    FileWriteln(lh_handleFile,fs_getAppDir+'isql.exe'+ ' -i '''+ ls_File+CST_EXTENSION_SQL_FILE
-                             +''' -o '''+ ls_File+CST_EXTENSION_LOG_FILE+''' -s 3');
-    {$ELSE}
-    FileWriteln(lh_handleFile, 'isql-fb'+ ' -i '+ ls_File+CST_EXTENSION_SQL_FILE
-                              +''' -o '''+ ls_File+CST_EXTENSION_LOG_FILE+''' -s 3');
-    {$ENDIF}
-  finally
-    FileClose(lh_handleFile);
-  end;
-
-  fs_ExecuteProcess({$IFNDEF WINDOWS}'sh',{$ENDIF}ls_File+CST_EXTENSION_BATCH_FILE);
+  {$IFDEF WINDOWS}
+  ls_File := fs_ExecuteProcess(fs_getAppDir+'isql.exe', ' -i '''+ ls_File+CST_EXTENSION_SQL_FILE
+                           +''' -s 3');
+  {$ELSE}
+  ls_File := fs_ExecuteProcess('isql-fb', ' -i '+ ls_File+CST_EXTENSION_SQL_FILE
+                            +''' -s 3');
+  {$ENDIF}
+  if ls_File > '' Then
+    MyShowMessage('Erreur'+#10+ls_File);
 End ;
 
 {$IFDEF FPC}
