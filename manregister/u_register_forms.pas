@@ -46,9 +46,9 @@ begin // Enregistre le nouvel expert de projet
   // Procédures à garder pour peut-être plus tard ( utilisation actuelle d'unités dépréciées)
 // Un register libère automatiquement la variable à la suppression
 {$IFDEF FPC}
-  RegisterCustomForm(TF_FormDico, CST_PACKAGE_MANFRAMES);
-  RegisterCustomForm(TF_PropForm, CST_PACKAGE_MANFRAMES);
-  RegisterCustomForm(TF_FormMainDB, CST_PACKAGE_MANFRAMES);
+  RegisterCustomForm(TF_FormDico,'U_FormDico',CST_PACKAGE_MANFRAMES);
+  RegisterCustomForm(TF_PropForm,'u_propform',CST_PACKAGE_MANFRAMES);
+  RegisterCustomForm(TF_FormMainDB,'u_formmaindb',CST_PACKAGE_MANFRAMES);
 {$ELSE}
   RegisterCustomModule ( TF_FormDico, TCustomModule );
   RegisterCustomModule ( TF_PropForm, TCustomModule );
