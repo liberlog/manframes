@@ -297,8 +297,8 @@ Begin
   ls_File := fs_ExecuteProcess(fs_getAppDir+'isql.exe', ' -i '''+ ls_File+CST_EXTENSION_SQL_FILE
                            +''' -s 3');
   {$ELSE}
-  ls_File := fs_ExecuteProcess('isql-fb', ' -i '+ ls_File+CST_EXTENSION_SQL_FILE
-                            +''' -s 3');
+  ls_File := fs_ExecuteProcess('isql-fb', ' -i '''+ ls_File+CST_EXTENSION_SQL_FILE
+                            +'''  -s 3');
   {$ENDIF}
   if ls_File > '' Then
     MyShowMessage('Erreur'+#10+ls_File);

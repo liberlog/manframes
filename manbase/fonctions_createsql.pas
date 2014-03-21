@@ -97,10 +97,8 @@ implementation
 
 uses variants,
      fonctions_string,
-     u_form_working,
      unite_variables,
      fonctions_db,
-     fonctions_dialogs,
      fonctions_proprietes,
      fonctions_erreurs;
 
@@ -1461,12 +1459,9 @@ var ls_Message : String;
 begin
   if Assigned(ge_OnOptimiseDatabase) Then
    Begin
-    doShowWorking(gs_Log_Optimising_database);
-    gf_Working.PleaseWait.Visible:=True;
-    if ge_OnOptimiseDatabase ( AConnection, as_database, as_user, as_password, APathSave, nil,gF_Working.PleaseWait, AConnection )
+    if ge_OnOptimiseDatabase ( AConnection, as_database, as_user, as_password, APathSave, nil, nil, AConnection )
      Then ls_Message:=gs_Optimising_database_is_a_success
      Else ls_Message:=gs_Error_Restore_Directory_does_not_exists;
-    MyShowMessage(ls_Message);
    End;
 end;
 
