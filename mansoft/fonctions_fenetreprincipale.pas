@@ -108,6 +108,7 @@ uses
   fonctions_aide,
 {$ENDIF}
   fonctions_dialogs,
+  fonctions_createsql,
   unite_variables, unite_messages,
   fonctions_proprietes ;
 
@@ -183,15 +184,18 @@ begin
 end;
 
 function fb_Fermeture ( const af_FormMainini : TF_FormMainIni ) : Boolean ;
+var li_i : Integer;
 begin
   Result := False ;
   if MyMessageDlg ( GS_FERMER_APPLICATION, mtConfirmation, [ mbYes, mbNo ] ) = mrYes Then
     Begin
       Result := True ;
-      // Sauvegarde de la position des fenêtres filles
+      DoCloseFenetrePrincipale ( af_FormMainini );
+      with DMModuleSources do
+       for li_i := 0 to Sources.Count - 1 do
+         fb_OpenCloseDatabase(Sources [ li_i ].Connection,False);
       af_FormMainini.p_FreeChildForms;
-      doCloseWorking;
-      Application.Terminate;
+
     End ;
 end;
 
