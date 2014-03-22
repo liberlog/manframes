@@ -3613,7 +3613,6 @@ begin
                if assigned ( DataSet ) Then
                 with DataSet do
                  Begin
-                 ShowMessage(fs_getSQLQuery(DataSet)+' '+IntToStr(FieldDefs.count));
                   Open ;
                   BeforePost   := p_DataWorkBeforePost ;
                  end;
