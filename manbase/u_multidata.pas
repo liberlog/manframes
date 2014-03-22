@@ -45,7 +45,7 @@ type TDatasetType = ({$IFNDEF FPC}dtADO,{$ENDIF}{$IFDEF ZEOS}dtZEOS,{$ENDIF}{$IF
 var gs_DataExtension : String = '.res';
 
 const
-    ge_onCreateConnection : TCreateConnection = nil;
+    ge_onInitConnection : TCreateConnection = nil;
 
 type
     TDSSources = class;
@@ -58,6 +58,7 @@ type
           fdat_QueryCopy : TDataset ;
           fdtt_DatasetType : TDatasetType;
           fcom_Connection : TComponent;
+          gb_local : Boolean;
           fs_dataURL      : String ;
           fi_DataPort     : Integer ;
           fs_DataUser     : String ;
@@ -67,6 +68,7 @@ type
           FDataSecure     : Boolean;
        protected
        public
+         procedure InitConnection; virtual;
          constructor Create(Collection: TCollection);override;
          property Module: TMDataSources read FMDataSources;
          property DatasetType : TDatasetType read fdtt_DatasetType;
@@ -77,6 +79,7 @@ type
          property DataURL : String read fs_dataURL write fs_dataURL;
          property DataPort : Integer read fi_DataPort write fi_DataPort;
          property DataSecure : Boolean read FDataSecure write FDataSecure;
+         property DataLocal : Boolean read gb_local write gb_local;
          property DataUser : String read fs_DataUser write fs_DataUser;
          property DataPassword : String read fs_dataPassword write fs_dataPassword;
          property DataBase : String read fs_dataBase write fs_dataBase;
@@ -224,6 +227,8 @@ begin
   end;
 end;
 
+
+
 procedure TDSSources.SetColumn(Index: Integer; Value: TDSSource);
 begin
   Items[Index].Assign(Value);
@@ -243,6 +248,16 @@ begin
   fdat_QueryCopy  := nil;
   fcom_Connection := nil;
 end;
+
+////////////////////////////////////////////////////////////////////////////////
+// procedure InitConnection
+// Init a connection and setting query
+////////////////////////////////////////////////////////////////////////////////
+procedure TDSSource.InitConnection;
+Begin
+   if assigned ( ge_onInitConnection ) Then
+    ge_onInitConnection ( FMDataSources, fdtt_DatasetType, fdat_QueryCopy, fcom_Connection );
+End;
 
 {$IFNDEF CSV}
 
@@ -311,9 +326,6 @@ Begin
  with Result do
    Begin
      FClep := as_Clep ;
-     if assigned ( ge_onCreateConnection ) Then
-      ge_onCreateConnection ( Self, fdtt_DatasetType, fdat_QueryCopy, fcom_Connection );
-
    if not assigned ( Fcom_Connection )  then
      Exit;
    lmet_MethodeDistribueeSearch.Data := Self;

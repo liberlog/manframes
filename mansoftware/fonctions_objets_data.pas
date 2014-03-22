@@ -363,64 +363,69 @@ Begin
    Exit;
   // Le module M_Donnees n'est pas encore chargé
   ls_ConnectionClep := aif_IniFile.ReadString(as_SectionName,CST_MAN_INI_CONNECTION_NAME,'');
-  lds_connection:= DMModuleSources.fds_FindConnection(ls_ConnectionClep, False);
-  if assigned ( lds_connection ) Then
-    Exit;
-  with DMModuleSources.CreateConnection ( ls_ConnectionClep ) do
-   if ( LowerCase(aif_IniFile.ReadString(as_SectionName,CST_MAN_INI_SOURCE_TYPE,'')) = CST_MAN_INI_DATA_FILE ) Then
-    Begin
-      dataURL := aif_IniFile.ReadString(as_SectionName,CST_MAN_INI_DATA_URL,'') +DirectorySeparator ;
-      {$IFDEF WINDOWS}
-      dataURL := fs_RemplaceChar ( DataURL, '/', '\' );
-      {$ENDIF}
-    end
-   Else
-   with DMModuleSources.CreateConnection ( ls_ConnectionClep ) do
-    Begin
-      DataDriver := aif_IniFile.ReadString(as_SectionName,CST_MAN_INI_DATA_DRIVER,'');
-        Begin
-          dataURL := aif_IniFile.ReadString(as_SectionName,CST_MAN_INI_DATA_URL,'');
-          li_Pos := pos ( '//', DataURL );
-          DataURL := copy ( DataURL , li_pos + 2, length ( DataURL ) - li_pos - 1 );
-          DataPort := 0;
-          li_Pos := pos ( ':', DataURL );
-          // Récupération du port
-          if li_Pos > 0 Then
-            try
-              if pos ( '/', DataURL ) > 0 Then
-                DataPort    := StrToInt ( copy ( DataURL, li_Pos + 1, pos ( '/', DataURL ) - li_pos - 1 ))
-               Else
-                DataPort    := StrToInt ( copy ( DataURL, li_Pos + 1, length ( DataURL ) - li_pos ));
-              // Finition de l'URL : Elle ne contient que l'adresse du serveur
-              DataURL := copy ( DataURL , 1, li_Pos - 1 );
-            Except
-            end;
-          if ( DataURL [ length ( DataURL )] = '/' ) Then
-            DataURL := copy ( DataURL , 1, length ( DataURL ) - 1 );
-          DataUser := aif_IniFile.ReadString(as_SectionName,CST_MAN_INI_DATA_USER,'');
-          DataPassword :=aif_IniFile.ReadString(as_SectionName,CST_MAN_INI_DATA_PASSWORD,'');
-          Database := aif_IniFile.ReadString(as_SectionName,CST_MAN_INI_DATA_BASE,'');
-          {$IFDEF ZEOS}
-          case DatasetType of
-              dtZEOS : Begin
-                       p_setComponentProperty ( Connection, 'User', DataUser );
-                       p_setComponentProperty ( Connection, 'Password', DataPassword );
-                       p_setComponentProperty ( Connection, 'Hostname', DataURL );
-                       p_setComponentProperty ( Connection, 'Database', Database );
-                       if DataPort > 0 Then
-                         p_setComponentProperty ( Connection, 'Port', DataPort );
-                       p_setComponentProperty ( Connection, 'Protocol', CST_MAN_INI_DATA_DRIVER );
-                       try
-                         p_setComponentBoolProperty ( Connection, 'Connected', True );
-                       except
-                         on e: Exception do
-                           ShowMessage ( 'Could not initiate connection on ' + DataDriver + ' and ' + DataURL +#13#10 + 'User : ' + DataUser +#13#10 + 'Base : ' + Database +#13#10 + e.Message   );
+  with DMModuleSources do
+   Begin
+    lds_connection:= fds_FindConnection(ls_ConnectionClep, False);
+    if assigned ( lds_connection ) Then
+      Exit;
+    with CreateConnection ( ls_ConnectionClep ) do
+     if ( LowerCase(aif_IniFile.ReadString(as_SectionName,CST_MAN_INI_SOURCE_TYPE,'')) = CST_MAN_INI_DATA_FILE ) Then
+      Begin
+        dataURL := aif_IniFile.ReadString(as_SectionName,CST_MAN_INI_DATA_URL,'') +DirectorySeparator ;
+        {$IFDEF WINDOWS}
+        dataURL := fs_RemplaceChar ( DataURL, '/', '\' );
+        {$ENDIF}
+      end
+     Else
+     lds_connection := CreateConnection ( ls_ConnectionClep );
+     with lds_connection do
+      Begin
+        DataDriver := aif_IniFile.ReadString(as_SectionName,CST_MAN_INI_DATA_DRIVER,'');
+          Begin
+            dataURL := aif_IniFile.ReadString(as_SectionName,CST_MAN_INI_DATA_URL,'');
+            li_Pos := pos ( '//', DataURL );
+            DataURL := copy ( DataURL , li_pos + 2, length ( DataURL ) - li_pos - 1 );
+            DataPort := 0;
+            li_Pos := pos ( ':', DataURL );
+            // Récupération du port
+            if li_Pos > 0 Then
+              try
+                if pos ( '/', DataURL ) > 0 Then
+                  DataPort    := StrToInt ( copy ( DataURL, li_Pos + 1, pos ( '/', DataURL ) - li_pos - 1 ))
+                 Else
+                  DataPort    := StrToInt ( copy ( DataURL, li_Pos + 1, length ( DataURL ) - li_pos ));
+                // Finition de l'URL : Elle ne contient que l'adresse du serveur
+                DataURL := copy ( DataURL , 1, li_Pos - 1 );
+              Except
+              end;
+            if ( DataURL [ length ( DataURL )] = '/' ) Then
+              DataURL := copy ( DataURL , 1, length ( DataURL ) - 1 );
+            DataUser := aif_IniFile.ReadString(as_SectionName,CST_MAN_INI_DATA_USER,'');
+            DataPassword :=aif_IniFile.ReadString(as_SectionName,CST_MAN_INI_DATA_PASSWORD,'');
+            Database := aif_IniFile.ReadString(as_SectionName,CST_MAN_INI_DATA_BASE,'');
+            InitConnection;
+            {$IFDEF ZEOS}
+            case DatasetType of
+                dtZEOS : Begin
+                         p_setComponentProperty ( Connection, 'User', DataUser );
+                         p_setComponentProperty ( Connection, 'Password', DataPassword );
+                         p_setComponentProperty ( Connection, 'Hostname', DataURL );
+                         p_setComponentProperty ( Connection, 'Database', Database );
+                         if DataPort > 0 Then
+                           p_setComponentProperty ( Connection, 'Port', DataPort );
+                         p_setComponentProperty ( Connection, 'Protocol', CST_MAN_INI_DATA_DRIVER );
+                         try
+                           p_setComponentBoolProperty ( Connection, 'Connected', True );
+                         except
+                           on e: Exception do
+                             ShowMessage ( 'Could not initiate connection on ' + DataDriver + ' and ' + DataURL +#13#10 + 'User : ' + DataUser +#13#10 + 'Base : ' + Database +#13#10 + e.Message   );
+                         end;
                        end;
-                     end;
-          End;
-          {$ENDIF}
-        end;
-    end;
+            End;
+            {$ENDIF}
+          end;
+      end;
+   end;
 End;
 
 
