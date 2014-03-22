@@ -190,6 +190,7 @@ begin
       Result := True ;
       // Sauvegarde de la position des fenêtres filles
       af_FormMainini.p_FreeChildForms;
+      doCloseWorking;
       Application.Terminate;
     End ;
 end;
