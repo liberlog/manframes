@@ -20,7 +20,7 @@ uses
 type
   TOnGetSQL = function : String;
   TOnSetDatabase = function ( const as_base, as_user, as_password, as_host : String ) : String;
-  TOnOpenDatabase = function ( const AConnection : TComponent ;
+  TOnOpenCloseDatabase = function ( const AConnection : TComponent ;
                                const ab_Open : Boolean ;
                                const ab_showError : Boolean  ):Boolean;
   TOnOptimiseDatabase = function ( const AConnection : TComponent ;
@@ -46,7 +46,7 @@ const
   ge_OnBeginCreateAlter: TOnGetSQL = nil;
   ge_OnEndCreate: TOnSetDatabase = nil;
   ge_OnCreateDatabase: TOnSetDatabase = nil;
-  ge_OnOpenDatabase: TOnOpenDatabase = nil;
+  ge_OnOpenOrCloseDatabase: TOnOpenCloseDatabase = nil;
   ge_OnOptimiseDatabase: TOnOptimiseDatabase = nil;
   ge_OnExecuteCommand: TOnExecuteCommand = nil;
   ge_OnExecuteScriptServer: TOnExecuteScriptServer = nil;
@@ -1448,9 +1448,9 @@ function fb_OpenCloseDatabase ( const AConnection  : TComponent ;
                                 const ab_Open : Boolean ;
                                 const ab_showError : Boolean = False   ):Boolean;
 begin
-  if Assigned(ge_OnOpenDatabase) Then
+  if Assigned(ge_OnOpenOrCloseDatabase) Then
    Begin
-     Result:=ge_OnOpenDatabase ( AConnection, ab_open, ab_showError );
+     Result:=ge_OnOpenOrCloseDatabase ( AConnection, ab_open, ab_showError );
    end;
 End;
 procedure p_optimiseDatabase ( const AConnection : TComponent;

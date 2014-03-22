@@ -75,9 +75,9 @@ function fs_CreateAlterEndSQL ( const as_base, as_user, as_password, as_host : S
 Begin
   Result := 'COMMIT;'+ #10;
 end;
-function fb_OpenDatabase  ( const AConnection  : TComponent ;
-                            const ab_Open : Boolean ;
-                            const ab_showError : Boolean    ):Boolean;
+function fb_OpenOrCloseDatabase  (  const AConnection  : TComponent ;
+                                    const ab_Open : Boolean ;
+                                    const ab_showError : Boolean    ):Boolean;
 begin
   with AConnection as TIBDataBase do
    Begin
@@ -99,7 +99,11 @@ begin
          Except
            DefaultTransaction.Rollback;
          end;
-       Close;
+       try
+         Close;
+       except
+         Destroy
+       end;
      end;
 
      Result:=Connected;
@@ -375,7 +379,7 @@ initialization
  ge_OnBeginCreateAlter  :=TOnGetSQL( fs_CreateAlterBeginSQL);
  ge_OnEndCreate       :=TOnSetDatabase( fs_CreateAlterEndSQL);
  ge_OnCreateDatabase  :=TOnSetDatabase( fs_CreateDatabase);
- ge_OnOpenDatabase  :=TOnOpenDatabase( fb_OpenDatabase );
+ ge_OnOpenOrCloseDatabase  :=TOnOpenCloseDatabase( fb_OpenOrCloseDatabase );
  ge_OnOptimiseDatabase  :=TOnOptimiseDatabase( fb_RestoreBase );
  ge_OnExecuteCommand:=TOnExecuteCommand(p_ExecuteSQLCommand);
  {$IFDEF VERSIONS}
