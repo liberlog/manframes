@@ -109,7 +109,6 @@ End;
 procedure p_CreateIBXconnection ( const AOwner : TComponent ; var adtt_DatasetType : TDatasetType ; var AQuery : TDataset; var AConnection : TComponent );
 Begin
   adtt_DatasetType := dtIBX;
-  AQuery := TIBQuery.Create(AOwner);
   AConnection :=TIBDataBase.Create(AOwner);
   with AConnection as TIBDataBase do
    Begin
@@ -125,6 +124,7 @@ Begin
    End;
   if GDM_IBX = nil Then
     GDM_IBX:=TDM_IBX.Create(nil);
+  AQuery := TIBQuery.Create(AOwner);
   with AQuery as TIBQuery do
      Begin
       Database := AConnection as TIBDataBase;
@@ -317,7 +317,8 @@ Begin
   if     ( DMModuleSources.Sources.Count = 0 )
       or (    ( pos ( DEFAULT_FIREBIRD_SERVER_DIR, DMModuleSources.Sources [ 0 ].DataBase ) <> 1 )
           and ( DMModuleSources.Sources [ 0 ].DataBase <> '' )
-          and ( DMModuleSources.Sources [ 0 ].DataBase [1] = '/' ))
+          and (   ( DMModuleSources.Sources [ 0 ].DataBase [1] = '/' )
+               or ( DMModuleSources.Sources [ 0 ].DataBase [1] = '.' )))
   Then Begin Alib := 'libfbembed';  version := '.2.5'; End
   Else Begin Alib := 'libfbclient'; version := '.2'; End ;
   libname:= fs_getAppDir+Alib+CST_EXTENSION_LIBRARY;
@@ -369,7 +370,7 @@ initialization
  {$IFDEF FPC}
  OnGetLibraryName:= TOnGetLibraryName( p_setLibrary);
  {$ENDIF}
- ge_onCreateConnection := TCreateConnection ( p_CreateIBXconnection );
+ ge_onInitConnection := TCreateConnection ( p_CreateIBXconnection );
  ge_OnExecuteQuery  :=TOnExecuteQuery(p_ExecuteIBXQuery);
  ge_OnBeginCreateAlter  :=TOnGetSQL( fs_CreateAlterBeginSQL);
  ge_OnEndCreate       :=TOnSetDatabase( fs_CreateAlterEndSQL);
