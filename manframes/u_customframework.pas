@@ -2113,7 +2113,7 @@ Begin
               lt_Arg [ 0 ] :=  Table ;
               lt_Arg [ 1 ] :=  Datalink.DataSet.Name;
               lt_Arg [ 2 ] :=  Self.Name;
-              ShowMessage ( fs_RemplaceMsg ( GS_FORM_ERREUR_CHARGE_COLONNES + #13#10 + GS_FORM_TABLE_NON_RENSEIGNEE, lt_Arg ));
+              MyShowMessage ( fs_RemplaceMsg ( GS_FORM_ERREUR_CHARGE_COLONNES + #13#10 + GS_FORM_TABLE_NON_RENSEIGNEE, lt_Arg ));
               gb_Unload := True;
               Exit;
             end;
@@ -3613,7 +3613,7 @@ begin
                if assigned ( DataSet ) Then
                 with DataSet do
                  Begin
-//                 ShowMessage(fs_getSQLQuery(DataSet)+' '+IntToStr(FieldDefs.count));
+                 ShowMessage(fs_getSQLQuery(DataSet)+' '+IntToStr(FieldDefs.count));
                   Open ;
                   BeforePost   := p_DataWorkBeforePost ;
                  end;
