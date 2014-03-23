@@ -495,6 +495,8 @@ type
     function GetnmTableStatus: Boolean;
     procedure SetnmTableStatus(const isnmTable: Boolean);
     procedure SetIndexes(const AValue: TFWIndexes);
+    procedure SetTableOptions(const AValue: TStrings);
+    procedure SetStandardInserts(const AValue: TStrings);
     procedure SetRelations(const AValue: TFWRelations);
     procedure SetFieldColumns(const AValue: TFWFieldColumns);
     procedure p_SetDataSource ( const a_Value: TDataSource );
@@ -572,8 +574,8 @@ type
     property Indexes : TFWIndexes read gfwi_Indexes write SetIndexes;
     property Relations : TFWRelations read gr_relations write SetRelations;
     property Table : String read gs_NomTable write gs_NomTable;
-    property TableOptions : TStrings read gsl_TableOptions write gsl_TableOptions;
-    property StandardInserts : TStrings read gsl_StandardInserts write gsl_StandardInserts;
+    property TableOptions : TStrings read gsl_TableOptions write SetTableOptions;
+    property StandardInserts : TStrings read gsl_StandardInserts write SetStandardInserts;
     property UseStandardInserts: Boolean read gb_StandardInserts write gb_StandardInserts default False;
     property IsMain: Boolean read gb_IsMain write gb_IsMain default False;
     property IsLinkedObject: Boolean read gb_IsLinkedObject write gb_IsLinkedObject default False;
@@ -846,8 +848,9 @@ end;
 destructor TFWIndex.Destroy;
 begin
   ( Collection as TFWIndexes ).gb_Changed:=True;
-  inherited Destroy;
+  gfc_FieldColumns.Clear;
   gfc_FieldColumns.Destroy;
+  inherited Destroy;
 end;
 
 { TFWTables }
@@ -1033,7 +1036,7 @@ end;
 // looking for table primary key
 function TFWTable.GetKey: TFWFieldColumns;
 begin
-  with Indexes do
+  with gfwi_Indexes do
    Begin
     if ( Count = 0 )
      Then Add.IndexKind := ikPrimary
@@ -1106,7 +1109,7 @@ begin
 end;
 
 // table to SQL Table
-function TFWTable.GetSQLTableName(const DoNotAddPrefix : Boolean = False ): String;
+function TFWTable.GetSQLTableName(const DoNotAddPrefix: Boolean): string;
 var DBQuote, s: string;
 begin
   DBQuote:=GetDBQuote;
@@ -1465,6 +1468,7 @@ begin
      }
 
   finally
+    PkColumns.Clear;
     PkColumns.Destroy;
   end;
 end;
@@ -1511,6 +1515,7 @@ begin
                   end;
     end;
   finally
+    AuxTriggerBody.Clear;
     AuxTriggerBody.Destroy;
   end;
 end;
@@ -1588,6 +1593,7 @@ begin
       end;
     End;
   finally
+    AuxTriggerBody.Clear;
     AuxTriggerBody.Destroy;
 
   end;
@@ -1793,6 +1799,16 @@ begin
   gfwi_Indexes.Assign(AValue);
 end;
 
+procedure TFWTable.SetTableOptions(const AValue: TStrings);
+begin
+  gsl_TableOptions.Text:=AValue.Text;
+end;
+
+procedure TFWTable.SetStandardInserts(const AValue: TStrings);
+begin
+  gsl_StandardInserts.Text:=AValue.Text;
+end;
+
 // table relations assign
 procedure TFWTable.SetRelations(const AValue: TFWRelations);
 begin
@@ -1912,13 +1928,18 @@ end;
 // testing destroy with heaprpc
 destructor TFWTable.Destroy;
 begin
- inherited;
- gsl_StandardInserts.Destroy;
- gsl_TableOptions.Destroy;
- gfwi_Indexes  .Destroy;
- gfc_FieldColumns.Destroy;
- gr_relations.Destroy;
- ddl_DataLink.Destroy;
+  gsl_StandardInserts.Clear;
+  gsl_TableOptions.Clear;
+  gfwi_Indexes  .Clear;
+  gfc_FieldColumns.Clear;
+  gr_relations.Clear;
+  gsl_StandardInserts.Destroy;
+  gsl_TableOptions.Destroy;
+  gfwi_Indexes  .Destroy;
+  gfc_FieldColumns.Destroy;
+  gr_relations.Destroy;
+  ddl_DataLink.Destroy;
+  inherited;
 end;
 
 
@@ -1959,7 +1980,6 @@ begin
   //  theDestTbl.gfc_FieldColumns.Assign(gfc_FieldColumns);
   theDestTbl.gfc_FieldColumns.Assign(gfc_FieldColumns);
 
-  //Indexes.Assign(Indexes);
   theDestTbl.gfwi_Indexes.Assign(gfwi_Indexes);
 
   theDestTbl.Relations.Assign(Relations);
@@ -2015,11 +2035,14 @@ end;
 
 destructor TFWRelation.Destroy;
 begin
+  gf_FKFields.Clear;
+  gf_DisplayFields.Clear;
+  gt_DestTables.Clear;
 
-  inherited;
   gf_FKFields.Destroy;
   gf_DisplayFields.Destroy;
   gt_DestTables.Destroy;
+  inherited;
 end;
 
 // relation assign
@@ -2275,9 +2298,12 @@ end;
 // destroying child objects on destroy
 destructor TFWFieldData.Destroy;
 begin
-  inherited Destroy;
+  gr_relations.Clear;
+  gdo_Options.Clear;
+
   gr_relations.Destroy;
   gdo_Options.Destroy;
+  inherited Destroy;
 end;
 
 // creating objects and setting variables
@@ -2340,8 +2366,9 @@ end;
 
 destructor TFWFieldColumn.Destroy;
 begin
-  inherited Destroy;
+  gc_DummyCollection.Clear;
   gc_DummyCollection.Destroy;
+  inherited Destroy;
 end;
 
 function TFWFieldColumn.CreateOldField:TFWFieldData;

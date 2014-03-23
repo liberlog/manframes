@@ -386,6 +386,6 @@ initialization
  p_ConcatVersion ( gver_fonctions_ibx );
  {$ENDIF}
 finalization
- GDM_IBX.Free;
+ FreeAndNil(GDM_IBX);
 end.
 

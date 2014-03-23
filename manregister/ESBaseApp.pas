@@ -167,7 +167,4 @@ begin
     [ProjectName]);
 end;
 
-
-initialization
-finalization
 end.
