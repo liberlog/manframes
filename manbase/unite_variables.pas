@@ -196,7 +196,7 @@ resourcestring
         +'@ARG'+CST_ENDOFLINE+'n''existe pas et ne peut être créé.';
   gs_Caption_Save_in = 'Sauvegarde dans @ARG.';
   gs_Caption_Restore_database = 'Restauration base @ARG.';
-  gs_Log_Optimising_database = 'Optimisation de la base de données...';
+  gs_Message_Creating_database = 'Création de la base de données...';
   gs_Optimising_database_is_a_success = 'L''optimisation de la base s''est bien passée.';
   gs_Error_One_Error_has_occured_while_optimising_Verify_if_you_are_admin = 'Une erreur s''est produite pendant l''optimisation.'+CST_ENDOFLINE+CST_ENDOFLINE
       +'Vérifiez que vous possédez les droits d''administration'+CST_ENDOFLINE
