@@ -3069,7 +3069,9 @@ begin
                Then
                 with gFWSources.items [ TableLinked ].ds_DataSourcesWork.DataSet do
                  if not ( State in [dsInsert, dsEdit]) Then
-                  Edit;
+                  if IsEmpty
+                   Then Insert
+                   Else Edit;
             End;
             // gestion du focus sur le contrôle
         Break ;
@@ -3613,6 +3615,7 @@ begin
                if assigned ( DataSet ) Then
                 with DataSet do
                  Begin
+                   ShowMessage(fs_getSQLQuery(DataSet));
                   Open ;
                   BeforePost   := p_DataWorkBeforePost ;
                  end;

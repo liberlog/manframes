@@ -66,6 +66,8 @@ uses IBQuery,
      fonctions_createsql,
      fonctions_dbcomponents;
 
+const CST_FBEMBED = 'fbembed';
+
 function fs_CreateAlterBeginSQL :String;
 Begin
   Result := 'SET SQL DIALECT 3;' + #10+ 'SET NAMES ' + Gs_Charset_ibx +';'+ #10;
@@ -316,7 +318,9 @@ var Alib : String;
 {$ENDIF}
 Begin
   {$IFDEF WINDOWS}
-  libname:= 'fbclient'+CST_EXTENSION_LIBRARY;
+  if FileExistsUTF8(fs_getAppDir+CST_FBEMBED+CST_EXTENSION_LIBRARY)
+   Then libname:= CST_FBEMBED+CST_EXTENSION_LIBRARY;
+   Else libname:= 'fbclient'+CST_EXTENSION_LIBRARY;
   {$ELSE}
   if     ( DMModuleSources.Sources.Count = 0 )
       or (    ( pos ( DEFAULT_FIREBIRD_SERVER_DIR, DMModuleSources.Sources [ 0 ].DataBase ) <> 1 )
