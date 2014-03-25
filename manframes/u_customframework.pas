@@ -3615,7 +3615,7 @@ begin
                if assigned ( DataSet ) Then
                 with DataSet do
                  Begin
-                   ShowMessage(fs_getSQLQuery(DataSet));
+                   //ShowMessage(fs_getSQLQuery(DataSet));
                   Open ;
                   BeforePost   := p_DataWorkBeforePost ;
                  end;
