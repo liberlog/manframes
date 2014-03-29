@@ -319,7 +319,7 @@ var Alib : String;
 Begin
   {$IFDEF WINDOWS}
   if FileExistsUTF8(fs_getAppDir+CST_FBEMBED+CST_EXTENSION_LIBRARY)
-   Then libname:= CST_FBEMBED+CST_EXTENSION_LIBRARY;
+   Then libname:= CST_FBEMBED+CST_EXTENSION_LIBRARY
    Else libname:= 'fbclient'+CST_EXTENSION_LIBRARY;
   {$ELSE}
   if     ( DMModuleSources.Sources.Count = 0 )
