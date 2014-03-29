@@ -52,7 +52,7 @@ Begin
 End ;
 
 initialization
- ge_onCreateConnection := TCreateConnection ( p_CreateOnLineconnection );
+ ge_onInitConnection := TCreateConnection ( p_CreateOnLineconnection );
  ge_OnExecuteQuery:=TOnExecuteQuery(p_ExecuteOnLineQuery);
  {$IFDEF VERSIONS}
  p_ConcatVersion ( gVer_fonctions_dbnet );
