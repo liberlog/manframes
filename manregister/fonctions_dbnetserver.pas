@@ -78,8 +78,8 @@ End;
 
 
 initialization
- ge_onCreateConnection := TCreateConnection ( p_CreateOnLineconnection );
- ge_OnOpenDatabase     := TOnOpenDatabase({$IFNDEF FPC}@{$ENDIF}fb_OpenDatabase);
+ ge_onInitConnection := TCreateConnection ( p_CreateOnLineconnection );
+ ge_OnOpenOrCloseDatabase  := TOnOpenCloseDatabase({$IFNDEF FPC}@{$ENDIF}fb_OpenDatabase);
  {$IFDEF VERSIONS}
  p_ConcatVersion ( gVer_fonctions_dbnetserver );
  {$ENDIF}
