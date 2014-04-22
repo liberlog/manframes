@@ -119,20 +119,20 @@ Begin
       with FieldsDisplay do
        Begin
          ls_Fields := FieldsFK.toString + ',' + toString;
-         p_SetComponentProperty(acom_combo,CST_PROPERTY_LISTFIELD    , toString(CST_DECIMAL_COMBO));
-         p_SetComponentProperty(acom_combo,CST_PROPERTY_LOOKUPDISPLAY, toString(CST_DECIMAL_COMBO));
+         p_SetComponentProperty(acom_combo,CST_DBPROPERTY_LISTFIELD    , toString(CST_DECIMAL_COMBO));
+         p_SetComponentProperty(acom_combo,CST_DBPROPERTY_LOOKUPDISPLAY, toString(CST_DECIMAL_COMBO));
        end
       Else
        ls_Fields := FieldsFK.toString;
       with FieldsFK do
        Begin
-        p_SetComponentProperty(acom_combo,CST_PROPERTY_KEYFIELD   , Items[0].FieldName);
-        p_SetComponentProperty(acom_combo,CST_PROPERTY_LOOKUPFIELD, Items[0].FieldName);
+        p_SetComponentProperty(acom_combo,CST_DBPROPERTY_KEYFIELD   , Items[0].FieldName);
+        p_SetComponentProperty(acom_combo,CST_DBPROPERTY_LOOKUPFIELD, Items[0].FieldName);
        end;
       if ls_Fields > '' Then
         Begin
-          p_SetComponentObjectProperty(acom_combo,CST_PROPERTY_LISTSOURCE  , ads_ListSource );
-          p_SetComponentObjectProperty(acom_combo,CST_PROPERTY_LOOKUPSOURCE, ads_ListSource );
+          p_SetComponentObjectProperty(acom_combo,CST_DBPROPERTY_LISTSOURCE  , ads_ListSource );
+          p_SetComponentObjectProperty(acom_combo,CST_DBPROPERTY_LOOKUPSOURCE, ads_ListSource );
         end;
       if RelationName > '' Then
         Begin
