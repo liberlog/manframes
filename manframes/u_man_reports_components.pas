@@ -129,13 +129,13 @@ begin
      Then
       Begin
        FormReport.Free;
-       FormReport := fref_CreateReport(Grid, DataSource,
+       FormReport := fref_CreateReport(Grid,Grid, DataSource,
                            fobj_getComponentObjectProperty(Grid,CST_PROPERTY_COLUMNS) as TCollection,
                            DBTitle,Orientation, PaperSize, Filter)
       end
      Else
        Begin
-         fb_CreateReport(AReport,Grid, DataSource,
+         fb_CreateReport(Grid,AReport,Grid, DataSource,
                          fobj_getComponentObjectProperty(Grid,CST_PROPERTY_COLUMNS) as TCollection,
                          AReport.Background.Picture.Bitmap.Canvas,
                          DBTitle);
@@ -164,7 +164,7 @@ begin
   if FSource < FSources.Count Then
    with FSources [ FSource ] do
     if Assigned( Grid ) Then
-     fb_CreateReport(AReport,Grid, DataSource, fobj_getComponentObjectProperty ( Grid, CST_PROPERTY_COLUMNS ) as TCollection, AReport.Background.Picture.Bitmap.Canvas, DBTitle);
+     fb_CreateReport(Grid, AReport,Grid, DataSource, fobj_getComponentObjectProperty ( Grid, CST_PROPERTY_COLUMNS ) as TCollection, AReport.Background.Picture.Bitmap.Canvas, DBTitle);
 end;
 
 
