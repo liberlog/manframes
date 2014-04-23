@@ -57,8 +57,6 @@ uses IBQuery,
      IBSQL,
      FileUtil,
      fonctions_init,
-     u_multidonnees,
-     IBCustomDataSet,
      fonctions_db,
      fonctions_file,
      fonctions_string,
@@ -288,7 +286,7 @@ end;
 
 
 procedure p_ExecuteSQLCommand ( const as_SQL : {$IFDEF DELPHI_9_UP} WideString {$ELSE} String{$ENDIF}  );
-var ls_File : String;
+var ls_File{$IFDEF WINDOWS}, ls_exe{$ENDIF} : String;
     lh_handleFile : THandle;
 Begin
   ls_File := fs_GetIniDir+'sql-firebird';
@@ -300,7 +298,13 @@ Begin
     FileClose(lh_handleFile);
   end;
   {$IFDEF WINDOWS}
-  ls_File := fs_ExecuteProcess(fs_getAppDir+'isql.exe', ' -i '''+ ls_File+CST_EXTENSION_SQL_FILE
+  ls_exe := fs_getAppDir+'isql.exe';
+  if not FileExistsUTF8(ls_exe) Then
+    Begin
+     MyShowMessage(fs_RemplaceMsg(GS_EXE_DO_NOT_EXISTS_EXITING,[ls_exe]));
+     halt;
+    end;
+  ls_File := fs_ExecuteProcess(ls_exe, ' -i '''+ ls_File+CST_EXTENSION_SQL_FILE
                            +''' -s 3');
   {$ELSE}
   ls_File := fs_ExecuteProcess('isql-fb', ' -i '''+ ls_File+CST_EXTENSION_SQL_FILE

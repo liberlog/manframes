@@ -112,7 +112,7 @@ begin
     Datasource.DataSet.DisableControls;
     AddPreview(nil,ASource);
     if FormReport = nil Then
-     FormReport := fref_CreateReport( Grid, Datasource, fobj_getComponentObjectProperty ( Grid, CST_PROPERTY_COLUMNS ) as TCollection, DBTitle, Orientation, PaperSize, Filter );
+     FormReport := fref_CreateReport( Grid, Grid, Datasource, fobj_getComponentObjectProperty ( Grid, CST_PROPERTY_COLUMNS ) as TCollection, DBTitle, Orientation, PaperSize, Filter );
    with FormReport do
      try
        RLReport.Preview(Preview);
