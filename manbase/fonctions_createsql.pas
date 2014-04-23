@@ -1459,6 +1459,7 @@ var ls_Message : String;
 begin
   if Assigned(ge_OnOptimiseDatabase) Then
    Begin
+
     if ge_OnOptimiseDatabase ( AConnection, as_database, as_user, as_password, APathSave, nil, nil, AConnection )
      Then ls_Message:=gs_Optimising_database_is_a_success
      Else ls_Message:=gs_Error_Restore_Directory_does_not_exists;
@@ -1471,4 +1472,4 @@ end;
 initialization
   p_ConcatVersion(gVer_fonctions_create);
 {$ENDIF}
-end.
+end.

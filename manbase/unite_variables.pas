@@ -247,6 +247,8 @@ resourcestring
       GS_EFFACE_SOUS_MENU    = 'Attention ! Supprimer un sous-menu effacera aussi les fonctions associées.' ;
       GS_EFFACE_SOMMAIRE     = 'Attention ! Supprimer un sommaire effacera aussi ses menus, ses sous-menus et les fonctions associés.' ;
       GS_EFFACE_PAS_SOMMAIRE = 'Vous ne pouvez pas supprimer un sommaire si des utilisateurs ont été ajoutés.' ;
+      GS_EXE_DO_NOT_EXISTS_EXITING   = 'L''exécutable suivant n''a pas été trouvé. L''application va s''arrếter.'+#10+'@ARG' ;
+      GS_CANNOT_CREATE_DIR_EXITING   = 'Le répertoire suivant ne peut être créé. L''application va s''arrếter.'+#10+'@ARG' ;
       GS_CHOISIR_SOUS_MENU   = 'Un Sous Menu doit être sélectionné.' ;
       GS_CHOISIR_MENU        = 'Un Menu doit être sélectionné.' ;
       GS_CHOISIR_FONCTION    = 'Une Fonction doit être sélectionnée.' ;
