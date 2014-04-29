@@ -55,6 +55,9 @@ uses IBQuery,
      fonctions_dialogs,
      unite_variables,
      IBSQL,
+     {$IFNDEF WINDOWS}
+     u_multidonnees,
+     {$ENDIF}
      FileUtil,
      fonctions_init,
      fonctions_db,
@@ -161,7 +164,7 @@ var
   ibRestore:TIBRestoreService;
   IBBackup:TIBBackupService;
   FileNameGBK,PathNameGBK,BackFile,Serveur,NomBase:string;
-  lecteur:string;
+  lecteur:char;
   Prot:TProtocol;
   lb_connected : Boolean;
 begin
@@ -199,8 +202,8 @@ begin
     and ( as_database [1] = DirectorySeparator ) Then
 {$ENDIF}
      begin
-      lecteur:=AnsiUpperCase(APathSave);
-      DiskSize:=DiskFree({$IFDEF WINDOWS}ord(lecteur[1])-ord('A')+1{$ELSE}0{$ENDIF});
+      lecteur:=UpperCase(APathSave)[1];
+      DiskSize:=DiskFree({$IFDEF WINDOWS}ord(lecteur)-ord('A')+1{$ELSE}0{$ENDIF});
       FindFirstUTF8(NomBase, faAnyFile, sr); { *Converted from FindFirstUTF8*  }
       TailleFichier:=sr.Size;
       FindCloseUTF8(sr); { *Converted from FindCloseUTF8*  }
