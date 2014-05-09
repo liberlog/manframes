@@ -670,6 +670,7 @@ Begin
 
 End ;
 
+
 // Ajoute un évènement dans un objet xpbar
 // adx_WinXpBar            : Parent
 // as_Fonction             : Fonction
