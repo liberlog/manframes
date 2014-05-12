@@ -166,6 +166,7 @@ type
     FGroupView : TDBGroupView;
   protected
     procedure Notification(AComponent: TComponent; Operation: TOperation);{$IFDEF FPC} virtual{$ELSE}override{$ENDIF};
+  public
     constructor Create(ACollection: TCollection); override;
 
   published
@@ -3192,7 +3193,7 @@ end;
 // DataSet : LE Dataset édité
 ////////////////////////////////////////////////////////////////////////////////
 procedure TF_CustomFrameWork.p_DataWorkAfterCancel(DataSet: TDataSet);
-var li_i, li_j : Integer ;
+var li_i : Integer ;
 begin
   for li_i := 0 to gFWSources.Count - 1 do
     if assigned ( gFWSources.items [ li_i ].Datalink )
@@ -3228,7 +3229,7 @@ end;
 // DataSet : LE Dataset édité
 ////////////////////////////////////////////////////////////////////////////////
 procedure TF_CustomFrameWork.p_DataWorkBeforeCancel(DataSet: TDataSet);
-var li_i, li_j : Integer ;
+var li_i : Integer ;
 begin
   for li_i := 0 to gFWSources.Count - 1 do
     with gFWSources.items [ li_i ] do
@@ -3620,7 +3621,7 @@ begin
                if assigned ( DataSet ) Then
                 with DataSet do
                  Begin
-                   //ShowMessage(fs_getSQLQuery(DataSet));
+                  ShowMessage(fs_getSQLQuery(DataSet));
                   Open ;
                   BeforePost   := p_DataWorkBeforePost ;
                  end;
