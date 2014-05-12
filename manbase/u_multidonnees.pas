@@ -23,7 +23,7 @@ uses
 {$IFDEF VERSIONS}
   fonctions_version,
 {$ENDIF}
-  DB, u_multidata;
+  u_multidata;
 
 type
    TSetConnectComponents = procedure ( const cbx_Protocol, ch_ServerConnect, ed_Base, ed_Host, ed_Password, ed_User, ed_Catalog, ed_Collation: TComponent );
@@ -59,16 +59,7 @@ function fs_getSoftData : String;
 implementation
 
 
-uses Forms, Controls, SysUtils,
-{$IFDEF CSV}
-     StrUtils,
-{$ENDIF}
-{$IFDEF FPC}
-  FileUtil,
-{$ENDIF}
-  U_FormMainIni, Dialogs,
-  fonctions_system,
-  fonctions_string, fonctions_proprietes ;
+uses Forms, SysUtils;
 
 ////////////////////////////////////////////////////////////////////////////////
 // function fs_getSoftData

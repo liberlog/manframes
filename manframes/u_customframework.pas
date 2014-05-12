@@ -2489,7 +2489,12 @@ End;
 // Disparition de l'Edit de recherche, réinitialisation des colonnes
 // Remise en place du TabOrder de la zone de saisie cachée
 procedure TF_CustomFrameWork.p_CacheEdit ( const ads_DataSource : TDataSource; const anv_Navigateur : TCustomPanel; const adbg_DataGrid : TCustomDBGrid ; const adbg_DataGridColumns : TDBGridColumns ; const adne_DataChangeEvent : TDataChangeEvent );
-var lbkm_Bookmark : TBookmarkStr ;
+var
+  {$IF FPC_FULLVERSION >= 20700 }
+  lbkm_Bookmark : TBookmark ;
+  {$ELSE}
+  lbkm_Bookmark : TBookmarkStr ;
+  {$ENDIF}
     lb_UseBookmark : Boolean ;
     li_i : Integer ;
 begin
@@ -4486,7 +4491,11 @@ end;
 procedure TF_CustomFrameWork.p_IntervertitPositionsChamps ( const aDat_GroupeFonctions : TDataset ; const adtl_Datalink : TDataLink ; const as_ChampsClePrimaire : TStringList ; const as_NomOrdre : String ; const ab_Precedent : Boolean );
 var li_Numordre1      ,
     li_Numordre2      : Integer ;
-    lbkm_GardeEnr     : TBookmarkStr ;
+  {$IF FPC_FULLVERSION >= 20700 }
+  lbkm_GardeEnr     : TBookmark ;
+  {$ELSE}
+  lbkm_GardeEnr     : TBookmarkStr ;
+  {$ENDIF}
     lb_continue       : Boolean ;
 
 begin

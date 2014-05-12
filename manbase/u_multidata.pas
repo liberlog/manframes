@@ -137,15 +137,14 @@ procedure p_setConnectionTo ( const ar_Source : TDSSource; var ar_Destination : 
 implementation
 
 
-uses Forms, Controls, SysUtils,
+uses Forms, SysUtils,
 {$IFDEF CSV}
      StrUtils,
 {$ENDIF}
 {$IFDEF FPC}
-  FileUtil,
 {$ENDIF}
   U_FormMainIni, Dialogs,
-  fonctions_string, fonctions_proprietes ;
+  fonctions_proprietes ;
 
 { TDSSources }
 
