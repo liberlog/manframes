@@ -259,6 +259,8 @@ type
      function CreateCollectionRelations: TFWRelations; virtual;
      procedure AssignTo ( Dest: TPersistent ); override;
    public
+    function AutoIncField: Boolean; virtual;
+    function CreateAutoInc: Boolean; virtual;
     function getSqlComment: string; override;
     constructor Create(ACollection: TCollection); override;
     destructor Destroy; override;
@@ -1069,9 +1071,9 @@ begin
     for i:=0 to gfc_FieldColumns.Count-1 do
      with gfc_FieldColumns[i] do
       begin
-        if HasAutoInc and b_colPrivate and b_ColUnique then
+        if HasAutoInc and CreateAutoInc then
           gfc_FieldColumns[i].b_ColUnique:=False
-        else if Not HasAutoInc and b_colPrivate and b_ColUnique then
+        else if Not HasAutoInc and CreateAutoInc then
           HasAutoInc:=True;
       end;
 
@@ -1084,16 +1086,6 @@ begin
     Indexes.Delete(0);
   end;
 
-  //if there is no primary index yet and there is at least one col primary
-  //create new index and insert it at first pos
-  if(theIndex=nil)and(colCount>0)then
-  begin
-    //new(theIndex);
-    theIndex:=Indexes.Insert(0);
-    theIndex.IndexName:=CST_BASE_INDEX_PRIMARY;
-    theIndex.Pos:=0;
-    theIndex.IndexKind:=ikPrimary;
-  end;
 
   if(colCount>0)then
   begin
@@ -1438,8 +1430,8 @@ begin
     //create triggers to implements record last change date
     if CreateLastChage then
     begin
-      Result := Result + sLineBreak + sLineBreak +
-        GetTriggersForLastChangeDate(LastChangeDateCol, LastChangePrefix, PkColumns);
+      AppendStr(Result,sLineBreak + sLineBreak +
+        GetTriggersForLastChangeDate(LastChangeDateCol, LastChangePrefix, PkColumns));
     end;
 
     if CreateLastExclusion then
@@ -1452,8 +1444,8 @@ begin
     // Should output comments?
     if OutputComments then
     begin
-      Result:=Result + sLineBreak +
-         getSqlComment;
+      AppendStr(Result, sLineBreak +
+         getSqlComment);
     end;
 
     // should create indexes for FKs?
@@ -1482,41 +1474,37 @@ end;
 // unique auto field sequence
 function TFWTable.getTriggerForSequences(const SeqName, PrefixName,
   Field: string): string;
-var AuxTriggerBody : TStringList;
+var AuxTriggerBody : String;
 begin
-  AuxTriggerBody := TStringList.Create;
-  try
-    case gbm_DatabaseToGenerate of
-      bmFirebird : begin
-                    AuxTriggerBody.Add('BEGIN ');
-                    AuxTriggerBody.Add('  IF (NEW.' + Field + ' IS NULL) THEN ');
-                    AuxTriggerBody.Add('    NEW.' + Field + ' = GEN_ID('+SeqName+', 1); ');
-                    AuxTriggerBody.Add('END! ');
+  case gbm_DatabaseToGenerate of
+    bmFirebird : begin
+                  AuxTriggerBody:='BEGIN '
+                  +CST_ENDOFLINE+'  IF (NEW.' + Field + ' IS NULL) THEN '
+                  +CST_ENDOFLINE+'    NEW.' + Field + ' = GEN_ID('+SeqName+', 1); '
+                  +CST_ENDOFLINE+'END! ';
 
-                    getTriggerForSequences := GetTriggerSql(
-                                                AuxTriggerBody.Text,
-                                                Copy(PrefixName + GetSQLTableName, 1, 30),
-                                                sqeBefore, [emInsert]
-                                              );
-                  end;
-     bmOracle   : begin
-                    AuxTriggerBody.Add('FOR EACH ROW ');
-                    AuxTriggerBody.Add('BEGIN ');
-                    AuxTriggerBody.Add('  IF (:NEW.' + Field + ' IS NULL) THEN ');
-                    AuxTriggerBody.Add('    SELECT '+SeqName+'.NEXTVAL INTO :NEW.' + Field + ' FROM DUAL; ');
-                    AuxTriggerBody.Add('  END IF; ');
-                    AuxTriggerBody.Add('END; ');
+                  getTriggerForSequences := GetTriggerSql(
+                                              AuxTriggerBody,
+                                              Copy(PrefixName + GetSQLTableName, 1, 30),
+                                              sqeBefore, [emInsert]
+                                            );
+                end;
+   bmOracle   : begin
+                  AuxTriggerBody:='FOR EACH ROW '
+                  +CST_ENDOFLINE+'BEGIN '
+                  +CST_ENDOFLINE+'  IF (:NEW.' + Field + ' IS NULL) THEN '
+                  +CST_ENDOFLINE+'    SELECT '+SeqName+'.NEXTVAL INTO :NEW.' + Field + ' FROM DUAL; '
+                  +CST_ENDOFLINE+'  END IF; '
+                  +CST_ENDOFLINE+'END; ';
 
-                    getTriggerForSequences := GetTriggerSql(
-                                                AuxTriggerBody.Text,
-                                                Copy(PrefixName + GetSQLTableName, 1, 30),
-                                                sqeBefore, [emInsert]
-                                              );
-                  end;
-    end;
-  finally
-    AuxTriggerBody.Clear;
-    AuxTriggerBody.Destroy;
+                  getTriggerForSequences := GetTriggerSql(
+                                              AuxTriggerBody,
+                                              Copy(PrefixName + GetSQLTableName, 1, 30),
+                                              sqeBefore, [emInsert]
+                                            );
+                end;
+   else
+    Result := '';
   end;
 end;
 
@@ -1539,64 +1527,59 @@ end;
 function TFWTable.GetTriggersForLastChangeDate(const ColumnName, PrefixName: string;
   const pkFields: TStringList): string;
 var
-  AuxTriggerBody: TStringList;
+  AuxTriggerBody: String;
 begin
-  AuxTriggerBody := TStringList.Create;
-  try
-    case gbm_DatabaseToGenerate of
-    bmOracle:// ORACLE TRIGGER
-      begin
-         AuxTriggerBody.Add('FOR EACH ROW ');
-         AuxTriggerBody.Add('BEGIN');
-         AuxTriggerBody.Add('  :NEW.'+ColumnName+
-                            ' :=  TO_CHAR(SYSTIMESTAMP, ''YYMMDDHH24MISSFF3'');');
-         AuxTriggerBody.Add('END;');
+  case gbm_DatabaseToGenerate of
+  bmOracle:// ORACLE TRIGGER
+    begin
+       AuxTriggerBody:='FOR EACH ROW '
+       +CST_ENDOFLINE+'BEGIN'
+       +CST_ENDOFLINE+'  :NEW.'+ColumnName+
+                          ' :=  TO_CHAR(SYSTIMESTAMP, ''YYMMDDHH24MISSFF3'');'
+       +CST_ENDOFLINE+'END;';
 
-         Result := GetTriggerSql(AuxTriggerBody.Text,
-                                 Copy(PrefixName + GetSQLTableName, 1, 30),
-                                 sqeBefore,[emInsert,emUpdate]
+       Result := GetTriggerSql(AuxTriggerBody,
+                               Copy(PrefixName + GetSQLTableName, 1, 30),
+                               sqeBefore,[emInsert,emUpdate]
+                             );
+    end;
+  bmFirebird:
+    //FIREBIRD
+    begin
+      AuxTriggerBody:='BEGIN '
+      +CST_ENDOFLINE+'New.' + ColumnName + ' = '
+      +CST_ENDOFLINE+'  substr(CURRENT_TIMESTAMP, 3,   4) || '
+      +CST_ENDOFLINE+'  substr(CURRENT_TIMESTAMP, 6,   7) || '
+      +CST_ENDOFLINE+'  substr(CURRENT_TIMESTAMP, 9,  10) || '
+      +CST_ENDOFLINE+'  substr(CURRENT_TIMESTAMP, 12, 13) || '
+      +CST_ENDOFLINE+'  substr(CURRENT_TIMESTAMP, 15, 16) || '
+      +CST_ENDOFLINE+'  substr(CURRENT_TIMESTAMP, 18, 19) || '
+      +CST_ENDOFLINE+'  substr(CURRENT_TIMESTAMP, 21, 23);   '
+      +CST_ENDOFLINE+'END! ';
+
+      Result := GetTriggerSql( AuxTriggerBody,
+                               Copy(PrefixName + GetSQLTableName, 1, 30),
+                               sqeBefore,[emInsert,emUpdate]
+                             );
+    end;
+  bmSQLServer :  //SQL SERVER
+    begin
+      AuxTriggerBody:='BEGIN '
+      +CST_ENDOFLINE+'    declare @dt varchar(15) '
+      +CST_ENDOFLINE+'    set @dt = (select replace(CONVERT(VARCHAR(6),GETDATE(),12)+CONVERT(VARCHAR,GETDATE(),14), '':'', '''')) '
+      +CST_ENDOFLINE+'    UPDATE '+ GetSQLTableName +' SET '+ColumnName+' = @dt '
+      +CST_ENDOFLINE+'    FROM '+ GetSQLTableName +' TAB INNER JOIN inserted I ON ('+GetPkJoin('TAB', 'I', pkFields)+') '
+      +CST_ENDOFLINE+'    WHERE TAB.'+ColumnName+' < @dt OR TAB.'+ColumnName+' IS NULL '
+      +CST_ENDOFLINE+'END;';
+
+      Result := GetTriggerSql (AuxTriggerBody,
+                               Copy(PrefixName + GetSQLTableName, 1, 30),
+                               sqeAfter,[emInsert,emUpdate]
                                );
-      end;
-    bmFirebird:
-      //FIREBIRD
-      begin
-        AuxTriggerBody.Add('BEGIN ');
-        AuxTriggerBody.Add('New.' + ColumnName + ' = ');
-        AuxTriggerBody.Add('  substr(CURRENT_TIMESTAMP, 3,   4) || ');
-        AuxTriggerBody.Add('  substr(CURRENT_TIMESTAMP, 6,   7) || ');
-        AuxTriggerBody.Add('  substr(CURRENT_TIMESTAMP, 9,  10) || ');
-        AuxTriggerBody.Add('  substr(CURRENT_TIMESTAMP, 12, 13) || ');
-        AuxTriggerBody.Add('  substr(CURRENT_TIMESTAMP, 15, 16) || ');
-        AuxTriggerBody.Add('  substr(CURRENT_TIMESTAMP, 18, 19) || ');
-        AuxTriggerBody.Add('  substr(CURRENT_TIMESTAMP, 21, 23);   ');
-        AuxTriggerBody.Add('END! ');
-
-        Result := GetTriggerSql( AuxTriggerBody.Text,
-                                 Copy(PrefixName + GetSQLTableName, 1, 30),
-                                 sqeBefore,[emInsert,emUpdate]
-                               );
-      end;
-    bmSQLServer :  //SQL SERVER
-      begin
-        AuxTriggerBody.Add('BEGIN ');
-        AuxTriggerBody.Add('    declare @dt varchar(15) ');
-        AuxTriggerBody.Add('    set @dt = (select replace(CONVERT(VARCHAR(6),GETDATE(),12)+CONVERT(VARCHAR,GETDATE(),14), '':'', '''')) ');
-        AuxTriggerBody.Add('    UPDATE '+ GetSQLTableName +' SET '+ColumnName+' = @dt ');
-        AuxTriggerBody.Add('    FROM '+ GetSQLTableName +' TAB INNER JOIN inserted I ON ('+GetPkJoin('TAB', 'I', pkFields)+') ');
-        AuxTriggerBody.Add('    WHERE TAB.'+ColumnName+' < @dt OR TAB.'+ColumnName+' IS NULL ');
-        AuxTriggerBody.Add('END;');
-
-        Result := GetTriggerSql (AuxTriggerBody.Text,
-                                 Copy(PrefixName + GetSQLTableName, 1, 30),
-                                 sqeAfter,[emInsert,emUpdate]
-                                 );
-      end;
-    End;
-  finally
-    AuxTriggerBody.Clear;
-    AuxTriggerBody.Destroy;
-
-  end;
+    end;
+  else
+   Result := '';
+  End;
 
 end;
 
@@ -1604,99 +1587,94 @@ end;
 function TFWTable.GetTriggerForLastDeleteDate(const TbName, ColName,
   PrefixName: string): string;
 var
-  AuxTriggerBody: TStringList;
+  AuxTriggerBody: String;
 begin
-  AuxTriggerBody := TStringList.Create;
-  try
-    case gbm_DatabaseToGenerate of
-     bmOracle :// ORACLE TRIGGER
-      begin
-        AuxTriggerBody.Add('DECLARE ');
-        AuxTriggerBody.Add('  cnt INTEGER; ');
-        AuxTriggerBody.Add('BEGIN ');
-        AuxTriggerBody.Add('  SELECT COUNT(*) INTO cnt FROM ' + TbName +
-                           '  WHERE TABLE_NAME = ''' + GetSQLTableName +  '''; ');
+  case gbm_DatabaseToGenerate of
+   bmOracle :// ORACLE TRIGGER
+    begin
+      AuxTriggerBody:='DECLARE '
+      +CST_ENDOFLINE+'  cnt INTEGER; '
+      +CST_ENDOFLINE+'BEGIN '
+      +CST_ENDOFLINE+'  SELECT COUNT(*) INTO cnt FROM ' + TbName +
+                         '  WHERE TABLE_NAME = ''' + GetSQLTableName +  '''; '
 
-        AuxTriggerBody.Add('  IF cnt = 1 then ');
-        AuxTriggerBody.Add('    UPDATE ' + tbNAme + ' SET ' + ColName + ' = ' +
-                                'TO_CHAR(SYSTIMESTAMP, ''YYMMDDHH24MISSFF3'') ' +
-                                'WHERE TABLE_NAME = ''' + GetSQLTableName + '''; ');
-        AuxTriggerBody.Add('  ELSE ');
-        AuxTriggerBody.Add('    INSERT INTO ' + TbName + ' (TABLE_NAME, '+ ColName +') '+
-                           '    VALUES ('''+ GetSQLTableName +''', '+
-                                'TO_CHAR(SYSTIMESTAMP, ''YYMMDDHH24MISSFF3''));');
-        AuxTriggerBody.Add('  END IF;');
-        AuxTriggerBody.Add('END; ');
+      +CST_ENDOFLINE+'  IF cnt = 1 then '
+      +CST_ENDOFLINE+'    UPDATE ' + tbNAme + ' SET ' + ColName + ' = ' +
+                              'TO_CHAR(SYSTIMESTAMP, ''YYMMDDHH24MISSFF3'') ' +
+                              'WHERE TABLE_NAME = ''' + GetSQLTableName + '''; '
+      +CST_ENDOFLINE+'  ELSE '
+      +CST_ENDOFLINE+'    INSERT INTO ' + TbName + ' (TABLE_NAME, '+ ColName +') '+
+                         '    VALUES ('''+ GetSQLTableName +''', '+
+                              'TO_CHAR(SYSTIMESTAMP, ''YYMMDDHH24MISSFF3''));'
+      +CST_ENDOFLINE+'  END IF;'
+      +CST_ENDOFLINE+'END; ';
 
 
-         GetTriggerForLastDeleteDate := GetTriggerSql(
-                                           AuxTriggerBody.Text,
-                                           Copy(PrefixName + GetSQLTableName, 1, 30),
-                                           sqeAfter,[emDelete]
-                                         );
-      end;
-    bmFirebird  :  //FIREBIRD
-      begin
-        AuxTriggerBody.Add('Declare variable dt  varchar(15);');
-        AuxTriggerBody.Add('Declare variable cnt integer;');
-        AuxTriggerBody.Add('BEGIN');
-        AuxTriggerBody.Add('  dt = ');
-        AuxTriggerBody.Add('       substr(CURRENT_TIMESTAMP, 3,   4) || ');
-        AuxTriggerBody.Add('       substr(CURRENT_TIMESTAMP, 6,   7) || ');
-        AuxTriggerBody.Add('       substr(CURRENT_TIMESTAMP, 9,  10) || ');
-        AuxTriggerBody.Add('       substr(CURRENT_TIMESTAMP, 12, 13) || ');
-        AuxTriggerBody.Add('       substr(CURRENT_TIMESTAMP, 15, 16) || ');
-        AuxTriggerBody.Add('       substr(CURRENT_TIMESTAMP, 18, 19) || ');
-        AuxTriggerBody.Add('       substr(CURRENT_TIMESTAMP, 21, 23);   ');
+       GetTriggerForLastDeleteDate := GetTriggerSql(
+                                         AuxTriggerBody,
+                                         Copy(PrefixName + GetSQLTableName, 1, 30),
+                                         sqeAfter,[emDelete]
+                                       );
+    end;
+  bmFirebird  :  //FIREBIRD
+    begin
+      AuxTriggerBody:='Declare variable dt  varchar(15);'
+      +CST_ENDOFLINE+'Declare variable cnt integer;'
+      +CST_ENDOFLINE+'BEGIN'
+      +CST_ENDOFLINE+'  dt = '
+      +CST_ENDOFLINE+'       substr(CURRENT_TIMESTAMP, 3,   4) || '
+      +CST_ENDOFLINE+'       substr(CURRENT_TIMESTAMP, 6,   7) || '
+      +CST_ENDOFLINE+'       substr(CURRENT_TIMESTAMP, 9,  10) || '
+      +CST_ENDOFLINE+'       substr(CURRENT_TIMESTAMP, 12, 13) || '
+      +CST_ENDOFLINE+'       substr(CURRENT_TIMESTAMP, 15, 16) || '
+      +CST_ENDOFLINE+'       substr(CURRENT_TIMESTAMP, 18, 19) || '
+      +CST_ENDOFLINE+'       substr(CURRENT_TIMESTAMP, 21, 23);   '
 
-        AuxTriggerBody.Add('  select count(*) from '+TbName+' where table_name = '''+GetSQLTableName+''' into :cnt;');
+      +CST_ENDOFLINE+'  select count(*) from '+TbName+' where table_name = '''+GetSQLTableName+''' into :cnt;'
 
-        AuxTriggerBody.Add('  if (cnt = 1) then ');
-        AuxTriggerBody.Add('    update '+TbName+' set '+ColName+' = :dt '+
-                           '      where table_name = '''+GetSQLTableName+''';');
-        AuxTriggerBody.Add('  else ');
-        AuxTriggerBody.Add('    insert into '+TbName+' (table_name, '+ColName+') '+
-                           '    values ('''+GetSQLTableName+''', :dt);');
+      +CST_ENDOFLINE+'  if (cnt = 1) then '
+      +CST_ENDOFLINE+'    update '+TbName+' set '+ColName+' = :dt '+
+                         '      where table_name = '''+GetSQLTableName+''';'
+      +CST_ENDOFLINE+'  else '
+      +CST_ENDOFLINE+'    insert into '+TbName+' (table_name, '+ColName+') '+
+                         '    values ('''+GetSQLTableName+''', :dt);'
 
-        AuxTriggerBody.Add('END!');
+      +CST_ENDOFLINE+'END!';
 
-        GetTriggerForLastDeleteDate := GetTriggerSql(
-                                          AuxTriggerBody.Text,
-                                          Copy(PrefixName + GetSQLTableName, 1, 30),
-                                          sqeAfter,[emDelete]
-                                        );
-
-      end;
-    bmSQLServer :  //SQL SERVER
-      begin
-        AuxTriggerBody.Add('BEGIN ');
-        AuxTriggerBody.Add('  DECLARE @dt VARCHAR(15); ');
-        AuxTriggerBody.Add('  set @dt = (select replace(CONVERT(VARCHAR(6),GETDATE(),12)+CONVERT(VARCHAR,GETDATE(),14), '':'', '''')) ');
-
-        AuxTriggerBody.Add('  IF EXISTS (SELECT 1 FROM '+ TbName +' WHERE '+
-                           '    TABLE_NAME = '''+ GetSQLTableName +''') ');
-
-        AuxTriggerBody.Add('    UPDATE '+ TbName + ' SET '+ ColName + ' = @dt ' +
-                           '    WHERE TABLE_NAME = ''' + GetSQLTableName + ''' ');
-
-        AuxTriggerBody.Add('  ELSE ');
-        AuxTriggerBody.Add('    INSERT INTO ' + TbName + '(TABLE_NAME, '+ColName+') '+
-                           '    VALUES ('''+GetSQLTableName+''', @dt)');
-
-        AuxTriggerBody.Add('END;');
-
-        GetTriggerForLastDeleteDate := GetTriggerSql(
-                                          AuxTriggerBody.Text,
-                                          Copy(PrefixName + GetSQLTableName, 1, 30),
-                                          sqeAfter,[emDelete]
-                                        );
-      end;
+      GetTriggerForLastDeleteDate := GetTriggerSql(
+                                        AuxTriggerBody,
+                                        Copy(PrefixName + GetSQLTableName, 1, 30),
+                                        sqeAfter,[emDelete]
+                                      );
 
     end;
-  finally
+  bmSQLServer :  //SQL SERVER
+    begin
+      AuxTriggerBody:='BEGIN '
+      +CST_ENDOFLINE+'  DECLARE @dt VARCHAR(15); '
+      +CST_ENDOFLINE+'  set @dt = (select replace(CONVERT(VARCHAR(6),GETDATE(),12)+CONVERT(VARCHAR,GETDATE(),14), '':'', '''')) '
 
-    AuxTriggerBody.Free;
-  End;
+      +CST_ENDOFLINE+'  IF EXISTS (SELECT 1 FROM '+ TbName +' WHERE '+
+                         '    TABLE_NAME = '''+ GetSQLTableName +''') '
+
+      +CST_ENDOFLINE+'    UPDATE '+ TbName + ' SET '+ ColName + ' = @dt ' +
+                         '    WHERE TABLE_NAME = ''' + GetSQLTableName + ''' '
+
+      +CST_ENDOFLINE+'  ELSE '
+      +CST_ENDOFLINE+'    INSERT INTO ' + TbName + '(TABLE_NAME, '+ColName+') '+
+                         '    VALUES ('''+GetSQLTableName+''', @dt)'
+
+      +CST_ENDOFLINE+'END;';
+
+      GetTriggerForLastDeleteDate := GetTriggerSql(
+                                        AuxTriggerBody,
+                                        Copy(PrefixName + GetSQLTableName, 1, 30),
+                                        sqeAfter,[emDelete]
+                                      );
+    end;
+  else
+   Result := '';
+  end;
 end;
 
 // sql join
@@ -2089,6 +2067,15 @@ begin
   lfd_Dest.gas_Param:=gas_Param;
   lfd_Dest.gb_ParamRequired:=gb_ParamRequired;
 end;
+function TFWFieldData.CreateAutoInc:Boolean;
+Begin
+  Result := AutoIncField and b_ColUnique and (b_ColHidden or b_colPrivate) and b_ColCreate;
+end;
+
+function TFWFieldData.AutoIncField:Boolean;
+Begin
+  Result := True ;// FieldType in [ftInteger,ftAutoInc,ftSmallint,ftLargeint];
+end;
 
 // datafield sql create
 function TFWFieldData.GetSQLColumnCreateDefCode(var TableFieldGen: string;
@@ -2105,12 +2092,11 @@ begin
   with gr_Model,CST_Base_Words [ gbm_DatabaseToGenerate ] do
    Begin
     if(EncloseNames)then
-      Result:=DBQuoteCharacter+FieldName+
-        DBQuoteCharacter+' '
+      Result:=DBQuoteCharacter+FieldName+   DBQuoteCharacter+' '
     else
       Result:=FieldName+' ';
 
-    if (gbm_DatabaseToGenerate = bmPostgreSQL) and b_ColUnique and (b_ColHidden or b_colPrivate) and not b_ColCreate
+    if (gbm_DatabaseToGenerate = bmPostgreSQL) and CreateAutoInc
      then
       Result := Result + 'SERIAL'
      else
@@ -2134,16 +2120,14 @@ begin
     end;
 
     //Set not null
-    if b_ColMain then
+    if b_ColMain and not CreateAutoInc then
     begin
       NullTag:=Not_NULL;
     end
     else
     begin
       if not HideNullField then
-      begin
         NullTag:='NULL';
-      end; // if not HideNullField
     end;
 
     // default value
@@ -2162,7 +2146,7 @@ begin
     end;
 
     // auto increment
-    if b_ColUnique and (b_ColHidden or b_colPrivate) and not b_ColCreate then
+    if CreateAutoInc then
       case gbm_DatabaseToGenerate of
       bmMySQL:
        begin
