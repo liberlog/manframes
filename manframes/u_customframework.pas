@@ -556,6 +556,7 @@ type
     lb_KeyDown  : Boolean ;
     { abstract methods }
     // Méthodes abstraites
+    procedure p_AffecteEvenementsSource(const afws_Source: TFWSource; var ai_CompteCol, ai_CompteSource : Integer; const AMet_MethodeDistribueeSearch :TMethod);virtual;
     function fb_ChargeDonnees : Boolean; virtual; abstract;
     procedure p_AfterColumnFrameShow( const aFWColumn : TFWSource ); virtual; abstract;
     function fb_ChargementNomCol ( const AFWColumn : TFWSource ; const ai_NumSource : Integer ) : Boolean; virtual; abstract;
@@ -626,7 +627,7 @@ type
     procedure p_AffecteEvenementsWorkDatasources ; virtual;
     procedure p_assignColumnsDatasourceOwner ( const afw_Column : TFWSource ; const ads_DataSource : TDatasource ; const afd_FieldDef : TFWFieldColumn ; const acom_Component : TComponent ); virtual;
     procedure p_InitFrameWork ( const Sender : TComponent ); virtual;
-    procedure p_ChargeResources  ( const ar_RecordDatasource : TFWSource ; const li_DataWork  : Integer); virtual;
+    procedure p_ChargeResources  ( const ar_RecordDatasource : TFWSource ; const ai_DataWork  : Integer); virtual;
     procedure p_InitExecutionFrameWork ( const Sender : TObject ); dynamic;
     procedure p_UpdateRecord ;
     procedure p_ValideEditeNumerique ( const ab_PasseErreur : Boolean );
@@ -687,9 +688,9 @@ type
                                   const ach_DebutLettrage, ach_FinLettrage : Char ;
                                   const ali_Debut, ali_LimiteRecherche : Int64 ): Boolean; overload; virtual;abstract;
 
-     procedure p_NextControl ();
-     procedure p_DataWorkGridsTabStop (const lb_Tabstop : Boolean );
-     procedure p_NextControlGridOut ();
+     procedure p_NextControl (); virtual;
+     procedure p_DataWorkGridsTabStop (const lb_Tabstop : Boolean ); virtual;
+     procedure p_NextControlGridOut (); virtual;
      function SetFocusedControl ( Control : TWinControl ): Boolean; override;
      function fobj_GetObjectByName ( as_Name : String ): TObject ;
      procedure p_DevalideFormat ( const aed_Dbedit : TDBEdit ); overload;
@@ -805,12 +806,12 @@ var gb_doublebuffer : Boolean = True ;
     gi_NiveauTransaction : Integer = 0 ;
     gb_DicoGroupementMontreCaption : Boolean = True ;
 
+function  ffws_getSourceFromDataset ( const gFWSources : TFWSources; const ADataset : TDataset ):TFWSource;
+function  ffws_getSourceFromDatasource ( const gFWSources : TFWSources; const ADatasource : TObject ):TFWSource;
+function  ffws_getSourceFromGrid ( const gFWSources : TFWSources; const AGrid : TObject ):TFWSource;
 function  ffws_ParentEstPanel( const aFWColumns : TFWSources ; const acon_Control: TControl): TFWSource;
 function  fdat_GetDataset ( const aFWColumns : TFWSources ; const aobj_Sender : Tobject ): TDataset;
 function  ffws_GetDataWork ( const aFWColumns : TFWSources ; const aobj_Sender : TControl ;var ai_Delete : Integer ):TFWSource;
-function  fi_GetDataWorkFromDataSet ( const aFWColumns : TFWSources ; const adat_DataSet : TDataset ):Integer;
-function  fi_GetDataWorkFromDataSource ( const aFWColumns : TFWSources ; const aobj_Datasource : TObject ):Integer;
-function  fi_GetDataWorkFromGrid ( const aFWColumns : TFWSources ; const agd_Grid : TCustomDBGrid ):Integer;
 function  fds_GetDataSourceWork ( const aFWColumns : TFWSources ; const aobj_Sender : Tobject ):TDataSource;
 function  fdat_GetDataSetWork ( const aFWColumns : TFWSources ; const aobj_Sender : Tobject ):TDataset;
 procedure p_PlacerFlecheTri ( const aFWColumn        : TFWSource;
@@ -937,6 +938,84 @@ begin
       lcon_Parent := lcon_Parent.Parent ;
     End ;
 end;
+
+function ffws_getSourceFromDataset ( const gFWSources : TFWSources; const ADataset : TDataset ):TFWSource;
+var li_i, li_j     : Integer ;
+Begin
+  for li_i := 0 to gFWSources.Count - 1 do
+   with gFWSources [ li_i ] do
+   Begin
+     if assigned ( Datalink )
+     and ( ADataset = Datalink.DataSet ) Then
+        Begin
+          Result := gFWSources [ li_i ] ;
+          Break ;
+        End ;
+     for li_j := 0 to Relations.Count - 1 do
+       with Relations [ li_j ] as TFWRelationGroup do
+         if  ( TableLinked <> li_i )
+         and ( TableLinked > -1 )
+         // looking for Linked Table
+         and assigned ( gFWSources [ TableLinked ].Datalink )
+         and ( ADataset = gFWSources [ TableLinked ].Datalink.DataSet ) Then
+            Begin
+              Result  := gFWSources [ TableLinked ] ;
+              Break ;
+            End;
+   end;
+end;
+
+function ffws_getSourceFromDatasource ( const gFWSources : TFWSources; const ADatasource : TObject ):TFWSource;
+var li_i, li_j     : Integer ;
+Begin
+  for li_i := 0 to gFWSources.Count - 1 do
+   with gFWSources [ li_i ] do
+   Begin
+     if assigned ( Datalink )
+     and ( ADatasource = Datalink.DataSource ) Then
+        Begin
+          Result  := gFWSources [ li_i ] ;
+          Break ;
+        End ;
+     for li_j := 0 to Relations.Count - 1 do
+       with Relations [ li_j ] as TFWRelationGroup do
+         if  ( TableLinked <> li_i )
+         and ( TableLinked > -1 )
+         // looking for Linked Table
+         and assigned ( gFWSources [ TableLinked ].Datalink )
+         and ( ADatasource = gFWSources [ TableLinked ].Datalink.DataSource ) Then
+            Begin
+              Result  := gFWSources [ TableLinked ] ;
+              Break ;
+            End;
+   end;
+end;
+
+function ffws_getSourceFromGrid ( const gFWSources : TFWSources; const AGrid : TObject ):TFWSource;
+var li_i, li_j     : Integer ;
+Begin
+  for li_i := 0 to gFWSources.Count - 1 do
+   with gFWSources [ li_i ] do
+   Begin
+     if ( AGrid = Grid ) Then
+        Begin
+          Result  := gFWSources [ li_i ] ;
+          Break ;
+        End ;
+     for li_j := 0 to Relations.Count - 1 do
+       with Relations [ li_j ] as TFWRelationGroup do
+         if  ( TableLinked <> li_i )
+         and ( TableLinked > -1 )
+         // looking for Linked Table
+         and ( AGrid = gFWSources [ TableLinked ].Grid ) Then
+            Begin
+              Result  := gFWSources [ TableLinked ] ;
+              Break ;
+            End;
+   end;
+end;
+
+
 ///////////////////////////////////////////////////////////////////////
 // Procédure de propriété :    p_SorTDBGrid
 // Description : Gestion du lien du tri entre la grille et Form Dico
@@ -1177,42 +1256,6 @@ begin
   if assigned ( afws_source )
    Then Result := afws_source.Datalink.DataSource
    Else Result := nil;
-End;
-function  fi_GetDataWorkFromDataSource ( const aFWColumns : TFWSources ; const aobj_Datasource : TObject ):Integer;
-var li_i : Integer ;
-begin
-  Result := -1 ;
-  for li_i := 0 to aFWColumns.count-1 do
-    if aFWColumns [ li_i ].Datalink = aobj_Datasource then
-      Begin
-        Result := li_i ;
-        Break;
-      End;
-End;
-// Searching the column of the form
-function  fi_GetDataWorkFromDataSet ( const aFWColumns : TFWSources ; const adat_DataSet : TDataset ):Integer;
-var li_i : Integer ;
-begin
-  Result := -1 ;
-  for li_i := 0 to aFWColumns.count-1 do
-    if assigned ( aFWColumns [ li_i ].Datalink )
-    and ( aFWColumns [ li_i ].Datalink.Dataset = adat_Dataset ) then
-      Begin
-        Result := li_i ;
-        Break;
-      End;
-End;
-// Searching the column of the form
-function  fi_GetDataWorkFromGrid ( const aFWColumns : TFWSources ; const agd_Grid : TCustomDBGrid ):Integer;
-var li_i : Integer ;
-begin
-  Result := -1 ;
-  for li_i := 0 to aFWColumns.count-1 do
-    if aFWColumns [ li_i ].gd_Grid = agd_Grid then
-      Begin
-        Result := li_i ;
-        Break;
-      End;
 End;
 
 { TFWRelationGroup }
@@ -1987,7 +2030,7 @@ Begin
      End;
 End ;
 
-procedure TF_CustomFrameWork.p_ChargeResources ( const ar_RecordDatasource : TFWSource ; const li_DataWork : Integer );
+procedure TF_CustomFrameWork.p_ChargeResources ( const ar_RecordDatasource : TFWSource ; const ai_DataWork : Integer );
 Begin
   with ar_RecordDatasource do
     Begin
@@ -1995,8 +2038,8 @@ Begin
       im_FlecheHaute := TFWImage.Create ( Self );
       im_FlecheBasse := TFWImage.Create ( Self );
 
-      im_FlecheHaute.Name := 'im_FlecheHaute'+ IntToStr( li_DataWork ) ;
-      im_FlecheBasse.Name := 'im_FlecheBasse'+ IntToStr( li_DataWork ) ;
+      im_FlecheHaute.Name := 'im_FlecheHaute'+ IntToStr( ai_DataWork ) ;
+      im_FlecheBasse.Name := 'im_FlecheBasse'+ IntToStr( ai_DataWork ) ;
       {$IFDEF FPC}
       im_FlecheBasse.Picture.Bitmap.LoadFromLazarusResource( 'FLECHEBASSE' );
       im_FlecheHaute.Picture.Bitmap.LoadFromLazarusResource( 'FLECHEHAUTE' );
@@ -2015,123 +2058,142 @@ Begin
   KeyPreview := True;
 End;
 
+procedure TF_CustomFrameWork.p_AffecteEvenementsSource ( const afws_Source : TFWSource ; var ai_CompteCol, ai_CompteSource : Integer; const AMet_MethodeDistribueeSearch :TMethod );
+var li_j : Integer;
+    lt_Arg : Array [0..2] of String ;
+    ls_temp:String;
+    lfi_Field : TStringField;
+Begin
+  with afws_Source do
+   if assigned ( Datalink.DataSet ) Then
+     Begin
+       p_ChargeResources ( afws_Source, ai_CompteSource );
+
+       // Gestion de la grille associée
+       if assigned ( gd_Grid ) Then
+         Begin
+           gd_GridColumns := TDBGridColumns(fobj_getComponentObjectProperty(gd_Grid, 'Columns'));
+           p_SetComponentObjectProperty(gd_Grid, 'Datasource', DataSource);
+           {$IFDEF RX}
+           if gd_Grid is TRxDBGrid Then
+             Begin
+              GridTitleClick := ( gd_Grid as TRxDBGrid ).OnTitleClick;
+              ( gd_Grid as TRxDBGrid ).OnTitleClick := gd_GridTitleBtnClick ;
+             End;
+           {$ENdIF}
+           if assigned ( nav_Navigator ) then
+             Begin
+               e_NavClick := nav_Navigator.OnClick ;
+               nav_Navigator.OnClick := p_dataworknavclick ;
+             End;
+         End;
+       ds_DataSourcesWork := Datalink.DataSource;
+       var_Enregistrement:=Null;
+       i_DebutTableau := ai_CompteCol ;
+       if gb_DicoUseFormField Then
+         i_DebutTableau := ai_CompteCol ;
+       e_StateChange  := Datalink.DataSource.OnStateChange ;
+       with Datalink,Dataset do
+        Begin
+         e_BeforeInsert := BeforeInsert ;
+         e_AfterInsert  := AfterInsert ;
+         e_BeforePost   := BeforePost ;
+         e_AfterPost    := AfterPost ;
+         e_BeforeDelete := BeforeDelete ;
+         e_AfterCancel  := AfterCancel;
+         e_AfterEdit    := AfterEdit;
+         // Gestion du focus renseigné ?
+         if assigned ( con_ControlFocus ) Then
+           Begin
+             e_BeforeCancel := BeforeCancel ;
+             BeforeCancel := p_DataWorkBeforeCancel ;
+           End;
+         AfterInsert  := p_DataWorkAfterInsert ;
+         BeforeInsert := p_DataWorkBeforeInsert ;
+         AfterPost    := p_DataWorkAfterPost ;
+         AfterCancel  := p_DataWorkAfterCancel ;
+         AfterEdit    := p_DataWorkAfterEdit ;
+         BeforeDelete := p_DataWorkBeforeDelete ;
+         p_CreateOptionalCsvFile(FieldDefs,afws_Source);
+        end;
+
+       with Datalink do
+        Begin
+         ls_temp := fs_getSQLQuery ( Dataset );
+         if ls_temp = '' Then
+          Begin
+            p_SetSQLQuery(Dataset,FieldsDefs, GetKey, Table );
+          End;
+         DataSource.OnStateChange := p_DatasourceWorksStateChange ;
+        end;
+       if assigned ( nav_Saisie ) Then
+         Begin
+           p_HintNavigateur ( nav_Saisie    );
+           p_SetComponentObjectProperty ( nav_Saisie   , 'DataSource', Datalink.DataSource );
+           if not assigned ( fmet_getComponentMethodProperty ( nav_saisie, 'OnBtnSearch' ).Code )
+            Then
+              p_SetComponentMethodProperty ( nav_saisie, 'OnBtnSearch', TMethod ( amet_MethodeDistribueeSearch ));
+         End;
+       if assigned ( nav_Navigator ) Then
+         Begin
+           p_HintNavigateur ( nav_Navigator );
+           p_SetComponentObjectProperty ( nav_Navigator, 'DataSource', Datalink.DataSource );
+         End;
+       ds_recherche := Datalink.DataSource;
+
+       if ( Trim ( Table ) <> '' )
+       and not gb_DicoKeyFormPresent
+       and not fb_ChargementNomCol ( afws_Source, Index ) then
+         begin
+           lt_Arg [ 0 ] :=  Table ;
+           lt_Arg [ 1 ] :=  Datalink.DataSet.Name;
+           lt_Arg [ 2 ] :=  Self.Name;
+           MyShowMessage ( fs_RemplaceMsg ( GS_FORM_ERREUR_CHARGE_COLONNES + #13#10 + GS_FORM_TABLE_NON_RENSEIGNEE, lt_Arg ));
+           gb_Unload := True;
+           Exit;
+         end;
+       inc ( ai_CompteSource );
+     End
+   Else
+     Begin
+       e_StateChange  := Nil ;
+       e_BeforePost   := nil ;
+       e_BeforeInsert := nil ;
+       e_BeforeDelete := nil ;
+       e_BeforeCancel := nil ;
+       e_AfterCancel  := nil ;
+       e_AfterPost    := nil ;
+       e_AfterInsert  := nil ;
+       e_AfterEdit    := nil ;
+       i_DebutTableau := -1 ;
+     End ;
+end;
 
 // procedure TF_CustomFrameWork.p_AffecteEvenementsWorkDatasources
 // Renseignements des évènements des datasources
 procedure TF_CustomFrameWork.p_AffecteEvenementsWorkDatasources ( );
 var li_i, li_j : Integer;
-    li_CompteCol : Integer;
-    lt_Arg : Array [0..2] of String ;
-    ls_temp:String;
+    li_CompteCol,li_CompteSource : Integer;
     lmet_MethodeDistribueeSearch: TMethod;
-    lfi_Field : TStringField;
 Begin
   lmet_MethodeDistribueeSearch.Data := Self;
   lmet_MethodeDistribueeSearch.Code := MethodAddress('p_BtnSearch');
-   li_CompteCol := 0 ;
+  li_CompteCol := 0 ;
+  li_CompteSource:=0;
+  with gFWSources do
    for li_i := 0 to gFWSources.Count - 1 do
-     with gFWSources.items [ li_i ] do
-      if assigned ( Datalink.DataSet ) Then
-        Begin
-          p_ChargeResources ( gFWSources.items [ li_i ], li_i );
-
-          // Gestion de la grille associée
-          if assigned ( gd_Grid ) Then
-            Begin
-              gd_GridColumns := TDBGridColumns(fobj_getComponentObjectProperty(gd_Grid, 'Columns'));
-              p_SetComponentObjectProperty(gd_Grid, 'Datasource', DataSource);
-              {$IFDEF RX}
-              if gd_Grid is TRxDBGrid Then
-                Begin
-                 GridTitleClick := ( gd_Grid as TRxDBGrid ).OnTitleClick;
-                 ( gd_Grid as TRxDBGrid ).OnTitleClick := gd_GridTitleBtnClick ;
-                End;
-              {$ENdIF}
-              if assigned ( nav_Navigator ) then
-                Begin
-                  e_NavClick := nav_Navigator.OnClick ;
-                  nav_Navigator.OnClick := p_dataworknavclick ;
-                End;
-            End;
-          ds_DataSourcesWork := Datalink.DataSource;
-          var_Enregistrement:=Null;
-          i_DebutTableau := li_CompteCol ;
-          if gb_DicoUseFormField Then
-            i_DebutTableau := li_CompteCol ;
-          e_StateChange  := Datalink.DataSource.OnStateChange ;
-          with Datalink,Dataset do
-           Begin
-            e_BeforeInsert := BeforeInsert ;
-            e_AfterInsert  := AfterInsert ;
-            e_BeforePost   := BeforePost ;
-            e_AfterPost    := AfterPost ;
-            e_BeforeDelete := BeforeDelete ;
-            e_AfterCancel  := AfterCancel;
-            e_AfterEdit    := AfterEdit;
-            // Gestion du focus renseigné ?
-            if assigned ( con_ControlFocus ) Then
-              Begin
-                e_BeforeCancel := BeforeCancel ;
-                BeforeCancel := p_DataWorkBeforeCancel ;
-              End;
-            AfterInsert  := p_DataWorkAfterInsert ;
-            BeforeInsert := p_DataWorkBeforeInsert ;
-            AfterPost    := p_DataWorkAfterPost ;
-            AfterCancel  := p_DataWorkAfterCancel ;
-            AfterEdit    := p_DataWorkAfterEdit ;
-            BeforeDelete := p_DataWorkBeforeDelete ;
-            p_CreateOptionalCsvFile(FieldDefs,gFWSources.items [ li_i ]);
-           end;
-
-          with Datalink do
-           Begin
-            ls_temp := fs_getSQLQuery ( Dataset );
-            if ls_temp = '' Then
-             Begin
-               p_SetSQLQuery(Dataset,FieldsDefs, GetKey, Table );
-             End;
-            DataSource.OnStateChange := p_DatasourceWorksStateChange ;
-           end;
-          if assigned ( nav_Saisie ) Then
-            Begin
-              p_HintNavigateur ( nav_Saisie    );
-              p_SetComponentObjectProperty ( nav_Saisie   , 'DataSource', Datalink.DataSource );
-              if not assigned ( fmet_getComponentMethodProperty ( nav_saisie, 'OnBtnSearch' ).Code )
-               Then
-                 p_SetComponentMethodProperty ( nav_saisie, 'OnBtnSearch', TMethod ( lmet_MethodeDistribueeSearch ));
-            End;
-          if assigned ( nav_Navigator ) Then
-            Begin
-              p_HintNavigateur ( nav_Navigator );
-              p_SetComponentObjectProperty ( nav_Navigator, 'DataSource', Datalink.DataSource );
-            End;
-          ds_recherche := Datalink.DataSource;
-
-          if ( Trim ( Table ) <> '' )
-          and not gb_DicoKeyFormPresent
-          and not fb_ChargementNomCol ( gFWSources [li_i], li_i ) then
-            begin
-              lt_Arg [ 0 ] :=  Table ;
-              lt_Arg [ 1 ] :=  Datalink.DataSet.Name;
-              lt_Arg [ 2 ] :=  Self.Name;
-              MyShowMessage ( fs_RemplaceMsg ( GS_FORM_ERREUR_CHARGE_COLONNES + #13#10 + GS_FORM_TABLE_NON_RENSEIGNEE, lt_Arg ));
-              gb_Unload := True;
-              Exit;
-            end;
-        End
-      Else
-        Begin
-          e_StateChange  := Nil ;
-          e_BeforePost   := nil ;
-          e_BeforeInsert := nil ;
-          e_BeforeDelete := nil ;
-          e_BeforeCancel := nil ;
-          e_AfterCancel  := nil ;
-          e_AfterPost    := nil ;
-          e_AfterInsert  := nil ;
-          e_AfterEdit    := nil ;
-          i_DebutTableau := -1 ;
-        End ;
+    with items [ li_i ] do
+    Begin
+     p_AffecteEvenementsSource ( items [ li_i ], li_CompteCol, li_CompteSource, lmet_MethodeDistribueeSearch);
+     for li_j := 0 to Relations.Count - 1 do
+       with Relations [ li_j ] as TFWRelationGroup do
+         if  ( TableLinked <> li_i )
+         and ( TableLinked > -1 )
+         and Assigned ( items [ TableLinked ].ds_DataSourcesWork )
+         and Assigned ( items [ TableLinked ].ds_DataSourcesWork.DataSet )
+          Then
+           p_AffecteEvenementsSource(items [ TableLinked ],li_CompteCol,li_CompteSource,lmet_MethodeDistribueeSearch);
+    end;
 End;
 
 procedure TF_CustomFrameWork.p_ScruteComposantsFiche ();
@@ -2160,7 +2222,7 @@ Begin
      p_ChargeIndicateurs ( Components [ li_i ] );
      if  ( Components [ li_i ] is TCustomPanel)
      and ( fobj_getComponentObjectProperty ( Components [ li_i ], 'DataSource' ) is TDatasource )
-     and ( fi_GetDataWorkFromDataSource ( gFWSources, fobj_getComponentObjectProperty ( Components [ li_i ], 'DataSource' ))= -1) then
+     and ( ffws_getSourceFromDatasource ( gFWSources, fobj_getComponentObjectProperty ( Components [ li_i ], 'DataSource' ))= nil) then
            Begin
              p_AffecteEvenementsNavigators ( Components [ li_i ] as TCustomPanel );
              Continue ;
@@ -2963,17 +3025,9 @@ begin
 End ;
 
 procedure TF_CustomFrameWork.p_DatasourceWorksStateChange (Sender: TObject);
-var li_i      : Integer ;
-    lfws_Source : TFWSource; 
+var lfws_Source : TFWSource;
 begin
-  lfws_Source := nil ;
-  for li_i := 0 to gFWSources.Count - 1 do
-   if assigned ( gFWSources.items [ li_i ].Datalink )
-   and ( Sender = gFWSources.items [ li_i ].Datalink.DataSource ) Then
-      Begin
-        lfws_Source  := gFWSources.items [ li_i ] ;
-        Break ;
-      End ;
+  lfws_Source := ffws_getSourceFromDatasource(gFWSources,Sender);
   if ( lfws_Source = nil ) Then
     Exit ;
   try
@@ -4149,7 +4203,7 @@ begin
       and assigned ( ( aobj_Datasource as TDatasource ).DataSet )
       and (( aobj_Datasource as TDatasource ).DataSet.State in [dsInsert, dsEdit ]) Then
         Begin
-          lb_PasTrouve := fi_getDataWorkFromDatasource ( gFWSources, aobj_Datasource ) = -1;
+          lb_PasTrouve := ffws_getSourceFromDatasource ( gFWSources, aobj_Datasource ) = nil;
 
           if lb_PasTrouve Then
             if assigned ( ge_DBDemandPost ) Then
@@ -5408,7 +5462,7 @@ begin
         ls_Filtre := '' ;
       // Filtrage et recherche
       if ( tx_edition.Visible  or  (( dblcbx_edition.Visible ) and ( gvar_valeurRecherche <> Null )))
-      and (fi_GetDataWorkFromDataSet( gFWSources, adat_Dataset ) <> - 1 ) Then
+      and assigned(ffws_getSourceFromDataset( gFWSources, adat_Dataset ) ) Then
         if adat_Dataset.FieldByName ( as_Champ ) is TDateTimeField Then
           try
             VarToDateTime ( avar_Recherche );
@@ -5809,7 +5863,7 @@ begin
   and ( Control <> dblcbx_edition )
   and assigned ( tx_edition )
   and (( tx_edition.Tag <> Control.Tag ) or ( tx_edition.Parent <> Control.Parent ))
-  and (not ( Control is TCustomDBGrid ) or ( fi_GetDataWorkFromGrid ( gFWSources, Control as TCustomDBGrid ) < 0 ))
+  and (not ( Control is TCustomDBGrid ) or ( ffws_GetSourceFromGrid ( gFWSources, Control as TCustomDBGrid ) = nil ))
   and assigned ( ActiveControl )
   and ( Trim ( ActiveControl.Name ) <> '' ) Then
     Begin
@@ -5916,7 +5970,8 @@ end;
 
 {$IFDEF RX}
 procedure TF_CustomFrameWork.gd_GridTitleBtnClick(Column: TColumn);
-var li_i : Integer ;
+var lfws_Source : TFWSource ;
+    li_i : Integer ;
     ls_Field, ls_FieldName : String;
     lcon_Control : TControl ;
 Begin
@@ -5930,13 +5985,13 @@ Begin
       and assigned ( fobj_GetComponentObjectProperty ( Components [ li_i ], 'MyLabel' )) then
         lcon_Control := fobj_GetComponentObjectProperty ( Components [ li_i ], 'MyLabel' ) as TControl;
     End;
-  li_i := fi_GetDataWorkFromGrid ( gFWSources, Column.Grid as TCustomDBGrid );
+  lfws_Source := ffws_getSourceFromGrid ( gFWSources, Column.Grid as TCustomDBGrid );
   if assigned ( lcon_Control ) Then
     Begin
-      p_trieSurClickLabel ( gFWSources [ li_i ], lcon_Control, False, False );
+      p_trieSurClickLabel ( lfws_Source, lcon_Control, False, False );
     End;
-  if assigned ( gFWSources [ li_i ].GridTitleClick ) then
-    gFWSources [ li_i ].GridTitleClick ( Column  );
+  if assigned ( lfws_Source.GridTitleClick ) then
+    lfws_Source.GridTitleClick ( Column  );
 End;
 
 {$ENDIF}
