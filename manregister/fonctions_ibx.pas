@@ -54,7 +54,6 @@ uses IBQuery,
      IBDatabase,
      fonctions_dialogs,
      unite_variables,
-     IBSQL,
      {$IFNDEF WINDOWS}
      u_multidonnees,
      {$ENDIF}

@@ -22,7 +22,7 @@ uses
   ADODB,
 {$ENDIF}
 {$IFDEF FPC}
-  LCLIntf, LCLType, SQLDB, PCheck, lresources,
+  PCheck,
 {$ELSE}
   Windows, OleDB, JvComponent, StoHtmlHelp, JvScrollBox,
   JvExExtCtrls, JvSplitter, JvLED, 
@@ -41,14 +41,12 @@ uses
 {$ENDIF}
   u_multidonnees,
   Controls, Graphics, Classes, SysUtils, StrUtils,
-  ExtCtrls, ActnList, Menus,
-  JvXPContainer, ComCtrls, JvXPButtons,
-  IniFiles, Dialogs, Printers,
+  ExtCtrls, Menus,
+  ComCtrls,
+  IniFiles, Dialogs,
   u_extmenucustomize, u_extmenutoolbar,
-  JvXPBar, Forms,  U_FormMainIni, fonctions_init,
-  fonctions_Objets_Dynamiques,
-  u_buttons_appli, fonctions_string,
-  DBCtrls ;
+  Forms,  U_FormMainIni, fonctions_init,
+  fonctions_string;
 
 {$IFDEF VERSIONS}
 const
@@ -102,15 +100,13 @@ var
 implementation
 
 uses
-  TypInfo,
 {$IFNDEF FPC}
   DB,
   fonctions_aide,
 {$ENDIF}
   fonctions_dialogs,
   fonctions_createsql,
-  unite_variables, unite_messages,
-  fonctions_proprietes ;
+  unite_variables, unite_messages;
 
 
 
