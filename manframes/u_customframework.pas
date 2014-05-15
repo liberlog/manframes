@@ -940,7 +940,7 @@ begin
 end;
 
 function ffws_getSourceFromDataset ( const gFWSources : TFWSources; const ADataset : TDataset ):TFWSource;
-var li_i, li_j     : Integer ;
+var li_i     : Integer ;
 Begin
   for li_i := 0 to gFWSources.Count - 1 do
    with gFWSources [ li_i ] do
@@ -951,22 +951,11 @@ Begin
           Result := gFWSources [ li_i ] ;
           Break ;
         End ;
-     for li_j := 0 to Relations.Count - 1 do
-       with Relations [ li_j ] as TFWRelationGroup do
-         if  ( TableLinked <> li_i )
-         and ( TableLinked > -1 )
-         // looking for Linked Table
-         and assigned ( gFWSources [ TableLinked ].Datalink )
-         and ( ADataset = gFWSources [ TableLinked ].Datalink.DataSet ) Then
-            Begin
-              Result  := gFWSources [ TableLinked ] ;
-              Break ;
-            End;
    end;
 end;
 
 function ffws_getSourceFromDatasource ( const gFWSources : TFWSources; const ADatasource : TObject ):TFWSource;
-var li_i, li_j     : Integer ;
+var li_i     : Integer ;
 Begin
   for li_i := 0 to gFWSources.Count - 1 do
    with gFWSources [ li_i ] do
@@ -977,22 +966,11 @@ Begin
           Result  := gFWSources [ li_i ] ;
           Break ;
         End ;
-     for li_j := 0 to Relations.Count - 1 do
-       with Relations [ li_j ] as TFWRelationGroup do
-         if  ( TableLinked <> li_i )
-         and ( TableLinked > -1 )
-         // looking for Linked Table
-         and assigned ( gFWSources [ TableLinked ].Datalink )
-         and ( ADatasource = gFWSources [ TableLinked ].Datalink.DataSource ) Then
-            Begin
-              Result  := gFWSources [ TableLinked ] ;
-              Break ;
-            End;
    end;
 end;
 
 function ffws_getSourceFromGrid ( const gFWSources : TFWSources; const AGrid : TObject ):TFWSource;
-var li_i, li_j     : Integer ;
+var li_i     : Integer ;
 Begin
   for li_i := 0 to gFWSources.Count - 1 do
    with gFWSources [ li_i ] do
@@ -1002,16 +980,6 @@ Begin
           Result  := gFWSources [ li_i ] ;
           Break ;
         End ;
-     for li_j := 0 to Relations.Count - 1 do
-       with Relations [ li_j ] as TFWRelationGroup do
-         if  ( TableLinked <> li_i )
-         and ( TableLinked > -1 )
-         // looking for Linked Table
-         and ( AGrid = gFWSources [ TableLinked ].Grid ) Then
-            Begin
-              Result  := gFWSources [ TableLinked ] ;
-              Break ;
-            End;
    end;
 end;
 
@@ -2182,18 +2150,7 @@ Begin
   li_CompteSource:=0;
   with gFWSources do
    for li_i := 0 to gFWSources.Count - 1 do
-    with items [ li_i ] do
-    Begin
      p_AffecteEvenementsSource ( items [ li_i ], li_CompteCol, li_CompteSource, lmet_MethodeDistribueeSearch);
-     for li_j := 0 to Relations.Count - 1 do
-       with Relations [ li_j ] as TFWRelationGroup do
-         if  ( TableLinked <> li_i )
-         and ( TableLinked > -1 )
-         and Assigned ( items [ TableLinked ].ds_DataSourcesWork )
-         and Assigned ( items [ TableLinked ].ds_DataSourcesWork.DataSet )
-          Then
-           p_AffecteEvenementsSource(items [ TableLinked ],li_CompteCol,li_CompteSource,lmet_MethodeDistribueeSearch);
-    end;
 End;
 
 procedure TF_CustomFrameWork.p_ScruteComposantsFiche ();
