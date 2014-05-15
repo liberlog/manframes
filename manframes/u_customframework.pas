@@ -942,6 +942,7 @@ end;
 function ffws_getSourceFromDataset ( const gFWSources : TFWSources; const ADataset : TDataset ):TFWSource;
 var li_i     : Integer ;
 Begin
+  Result := nil;
   for li_i := 0 to gFWSources.Count - 1 do
    with gFWSources [ li_i ] do
    Begin
@@ -957,6 +958,7 @@ end;
 function ffws_getSourceFromDatasource ( const gFWSources : TFWSources; const ADatasource : TObject ):TFWSource;
 var li_i     : Integer ;
 Begin
+  Result := nil;
   for li_i := 0 to gFWSources.Count - 1 do
    with gFWSources [ li_i ] do
    Begin
@@ -972,6 +974,7 @@ end;
 function ffws_getSourceFromGrid ( const gFWSources : TFWSources; const AGrid : TObject ):TFWSource;
 var li_i     : Integer ;
 Begin
+  Result := nil;
   for li_i := 0 to gFWSources.Count - 1 do
    with gFWSources [ li_i ] do
    Begin
@@ -2089,9 +2092,7 @@ Begin
         Begin
          ls_temp := fs_getSQLQuery ( Dataset );
          if ls_temp = '' Then
-          Begin
             p_SetSQLQuery(Dataset,FieldsDefs, GetKey, Table );
-          End;
          DataSource.OnStateChange := p_DatasourceWorksStateChange ;
         end;
        if assigned ( nav_Saisie ) Then
