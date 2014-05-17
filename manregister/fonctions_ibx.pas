@@ -328,7 +328,8 @@ Begin
    Then libname:= CST_FBEMBED+CST_EXTENSION_LIBRARY
    Else libname:= 'fbclient'+CST_EXTENSION_LIBRARY;
   {$ELSE}
-  if     ( DMModuleSources.Sources.Count = 0 )
+  if     ( DMModuleSources  = nil )
+      or ( DMModuleSources.Sources.Count = 0 )
       or (    ( pos ( DEFAULT_FIREBIRD_SERVER_DIR, DMModuleSources.Sources [ 0 ].DataBase ) <> 1 )
           and ( DMModuleSources.Sources [ 0 ].DataBase <> '' )
           and (   ( DMModuleSources.Sources [ 0 ].DataBase [1] = '/' )
