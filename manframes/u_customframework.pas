@@ -472,8 +472,6 @@ type
     gb_Fetching          : Boolean ;
     ge_FetchEvent        : TEvent ;
 
-    ge_OldAfterOpen      : TDataSetNotifyEvent;
-
     ge_OpenDatasets  , // Ouverture spécifiques des datasets des colonnes
     // Appel aux anciens évènements
     // de Gestion des données
@@ -1880,7 +1878,6 @@ Begin
   gb_DonneesChargees    := False ;
   gb_ModeAsynchrone     := False ;
   gb_AutoInsert         := False ;
-  ge_OldAfterOpen       := nil ;
   {$IFDEF EADO}
   gi_AsynchroneEnregistrements := gi_IniDatasourceAsynchroneEnregistrementsACharger ;
   {$ENDIF}
@@ -3633,7 +3630,7 @@ begin
                if assigned ( DataSet ) Then
                 with DataSet do
                  Begin
-                 // ShowMessage(fs_getSQLQuery(DataSet));
+                  //ShowMessage((fobj_getComponentObjectProperty(fobj_getComponentObjectProperty(DataSet,CST_DBPROPERTY_UPDATEOBJECT),CST_DBPROPERTY_REFRESH_SQL) as TStrings).Text);
                   Open ;
                   BeforePost   := p_DataWorkBeforePost ;
                  end;
@@ -3684,8 +3681,6 @@ begin
                   if Assigned ( ge_SetAsyncMainDataset ) then
                    try
                     gb_ModeAsynchrone := ge_SetAsyncMainDataset ( gdat_DatasetPrinc );
-                    if assigned ( ge_OldAfterOpen ) Then
-                      ge_OldAfterOpen (gdat_DatasetPrinc );
                    Except
                       On e: Exception do fcla_GereException ( e, gdat_DatasetPrinc );
                    End ;
