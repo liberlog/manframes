@@ -21,6 +21,14 @@ resourcestring
 
 const DEFAULT_FIREBIRD_SERVER_DIR = '/var/lib/firebird/2.5/';
       _REL_PATH_BACKUP='Backup'+DirectorySeparator;
+      CST_FBEMBED = 'fbembed'{$IFDEF CPU64}+'64'{$ENDIF};
+      CST_FBCLIENT = 'fbclient'{$IFDEF CPU64}+'64'{$ENDIF};
+      CST_FBISQL = {$IFDEF WINDOWS}
+                   'isql'{$IFDEF CPU64}+'64'{$ENDIF}+'.exe';
+                   {$ELSE}
+                   'isql-fb';
+                   {$ENDIF}
+
 {$IFDEF VERSIONS}
       gver_fonctions_ibx : T_Version = ( Component : 'IBX Connect package.' ;
                                          FileUnit : 'fonctions_ibx' ;
@@ -65,8 +73,6 @@ uses IBQuery,
      fonctions_proprietes,
      fonctions_createsql,
      fonctions_dbcomponents;
-
-const CST_FBEMBED = 'fbembed';
 
 function fs_CreateAlterBeginSQL :String;
 Begin
@@ -150,6 +156,39 @@ Begin
   Result := 'CREATE DATABASE '''+as_base+''' USER '''+as_user+''' PASSWORD '''+as_password+''' PAGE_SIZE 16384 DEFAULT CHARACTER SET '+Gs_Charset_ibx+';'+#10
           + 'CONNECT '''+as_base+''' USER '''+as_user+''' PASSWORD '''+as_password+''';'+#10;
 End;
+
+{$IFDEF WINDOWS}
+function fs_GetFirebirdExeorLib (const exeorlib: string):String;
+var APath : String;
+Begin
+  Result:= '';
+  APath:=fs_getAppDir;
+  if FileExistsUTF8(APath+exeorlib)
+   Then Begin
+         Result:= exeorlib;
+         Exit;
+        end
+   Else while (length ( APath ) > 5) do
+      Begin
+        APath:=ExtractSubDir(APath);
+        if FileExistsUTF8(APath+DirectorySeparator+exeorlib) Then
+          Begin
+           Result:=APath+DirectorySeparator+exeorlib;
+           Exit;
+          end;
+      end;
+
+
+end;
+
+function fs_GetDefaultFirebirdExeorLib (const exeorlib: string):String;
+Begin
+  Result:=fs_GetFirebirdExeorLib(exeorlib);
+  if Result='' Then
+    Result:=exeorlib;
+end;
+
+{$ENDIF}
 
 function fb_RestoreBase ( const AConnection : TComponent ;
                           const as_database, as_user, as_password, APathSave : String ;
@@ -300,7 +339,7 @@ Begin
     FileClose(lh_handleFile);
   end;
   {$IFDEF WINDOWS}
-  ls_exe := fs_getAppDir+'isql.exe';
+  ls_exe := fs_GetDefaultFirebirdExeorLib(CST_FBISQL);
   if not FileExistsUTF8(ls_exe) Then
     Begin
      MyShowMessage(fs_RemplaceMsg(GS_EXE_DO_NOT_EXISTS_EXITING,[ls_exe]));
@@ -309,7 +348,7 @@ Begin
   ls_File := fs_ExecuteProcess(ls_exe, ' -i '''+ ls_File+CST_EXTENSION_SQL_FILE
                            +''' -s 3');
   {$ELSE}
-  ls_File := fs_ExecuteProcess('isql-fb', ' -i '''+ ls_File+CST_EXTENSION_SQL_FILE
+  ls_File := fs_ExecuteProcess(CST_FBISQL, ' -i '''+ ls_File+CST_EXTENSION_SQL_FILE
                             +'''  -s 3');
   {$ENDIF}
   if ls_File > '' Then
@@ -324,9 +363,9 @@ var Alib : String;
 {$ENDIF}
 Begin
   {$IFDEF WINDOWS}
-  if FileExistsUTF8(fs_getAppDir+CST_FBEMBED+CST_EXTENSION_LIBRARY)
-   Then libname:= CST_FBEMBED+CST_EXTENSION_LIBRARY
-   Else libname:= 'fbclient'+CST_EXTENSION_LIBRARY;
+  libname:=fs_GetFirebirdExeorLib(CST_FBEMBED+CST_EXTENSION_LIBRARY);
+  if libname ='' Then
+    libname:=fs_GetDefaultFirebirdExeorLib(CST_FBCLIENT+CST_EXTENSION_LIBRARY);
   {$ELSE}
   if     ( DMModuleSources  = nil )
       or ( DMModuleSources.Sources.Count = 0 )
