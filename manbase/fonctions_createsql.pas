@@ -20,14 +20,6 @@ uses
 type
   TOnGetSQL = function : String;
   TOnSetDatabase = function ( const as_base, as_user, as_password, as_host : String ) : String;
-  TOnOpenCloseDatabase = function ( const AConnection : TComponent ;
-                               const ab_Open : Boolean ;
-                               const ab_showError : Boolean  ):Boolean;
-  TOnOptimiseDatabase = function ( const AConnection : TComponent ;
-                                   const as_database, as_user, as_password, APathSave : String ;
-                                   const ASt_Messages : TStrings; const acom_ControlMessage, acom_owner : TComponent):Boolean;
-  TOnExecuteCommand = procedure ( const as_SQL: {$IFDEF DELPHI_9_UP} WideString {$ELSE} String{$ENDIF} );
-  TOnExecuteScriptServer = procedure ( const AConnection : TComponent; const as_SQL: {$IFDEF DELPHI_9_UP} WideString {$ELSE} String{$ENDIF} );
 
 
 const
@@ -46,19 +38,11 @@ const
   ge_OnBeginCreateAlter: TOnGetSQL = nil;
   ge_OnEndCreate: TOnSetDatabase = nil;
   ge_OnCreateDatabase: TOnSetDatabase = nil;
-  ge_OnOpenOrCloseDatabase: TOnOpenCloseDatabase = nil;
-  ge_OnOptimiseDatabase: TOnOptimiseDatabase = nil;
-  ge_OnExecuteCommand: TOnExecuteCommand = nil;
-  ge_OnExecuteScriptServer: TOnExecuteScriptServer = nil;
   CST_DBPROPERTY_DELETE_SQL  = 'DeleteSQL';
   CST_DBPROPERTY_INSERT_SQL  = 'InsertSQL';
   CST_DBPROPERTY_MODIFY_SQL  = 'ModifySQL';
   CST_DBPROPERTY_REFRESH_SQL = 'RefreshSQL';
 
-procedure p_ExecuteSQLCommand ( const as_Command :{$IFDEF DELPHI_9_UP} WideString {$ELSE} String{$ENDIF} ; const ab_ShowException : boolean = True );
-procedure p_ExecuteSQLScriptServer ( const AConnection : TComponent; const as_Command :{$IFDEF DELPHI_9_UP} WideString {$ELSE} String{$ENDIF} ; const ab_ShowException : boolean = True );
-procedure p_optimiseDatabase ( const AConnection : TComponent;
-                               const as_database, as_user, as_password, APathSave : String );
 procedure p_SyncDB(const DMDB : TDataSet;const ModelTables: TList; const DBConn: TComponent;
   var Log: TLazLoggerFile; const KeepExTbls, StdInsertsOnCreate, StdInsertsSync: boolean);
 function fvar_getKeyRecord ( const adat_Dataset : TDataset ; const aff_Cle : TFWFieldColumns ): Variant;
@@ -80,13 +64,6 @@ function fb_InsereCompteur ( const adat_Dataset, adat_DatasetQuery : TDataset ;
                              const ab_DBMessageOnError  : Boolean ): Boolean;
 function fs_CreateDatabase  ( const as_base, as_user, as_password, as_host : String ):String;
 function fs_BeginAlterCreate :String;
-function fb_OptimiseDatabase  ( const AConnection : TComponent ;
-                                const as_database, as_user, as_password, APathSave : String ;
-                                const ASt_Messages : TStrings;
-                                const acom_ControlMessage, acom_owner : TComponent):Boolean;
-function fb_OpenCloseDatabase ( const AConnection  : TComponent ;
-                                const ab_Open : Boolean ;
-                                const ab_showError : Boolean = False   ):Boolean;
 function fs_EndCreate  ( const as_base, as_user, as_password, as_host : String ) :String;
 procedure p_SetSQLQuery ( const adat_Dataset : Tdataset ;
                           const af_fields, af_key : TFWMiniFieldColumns ;
@@ -101,32 +78,6 @@ uses variants,
      fonctions_db,
      fonctions_proprietes,
      fonctions_erreurs;
-
-// execute query with optional module
-procedure p_ExecuteSQLCommand ( const as_Command :{$IFDEF DELPHI_9_UP} WideString {$ELSE} String{$ENDIF} ; const ab_ShowException : boolean = True );
-Begin
-  try
-    if assigned ( ge_OnExecuteCommand ) Then
-     ge_OnExecuteCommand ( as_Command );
-  Except
-    on E:Exception do
-     if ab_ShowException Then
-       p_ShowSQLError(E.Message,as_Command);
-  end;
-End ;
-
-// execute query with optional module
-procedure p_ExecuteSQLScriptServer ( const AConnection : TComponent; const as_Command :{$IFDEF DELPHI_9_UP} WideString {$ELSE} String{$ENDIF} ; const ab_ShowException : boolean = True );
-Begin
-  try
-    if assigned ( ge_OnExecuteScriptServer ) Then
-     ge_OnExecuteScriptServer ( AConnection, as_Command );
-  Except
-    on E:Exception do
-     if ab_ShowException Then
-      p_ShowSQLError(E.Message,as_Command);
-  end;
-End ;
 
 function fb_SyncFielddataType ( const DMDB : TDataSet; const thefield : TFWFieldColumn ; const DatatypeName, DatatypeParams : String ):Boolean;
 var theDatatype : TFWFieldData;
@@ -1344,18 +1295,6 @@ Begin
    Then Result := ge_OnEndCreate ( as_base, as_user, as_password, as_host )
    Else Result := '';
 End;
-function fb_OptimiseDatabase  ( const AConnection : TComponent ;
-                                const as_database, as_user, as_password, APathSave : String ;
-                                const ASt_Messages : TStrings;
-                                const acom_ControlMessage, acom_owner : TComponent):Boolean;
-Begin
-  if Assigned(ge_OnOptimiseDatabase) Then
-    Result:=ge_OnOptimiseDatabase (AConnection,
-                                   as_database, as_user, as_password, APathSave,
-                                   ASt_Messages,
-                                   acom_ControlMessage, acom_owner);
-end;
-
 function fs_CreateDatabase  ( const as_base, as_user, as_password, as_host : String ):String;
 Begin
   if assigned ( ge_OnCreateDatabase )
@@ -1444,32 +1383,10 @@ Begin
                   + fs_getStringKeys   ;
    end;
 End ;
-function fb_OpenCloseDatabase ( const AConnection  : TComponent ;
-                                const ab_Open : Boolean ;
-                                const ab_showError : Boolean = False   ):Boolean;
-begin
-  if Assigned(ge_OnOpenOrCloseDatabase) Then
-   Begin
-     Result:=ge_OnOpenOrCloseDatabase ( AConnection, ab_open, ab_showError );
-   end;
-End;
-procedure p_optimiseDatabase ( const AConnection : TComponent;
-                               const as_database, as_user, as_password, APathSave : String );
-var ls_Message : String;
-begin
-  if Assigned(ge_OnOptimiseDatabase) Then
-   Begin
-
-    if ge_OnOptimiseDatabase ( AConnection, as_database, as_user, as_password, APathSave, nil, nil, AConnection )
-     Then ls_Message:=gs_Optimising_database_is_a_success
-     Else ls_Message:=gs_Error_Restore_Directory_does_not_exists;
-   End;
-end;
-
 
 
 {$IFDEF VERSIONS}
 initialization
   p_ConcatVersion(gVer_fonctions_create);
 {$ENDIF}
-end.
+end.

@@ -1,11 +1,11 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <Package Version="4">
     <Name Value="lazregdbnetserver"/>
     <CompilerOptions>
       <Version Value="11"/>
       <SearchPaths>
-        <OtherUnitFiles Value="manregister"/>
+        <OtherUnitFiles Value="mandb"/>
         <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
       <Other>
@@ -15,27 +15,34 @@
         <CompilerPath Value="$(CompPath)"/>
       </Other>
     </CompilerOptions>
-    <Files Count="2">
+    <Files Count="3">
       <Item1>
-        <Filename Value="manregister/fonctions_dbnetserver.pas"/>
-        <UnitName Value="fonctions_dbnetserver"/>
+        <Filename Value="mandb/fonctions_mandbnetserver.pas"/>
+        <UnitName Value="fonctions_mandbnetserver"/>
       </Item1>
       <Item2>
-        <Filename Value="manregister/u_moduledbnetserver.pas"/>
-        <UnitName Value="u_moduledbnetserver"/>
-      </Item2>
-    </Files>
-    <Type Value="RunAndDesignTime"/>
-    <RequiredPkgs Count="3">
-      <Item1>
-        <PackageName Value="lazmanframes"/>
-      </Item1>
-      <Item2>
-        <PackageName Value="DBNetProcessor"/>
+        <Filename Value="mandb/u_moduledbnetserver.lfm"/>
+        <Type Value="LFM"/>
       </Item2>
       <Item3>
-        <PackageName Value="FCL"/>
+        <Filename Value="mandb/u_moduledbnetserver.pas"/>
+        <UnitName Value="u_moduledbnetserver"/>
       </Item3>
+    </Files>
+    <Type Value="RunAndDesignTime"/>
+    <RequiredPkgs Count="4">
+      <Item1>
+        <PackageName Value="lazregisterdbnetserver"/>
+      </Item1>
+      <Item2>
+        <PackageName Value="lazmanframes"/>
+      </Item2>
+      <Item3>
+        <PackageName Value="DBNetProcessor"/>
+      </Item3>
+      <Item4>
+        <PackageName Value="FCL"/>
+      </Item4>
     </RequiredPkgs>
     <UsageOptions>
       <UnitPath Value="$(PkgOutDir)"/>

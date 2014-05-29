@@ -105,6 +105,7 @@ uses
   fonctions_aide,
 {$ENDIF}
   fonctions_dialogs,
+  fonctions_dbcomponents,
   fonctions_createsql,
   unite_variables, unite_messages;
 
