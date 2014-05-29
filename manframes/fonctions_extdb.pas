@@ -51,37 +51,12 @@ function fb_IniSetADOConnection ( const aacx_Connection : TComponent ) : Boolean
 {$ENDIF}
 {$IFDEF ZEOS}
 function fb_IniSetZConnection ( const asqc_Connection : TComponent; const IniFile : TIniFile ) : Boolean ;
-procedure p_SetCaractersZEOSConnector(const azco_Connect : TComponent ; const as_NonUtfChars : String );
 function  fs_InitZConnection ( const Connexion : TComponent ; const Inifile : TCustomInifile ; const Test : Boolean ) : String;
-procedure p_InitZComponent ( const Connexion : TComponent ; const Inifile : TCustomInifile ; const Test : Boolean );
 function fs_CollationEncode ( const Connexion : TComponent ; const as_StringsProp : String ) : String;
-function fb_TestConnection ( const Connexion : TComponent ; const lb_ShowMessage : Boolean ) : Boolean;
 function fs_IniSetConnection ( const accx_Connection : TComponent ) : String ;
 procedure p_SetComboProperties ( const acom_combo : TControl;
                                  const ads_ListSource : TDataSource;
                                  const alr_Relation : TFWRelation);
-
-const
-        CST_ADOCONNECTION ='TADOConnection';
-        CST_ADOCONNECTION_STRING ='ConnectionString';
-        CST_CONNECTED   = 'Connected';
-        CST_ZCONNECTION = 'TZConnection';
-        CST_DATABASE   = 'Database';
-        CST_PROTOCOL   = 'Protocol';
-        CST_HOSTNAME   = 'HostName';
-        CST_PASSWORD   = 'Password';
-        CST_USER       = 'User';
-        CST_CATALOG    = 'Catalog';
-        CST_PROPERTIES = 'Properties';
-var
-  gs_DataDriverIni : String = 'Driver' ;
-  gs_DataBaseNameIni : String = 'Database Name' ;
-  gs_DataUserNameIni : String = 'User Name' ;
-  gs_DataHostIni : String = 'Host Name' ;
-  gs_DataCatalogIni : String = 'Catalog' ;
-  gs_DataPasswordIni : String = 'Password' ;
-  gs_DataProtocolIni : String = 'Protocol' ;
-  gs_DataCollationIni : String = 'Collation Encode' ;
 
 {$ENDIF}
 {$IFDEF SQLDB}
@@ -96,6 +71,7 @@ uses Variants,  fonctions_erreurs, fonctions_string,
   {$ENDIF}
    fonctions_dialogs,
    fonctions_proprietes,
+   fonctions_dbcomponents,
    fonctions_languages,
    fonctions_createsql,
    TypInfo,
@@ -178,32 +154,10 @@ End;
 // ZEOS Functions
 ////////////////////////////////////////////////////////////////////////////////
 
-// Open connexion and erros
-function fb_TestConnection ( const Connexion : TComponent ; const lb_ShowMessage : Boolean ) : Boolean;
-Begin
-  Result := False ;
-  try
-    p_SetComponentBoolProperty ( Connexion, CST_CONNECTED, True );
-  Except
-    on E: Exception do
-      Begin
-        if lb_ShowMessage Then
-          ShowMessage ( gs_TestBad + ' : ' + #13#10 + E.Message );
-        Exit ;
-      End ;
-  End ;
-  if fb_getComponentBoolProperty( Connexion, CST_CONNECTED ) Then
-    Begin
-      Result := True ;
-      if lb_ShowMessage Then
-        ShowMessage ( gs_TestOk );
-    End ;
-End ;
-
 // Init connexion with inifile
 function fs_InitZConnection ( const Connexion : TComponent ; const Inifile : TCustomInifile ; const Test : Boolean ) : String;
 Begin
-  p_IniTZComponent ( Connexion, Inifile, Test );
+  p_InitConnectForm ( Connexion, Inifile, Test );
   Result := gs_DataHostIni      + ' = ' +  fs_getComponentProperty( Connexion, CST_HOSTNAME )  + #13#10
           + gs_DataProtocolIni  + ' = ' +  fs_getComponentProperty( Connexion, CST_PROTOCOL ) + #13#10
           + gs_DataBaseNameIni  + ' = ' +  fs_getComponentProperty( Connexion, CST_DATABASE ) + #13#10
@@ -211,24 +165,6 @@ Begin
           + gs_DataPasswordIni  + ' = ' +  fs_getComponentProperty( Connexion, CST_PASSWORD ) + #13#10
           + gs_DataCatalogIni   + ' = ' +  fs_getComponentProperty( Connexion, CST_CATALOG  ) + #13#10
           + gs_DataCollationIni + ' = ' +  fs_CollationEncode ( Connexion, CST_PROPERTIES )   + #13#10 ;
-End ;
-
-// Init connexion with inifile
-procedure p_InitZComponent ( const Connexion : TComponent ; const Inifile : TCustomInifile ; const Test : Boolean );
-Begin
-  if assigned ( Inifile )
-  and assigned ( Connexion ) Then
-    Begin
-      p_SetComponentProperty ( Connexion, CST_DATABASE, Inifile.ReadString ( gs_DataSectionIni, gs_DataBaseNameIni, '' ));
-      p_SetComponentProperty ( Connexion, CST_PROTOCOL, Inifile.ReadString ( gs_DataSectionIni, gs_DataProtocolIni , '' ));
-      p_SetComponentProperty ( Connexion, CST_HOSTNAME, Inifile.ReadString ( gs_DataSectionIni, gs_DataHostIni    , '' ));
-      p_SetComponentProperty ( Connexion, CST_PASSWORD, Inifile.ReadString ( gs_DataSectionIni, gs_DataPasswordIni, '' ));
-      p_SetComponentProperty ( Connexion, CST_USER    , Inifile.ReadString ( gs_DataSectionIni, gs_DataUserNameIni, '' ));
-      p_SetComponentProperty ( Connexion, CST_CATALOG , Inifile.ReadString ( gs_DataSectionIni, gs_DataCatalogIni    , '' ));
-      p_SetCaractersZEOSConnector(Connexion, Inifile.ReadString ( gs_DataSectionIni, gs_DataCollationIni    , Inifile.ReadString ( gs_DataSectionIni, gs_DataCollationIni    , 'UTF8' )));
-
-
-    End ;
 End ;
 
 
@@ -255,20 +191,6 @@ Begin
          End;
     End;
 End;
-
-procedure p_SetCaractersZEOSConnector(const azco_Connect : TComponent ; const as_NonUtfChars : String );
-var
-    astl_Strings : TStrings ;
-    {$IFDEF DELPHI_9_UP}awst_Strings : TWideStrings;{$ENDIF}
-Begin
-  if  fb_GetStrings (azco_Connect, CST_PROPERTIES, astl_Strings{$IFDEF DELPHI_9_UP}, awst_Strings {$ENDIF}) Then
-    with  astl_Strings do
-      begin
-        Clear;
-        Add('codepage='+as_NonUtfChars);
-      end;
-end;
-
 
 function fb_IniSetZConnection ( const asqc_Connection : TComponent; const IniFile : TIniFile ) : Boolean ;
 Begin

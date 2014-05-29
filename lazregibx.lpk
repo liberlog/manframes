@@ -1,11 +1,11 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <Package Version="4">
     <Name Value="lazregibx"/>
     <CompilerOptions>
       <Version Value="11"/>
       <SearchPaths>
-        <OtherUnitFiles Value="manregister"/>
+        <OtherUnitFiles Value="mandb"/>
         <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
       <Other>
@@ -17,8 +17,8 @@
     </CompilerOptions>
     <Files Count="1">
       <Item1>
-        <Filename Value="manregister/fonctions_ibx.pas"/>
-        <UnitName Value="fonctions_ibx"/>
+        <Filename Value="mandb/fonctions_manibx.pas"/>
+        <UnitName Value="fonctions_manibx"/>
       </Item1>
     </Files>
     <i18n>
@@ -26,22 +26,25 @@
       <OutDir Value="LANG"/>
     </i18n>
     <Type Value="RunAndDesignTime"/>
-    <RequiredPkgs Count="5">
+    <RequiredPkgs Count="6">
       <Item1>
-        <PackageName Value="lazextbuttons"/>
+        <PackageName Value="lazregisteribx"/>
       </Item1>
       <Item2>
-        <PackageName Value="ExtCopy"/>
+        <PackageName Value="lazextbuttons"/>
       </Item2>
       <Item3>
-        <PackageName Value="ibexpress"/>
+        <PackageName Value="ExtCopy"/>
       </Item3>
       <Item4>
-        <PackageName Value="lazmanbase"/>
+        <PackageName Value="ibexpress"/>
       </Item4>
       <Item5>
-        <PackageName Value="FCL"/>
+        <PackageName Value="lazmanbase"/>
       </Item5>
+      <Item6>
+        <PackageName Value="FCL"/>
+      </Item6>
     </RequiredPkgs>
     <UsageOptions>
       <UnitPath Value="$(PkgOutDir)"/>

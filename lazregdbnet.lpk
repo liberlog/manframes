@@ -1,11 +1,11 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <Package Version="4">
     <Name Value="lazregdbnet"/>
     <CompilerOptions>
       <Version Value="11"/>
       <SearchPaths>
-        <OtherUnitFiles Value="fonctions;manregister"/>
+        <OtherUnitFiles Value="mandb"/>
         <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
       <Other>
@@ -17,21 +17,24 @@
     </CompilerOptions>
     <Files Count="1">
       <Item1>
-        <Filename Value="manregister/fonctions_dbnet.pas"/>
-        <UnitName Value="fonctions_dbnet"/>
+        <Filename Value="mandb/fonctions_mandbnet.pas"/>
+        <UnitName Value="fonctions_mandbnet"/>
       </Item1>
     </Files>
     <Type Value="RunAndDesignTime"/>
-    <RequiredPkgs Count="3">
+    <RequiredPkgs Count="4">
       <Item1>
-        <PackageName Value="DBNetProcessor"/>
+        <PackageName Value="lazregisterdbnet"/>
       </Item1>
       <Item2>
-        <PackageName Value="lazmanframes"/>
+        <PackageName Value="DBNetProcessor"/>
       </Item2>
       <Item3>
-        <PackageName Value="FCL"/>
+        <PackageName Value="lazmanframes"/>
       </Item3>
+      <Item4>
+        <PackageName Value="FCL"/>
+      </Item4>
     </RequiredPkgs>
     <UsageOptions>
       <UnitPath Value="$(PkgOutDir)"/>

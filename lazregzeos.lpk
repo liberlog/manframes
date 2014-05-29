@@ -1,11 +1,11 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <Package Version="4">
     <Name Value="lazregzeos"/>
     <CompilerOptions>
       <Version Value="11"/>
       <SearchPaths>
-        <OtherUnitFiles Value="manregister"/>
+        <OtherUnitFiles Value="mandb"/>
         <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
       <Other>
@@ -17,24 +17,27 @@
     </CompilerOptions>
     <Files Count="1">
       <Item1>
-        <Filename Value="manregister/fonctions_zeos.pas"/>
-        <UnitName Value="fonctions_zeos"/>
+        <Filename Value="mandb/fonctions_manzeos.pas"/>
+        <UnitName Value="fonctions_manzeos"/>
       </Item1>
     </Files>
     <Type Value="RunAndDesignTime"/>
-    <RequiredPkgs Count="4">
+    <RequiredPkgs Count="5">
       <Item1>
-        <PackageName Value="ExtCopy"/>
+        <PackageName Value="lazregisterzeos"/>
       </Item1>
       <Item2>
-        <PackageName Value="lazmanbase"/>
+        <PackageName Value="ExtCopy"/>
       </Item2>
       <Item3>
-        <PackageName Value="zcomponent"/>
+        <PackageName Value="lazmanbase"/>
       </Item3>
       <Item4>
-        <PackageName Value="FCL"/>
+        <PackageName Value="zcomponent"/>
       </Item4>
+      <Item5>
+        <PackageName Value="FCL"/>
+      </Item5>
     </RequiredPkgs>
     <UsageOptions>
       <UnitPath Value="$(PkgOutDir)"/>

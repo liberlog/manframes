@@ -128,15 +128,11 @@ resourcestring
   GS_BAD_PASSWORD_REDO_TYPE_PASSWORD = 'Mot de passe invalide' + CST_ENDOFLINE
      				         + 'Veuillez resaisir votre mot de passe';
   GS_LOGIN    = 'Login';
-  gs_TestOk  = 'Test OK' ;
-  gs_TestBad  = 'Error' ;
   GS_PASSWORD = 'Mot de passe';
   GS_LOGIN_FAILED = 'Le Login et son mot de passe sont incorrects.' ;
   GS_LBL_PB        = 'Pb. connexion';
   Gs_InvalidComponentName = 'Ce nom de composant est invalide : ' ;
   GS_LBL_PCONN     = 'Non connecté';
-  GS_mot_passe_invalide = 'Mot de passe invalide.' + CST_ENDOFLINE
-	 + 'Veuillez resaisir votre mot de passe.' ;
   GS_Nom_Utilisateur_Invalide = 'Nom d''utilisateur invalide.' + CST_ENDOFLINE
 				 + 'Choisissez un nom d''utilisateur.' ;
   GS_aucune_connexion = 'Pas de connexion aux données de l''application.' ;
@@ -191,13 +187,7 @@ resourcestring
   GS_ERREUR_CHARGEMENT = 'Erreur au chargement @ARG.' ;
 
   // backup
-  gs_Error_Restore_Directory_does_not_exists =
-          'Opération impossible, le répertoire de sauvegarde'+CST_ENDOFLINE
-        +'@ARG'+CST_ENDOFLINE+'n''existe pas et ne peut être créé.';
-  gs_Caption_Save_in = 'Sauvegarde dans @ARG.';
-  gs_Caption_Restore_database = 'Restauration base @ARG.';
   gs_Message_Creating_database = 'Création de la base de données...';
-  gs_Optimising_database_is_a_success = 'L''optimisation de la base s''est bien passée.';
   gs_Error_One_Error_has_occured_while_optimising_Verify_if_you_are_admin = 'Une erreur s''est produite pendant l''optimisation.'+CST_ENDOFLINE+CST_ENDOFLINE
       +'Vérifiez que vous possédez les droits d''administration'+CST_ENDOFLINE
       +'de cette base pour exécuter cette opération.';
