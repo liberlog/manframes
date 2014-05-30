@@ -11,7 +11,6 @@ uses
   {$IFDEF VERSIONS}
   fonctions_version,
   {$ENDIF}
-  fonctions_startibx,
   u_multidata,
   DB;
 
@@ -46,24 +45,17 @@ type
 implementation
 
 uses IBQuery,
+     IBIntf,
      IBUpdateSQL,
      IBServices,
      IBDatabase,
-     fonctions_dialogs,
-     fonctions_dialogs,
-     fonctions_system,
-     unite_variables,
+     fonctions_dbcomponents,
+     fonctions_manbase,
+     fonctions_startibx,
      {$IFNDEF WINDOWS}
      u_multidonnees,
      {$ENDIF}
-     FileUtil,
-     fonctions_init,
-     fonctions_db,
-     fonctions_file,
-     fonctions_string,
-     fonctions_proprietes,
-     fonctions_createsql,
-     fonctions_dbcomponents;
+     fonctions_createsql;
 
 
 procedure p_CreateIBXconnection ( const AOwner : TComponent ; var adtt_DatasetType : TDatasetType ; var AQuery : TDataset; var AConnection : TComponent );
@@ -95,38 +87,19 @@ end;
 
 
 {$IFDEF FPC}
-procedure p_setLibrary (var libname: string);
+procedure p_setManLibrary (var libname: string);
 {$IFNDEF WINDOWS}
 var Alib : String;
     version : String;
 {$ENDIF}
 Begin
-  {$IFDEF WINDOWS}
-  libname:=fs_GetFirebirdExeorLib(CST_FBEMBED+CST_EXTENSION_LIBRARY,CST_FBEMBED_SUB+CST_EXTENSION_LIBRARY);
-  if libname ='' Then
-    libname:=fs_GetDefaultFirebirdExeorLib(CST_FBCLIENT+CST_EXTENSION_LIBRARY,CST_FBCLIENT_SUB+CST_EXTENSION_LIBRARY);
-  {$ELSE}
+  {$IFNDEF WINDOWS}
   if     ( DMModuleSources  = nil )
       or ( DMModuleSources.Sources.Count = 0 )
-      or (    ( pos ( DEFAULT_FIREBIRD_SERVER_DIR, DMModuleSources.Sources [ 0 ].DataBase ) <> 1 )
-          and ( DMModuleSources.Sources [ 0 ].DataBase <> '' )
-          and (   ( DMModuleSources.Sources [ 0 ].DataBase [1] = '/' )
-               or ( DMModuleSources.Sources [ 0 ].DataBase [1] = '.' )))
-  Then Begin Alib := 'libfbembed';  version := '.2.5'; End
-  Else Begin Alib := 'libfbclient'; version := '.2'; End ;
-  libname:= fs_getAppDir+Alib+CST_EXTENSION_LIBRARY;
-  if not FileExistsUTF8(libname)
-    Then libname:='/usr/lib/'+Alib + CST_EXTENSION_LIBRARY + version;
-  if not FileExistsUTF8(libname)
-    Then libname:='/usr/lib/'+Alib + CST_EXTENSION_LIBRARY;
-  if not FileExistsUTF8(libname)
-    Then libname:='/usr/lib/i386-linux-gnu/'+Alib + CST_EXTENSION_LIBRARY + version;
-  if not FileExistsUTF8(libname)
-    Then libname:='/usr/lib/x86_64-linux-gnu/'+Alib + CST_EXTENSION_LIBRARY + version;
-  if FileExistsUTF8(libname)
-  and FileExistsUTF8(fs_getAppDir+'exec.sh"') Then
-     fs_ExecuteProcess('sh',' "'+fs_getAppDir+'exec.sh"');
+    Then gs_DefaultDatabase:=''
+    else gs_DefaultDatabase:= DMModuleSources.Sources [ 0 ].DataBase;
   {$ENDIF}
+  p_setLibrary(libname);
 end;
 {$ENDIF}
 
@@ -167,11 +140,14 @@ Begin
 end;
 
 initialization
- ge_onInitConnection := TCreateConnection ( p_CreateIBXconnection );
- ge_OnBeginCreateAlter  :=TOnGetSQL( fs_CreateAlterBeginSQL);
- ge_OnEndCreate       :=TOnSetDatabase( fs_CreateAlterEndSQL);
- ge_OnCreateDatabase  :=TOnSetDatabase( fs_CreateDatabase);
- gbm_DatabaseToGenerate := bmfMySQL;
+ {$IFDEF FPC}
+ OnGetLibraryName:= TOnGetLibraryName ( p_setManLibrary );
+ {$ENDIF}
+ ge_onInitConnection    := TCreateConnection ( p_CreateIBXconnection );
+ ge_OnBeginCreateAlter  := TOnGetSQL( fs_CreateAlterBeginSQL);
+ ge_OnEndCreate         := TOnSetDatabase( fs_CreateAlterEndSQL);
+ ge_OnCreateDatabase    := TOnSetDatabase( fs_CreateDatabase);
+ gbm_DatabaseToGenerate := bmFirebird;
  {$IFDEF VERSIONS}
  p_ConcatVersion ( gver_fonctions_manibx );
  {$ENDIF}
