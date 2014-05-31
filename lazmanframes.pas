@@ -9,7 +9,7 @@ interface
 uses
   fonctions_tableauframework, u_customframework, u_searchcomponents, 
   u_fillcombobutton, u_man_reports_components, fonctions_extdb, u_formmaindb, 
-  u_connection, LazarusPackageIntf;
+  LazarusPackageIntf;
 
 implementation
 
