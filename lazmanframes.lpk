@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <Package Version="4">
     <Name Value="lazmanframes"/>
@@ -28,7 +28,7 @@
     <Description Value="Child Form data management and relationships"/>
     <License Value="LGPL"/>
     <Version Major="1" Minor="4"/>
-    <Files Count="9">
+    <Files Count="7">
       <Item1>
         <Filename Value="manframes/fonctions_tableauframework.pas"/>
         <UnitName Value="fonctions_tableauframework"/>
@@ -57,14 +57,6 @@
         <Filename Value="manframes/u_formmaindb.pas"/>
         <UnitName Value="u_formmaindb"/>
       </Item7>
-      <Item8>
-        <Filename Value="manframes/u_connection.lfm"/>
-        <Type Value="LFM"/>
-      </Item8>
-      <Item9>
-        <Filename Value="manframes/u_connection.pas"/>
-        <UnitName Value="u_connection"/>
-      </Item9>
     </Files>
     <i18n>
       <EnableI18N Value="True"/>
