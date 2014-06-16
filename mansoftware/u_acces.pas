@@ -99,8 +99,14 @@ uses fonctions_images,
 {$IFDEF DBE}
   SQLExpr,
 {$ENDIF}
+  {$IFDEF FPC}
+  unite_messages,
+  {$ELSE}
+  unite_messages_delphi,
+  {$ENDIF}
   unite_variables, fonctions_extdb,
   fonctions_dialogs,
+  fonctions_init,
   fonctions_db, fonctions_dbcomponents,
   fonctions_proprietes,
   fonctions_Objets_Data;
