@@ -30,7 +30,6 @@
     <Description Value="Data part of manfrmase
 No control please"/>
     <License Value="LGPL"/>
-    <Version Major="1" Minor="3" Build="1"/>
     <Files Count="5">
       <Item1>
         <Filename Value="manbase/fonctions_manbase.pas"/>
