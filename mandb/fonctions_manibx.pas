@@ -134,6 +134,14 @@ Begin
 end;
 
 { database creating function }
+function fs_CreateIBXDatabase  ( const as_base, as_user, as_password, as_host : String ):String;
+Begin
+  Result := 'CREATE DATABASE '''+as_base+''' USER '''+as_user+''' PASSWORD '''+as_password+''' PAGE_SIZE 16384 DEFAULT CHARACTER SET '+Gs_Charset_ibx+';'+#10
+          + 'CONNECT '''+as_base+''' USER '''+as_user+''' PASSWORD '''+as_password+''';'+#10;
+End;
+
+
+{ database creating function }
 function fs_CreateAlterEndSQL ( const as_base, as_user, as_password, as_host : String ):String;
 Begin
   Result := 'COMMIT;'+ #10;
@@ -146,7 +154,7 @@ initialization
  ge_onInitConnection    := TCreateConnection ( p_CreateIBXconnection );
  ge_OnBeginCreateAlter  := TOnGetSQL( fs_CreateAlterBeginSQL);
  ge_OnEndCreate         := TOnSetDatabase( fs_CreateAlterEndSQL);
- ge_OnCreateDatabase    := TOnSetDatabase( fs_CreateDatabase);
+ ge_OnCreateDatabase    := TOnSetDatabase( fs_CreateIBXDatabase);
  gbm_DatabaseToGenerate := bmFirebird;
  {$IFDEF VERSIONS}
  p_ConcatVersion ( gver_fonctions_manibx );
