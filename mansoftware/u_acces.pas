@@ -34,7 +34,8 @@ const
                                FileUnit : 'U_Acces' ;
                                Owner : 'Matthieu Giroux' ;
                                Comment : 'Répertorie les composants.' ;
-                               BugsStory : 'Version 1.3.1.0 : Beautiful messages.' + #13#10
+                               BugsStory : 'Version 1.3.1.1 : New Combo.' + #13#10
+                                         + 'Version 1.3.1.0 : Beautiful messages.' + #13#10
                                          + 'Version 1.3.0.2 : UTF 8.' + #13#10
                                          + 'Version 1.3.0.1 : Making comments.' + #13#10
                                          + 'Version 1.3.0.0 : Passage en LAZARUS' + #13#10
@@ -44,7 +45,7 @@ const
                                          + 'Version 1.0.1.0 : Gestion utilisateur par défaut ( voir U_FenetrePrincipale )' + #13#10
                                          + 'Version 1.0.0.0 : Gestion accès multiple.';
                                UnitType : 2 ;
-                               Major : 1 ; Minor : 3 ; Release : 1 ; Build : 0 );
+                               Major : 1 ; Minor : 3 ; Release : 1 ; Build : 1 );
 
 {$ENDIF}
 
@@ -66,6 +67,7 @@ type
     OnFormInfoIni1: TOnFormInfoIni;
 
     procedure btn_cancelClick(Sender: TObject);
+    procedure btn_okClick(Sender: TObject);
     procedure btn_okMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -130,6 +132,11 @@ begin
 {$ENDIF}
 end;
 
+procedure TF_Acces.btn_okClick(Sender: TObject);
+begin
+
+end;
+
 // Event TF_Acces.btn_okMouseUp
 // verifying the password on ok click
 procedure TF_Acces.btn_okMouseUp(Sender: TObject; Button: TMouseButton;
@@ -179,7 +186,7 @@ begin
        with Application.MainForm as TF_FormMainIni do
         begin
         	MyMessageDlg(GS_aucune_connexion + #13 + #13
-        				     + GS_administration_seule, mtError, [mbOk] );
+        	+ GS_administration_seule, mtError, [mbOk] );
         	cbx_user.SetFocus;
 {$IFNDEF CSV}
 {$IFDEF EADO}
@@ -334,10 +341,9 @@ begin
 {$ENDIF}
 {$ENDIF}
     Open;
-    if IsEmpty Then
-      cbx_Connexion.Enabled := False
-    Else
-      cbx_Connexion.Enabled := True ;
+    if IsEmpty
+     Then cbx_Connexion.Enabled := False
+     Else cbx_Connexion.Enabled := True ;
   Except
   End ;
 

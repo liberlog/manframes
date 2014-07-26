@@ -113,7 +113,7 @@ type
     bt_apercu: TFWPreview;
     Panel21: TPanel;
     nv_navigue: TExtDBNavigator;
-    gd_utilisateurs: TFWDBGrid;
+    gd_utilisateurs: TExtDBGrid;
     ts_connexion: TTabSheet;
     RbPanel5: TPanel;
     nv_connexion: TExtDBNavigator;
@@ -122,7 +122,7 @@ type
     ds_connexion: TDataSource;
     adoq_connexion: TADOQuery;
     ADOConnex: TADOConnection;
-    gd_connexion: TFWDBGrid;
+    gd_connexion: TExtDBGrid;
     pg_conn_util: TPageControl;
     ts_2: TTabSheet;
     Panel10: TPanel;
@@ -209,17 +209,17 @@ type
     Panel28: TPanel;
     nav_NavigateurMenu: TExtDBNavigator;
     Panel29: TPanel;
-    dbg_MenuFonctions: TFWDBGrid;
-    dbg_Menu: TFWDBGrid;
+    dbg_MenuFonctions: TExtDBGrid;
+    dbg_Menu: TExtDBGrid;
     nav_NavigateurMenuFonctions: TExtDBNavigator;
     scb_Volet: TScrollBox;
     pa_4: TPanel;
     Panel35: TPanel;
     nav_NavigateurSousMenu: TExtDBNavigator;
-    dbg_SousMenu: TFWDBGrid;
+    dbg_SousMenu: TExtDBGrid;
     Panel37: TPanel;
     nav_NavigateurSousMenuFonctions: TExtDBNavigator;
-    dbg_SousMenuFonctions: TFWDBGrid;
+    dbg_SousMenuFonctions: TExtDBGrid;
     RbSplitter4: TSplitter;
     pa_1: TPanel;
     pa_6: TPanel;
@@ -233,9 +233,9 @@ type
     pa_3: TPanel;
     Panel24: TPanel;
     nav_Sommaire: TExtDBNavigator;
-    dbg_Sommaire: TFWDBGrid;
+    dbg_Sommaire: TExtDBGrid;
     Panel25: TPanel;
-    dbg_SommaireFonctions: TFWDBGrid;
+    dbg_SommaireFonctions: TExtDBGrid;
     nav_NavigateurSommaireFonctions: TExtDBNavigator;
     dbl_Fonctions: TDBListView;
 // Evènement de sélection des fonctions
@@ -3612,4 +3612,4 @@ end;
 
 initialization
   p_ConcatVersion ( gver_F_Administration );
-end.
+end.
