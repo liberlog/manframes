@@ -189,22 +189,12 @@ begin
     end;
   gds_SourceWork.DataSet.Close;
   with at_DataWork do
-    if gb_DicoKeyFormPresent Then
+    if ( ai_NumSource = 0) Then
       Begin
-        if gb_DicoUseFormField Then
-          Begin
-            if ( ai_NumSource = 0) Then
-              Begin
-                ls_SQL := 'SELECT DICO_Table,DICO_Nocol,DICO_Nomcol,DICO_Libcol,DICO_Libhint,DICO_Affichage,DICO_Recc,DICO_Help,DICO_Tablefk,DICO_Colfk,DICO_Coldsp,DICO_Colobl,DICO_Fiche FROM DICO WHERE DICO_Fiche = ''' + self.Name + ''' ORDER BY DICO_Table,DICO_Nocol';
-              End
-            Else
-              lb_Loaded := True ;
-          End
-        Else
-          p_ChargeTable ( gds_SourceWork, gstl_SQLWork,{$IFDEF DELPHI_9_UP}gwst_SQLWork,{$ENDIF}Table );
+        ls_SQL := 'SELECT DICO_Table,DICO_Nocol,DICO_Nomcol,DICO_Libcol,DICO_Libhint,DICO_Affichage,DICO_Recc,DICO_Help,DICO_Tablefk,DICO_Colfk,DICO_Coldsp,DICO_Colobl,DICO_Fiche FROM DICO WHERE DICO_Fiche = ''' + self.Name + ''' ORDER BY DICO_Table,DICO_Nocol';
       End
     Else
-      ls_SQL := 'SELECT DICO_Table,DICO_Nocol,DICO_Nomcol,DICO_Libcol,DICO_Libhint,DICO_Affichage,DICO_Recc,DICO_Help,DICO_Tablefk,DICO_Colfk,DICO_Coldsp,DICO_Colobl FROM DICO WHERE DICO_Table = ''' + Table + ''' ORDER BY 2';
+      lb_Loaded := True ;
 
   if not lb_Loaded Then
    with gds_SourceWork do

@@ -9,7 +9,7 @@ object F_Acces: TF_Acces
   FormStyle = fsStayOnTop
   OnCreate = FormCreate
   Position = poMainFormCenter
-  LCLVersion = '0.9.30'
+  LCLVersion = '1.2.3.0'
   object pa_1: TPanel
     Left = 0
     Height = 240
@@ -26,7 +26,7 @@ object F_Acces: TF_Acces
       Width = 69
       AutoSize = False
       Caption = 'Utilisateur'
-      Font.Color = clBlack
+      Font.Color = clWindowText
       ParentColor = False
       ParentFont = False
       ColorFocus = clMaroon
@@ -38,7 +38,7 @@ object F_Acces: TF_Acces
       Width = 88
       AutoSize = False
       Caption = 'Mot de passe'
-      Font.Color = clBlack
+      Font.Color = clWindowText
       ParentColor = False
       ParentFont = False
       ColorFocus = clMaroon
@@ -50,7 +50,7 @@ object F_Acces: TF_Acces
       Width = 151
       AutoSize = False
       Caption = 'Veuillez vous identifiez'
-      Font.Color = clBlack
+      Font.Color = clWindowText
       ParentColor = False
       ParentFont = False
       ColorFocus = clMaroon
@@ -62,14 +62,14 @@ object F_Acces: TF_Acces
       Width = 39
       AutoSize = False
       Caption = 'Accès'
-      Font.Color = clBlack
+      Font.Color = clWindowText
       ParentColor = False
       ParentFont = False
       ColorFocus = clMaroon
     end
     object tx_mdp: TEdit
       Left = 120
-      Height = 26
+      Height = 25
       Top = 91
       Width = 199
       EchoMode = emPassword
@@ -79,28 +79,49 @@ object F_Acces: TF_Acces
     end
     object cbx_Connexion: TFWDBLookupCombo
       Left = 120
-      Height = 28
+      Height = 27
       Top = 128
       Width = 199
-      Color = clMoneyGreen
-      KeyField = 'CONN_Clep'
-      ListField = 'CONN_Clep'
-      ListFieldIndex = 0
-      LookupCache = False
+      AutoSize = True
+      ButtonOnlyWhenFocused = False
+      ButtonWidth = 15
+      PopUpFormOptions.Columns = <>
+      Flat = False
+      Glyph.Data = {
+        72000000424D7200000000000000360000002800000005000000030000000100
+        2000000000003C00000064000000640000000000000000000000000000000000
+        0000000000FF000000000000000000000000000000FF000000FF000000FF0000
+        0000000000FF000000FF000000FF000000FF000000FF
+      }
+      NumGlyphs = 1
+      ParentColor = False
+      ReadOnly = False
       TabOrder = 4
+      TabStop = True
     end
     object cbx_User: TFWDBLookupCombo
       Left = 120
-      Height = 28
+      Height = 27
       Top = 56
       Width = 199
-      Color = clMoneyGreen
-      KeyField = 'UTIL_Clep'
-      ListField = 'UTIL_Clep'
-      ListFieldIndex = 0
-      LookupCache = False
+      AutoSize = True
+      ButtonOnlyWhenFocused = False
+      ButtonWidth = 15
+      PopUpFormOptions.Columns = <>
+      Flat = False
+      Glyph.Data = {
+        72000000424D7200000000000000360000002800000005000000030000000100
+        2000000000003C00000064000000640000000000000000000000000000000000
+        0000000000FF000000000000000000000000000000FF000000FF000000FF0000
+        0000000000FF000000FF000000FF000000FF000000FF
+      }
+      NumGlyphs = 1
       OnChange = cbx_userChange
+      ParentColor = False
+      ReadOnly = False
       TabOrder = 1
+      TabStop = True
+      LookupField = 'UTIL_Clep'
     end
     object btn_cancel: TFWCancel
       Left = 184
@@ -119,6 +140,7 @@ object F_Acces: TF_Acces
       UseDockManager = False
       Caption = 'OK'
       TabOrder = 3
+      OnClick = btn_okClick
       OnMouseUp = btn_okMouseUp
     end
   end

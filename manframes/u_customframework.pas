@@ -799,8 +799,6 @@ var gb_doublebuffer : Boolean = True ;
     gb_RafraichitForm: Boolean = False ;
     gb_DicoNoRefresh : Boolean = False ;
     gb_DicoUpdateFormField : Boolean = False ;
-    gb_DicoKeyFormPresent : Boolean = True ;
-    gb_DicoUseFormField : Boolean = True ;
     gi_NiveauTransaction : Integer = 0 ;
     gb_DicoGroupementMontreCaption : Boolean = True ;
 
@@ -1983,7 +1981,6 @@ Begin
         p_LoadSearchingAndQuery ;
         p_ChargeEvenementsDatasourcePrinc;
         if ( Trim ( Table ) <> '' )
-        and gb_DicoUseFormField
         and not fb_ChargementNomCol ( gFWSources [CST_FRAMEWORK_DATASOURCE_PRINC], 0 ) then
           begin
             lt_Arg [ 0 ] :=  Table ;
@@ -2058,8 +2055,6 @@ Begin
        ds_DataSourcesWork := Datalink.DataSource;
        var_Enregistrement:=Null;
        i_DebutTableau := ai_CompteCol ;
-       if gb_DicoUseFormField Then
-         i_DebutTableau := ai_CompteCol ;
        e_StateChange  := Datalink.DataSource.OnStateChange ;
        with Datalink,Dataset do
         Begin
@@ -2108,7 +2103,6 @@ Begin
        ds_recherche := Datalink.DataSource;
 
        if ( Trim ( Table ) <> '' )
-       and not gb_DicoKeyFormPresent
        and not fb_ChargementNomCol ( afws_Source, Index ) then
          begin
            lt_Arg [ 0 ] :=  Table ;

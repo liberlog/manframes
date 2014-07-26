@@ -128,7 +128,7 @@ begin
 end;
 
 { database creating function }
-function fs_CreateAlterBeginSQL :String;
+function fs_CreateIBXAlterBeginSQL :String;
 Begin
   Result := 'SET SQL DIALECT 3;' + #10+ 'SET NAMES ' + Gs_Charset_ibx +';'+ #10;
 end;
@@ -142,7 +142,7 @@ End;
 
 
 { database creating function }
-function fs_CreateAlterEndSQL ( const as_base, as_user, as_password, as_host : String ):String;
+function fs_CreateIBXAlterEndSQL ( const as_base, as_user, as_password, as_host : String ):String;
 Begin
   Result := 'COMMIT;'+ #10;
 end;
@@ -152,8 +152,8 @@ initialization
  OnGetLibraryName:= TOnGetLibraryName ( p_setManLibrary );
  {$ENDIF}
  ge_onInitConnection    := TCreateConnection ( p_CreateIBXconnection );
- ge_OnBeginCreateAlter  := TOnGetSQL( fs_CreateAlterBeginSQL);
- ge_OnEndCreate         := TOnSetDatabase( fs_CreateAlterEndSQL);
+ ge_OnBeginCreateAlter  := TOnGetSQL( fs_CreateIBXAlterBeginSQL);
+ ge_OnEndCreate         := TOnSetDatabase( fs_CreateIBXAlterEndSQL);
  ge_OnCreateDatabase    := TOnSetDatabase( fs_CreateIBXDatabase);
  gbm_DatabaseToGenerate := bmFirebird;
  {$IFDEF VERSIONS}
