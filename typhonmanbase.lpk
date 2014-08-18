@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <Package Version="4">
+    <Name Value="typhonmanbase"/>
+    <AddToProjectUsesSection Value="True"/>
+    <Author Value="Matthieu GIROUX"/>
+    <CompilerOptions>
+      <Version Value="11"/>
+      <SearchPaths>
+        <IncludeFiles Value="manbase"/>
+        <OtherUnitFiles Value="manbase"/>
+        <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
+      </SearchPaths>
+      <Parsing>
+        <SyntaxOptions>
+          <CStyleOperator Value="False"/>
+          <CPPInline Value="False"/>
+          <UseAnsiStrings Value="False"/>
+        </SyntaxOptions>
+      </Parsing>
+      <Linking>
+        <Debugging>
+          <UseHeaptrc Value="True"/>
+        </Debugging>
+      </Linking>
+      <Other>
+        <CompilerPath Value="$(CompPath)"/>
+      </Other>
+    </CompilerOptions>
+    <Description Value="Data part of manfrmase
+No control please"/>
+    <License Value="LGPL"/>
+    <Files Count="5">
+      <Item1>
+        <Filename Value="manbase/fonctions_manbase.pas"/>
+        <UnitName Value="fonctions_manbase"/>
+      </Item1>
+      <Item2>
+        <Filename Value="manbase/u_multidata.pas"/>
+        <UnitName Value="u_multidata"/>
+      </Item2>
+      <Item3>
+        <Filename Value="manbase/fonctions_createsql.pas"/>
+        <UnitName Value="fonctions_createsql"/>
+      </Item3>
+      <Item4>
+        <Filename Value="manbase/u_multidonnees.pas"/>
+        <UnitName Value="u_multidonnees"/>
+      </Item4>
+      <Item5>
+        <Filename Value="manbase/unite_variables.pas"/>
+        <UnitName Value="unite_variables"/>
+      </Item5>
+    </Files>
+    <i18n>
+      <OutDir Value="fonctions"/>
+    </i18n>
+    <Type Value="RunAndDesignTime"/>
+    <RequiredPkgs Count="3">
+      <Item1>
+        <PackageName Value="typhonextinit"/>
+      </Item1>
+      <Item2>
+        <PackageName Value="typhonextcomponents"/>
+      </Item2>
+      <Item3>
+        <PackageName Value="FCL"/>
+        <MinVersion Major="1" Valid="True"/>
+      </Item3>
+    </RequiredPkgs>
+    <UsageOptions>
+      <UnitPath Value="$(PkgOutDir)"/>
+    </UsageOptions>
+    <PublishOptions>
+      <Version Value="2"/>
+      <IgnoreBinaries Value="False"/>
+    </PublishOptions>
+    <CustomOptions Items="ExternHelp" Version="2">
+      <_ExternHelp Items="Count"/>
+    </CustomOptions>
+  </Package>
+</CONFIG>
