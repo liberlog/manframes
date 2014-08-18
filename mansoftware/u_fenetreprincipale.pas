@@ -26,11 +26,11 @@ interface
 
 uses
 {$IFDEF FPC}
-   LCLIntf, LCLType, SQLDB, PCheck,
+   LCLIntf, LCLType, SQLDB, PCheck, ExtJvXPButtons,
 {$ELSE}
   Windows, OleDB, JvComponent, StoHtmlHelp, JvScrollBox,
   ImgList, ToolWin, menutbar, StrUtils,
-  JvExExtCtrls, JvSplitter, JvLED,
+  JvExExtCtrls, JvSplitter, JvLED, JvXPButtons,
   StdActns, JvExForms, JvExControls, JvXPCore, Messages,
 {$ENDIF}
 {$IFDEF VERSIONS}
@@ -48,7 +48,7 @@ uses
   u_multidonnees,
   Controls, Graphics, Classes, SysUtils,
   ExtCtrls, ActnList, Menus,
-  JvXPContainer, ComCtrls, JvXPButtons,
+  ComCtrls,
   IniFiles, Dialogs, Printers,
   JvXPBar, Forms,  u_formmaindb, fonctions_init,
   fonctions_Objets_Dynamiques, fonctions_Objets_Data,

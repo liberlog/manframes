@@ -47,9 +47,9 @@ uses
 {$ENDIF}
 {$IFDEF FPC}
   lmessages, lcltype,
-  LResources, 
+  LResources, ExtJvXPButtons,
 {$ELSE}
-  Windows, Variants, Mask, RXDBCtrl, Messages,
+  Windows, Variants, Mask, RXDBCtrl, Messages, JvXPButtons,
   JvExComCtrls, JvListView, JvExControls, JvXPCore,
 {$ENDIF}
 {$IFDEF DELPHI_9_UP}
@@ -69,7 +69,7 @@ uses
   u_extdbgrid, u_buttons_defs,
   fonctions_dialogs,
   U_ExtDBNavigator, Graphics,
-  JvXPButtons, u_framework_components,
+  u_framework_components,
   u_framework_dbcomponents, u_buttons_appli, ImgList, ToolWin;
 
 {$IFDEF VERSIONS}

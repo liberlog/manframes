@@ -28,11 +28,16 @@ interface
 uses
   Dialogs, JvWinDialogs, ImgList, Controls,
   StdCtrls, Grids, DBGrids,
+  {$IFDEF FPC}
+   ExtJvXPButtons,
+  {$ELSE}
+   JvXPButtons,
+  {$ENDIF}
   Mask, ComCtrls,
   dxCore2, dxButtons, Forms,
   dxContainer, ExtCtrls, Classes, Messages,
   fonctions_version, JvDialogs, JvExComCtrls, JvListView,
-  Graphics, JvExControls, JvXPCore, JvXPButtons;
+  Graphics, JvExControls, JvXPCore;
 
 const
   gver_fonctions_Administration : T_Version = ( Component : 'Fonctions de gestion de droits' ;

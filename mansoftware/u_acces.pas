@@ -7,10 +7,10 @@ interface
 
 uses
 {$IFDEF FPC}
-  LCLIntf, LCLType, lmessages, lresources,
+  LCLIntf, LCLType, lmessages, lresources, ExtJvXPButtons,
 {$ELSE}
   Windows, JvExControls, JvComponent, JvDBLookup,
-  Messages, JvXPCore,
+  Messages, JvXPCore, JvXPButtons,
 {$ENDIF}
 {$IFDEF ZEOS}
   ZConnection,
@@ -24,7 +24,7 @@ uses
   u_multidonnees, RxLookup, U_FenetrePrincipale,
   Classes, Graphics, Forms, Controls, StdCtrls, Buttons,
   Dialogs, SysUtils, DBCtrls, fonctions_string,
-  U_FormMainIni, JvXPButtons, ExtCtrls, Db,
+  U_FormMainIni, ExtCtrls, Db,
   u_framework_dbcomponents, U_OnFormInfoIni, u_buttons_appli,
   u_framework_components, u_buttons_defs ;
 

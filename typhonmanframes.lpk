@@ -21,13 +21,9 @@
           <UseHeaptrc Value="True"/>
         </Debugging>
       </Linking>
-      <Other>
-        <CompilerPath Value="$(CompPath)"/>
-      </Other>
     </CompilerOptions>
     <Description Value="Child Form data management and relationships"/>
     <License Value="LGPL"/>
-    <Version Major="1" Minor="4" Build="1"/>
     <Files Count="7">
       <Item1>
         <Filename Value="manframes/fonctions_tableauframework.pas"/>
@@ -63,7 +59,7 @@
       <OutDir Value="LANG"/>
     </i18n>
     <Type Value="RunAndDesignTime"/>
-    <RequiredPkgs Count="8">
+    <RequiredPkgs Count="6">
       <Item1>
         <PackageName Value="typhonextcopy"/>
       </Item1>

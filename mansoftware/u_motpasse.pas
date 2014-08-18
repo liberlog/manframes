@@ -12,15 +12,15 @@ interface
 
 uses
 {$IFDEF FPC}
-  LCLIntf, LCLType, lmessages, LResources,
+  LCLIntf, LCLType, lmessages, LResources, ExtJvXPButtons,
 {$ELSE}
-  Windows, JvExControls,
+  Windows, JvExControls, JvXPButtons,
 {$ENDIF}
   fonctions_dialogs,
   u_multidonnees,
   Classes, Graphics, Forms, Controls, StdCtrls, Buttons, ExtCtrls,
   Dialogs, SysUtils, DBCtrls, fonctions_string, u_framework_components,
-  JvXPCore, JvXPButtons, Messages,
+  JvXPCore, Messages,
 {$IFDEF VERSIONS}
   fonctions_version,
 {$ENDIF}

@@ -9,7 +9,12 @@ unit u_fillcombobutton;
 interface
 
 uses
-  Classes, SysUtils, JvXPButtons, Graphics, forms,
+  Classes, SysUtils, Graphics, forms,
+  {$IFDEF FPC}
+   ExtJvXPButtons,
+  {$ELSE}
+  JvXPButtons,
+  {$ENDIF}
   {$IFDEF VERSIONS}
      fonctions_version,
   {$ENDIF}
