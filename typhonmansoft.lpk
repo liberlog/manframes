@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<CONFIG>
+  <Package Version="4">
+    <Name Value="typhonmansoft"/>
+    <AddToProjectUsesSection Value="True"/>
+    <Author Value="Matthieu GIROUX"/>
+    <CompilerOptions>
+      <Version Value="11"/>
+      <SearchPaths>
+        <IncludeFiles Value="mansoft"/>
+        <OtherUnitFiles Value="mansoft"/>
+        <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
+      </SearchPaths>
+      <Parsing>
+        <SyntaxOptions>
+          <SyntaxMode Value="Delphi"/>
+          <CStyleOperator Value="False"/>
+          <AllowLabel Value="False"/>
+          <UseAnsiStrings Value="False"/>
+        </SyntaxOptions>
+      </Parsing>
+      <Linking>
+        <Debugging>
+          <UseHeaptrc Value="True"/>
+        </Debugging>
+      </Linking>
+      <Other>
+        <CompilerPath Value="$(CompPath)"/>
+      </Other>
+    </CompilerOptions>
+    <Description Value="Full management software RAD Framework"/>
+    <License Value="LGPL"/>
+    <Version Minor="9" Release="5"/>
+    <Files Count="2">
+      <Item1>
+        <Filename Value="mansoft/fonctions_objets_dynamiques.pas"/>
+        <UnitName Value="fonctions_Objets_Dynamiques"/>
+      </Item1>
+      <Item2>
+        <Filename Value="mansoft/fonctions_fenetreprincipale.pas"/>
+        <UnitName Value="fonctions_FenetrePrincipale"/>
+      </Item2>
+    </Files>
+    <i18n>
+      <EnableI18N Value="True"/>
+      <OutDir Value="fonctions"/>
+    </i18n>
+    <Type Value="RunAndDesignTime"/>
+    <RequiredPkgs Count="7">
+      <Item1>
+        <PackageName Value="typhonextbuttons"/>
+      </Item1>
+      <Item2>
+        <PackageName Value="pl_virtualtrees"/>
+      </Item2>
+      <Item3>
+        <PackageName Value="LCL"/>
+      </Item3>
+      <Item4>
+        <PackageName Value="typhonmanframes"/>
+      </Item4>
+      <Item5>
+        <PackageName Value="typhonextcomponents"/>
+      </Item5>
+      <Item6>
+        <PackageName Value="typhonextcomponentsimg"/>
+      </Item6>
+      <Item7>
+        <PackageName Value="FCL"/>
+      </Item7>
+    </RequiredPkgs>
+    <PublishOptions>
+      <Version Value="2"/>
+    </PublishOptions>
+    <CustomOptions Items="ExternHelp" Version="2">
+      <_ExternHelp Items="Count"/>
+    </CustomOptions>
+  </Package>
+</CONFIG>
