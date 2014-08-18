@@ -21,7 +21,13 @@ function fcon_IsMouseHelpControl ( const aper_Control : TPersistent ): TControl;
 
 implementation
 
-uses DBCtrls, JvXPButtons, JvXpBar, ExtCtrls, Menus ,
+uses DBCtrls,
+  {$IFDEF FPC}
+    ExtJvXPButtons,
+  {$ELSE}
+    JvXPButtons,
+  {$ENDIF}
+   JvXpBar, ExtCtrls, Menus ,
   TypInfo;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -110,4 +116,4 @@ initialization
   p_ConcatVersion ( gVer_fonctions_aide );
 finalization
 end.
-
+

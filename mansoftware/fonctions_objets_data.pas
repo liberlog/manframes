@@ -20,11 +20,11 @@ Administration
 
 }
 
-uses Forms, JvXPBar, DB, JvXPContainer,
+uses Forms, JvXPBar, DB,
 {$IFDEF FPC}
-   LCLIntf, LCLType, ComCtrls,
+   LCLIntf, LCLType, ComCtrls, ExtJvXPButtons,
 {$ELSE}
-   Windows, ToolWin,
+   Windows, ToolWin, JvXPButtons,
 {$ENDIF}
   {$IFDEF ADO}
   ADODB,
@@ -38,7 +38,7 @@ uses Forms, JvXPBar, DB, JvXPContainer,
   TntMenus, TntExtCtrls, TntStdActns,
   TntActnList,
 {$ENDIF}
-  Controls, Classes, JvXPButtons, ExtCtrls,
+  Controls, Classes, ExtCtrls,
   Menus, 
 {$IFDEF DELPHI_9_UP}
   WideStrings ,

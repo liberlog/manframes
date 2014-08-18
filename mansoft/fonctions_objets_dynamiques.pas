@@ -23,14 +23,15 @@ Administration
 
 }
 
-uses Forms, JvXPBar, JvXPContainer,
+uses Forms, JvXPBar,
 {$IFDEF FPC}
-   LCLIntf, LCLType, ComCtrls, gettext, Translations,
+   LCLIntf, LCLType, ComCtrls,
+   ExtJvXPButtons, gettext, Translations,
 {$ELSE}
-   Windows, ToolWin,
+   Windows, ToolWin, JvXPButtons,
 {$ENDIF}
 
-  Controls, Classes, JvXPButtons, ExtCtrls,
+  Controls, Classes, ExtCtrls,
   Menus,
 {$IFDEF VERSIONS}
   fonctions_version,
