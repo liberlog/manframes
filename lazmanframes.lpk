@@ -21,10 +21,13 @@
           <UseHeaptrc Value="True"/>
         </Debugging>
       </Linking>
+      <Other>
+        <CompilerPath Value="$(CompPath)"/>
+      </Other>
     </CompilerOptions>
     <Description Value="Child Form data management and relationships"/>
     <License Value="LGPL"/>
-    <Version Major="1" Minor="5"/>
+    <Version Major="1" Minor="5" Build="1"/>
     <Files Count="7">
       <Item1>
         <Filename Value="manframes/fonctions_tableauframework.pas"/>
