@@ -1,1 +1,0 @@
-/home/matthieu/Bureau/Matthieu/Programmation/Lazarus-Delphi/Extended/dlcompilers.inc
