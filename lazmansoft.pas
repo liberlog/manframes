@@ -7,7 +7,8 @@ unit lazmansoft;
 interface
 
 uses
-  fonctions_Objets_Dynamiques, fonctions_FenetrePrincipale, LazarusPackageIntf;
+  fonctions_Objets_Dynamiques, fonctions_FenetrePrincipale, u_formauto, 
+  u_formdico, u_propform, LazarusPackageIntf;
 
 implementation
 

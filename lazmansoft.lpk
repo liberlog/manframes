@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <Package Version="4">
     <Name Value="lazmansoft"/>
@@ -31,7 +31,7 @@
     <Description Value="Full management software RAD Framework"/>
     <License Value="LGPL"/>
     <Version Minor="9" Release="5"/>
-    <Files Count="2">
+    <Files Count="5">
       <Item1>
         <Filename Value="mansoft/fonctions_objets_dynamiques.pas"/>
         <UnitName Value="fonctions_Objets_Dynamiques"/>
@@ -40,6 +40,18 @@
         <Filename Value="mansoft/fonctions_fenetreprincipale.pas"/>
         <UnitName Value="fonctions_FenetrePrincipale"/>
       </Item2>
+      <Item3>
+        <Filename Value="mansoft/u_formauto.pas"/>
+        <UnitName Value="u_formauto"/>
+      </Item3>
+      <Item4>
+        <Filename Value="mansoft/u_formdico.pas"/>
+        <UnitName Value="u_formdico"/>
+      </Item4>
+      <Item5>
+        <Filename Value="mansoft/u_propform.pas"/>
+        <UnitName Value="u_propform"/>
+      </Item5>
     </Files>
     <i18n>
       <EnableI18N Value="True"/>

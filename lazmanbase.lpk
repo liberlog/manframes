@@ -30,7 +30,7 @@
     <Description Value="Data part of manfrmase
 No control please"/>
     <License Value="LGPL"/>
-    <Files Count="5">
+    <Files Count="7">
       <Item1>
         <Filename Value="manbase/fonctions_manbase.pas"/>
         <UnitName Value="fonctions_manbase"/>
@@ -51,6 +51,14 @@ No control please"/>
         <Filename Value="manbase/unite_variables.pas"/>
         <UnitName Value="unite_variables"/>
       </Item5>
+      <Item6>
+        <Filename Value="dlcompilers.inc"/>
+        <Type Value="Include"/>
+      </Item6>
+      <Item7>
+        <Filename Value="extends.inc"/>
+        <Type Value="Include"/>
+      </Item7>
     </Files>
     <i18n>
       <OutDir Value="fonctions"/>
