@@ -8,7 +8,7 @@
       <Version Value="11"/>
       <SearchPaths>
         <OtherUnitFiles Value="manregister"/>
-        <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
+        <UnitOutputDirectory Value="typhon/$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
       <Other>
         <CompilerPath Value="$(CompPath)"/>

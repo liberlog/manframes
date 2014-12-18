@@ -9,7 +9,7 @@
       <SearchPaths>
         <IncludeFiles Value="mansoftware"/>
         <OtherUnitFiles Value="mansoftware"/>
-        <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
+        <UnitOutputDirectory Value="typhon/$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
       <Parsing>
         <SyntaxOptions>

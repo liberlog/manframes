@@ -9,7 +9,7 @@
       <SearchPaths>
         <IncludeFiles Value="manbase"/>
         <OtherUnitFiles Value="manbase"/>
-        <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
+        <UnitOutputDirectory Value="typhon/$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
       <Parsing>
         <SyntaxOptions>
